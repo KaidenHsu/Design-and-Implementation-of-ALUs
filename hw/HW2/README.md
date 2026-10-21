@@ -85,7 +85,7 @@ If the normalized exponent is nonpositive, the subnormal unit shifts the magnitu
 
 ### 3.2 FLP FMA Pipe 4
 
-<p align="center"><img src="images/FLP_FMA.jpg" alt="Floating Point FMA Datapath Partitioned Into Four Pipeline Stages" /></p>
+<p align="center"><img src="images/FLP_FMA_4.jpg" alt="Floating Point FMA Datapath Partitioned Into Four Pipeline Stages" /></p>
 
 The implementation in [FLP_FMA_4/rtl/FMA_pipe.v](FLP_FMA_4/rtl/FMA_pipe.v) partitions the same combinational datapath into four stages. Registers separate multiplication and alignment, signed addition, normalization, and final rounding and packing.
 
