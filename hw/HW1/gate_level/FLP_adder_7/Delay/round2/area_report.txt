@@ -1,0 +1,52 @@
+ 
+****************************************
+Report : area
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:41:14 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                          450
+Number of nets:                          2702
+Number of cells:                         2283
+Number of combinational cells:           1993
+Number of sequential cells:               282
+Number of macros/black boxes:               0
+Number of buf/inv:                        607
+Number of references:                     134
+
+Combinational area:                610.830735
+Buf/Inv area:                      104.509444
+Noncombinational area:             263.139843
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                   873.970578
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  --------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-    Noncombi-  Black-
+                                  Total      Total    national  national   boxes   Design
+--------------------------------  ---------  -------  --------  ---------  ------  ---------------------
+FLP_adder                          873.9706    100.0  419.9040   263.1398  0.0000  FLP_adder
+add_127                             23.0688      2.6   23.0688     0.0000  0.0000  FLP_adder_DW01_add_4
+add_92                              50.4922      5.8   50.4922     0.0000  0.0000  FLP_adder_DW01_add_5
+sub_123                             17.9366      2.1   17.9366     0.0000  0.0000  FLP_adder_DW01_sub_15
+sub_80                               9.2275      1.1    9.2275     0.0000  0.0000  FLP_adder_DW01_sub_6
+sub_80_2                             9.2275      1.1    9.2275     0.0000  0.0000  FLP_adder_DW01_sub_5
+sub_85                              27.0605      3.1   27.0605     0.0000  0.0000  FLP_adder_DW01_sub_10
+sub_86                              27.6307      3.2   27.6307     0.0000  0.0000  FLP_adder_DW01_sub_9
+sub_96                              26.2829      3.0   26.2829     0.0000  0.0000  FLP_adder_DW01_sub_8
+--------------------------------  ---------  -------  --------  ---------  ------  ---------------------
+Total                                                 610.8307   263.1398  0.0000
+
+1
+

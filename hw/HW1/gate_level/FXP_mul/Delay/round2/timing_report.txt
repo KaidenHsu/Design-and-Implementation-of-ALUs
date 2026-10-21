@@ -1,0 +1,62 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FXP_mul
+Version: T-2022.03
+Date   : Mon Oct  5 20:41:57 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[15] (input port clocked by clk)
+  Endpoint: d[43] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FXP_mul            ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 r
+  a[15] (in)                                          0.000000   0.000000 r
+  mult_6/a[15] (FXP_mul_DW_mult_tc_1)                 0.000000   0.000000 r
+  mult_6/U4308/Z (XOR2D8BWP16P90LVT)                  0.022865   0.022865 f
+  mult_6/U3528/ZN (ND2D1BWP16P90LVT)                  0.011529   0.034394 r
+  mult_6/U1835/ZN (OAI22D1BWP16P90LVT)                0.014846   0.049240 f
+  mult_6/U2780/S (FA1D1BWP16P90LVT)                   0.043209   0.092449 r
+  mult_6/U2566/Z (XOR2D2BWP16P90LVT)                  0.026787   0.119236 f
+  mult_6/U3011/ZN (CKND2BWP16P90LVT)                  0.004662   0.123898 r
+  mult_6/U2760/ZN (ND2D1BWP16P90LVT)                  0.007570   0.131468 f
+  mult_6/U3010/ZN (CKND2D2BWP16P90LVT)                0.009733   0.141200 r
+  mult_6/U4280/S (FA1D2BWP16P90LVT)                   0.045982   0.187182 f
+  mult_6/U4275/Z (XOR3D4BWP16P90LVT)                  0.041420   0.228603 r
+  mult_6/U2495/Z (CKOR2D4BWP16P90LVT)                 0.015705   0.244308 r
+  mult_6/U4030/ZN (ND2D4BWP16P90LVT)                  0.008492   0.252800 f
+  mult_6/U2786/ZN (NR2D1BWP16P90LVT)                  0.009837   0.262637 r
+  mult_6/U4996/ZN (AOI21D2BWP16P90LVT)                0.013597   0.276234 f
+  mult_6/U5003/ZN (OAI21D4BWP16P90LVT)                0.009295   0.285529 r
+  mult_6/U3928/ZN (AOI21D4BWP16P90LVT)                0.010002   0.295532 f
+  mult_6/U4913/ZN (OAI21D1BWP16P90)                   0.020051   0.315582 r
+  mult_6/U5000/ZN (XNR2D1BWP16P90LVT)                 0.016417   0.331999 f
+  mult_6/product[43] (FXP_mul_DW_mult_tc_1)           0.000000   0.331999 f
+  d[43] (out)                                         0.000000   0.331999 f
+  data arrival time                                              0.331999
+
+  max_delay                                           0.332000   0.332000
+  output external delay                               0.000000   0.332000
+  data required time                                             0.332000
+  --------------------------------------------------------------------------
+  data required time                                             0.332000
+  data arrival time                                              -0.331999
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.000001
+
+
+1

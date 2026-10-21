@@ -1,0 +1,73 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:39:17 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[23] (input port clocked by clk)
+  Endpoint: s1_mb_aligned_reg_4_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  input external delay                                0.000000   0.000000 f
+  a[23] (in)                                          0.000000   0.000000 f
+  U1231/ZN (CKND16BWP16P90LVT)                        0.002538   0.002538 r
+  U721/ZN (OAI211D4BWP16P90LVT)                       0.009437   0.011974 f
+  U1209/ZN (OAI211D2BWP16P90LVT)                      0.007399   0.019373 r
+  U984/ZN (OAI211D2BWP16P90LVT)                       0.011361   0.030735 f
+  U1051/ZN (ND3D2BWP16P90LVT)                         0.008445   0.039179 r
+  U1071/ZN (ND2D4BWP16P90LVT)                         0.011994   0.051173 f
+  U1070/ZN (CKND12BWP16P90LVT)                        0.012058   0.063230 r
+  U932/Z (BUFFD4BWP16P90LVT)                          0.014601   0.077831 r
+  U910/Z (MUX2D8BWP16P90LVT)                          0.017656   0.095487 f
+  sub_73/B[2] (FLP_adder_DW01_sub_8)                  0.000000   0.095487 f
+  sub_73/U185/ZN (CKND2BWP16P90LVT)                   0.006346   0.101833 r
+  sub_73/U128/ZN (IND2D4BWP16P90LVT)                  0.006960   0.108794 f
+  sub_73/U180/ZN (CKNR2D4BWP16P90LVT)                 0.007498   0.116292 r
+  sub_73/U131/ZN (CKND2D2BWP16P90LVT)                 0.009338   0.125630 f
+  sub_73/U149/ZN (NR2D1BWP16P90LVT)                   0.014307   0.139937 r
+  sub_73/U9/ZN (ND2D1BWP16P90LVT)                     0.012064   0.152001 f
+  sub_73/U202/Z (XOR2D2BWP16P90LVT)                   0.020514   0.172515 r
+  sub_73/DIFF[24] (FLP_adder_DW01_sub_8)              0.000000   0.172515 r
+  U1103/ZN (CKND2BWP16P90LVT)                         0.008747   0.181262 f
+  U912/ZN (OAI21D1BWP16P90LVT)                        0.011579   0.192841 r
+  U1170/ZN (IND2D2BWP16P90LVT)                        0.007830   0.200670 f
+  U926/ZN (ND2D2BWP16P90LVT)                          0.005704   0.206375 r
+  U1157/ZN (ND2D2BWP16P90LVT)                         0.008996   0.215371 f
+  U1277/ZN (CKND2BWP16P90LVT)                         0.006918   0.222289 r
+  U1211/ZN (AOI221D2BWP16P90LVT)                      0.008753   0.231043 f
+  U1199/ZN (IOA21D1BWP16P90LVT)                       0.007517   0.238560 r
+  s1_mb_aligned_reg_4_/D (DFQD2BWP16P90LVT)           0.000000   0.238560 r
+  data arrival time                                              0.238560
+
+  clock clk (rise edge)                               0.010000   0.010000
+  clock network delay (ideal)                         0.000000   0.010000
+  s1_mb_aligned_reg_4_/CP (DFQD2BWP16P90LVT)          0.000000   0.010000 r
+  library setup time                                  -0.013724  -0.003724
+  data required time                                             -0.003724
+  --------------------------------------------------------------------------
+  data required time                                             -0.003724
+  data arrival time                                              -0.238560
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.242284
+
+
+1

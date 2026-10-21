@@ -1,0 +1,100 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FMA_pipe
+Version: T-2022.03
+Date   : Mon Oct 19 21:52:34 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: raw_s2_reg_68_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: round_s3_reg_0_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FMA_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  raw_s2_reg_68_/CP (DFQD2BWP16P90LVT)                0.000000   0.000000 r
+  raw_s2_reg_68_/Q (DFQD2BWP16P90LVT) <-              0.042567   0.042567 f
+  U2363/ZN (NR3D4BWP16P90LVT)                         0.011437   0.054004 r
+  U2072/ZN (INR2D4BWP16P90LVT)                        0.015480   0.069483 r
+  U2355/ZN (ND4D4BWP16P90LVT)                         0.015979   0.085462 f
+  U2040/Z (BUFFD2BWP16P90LVT)                         0.018792   0.104254 f
+  U2148/Z (AN4D4BWP16P90LVT)                          0.015472   0.119726 f
+  U2125/ZN (ND2D2BWP16P90LVT)                         0.005669   0.125395 r
+  U1269/Z (OA21D1BWP16P90LVT)                         0.016470   0.141865 r
+  U2241/ZN (ND3D1BWP16P90LVT)                         0.009889   0.151754 f
+  U1851/ZN (INVD1BWP16P90LVT)                         0.008010   0.159764 r
+  U2078/ZN (ND2D2BWP16P90LVT)                         0.007680   0.167444 f
+  U2242/ZN (CKND2BWP16P90LVT)                         0.005957   0.173401 r
+  U2297/ZN (OAI211D2BWP16P90LVT)                      0.012943   0.186343 f
+  U1249/ZN (IND2D1BWP16P90LVT)                        0.018008   0.204351 f
+  U1987/Z (BUFFD4BWP16P90LVT)                         0.013301   0.217652 f
+  U1432/ZN (ND2D4BWP16P90LVT)                         0.004969   0.222622 r
+  add_0_root_sub_0_root_sub_104/B[3] (FMA_pipe_DW01_add_13)
+                                                      0.000000   0.222622 r
+  add_0_root_sub_0_root_sub_104/U133/ZN (NR2D2BWP16P90LVT)
+                                                      0.006974   0.229596 f
+  add_0_root_sub_0_root_sub_104/U107/ZN (CKND2BWP16P90LVT)
+                                                      0.004319   0.233915 r
+  add_0_root_sub_0_root_sub_104/U96/ZN (ND2D1BWP16P90LVT)
+                                                      0.009256   0.243171 f
+  add_0_root_sub_0_root_sub_104/U129/Z (XOR2D2BWP16P90LVT)
+                                                      0.023180   0.266351 r
+  add_0_root_sub_0_root_sub_104/SUM[3] (FMA_pipe_DW01_add_13)
+                                                      0.000000   0.266351 r
+  U2771/ZN (CKND2BWP16P90LVT)                         0.008690   0.275042 f
+  U1794/ZN (IND2D4BWP16P90LVT)                        0.007060   0.282102 r
+  U2154/ZN (INVD4BWP16P90LVT)                         0.005940   0.288042 f
+  U1782/ZN (CKND2D4BWP16P90LVT)                       0.006450   0.294491 r
+  U3053/Z (XOR2D4BWP16P90LVT)                         0.023462   0.317953 f
+  U1049/ZN (CKND2BWP16P90LVT)                         0.006078   0.324031 r
+  U1046/ZN (CKND2BWP16P90LVT)                         0.005492   0.329523 f
+  U2288/ZN (ND2D2BWP16P90LVT)                         0.007298   0.336821 r
+  U2250/ZN (NR2D2BWP16P90LVT)                         0.006583   0.343404 f
+  sub_174/A[32] (FMA_pipe_DW01_dec_15)                0.000000   0.343404 f
+  sub_174/U790/ZN (IND2D4BWP16P90LVT)                 0.014664   0.358068 f
+  sub_174/U752/ZN (NR2D4BWP16P90LVT)                  0.009313   0.367380 r
+  sub_174/U775/ZN (ND2D4BWP16P90LVT)                  0.010606   0.377987 f
+  sub_174/U774/ZN (NR2D4BWP16P90LVT)                  0.009393   0.387380 r
+  sub_174/U661/ZN (CKND2D4BWP16P90LVT)                0.008512   0.395892 f
+  sub_174/U631/ZN (NR2D2BWP16P90LVT)                  0.010569   0.406461 r
+  sub_174/U806/ZN (CKND2D4BWP16P90LVT)                0.012664   0.419125 f
+  sub_174/U765/ZN (NR2D2BWP16P90LVT)                  0.009458   0.428583 r
+  sub_174/U951/Z (XOR2D1BWP16P90LVT)                  0.016928   0.445510 f
+  sub_174/SUM[74] (FMA_pipe_DW01_dec_15)              0.000000   0.445510 f
+  U1995/Z (AN2D1BWP16P90LVT)                          0.010623   0.456134 f
+  U2247/ZN (NR3D1BWP16P90LVT)                         0.008978   0.465112 r
+  U4258/ZN (ND4D1BWP16P90LVT)                         0.011418   0.476530 f
+  U4288/ZN (NR4D1BWP16P90LVT)                         0.012887   0.489417 r
+  U4354/ZN (AOI32D1BWP16P90LVT)                       0.010916   0.500332 f
+  round_s3_reg_0_/D (DFQD1BWP16P90LVT)                0.000000   0.500332 f
+  data arrival time                                              0.500332
+
+  clock clk (rise edge)                               0.504000   0.504000
+  clock network delay (ideal)                         0.000000   0.504000
+  round_s3_reg_0_/CP (DFQD1BWP16P90LVT)               0.000000   0.504000 r
+  library setup time                                  -0.003664  0.500336
+  data required time                                             0.500336
+  --------------------------------------------------------------------------
+  data required time                                             0.500336
+  data arrival time                                              -0.500332
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.000004
+
+
+1

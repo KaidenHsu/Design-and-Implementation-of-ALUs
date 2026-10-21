@@ -1,0 +1,48 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_mul
+Version: T-2022.03
+Date   : Mon Oct  5 20:39:15 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[31] (input port clocked by clk)
+  Endpoint: s1_sd_reg (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_mul            ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk (rise edge)                0.000000   0.000000
+  clock network delay (ideal)          0.000000   0.000000
+  input external delay                 0.000000   0.000000 r
+  a[31] (in)                           0.000000   0.000000 r
+  U275/ZN (XNR2D1BWP16P90LVT)          0.019027   0.019027 f
+  U453/ZN (NR2D1BWP16P90LVT)           0.008692   0.027719 r
+  s1_sd_reg/D (DFQD2BWP16P90LVT)       0.000000   0.027719 r
+  data arrival time                               0.027719
+
+  clock clk (rise edge)                0.010000   0.010000
+  clock network delay (ideal)          0.000000   0.010000
+  s1_sd_reg/CP (DFQD2BWP16P90LVT)      0.000000   0.010000 r
+  library setup time                   -0.013835  -0.003835
+  data required time                              -0.003835
+  -----------------------------------------------------------
+  data required time                              -0.003835
+  data arrival time                               -0.027719
+  -----------------------------------------------------------
+  slack (VIOLATED)                                -0.031554
+
+
+1

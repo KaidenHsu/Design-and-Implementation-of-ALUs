@@ -1,0 +1,80 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:47:43 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[26] (input port clocked by clk)
+  Endpoint: s1_ma_signed_reg_24_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  input external delay                                0.000000   0.000000 r
+  a[26] (in)                                          0.000000   0.000000 r
+  U895/ZN (INVD1BWP16P90LVT)                          0.006692   0.006692 f
+  U866/Z (AN2D1BWP16P90LVT)                           0.012758   0.019450 f
+  U897/ZN (OAI32D1BWP16P90LVT)                        0.021434   0.040884 r
+  U865/ZN (CKND1BWP16P90LVT)                          0.008871   0.049755 f
+  U904/ZN (AOAI211D1BWP16P90LVT)                      0.007199   0.056954 r
+  U905/ZN (OAI211D1BWP16P90LVT)                       0.012677   0.069631 f
+  U908/ZN (AOI211D1BWP16P90LVT)                       0.013239   0.082870 r
+  U910/ZN (AOAI211D1BWP16P90LVT)                      0.010937   0.093807 f
+  U913/ZN (OAI211D1BWP16P90LVT)                       0.009673   0.103480 r
+  U823/ZN (CKND1BWP16P90LVT)                          0.083816   0.187296 f
+  U766/Z (BUFFD1BWP16P90LVT)                          0.066038   0.253335 f
+  U1062/Z (MUX2D1BWP16P90LVT)                         0.027115   0.280450 r
+  U779/ZN (CKND1BWP16P90LVT)                          0.008524   0.288974 f
+  sub_85/B[2] (FLP_adder_DW01_sub_10)                 0.000000   0.288974 f
+  sub_85/U96/ZN (CKND1BWP16P90LVT)                    0.009142   0.298116 r
+  sub_85/U50/CO (HA1D2BWP16P90LVT)                    0.020369   0.318485 r
+  sub_85/U76/ZN (INR2D1BWP16P90LVT)                   0.015255   0.333740 r
+  sub_85/U26/ZN (ND2D1BWP16P90LVT)                    0.010805   0.344545 f
+  sub_85/U83/ZN (NR2D1BWP16P90LVT)                    0.013101   0.357645 r
+  sub_85/U13/CO (HA1D2BWP16P90LVT)                    0.020306   0.377951 r
+  sub_85/U12/CO (HA1D2BWP16P90LVT)                    0.018528   0.396479 r
+  sub_85/U11/CO (HA1D2BWP16P90LVT)                    0.018524   0.415003 r
+  sub_85/U10/CO (HA1D2BWP16P90LVT)                    0.018524   0.433527 r
+  sub_85/U9/CO (HA1D2BWP16P90LVT)                     0.018524   0.452050 r
+  sub_85/U8/CO (HA1D2BWP16P90LVT)                     0.018524   0.470574 r
+  sub_85/U7/CO (HA1D2BWP16P90LVT)                     0.018524   0.489098 r
+  sub_85/U6/CO (HA1D2BWP16P90LVT)                     0.018524   0.507621 r
+  sub_85/U5/CO (HA1D2BWP16P90LVT)                     0.018524   0.526145 r
+  sub_85/U4/CO (HA1D2BWP16P90LVT)                     0.018524   0.544668 r
+  sub_85/U3/CO (HA1D2BWP16P90LVT)                     0.018524   0.563192 r
+  sub_85/U2/S (HA1D2BWP16P90LVT)                      0.016995   0.580186 r
+  sub_85/DIFF[24] (FLP_adder_DW01_sub_10)             0.000000   0.580186 r
+  U1065/ZN (MOAI22D1BWP16P90LVT)                      0.012707   0.592893 r
+  s1_ma_signed_reg_24_/D (DFQD2BWP16P90LVT)           0.000000   0.592893 r
+  data arrival time                                              0.592893
+
+  clock clk (rise edge)                               0.619000   0.619000
+  clock network delay (ideal)                         0.000000   0.619000
+  s1_ma_signed_reg_24_/CP (DFQD2BWP16P90LVT)          0.000000   0.619000 r
+  library setup time                                  -0.014729  0.604271
+  data required time                                             0.604271
+  --------------------------------------------------------------------------
+  data required time                                             0.604271
+  data arrival time                                              -0.592893
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.011378
+
+
+1

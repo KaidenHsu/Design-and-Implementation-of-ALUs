@@ -1,0 +1,62 @@
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db'
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+Warning: Design has unannotated primary inputs. (PWR-414)
+Warning: Design has unannotated sequential cell outputs. (PWR-415)
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : FMA_pipe
+Version: T-2022.03
+Date   : Mon Oct 19 21:49:45 2026
+****************************************
+
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+FMA_pipe               ZeroWireload      N16ADFP_StdCellss0p72vm40c_ccs
+
+
+Global Operating Voltage = 0.72 
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+Attributes
+----------
+i - Including register clock pin internal power
+
+
+  Cell Internal Power  = 380.9973 uW   (73%)
+  Net Switching Power  = 143.5656 uW   (27%)
+                         ---------
+Total Dynamic Power    = 524.5628 uW  (100%)
+
+Cell Leakage Power     = 786.9488 nW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.2176            0.0000            0.0000            0.0000  (   0.00%)  i
+register       2.6855e-02        7.6924e-03          339.6233            0.2525  (  48.06%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational      0.1366            0.1359          447.3235            0.2729  (  51.94%)
+--------------------------------------------------------------------------------------------------
+Total              0.3810 mW         0.1436 mW       786.9469 nW         0.5253 mW
+1

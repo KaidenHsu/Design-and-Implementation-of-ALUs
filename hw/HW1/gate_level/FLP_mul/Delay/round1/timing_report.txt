@@ -1,0 +1,84 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_mul
+Version: T-2022.03
+Date   : Mon Oct  5 20:38:28 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[3] (input port clocked by clk)
+  Endpoint: d[30] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_mul            ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 r
+  a[3] (in)                                           0.000000   0.000000 r
+  mult_31/a[3] (FLP_mul_DW_mult_uns_1)                0.000000   0.000000 r
+  mult_31/U2567/ZN (XNR2D8BWP16P90LVT)                0.017854   0.017854 f
+  mult_31/U2533/ZN (IND2D2BWP16P90LVT)                0.015450   0.033304 f
+  mult_31/U1669/ZN (MOAI22D2BWP16P90LVT)              0.011265   0.044569 r
+  mult_31/U1661/CO (HA1D2BWP16P90LVT)                 0.019947   0.064516 r
+  mult_31/U1882/Z (XOR2D2BWP16P90LVT)                 0.018545   0.083061 f
+  mult_31/U2462/Z (XOR2D2BWP16P90LVT)                 0.019535   0.102596 f
+  mult_31/U716/S (FA1D1BWP16P90LVT)                   0.039968   0.142563 r
+  mult_31/U2016/Z (XOR3D2BWP16P90LVT)                 0.044864   0.187428 r
+  mult_31/U3057/ZN (ND2D1BWP16P90LVT)                 0.014863   0.202290 f
+  mult_31/U2279/ZN (ND3D4BWP16P90LVT)                 0.009932   0.212222 r
+  mult_31/U2197/ZN (CKND2D4BWP16P90LVT)               0.008261   0.220483 f
+  mult_31/U2822/ZN (OAI21D4BWP16P90LVT)               0.008774   0.229257 r
+  mult_31/U2771/ZN (AOI21D2BWP16P90LVT)               0.011102   0.240360 f
+  mult_31/U2826/ZN (OAI21D2BWP16P90LVT)               0.014331   0.254690 r
+  mult_31/U2807/ZN (AOI21D4BWP16P90LVT)               0.009216   0.263906 f
+  mult_31/U3046/ZN (OAI21D4BWP16P90LVT)               0.012009   0.275916 r
+  mult_31/U76/ZN (XNR2D8BWP16P90LVT)                  0.022590   0.298506 f
+  mult_31/product[47] (FLP_mul_DW_mult_uns_1)         0.000000   0.298506 f
+  U125/ZN (CKND8BWP16P90LVT)                          0.007836   0.306342 r
+  U114/ZN (CKND8BWP16P90LVT)                          0.006965   0.313308 f
+  U110/Z (MUX2D4BWP16P90LVT)                          0.019616   0.332924 r
+  add_42/A[13] (FLP_mul_DW01_add_4)                   0.000000   0.332924 r
+  add_42/U204/ZN (CKND2D4BWP16P90LVT)                 0.007567   0.340490 f
+  add_42/U199/ZN (NR2D4BWP16P90LVT)                   0.008628   0.349118 r
+  add_42/U259/ZN (ND2D4BWP16P90LVT)                   0.009992   0.359111 f
+  add_42/U263/ZN (CKNR2D8BWP16P90LVT)                 0.008052   0.367163 r
+  add_42/U264/ZN (CKND2D8BWP16P90LVT)                 0.006834   0.373997 f
+  add_42/U253/ZN (CKND8BWP16P90LVT)                   0.006617   0.380614 r
+  add_42/SUM[24] (FLP_mul_DW01_add_4)                 0.000000   0.380614 r
+  add_1_root_add_1_root_add_46/CI (FLP_mul_DW01_add_3)
+                                                      0.000000   0.380614 r
+  add_1_root_add_1_root_add_46/U97/ZN (AOI21D2BWP16P90LVT)
+                                                      0.009565   0.390178 f
+  add_1_root_add_1_root_add_46/U119/Z (XOR2D2BWP16P90LVT)
+                                                      0.021351   0.411529 r
+  add_1_root_add_1_root_add_46/SUM[3] (FLP_mul_DW01_add_3)
+                                                      0.000000   0.411529 r
+  U80/ZN (ND4D2BWP16P90LVT)                           0.016221   0.427750 f
+  U76/ZN (CKND2BWP16P90LVT)                           0.008851   0.436602 r
+  U75/ZN (ND3D4BWP16P90LVT)                           0.007805   0.444406 f
+  U134/Z (XOR2D1BWP16P90LVT)                          0.013690   0.458097 r
+  d[30] (out)                                         0.000000   0.458097 r
+  data arrival time                                              0.458097
+
+  max_delay                                           0.010000   0.010000
+  output external delay                               0.000000   0.010000
+  data required time                                             0.010000
+  --------------------------------------------------------------------------
+  data required time                                             0.010000
+  data arrival time                                              -0.458097
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.448097
+
+
+1

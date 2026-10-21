@@ -1,0 +1,48 @@
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/TB_FXP_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl/FXP_FMA.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim
+*** Using c compiler gcc instead of cc ...
+                         Chronologic VCS (TM)
+         Version V-2023.12_Full64 -- Mon Oct 19 21:37:10 2026
+
+                    Copyright (c) 1991 - 2023 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+Parsing design file '/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/TB_FXP_FMA.v'
+Parsing design file '/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl/FXP_FMA.v'
+Top Level Modules:
+       testbench
+TimeScale is 1 ns / 1 ps
+Starting vcs inline pass...
+
+1 module and 0 UDP read.
+recompiling module testbench
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/.build/20261019_213709_ed0a24/simv ]; then chmod a-x /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/.build/20261019_213709_ed0a24/simv; fi
+g++  -o /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/.build/20261019_213709_ed0a24/simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/usr/cad/synopsys/vcs/2023.12/linux64/lib -L/usr/cad/synopsys/vcs/2023.12/linux64/lib  -Wl,-rpath-link=./  /usr/lib64/libnuma.so.1   objs/amcQw_d.o   _3699_archive_1.so   SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /usr/cad/synopsys/vcs/2023.12/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive        _vcs_pli_stub_.o   /usr/cad/synopsys/vcs/2023.12/linux64/lib/vcs_save_restore_new.o /usr/cad/synopsys/verdi/2023.12/share/PLI/VCS/LINUX64/pli.a -ldl  -lc -lm -lpthread -ldl 
+/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/.build/20261019_213709_ed0a24/simv up to date
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid re-execution or '-suppress=ASLR_DETECTED_INFO' to suppress this message.
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version V-2023.12_Full64; Runtime version V-2023.12_Full64;  Oct 19 21:37 2026
+normal: checked=200 passed=200 failed=0
+OVERALL PASS: all 200 vectors correct
+$finish called from file "/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/TB_FXP_FMA.v", line 188.
+$finish at simulation time             20000000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 20000000 ps
+CPU Time:      0.440 seconds;       Data structure size:   0.0Mb
+Mon Oct 19 21:37:13 2026
+CPU time: .501 seconds to compile + .592 seconds to elab + .444 seconds to link + .472 seconds in simulation

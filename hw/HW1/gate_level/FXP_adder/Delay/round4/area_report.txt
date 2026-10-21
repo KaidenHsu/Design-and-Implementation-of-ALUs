@@ -1,0 +1,45 @@
+ 
+****************************************
+Report : area
+Design : FXP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:42:37 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                          194
+Number of nets:                           521
+Number of cells:                          362
+Number of combinational cells:            361
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                         57
+Number of references:                       2
+
+Combinational area:                120.839042
+Buf/Inv area:                        9.331200
+Noncombinational area:               0.000000
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                   120.839042
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  --------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-    Noncombi-  Black-
+                                  Total      Total    national  national   boxes   Design
+--------------------------------  ---------  -------  --------  ---------  ------  --------------------
+FXP_adder                          120.8390    100.0    0.2592     0.0000  0.0000  FXP_adder
+add_7                              120.5798     99.8  120.5798     0.0000  0.0000  FXP_adder_DW01_add_1
+--------------------------------  ---------  -------  --------  ---------  ------  --------------------
+Total                                                 120.8390     0.0000  0.0000
+
+1
+

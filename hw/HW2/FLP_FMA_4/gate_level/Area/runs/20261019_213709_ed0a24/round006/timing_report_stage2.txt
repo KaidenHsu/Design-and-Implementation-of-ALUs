@@ -1,0 +1,127 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FMA_pipe
+Version: T-2022.03
+Date   : Mon Oct 19 21:52:14 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: mc_s1_reg_2_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: raw_s2_reg_75_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FMA_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  mc_s1_reg_2_/CP (DFQD2BWP16P90LVT)                  0.000000   0.000000 r
+  mc_s1_reg_2_/Q (DFQD2BWP16P90LVT) <-                0.040589   0.040589 f
+  add_144/B[2] (FMA_pipe_DW01_add_0)                  0.000000   0.040589 f
+  add_144/U1/Z (AN2D1BWP16P90LVT)                     0.012578   0.053167 f
+  add_144/U1_3/CO (FA1D1BWP16P90LVT)                  0.025998   0.079164 f
+  add_144/U1_4/CO (FA1D1BWP16P90LVT)                  0.027606   0.106770 f
+  add_144/U1_5/CO (FA1D1BWP16P90LVT)                  0.027625   0.134395 f
+  add_144/U1_6/CO (FA1D1BWP16P90LVT)                  0.027625   0.162020 f
+  add_144/U1_7/CO (FA1D1BWP16P90LVT)                  0.027625   0.189645 f
+  add_144/U1_8/CO (FA1D1BWP16P90LVT)                  0.027625   0.217270 f
+  add_144/U1_9/CO (FA1D1BWP16P90LVT)                  0.027625   0.244895 f
+  add_144/U1_10/CO (FA1D1BWP16P90LVT)                 0.027625   0.272520 f
+  add_144/U1_11/CO (FA1D1BWP16P90LVT)                 0.027625   0.300144 f
+  add_144/U1_12/CO (FA1D1BWP16P90LVT)                 0.027625   0.327769 f
+  add_144/U1_13/CO (FA1D1BWP16P90LVT)                 0.027625   0.355394 f
+  add_144/U1_14/CO (FA1D1BWP16P90LVT)                 0.027625   0.383019 f
+  add_144/U1_15/CO (FA1D1BWP16P90LVT)                 0.027625   0.410644 f
+  add_144/U1_16/CO (FA1D1BWP16P90LVT)                 0.027625   0.438269 f
+  add_144/U1_17/CO (FA1D1BWP16P90LVT)                 0.027625   0.465894 f
+  add_144/U1_18/CO (FA1D1BWP16P90LVT)                 0.027625   0.493519 f
+  add_144/U1_19/CO (FA1D1BWP16P90LVT)                 0.027625   0.521144 f
+  add_144/U1_20/CO (FA1D1BWP16P90LVT)                 0.027625   0.548769 f
+  add_144/U1_21/CO (FA1D1BWP16P90LVT)                 0.027625   0.576394 f
+  add_144/U1_22/CO (FA1D1BWP16P90LVT)                 0.027625   0.604018 f
+  add_144/U1_23/CO (FA1D1BWP16P90LVT)                 0.027625   0.631643 f
+  add_144/U1_24/CO (FA1D1BWP16P90LVT)                 0.027625   0.659268 f
+  add_144/U1_25/CO (FA1D1BWP16P90LVT)                 0.027625   0.686893 f
+  add_144/U1_26/CO (FA1D1BWP16P90LVT)                 0.027625   0.714518 f
+  add_144/U1_27/CO (FA1D1BWP16P90LVT)                 0.027625   0.742143 f
+  add_144/U1_28/CO (FA1D1BWP16P90LVT)                 0.027625   0.769768 f
+  add_144/U1_29/CO (FA1D1BWP16P90LVT)                 0.027625   0.797393 f
+  add_144/U1_30/CO (FA1D1BWP16P90LVT)                 0.027625   0.825018 f
+  add_144/U1_31/CO (FA1D1BWP16P90LVT)                 0.027625   0.852643 f
+  add_144/U1_32/CO (FA1D1BWP16P90LVT)                 0.027625   0.880268 f
+  add_144/U1_33/CO (FA1D1BWP16P90LVT)                 0.027625   0.907892 f
+  add_144/U1_34/CO (FA1D1BWP16P90LVT)                 0.027625   0.935517 f
+  add_144/U1_35/CO (FA1D1BWP16P90LVT)                 0.027625   0.963142 f
+  add_144/U1_36/CO (FA1D1BWP16P90LVT)                 0.027625   0.990767 f
+  add_144/U1_37/CO (FA1D1BWP16P90LVT)                 0.027625   1.018392 f
+  add_144/U1_38/CO (FA1D1BWP16P90LVT)                 0.027625   1.046017 f
+  add_144/U1_39/CO (FA1D1BWP16P90LVT)                 0.027625   1.073642 f
+  add_144/U1_40/CO (FA1D1BWP16P90LVT)                 0.027625   1.101267 f
+  add_144/U1_41/CO (FA1D1BWP16P90LVT)                 0.027625   1.128892 f
+  add_144/U1_42/CO (FA1D1BWP16P90LVT)                 0.027625   1.156517 f
+  add_144/U1_43/CO (FA1D1BWP16P90LVT)                 0.027625   1.184142 f
+  add_144/U1_44/CO (FA1D1BWP16P90LVT)                 0.027625   1.211767 f
+  add_144/U1_45/CO (FA1D1BWP16P90LVT)                 0.027625   1.239392 f
+  add_144/U1_46/CO (FA1D1BWP16P90LVT)                 0.027625   1.267017 f
+  add_144/U1_47/CO (FA1D1BWP16P90LVT)                 0.027625   1.294642 f
+  add_144/U1_48/CO (FA1D1BWP16P90LVT)                 0.027625   1.322267 f
+  add_144/U1_49/CO (FA1D1BWP16P90LVT)                 0.027625   1.349892 f
+  add_144/U1_50/CO (FA1D1BWP16P90LVT)                 0.027625   1.377517 f
+  add_144/U1_51/CO (FA1D1BWP16P90LVT)                 0.027625   1.405142 f
+  add_144/U1_52/CO (FA1D1BWP16P90LVT)                 0.027625   1.432767 f
+  add_144/U1_53/CO (FA1D1BWP16P90LVT)                 0.027625   1.460392 f
+  add_144/U1_54/CO (FA1D1BWP16P90LVT)                 0.027625   1.488016 f
+  add_144/U1_55/CO (FA1D1BWP16P90LVT)                 0.027625   1.515641 f
+  add_144/U1_56/CO (FA1D1BWP16P90LVT)                 0.027625   1.543266 f
+  add_144/U1_57/CO (FA1D1BWP16P90LVT)                 0.027625   1.570891 f
+  add_144/U1_58/CO (FA1D1BWP16P90LVT)                 0.027625   1.598516 f
+  add_144/U1_59/CO (FA1D1BWP16P90LVT)                 0.027625   1.626141 f
+  add_144/U1_60/CO (FA1D1BWP16P90LVT)                 0.027625   1.653766 f
+  add_144/U1_61/CO (FA1D1BWP16P90LVT)                 0.027625   1.681391 f
+  add_144/U1_62/CO (FA1D1BWP16P90LVT)                 0.027625   1.709016 f
+  add_144/U1_63/CO (FA1D1BWP16P90LVT)                 0.027625   1.736641 f
+  add_144/U1_64/CO (FA1D1BWP16P90LVT)                 0.027625   1.764266 f
+  add_144/U1_65/CO (FA1D1BWP16P90LVT)                 0.027625   1.791891 f
+  add_144/U1_66/CO (FA1D1BWP16P90LVT)                 0.027625   1.819516 f
+  add_144/U1_67/CO (FA1D1BWP16P90LVT)                 0.027625   1.847141 f
+  add_144/U1_68/CO (FA1D1BWP16P90LVT)                 0.027625   1.874766 f
+  add_144/U1_69/CO (FA1D1BWP16P90LVT)                 0.027625   1.902391 f
+  add_144/U1_70/CO (FA1D1BWP16P90LVT)                 0.027625   1.930016 f
+  add_144/U1_71/CO (FA1D1BWP16P90LVT)                 0.027625   1.957641 f
+  add_144/U1_72/CO (FA1D1BWP16P90LVT)                 0.027625   1.985266 f
+  add_144/U1_73/CO (FA1D1BWP16P90LVT)                 0.027625   2.012891 f
+  add_144/U1_74/CO (FA1D1BWP16P90LVT)                 0.027625   2.040516 f
+  add_144/U1_75/CO (FA1D1BWP16P90LVT)                 0.022838   2.063354 f
+  add_144/U1_76/Z (XOR3D2BWP16P90LVT)                 0.028201   2.091555 f
+  add_144/SUM[76] (FMA_pipe_DW01_add_0)               0.000000   2.091555 f
+  U1045/ZN (NR2D1BWP16P90LVT)                         0.181283   2.272839 r
+  U2978/Z (AO22D1BWP16P90)                            0.081605   2.354444 r
+  raw_s2_reg_75_/D (DFQD2BWP16P90LVT)                 0.000000   2.354444 r
+  data arrival time                                              2.354444
+
+  clock clk (rise edge)                               4.693000   4.693000
+  clock network delay (ideal)                         0.000000   4.693000
+  raw_s2_reg_75_/CP (DFQD2BWP16P90LVT)                0.000000   4.693000 r
+  library setup time                                  -0.014412  4.678588
+  data required time                                             4.678588
+  --------------------------------------------------------------------------
+  data required time                                             4.678588
+  data arrival time                                              -2.354444
+  --------------------------------------------------------------------------
+  slack (MET)                                                    2.324144
+
+
+1

@@ -1,0 +1,70 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:41:37 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: s4_md_reg_13_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: s5_ed_reg_6_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s4_md_reg_13_/CP (DFQD2BWP16P90LVT)                 0.000000   0.000000 r
+  s4_md_reg_13_/Q (DFQD2BWP16P90LVT) <-               0.043460   0.043460 f
+  U825/ZN (NR4D1BWP16P90LVT)                          0.017093   0.060553 r
+  U736/ZN (IIND3D2BWP16P90LVT)                        0.014031   0.074583 f
+  U885/ZN (CKND2BWP16P90LVT)                          0.008543   0.083127 r
+  U868/ZN (ND3D2BWP16P90LVT)                          0.009670   0.092797 f
+  U879/ZN (ND3D2BWP16P90LVT)                          0.006673   0.099470 r
+  U905/ZN (CKND2BWP16P90LVT)                          0.006868   0.106339 f
+  U904/ZN (IND2D4BWP16P90LVT)                         0.007189   0.113528 r
+  U669/ZN (OAI211D1BWP16P90LVT)                       0.014525   0.128053 f
+  U932/ZN (CKND2BWP16P90LVT)                          0.009364   0.137416 r
+  U1552/ZN (NR3D1BWP16P90LVT)                         0.006591   0.144007 f
+  U1556/ZN (OAI32D1BWP16P90LVT)                       0.019433   0.163440 r
+  sub_123/B[4] (FLP_adder_DW01_sub_15)                0.000000   0.163440 r
+  sub_123/U88/ZN (CKND2BWP16P90LVT)                   0.010168   0.173608 f
+  sub_123/U96/ZN (NR2D2BWP16P90LVT)                   0.008400   0.182008 r
+  sub_123/U70/Z (OR2D2BWP16P90LVT)                    0.011954   0.193962 r
+  sub_123/U69/ZN (NR2D2BWP16P90LVT)                   0.005388   0.199350 f
+  sub_123/U101/ZN (NR2D2BWP16P90LVT)                  0.009291   0.208641 r
+  sub_123/U118/ZN (OAI21D2BWP16P90LVT)                0.009173   0.217814 f
+  sub_123/U77/ZN (XNR2D1BWP16P90LVT)                  0.016178   0.233993 r
+  sub_123/DIFF[6] (FLP_adder_DW01_sub_15)             0.000000   0.233993 r
+  U661/ZN (INVD1BWP16P90LVT)                          0.005956   0.239949 f
+  U802/ZN (CKNR2D2BWP16P90LVT)                        0.006200   0.246149 r
+  s5_ed_reg_6_/D (DFQD2BWP16P90LVT)                   0.000000   0.246149 r
+  data arrival time                                              0.246149
+
+  clock clk (rise edge)                               0.260000   0.260000
+  clock network delay (ideal)                         0.000000   0.260000
+  s5_ed_reg_6_/CP (DFQD2BWP16P90LVT)                  0.000000   0.260000 r
+  library setup time                                  -0.013707  0.246293
+  data required time                                             0.246293
+  --------------------------------------------------------------------------
+  data required time                                             0.246293
+  data arrival time                                              -0.246149
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.000144
+
+
+1

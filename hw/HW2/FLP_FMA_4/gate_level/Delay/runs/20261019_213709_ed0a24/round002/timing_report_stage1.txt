@@ -1,0 +1,81 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FMA_pipe
+Version: T-2022.03
+Date   : Mon Oct 19 21:52:32 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[27] (input port clocked by clk)
+  Endpoint: mc_s1_reg_74_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FMA_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  input external delay                                0.000000   0.000000 f
+  a[27] (in)                                          0.000000   0.000000 f
+  U1975/ZN (NR4D8BWP16P90LVT)                         0.013419   0.013419 r
+  U1974/ZN (IND4D2BWP16P90LVT)                        0.011782   0.025200 f
+  U2204/ZN (ND2D2BWP16P90LVT)                         0.010176   0.035376 r
+  U2203/ZN (CKND2BWP16P90LVT)                         0.006402   0.041778 f
+  U3172/ZN (NR2D1BWP16P90LVT)                         0.007077   0.048855 r
+  U2971/Z (XOR2D1BWP16P90LVT)                         0.024171   0.073027 f
+  add_0_root_sub_0_root_sub_102/B[2] (FMA_pipe_DW01_add_16)
+                                                      0.000000   0.073027 f
+  add_0_root_sub_0_root_sub_102/U105/Z (OR2D1BWP16P90LVT)
+                                                      0.014987   0.088013 f
+  add_0_root_sub_0_root_sub_102/U56/ZN (ND2D1BWP16P90LVT)
+                                                      0.007737   0.095751 r
+  add_0_root_sub_0_root_sub_102/U85/ZN (XNR2D1BWP16P90)
+                                                      0.030728   0.126479 f
+  add_0_root_sub_0_root_sub_102/SUM[2] (FMA_pipe_DW01_add_16)
+                                                      0.000000   0.126479 f
+  sub_103/A[2] (FMA_pipe_DW01_sub_12)                 0.000000   0.126479 f
+  sub_103/U109/ZN (NR2D1BWP16P90LVT)                  0.012780   0.139259 r
+  sub_103/U71/ZN (OAI21D1BWP16P90LVT)                 0.013756   0.153015 f
+  sub_103/U79/ZN (CKND1BWP16P90LVT)                   0.009034   0.162049 r
+  sub_103/U77/Z (XOR2D1BWP16P90LVT)                   0.039615   0.201665 f
+  sub_103/DIFF[3] (FMA_pipe_DW01_sub_12)              0.000000   0.201665 f
+  U1438/ZN (INVD2BWP16P90LVT)                         0.018244   0.219909 r
+  U1711/Z (AN2D1BWP16P90LVT)                          0.031694   0.251603 r
+  U3185/ZN (ND2D1BWP16P90LVT)                         0.024040   0.275643 f
+  U2664/ZN (IIND3D1BWP16P90)                          0.034518   0.310161 f
+  U2529/ZN (INVD1BWP16P90)                            0.012709   0.322870 r
+  U3194/ZN (OAI211D1BWP16P90LVT)                      0.020022   0.342892 f
+  U2494/ZN (INVD1BWP16P90LVT)                         0.022774   0.365666 r
+  U2666/ZN (ND2D1BWP16P90LVT)                         0.038018   0.403684 f
+  U1667/ZN (INVD2BWP16P90LVT)                         0.030849   0.434533 r
+  U1637/ZN (ND2D1BWP16P90LVT)                         0.015080   0.449613 f
+  U1668/Z (AN2D1BWP16P90LVT)                          0.028268   0.477881 f
+  U3214/ZN (OAI31D1BWP16P90LVT)                       0.010555   0.488435 r
+  mc_s1_reg_74_/D (DFQD2BWP16P90LVT)                  0.000000   0.488435 r
+  data arrival time                                              0.488435
+
+  clock clk (rise edge)                               0.504000   0.504000
+  clock network delay (ideal)                         0.000000   0.504000
+  mc_s1_reg_74_/CP (DFQD2BWP16P90LVT)                 0.000000   0.504000 r
+  library setup time                                  -0.015507  0.488493
+  data required time                                             0.488493
+  --------------------------------------------------------------------------
+  data required time                                             0.488493
+  data arrival time                                              -0.488435
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.000058
+
+
+1

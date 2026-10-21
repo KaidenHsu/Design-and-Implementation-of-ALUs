@@ -1,0 +1,77 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FXP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:38:27 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[0] (input port clocked by clk)
+  Endpoint: d[32] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FXP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 f
+  a[0] (in)                                           0.000000   0.000000 f
+  add_7/A[0] (FXP_adder_DW01_add_0)                   0.000000   0.000000 f
+  add_7/U1/Z (AN2D1BWP16P90LVT)                       0.010872   0.010872 f
+  add_7/U1_1/CO (FA1D1BWP16P90LVT)                    0.025990   0.036862 f
+  add_7/U1_2/CO (FA1D1BWP16P90LVT)                    0.027606   0.064468 f
+  add_7/U1_3/CO (FA1D1BWP16P90LVT)                    0.027625   0.092092 f
+  add_7/U1_4/CO (FA1D1BWP16P90LVT)                    0.027625   0.119717 f
+  add_7/U1_5/CO (FA1D1BWP16P90LVT)                    0.027625   0.147342 f
+  add_7/U1_6/CO (FA1D1BWP16P90LVT)                    0.027625   0.174967 f
+  add_7/U1_7/CO (FA1D1BWP16P90LVT)                    0.027625   0.202592 f
+  add_7/U1_8/CO (FA1D1BWP16P90LVT)                    0.027625   0.230217 f
+  add_7/U1_9/CO (FA1D1BWP16P90LVT)                    0.027625   0.257842 f
+  add_7/U1_10/CO (FA1D1BWP16P90LVT)                   0.027625   0.285467 f
+  add_7/U1_11/CO (FA1D1BWP16P90LVT)                   0.027625   0.313092 f
+  add_7/U1_12/CO (FA1D1BWP16P90LVT)                   0.027625   0.340716 f
+  add_7/U1_13/CO (FA1D1BWP16P90LVT)                   0.027625   0.368341 f
+  add_7/U1_14/CO (FA1D1BWP16P90LVT)                   0.027625   0.395966 f
+  add_7/U1_15/CO (FA1D1BWP16P90LVT)                   0.027625   0.423591 f
+  add_7/U1_16/CO (FA1D1BWP16P90LVT)                   0.027625   0.451216 f
+  add_7/U1_17/CO (FA1D1BWP16P90LVT)                   0.027625   0.478841 f
+  add_7/U1_18/CO (FA1D1BWP16P90LVT)                   0.027625   0.506466 f
+  add_7/U1_19/CO (FA1D1BWP16P90LVT)                   0.027625   0.534091 f
+  add_7/U1_20/CO (FA1D1BWP16P90LVT)                   0.027625   0.561716 f
+  add_7/U1_21/CO (FA1D1BWP16P90LVT)                   0.027625   0.589341 f
+  add_7/U1_22/CO (FA1D1BWP16P90LVT)                   0.027625   0.616966 f
+  add_7/U1_23/CO (FA1D1BWP16P90LVT)                   0.027625   0.644590 f
+  add_7/U1_24/CO (FA1D1BWP16P90LVT)                   0.027625   0.672215 f
+  add_7/U1_25/CO (FA1D1BWP16P90LVT)                   0.027625   0.699840 f
+  add_7/U1_26/CO (FA1D1BWP16P90LVT)                   0.027625   0.727465 f
+  add_7/U1_27/CO (FA1D1BWP16P90LVT)                   0.027625   0.755090 f
+  add_7/U1_28/CO (FA1D1BWP16P90LVT)                   0.027625   0.782715 f
+  add_7/U1_29/CO (FA1D1BWP16P90LVT)                   0.027625   0.810340 f
+  add_7/U1_30/CO (FA1D1BWP16P90LVT)                   0.027625   0.837965 f
+  add_7/U1_31/CO (FA1D1BWP16P90LVT)                   0.022838   0.860803 f
+  add_7/U1_32/Z (XOR3D2BWP16P90LVT)                   0.024899   0.885702 f
+  add_7/SUM[32] (FXP_adder_DW01_add_0)                0.000000   0.885702 f
+  d[32] (out)                                         0.000000   0.885702 f
+  data arrival time                                              0.885702
+
+  max_delay                                           0.902000   0.902000
+  output external delay                               0.000000   0.902000
+  data required time                                             0.902000
+  --------------------------------------------------------------------------
+  data required time                                             0.902000
+  data arrival time                                              -0.885702
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.016298
+
+
+1

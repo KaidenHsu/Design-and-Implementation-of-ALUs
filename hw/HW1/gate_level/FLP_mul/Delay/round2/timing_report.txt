@@ -1,0 +1,82 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_mul
+Version: T-2022.03
+Date   : Mon Oct  5 20:42:13 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[17] (input port clocked by clk)
+  Endpoint: d[30] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_mul            ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 r
+  a[17] (in)                                          0.000000   0.000000 r
+  mult_31/a[17] (FLP_mul_DW_mult_uns_1)               0.000000   0.000000 r
+  mult_31/U3006/Z (XOR2D8BWP16P90LVT)                 0.018753   0.018753 f
+  mult_31/U1853/ZN (ND2D4BWP16P90LVT)                 0.006549   0.025302 r
+  mult_31/U2319/Z (BUFFD4BWP16P90LVT)                 0.012314   0.037616 r
+  mult_31/U1917/ZN (OAI22D2BWP16P90LVT)               0.009897   0.047514 f
+  mult_31/U627/S (FA1D1BWP16P90LVT)                   0.041203   0.088717 r
+  mult_31/U624/S (FA1D1BWP16P90LVT)                   0.038532   0.127249 f
+  mult_31/U622/S (FA1D1BWP16P90LVT)                   0.042674   0.169923 r
+  mult_31/U3029/S (FA1D2BWP16P90LVT)                  0.043373   0.213296 f
+  mult_31/U2256/ZN (IND2D2BWP16P90LVT)                0.007657   0.220953 r
+  mult_31/U2595/Z (OR2D1BWP16P90LVT)                  0.010049   0.231002 r
+  mult_31/U2559/ZN (ND2D1BWP16P90LVT)                 0.006409   0.237411 f
+  mult_31/U1805/ZN (AOI21D1BWP16P90LVT)               0.009285   0.246696 r
+  mult_31/U1804/ZN (NR2D1BWP16P90LVT)                 0.006378   0.253074 f
+  mult_31/U1802/ZN (NR2D1BWP16P90LVT)                 0.009267   0.262341 r
+  mult_31/U3108/ZN (OAI21D2BWP16P90LVT)               0.008174   0.270515 f
+  mult_31/U2560/ZN (XNR2D4BWP16P90LVT)                0.023871   0.294386 r
+  mult_31/product[47] (FLP_mul_DW_mult_uns_1)         0.000000   0.294386 r
+  U100/ZN (CKND8BWP16P90LVT)                          0.008081   0.302467 f
+  U75/ZN (CKND12BWP16P90LVT)                          0.008995   0.311462 r
+  U98/Z (MUX2D2BWP16P90LVT)                           0.020577   0.332039 f
+  add_42/A[7] (FLP_mul_DW01_add_4)                    0.000000   0.332039 f
+  add_42/U166/ZN (ND2D2BWP16P90LVT)                   0.007911   0.339949 r
+  add_42/U182/ZN (CKNR2D4BWP16P90LVT)                 0.008221   0.348171 f
+  add_42/U202/ZN (CKND2D4BWP16P90LVT)                 0.008045   0.356215 r
+  add_42/U220/ZN (CKNR2D4BWP16P90LVT)                 0.007069   0.363284 f
+  add_42/U214/ZN (CKND2D4BWP16P90LVT)                 0.009855   0.373139 r
+  add_42/U173/ZN (CKND8BWP16P90LVT)                   0.007567   0.380706 f
+  add_42/SUM[24] (FLP_mul_DW01_add_4)                 0.000000   0.380706 f
+  add_1_root_add_1_root_add_46/CI (FLP_mul_DW01_add_3)
+                                                      0.000000   0.380706 f
+  add_1_root_add_1_root_add_46/U139/ZN (AOI21D1BWP16P90LVT)
+                                                      0.011974   0.392680 r
+  add_1_root_add_1_root_add_46/U102/Z (XOR2D4BWP16P90LVT)
+                                                      0.022180   0.414860 r
+  add_1_root_add_1_root_add_46/SUM[4] (FLP_mul_DW01_add_3)
+                                                      0.000000   0.414860 r
+  U95/Z (AN4D4BWP16P90LVT)                            0.019545   0.434405 r
+  U91/ZN (ND3D2BWP16P90LVT)                           0.010006   0.444411 f
+  U113/Z (XOR2D1BWP16P90LVT)                          0.014585   0.458996 r
+  d[30] (out)                                         0.000000   0.458996 r
+  data arrival time                                              0.458996
+
+  max_delay                                           0.459000   0.459000
+  output external delay                               0.000000   0.459000
+  data required time                                             0.459000
+  --------------------------------------------------------------------------
+  data required time                                             0.459000
+  data arrival time                                              -0.458996
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.000004
+
+
+1

@@ -1,0 +1,130 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:40:51 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: b[26] (input port clocked by clk)
+  Endpoint: d[30] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 r
+  b[26] (in)                                          0.000000   0.000000 r
+  U1226/ZN (CKND16BWP16P90LVT)                        0.002474   0.002474 f
+  U710/ZN (OAI21D8BWP16P90LVT)                        0.006664   0.009138 r
+  U815/ZN (IOA22D4BWP16P90LVT)                        0.008998   0.018136 f
+  U699/ZN (INVD4BWP16P90LVT)                          0.006780   0.024916 r
+  U1144/ZN (ND2D4BWP16P90LVT)                         0.006812   0.031728 f
+  U435/ZN (ND2D2BWP16P90LVT)                          0.006852   0.038581 r
+  U834/Z (AN2D2BWP16P90LVT)                           0.022454   0.061034 r
+  U812/Z (MUX2D1BWP16P90LVT)                          0.019366   0.080400 r
+  U1140/ZN (INVD2BWP16P90LVT)                         0.009008   0.089408 f
+  sub_56/B[14] (FLP_adder_DW01_sub_8)                 0.000000   0.089408 f
+  sub_56/U140/ZN (IND2D2BWP16P90LVT)                  0.016543   0.105951 f
+  sub_56/U131/ZN (NR2D2BWP16P90LVT)                   0.008906   0.114857 r
+  sub_56/U169/ZN (CKND2D2BWP16P90LVT)                 0.009167   0.124024 f
+  sub_56/U147/ZN (NR2D2BWP16P90LVT)                   0.012497   0.136521 r
+  sub_56/U26/ZN (ND2D1BWP16P90LVT)                    0.011686   0.148206 f
+  sub_56/U154/Z (XOR2D2BWP16P90LVT)                   0.020357   0.168563 f
+  sub_56/DIFF[21] (FLP_adder_DW01_sub_8)              0.000000   0.168563 f
+  U1559/Z (MUX2D1BWP16P90LVT)                         0.017489   0.186052 f
+  U1562/ZN (ND2D1BWP16P90LVT)                         0.008599   0.194651 r
+  U1564/ZN (ND3D1BWP16P90LVT)                         0.009201   0.203852 f
+  U893/ZN (OAI31D1BWP16P90LVT)                        0.020459   0.224311 r
+  U702/ZN (NR2D1BWP16P90LVT)                          0.011524   0.235835 f
+  U703/ZN (NR2D2BWP16P90LVT)                          0.008039   0.243874 r
+  U1212/ZN (ND2D2BWP16P90LVT)                         0.009128   0.253002 f
+  add_60/B[4] (FLP_adder_DW01_add_26)                 0.000000   0.253002 f
+  add_60/U253/ZN (NR2D2BWP16P90LVT)                   0.010900   0.263902 r
+  add_60/U243/ZN (NR2D2BWP16P90LVT)                   0.008167   0.272069 f
+  add_60/U398/ZN (AOI21D4BWP16P90LVT)                 0.010776   0.282845 r
+  add_60/U472/ZN (OAI21D4BWP16P90LVT)                 0.012576   0.295422 f
+  add_60/U329/ZN (CKND2BWP16P90LVT)                   0.008510   0.303932 r
+  add_60/U441/ZN (OAI21D1BWP16P90LVT)                 0.011161   0.315093 f
+  add_60/U440/ZN (XNR2D2BWP16P90LVT)                  0.019953   0.335045 f
+  add_60/SUM[15] (FLP_adder_DW01_add_26)              0.000000   0.335045 f
+  sub_64/B[15] (FLP_adder_DW01_sub_34)                0.000000   0.335045 f
+  sub_64/U125/ZN (CKNR2D2BWP16P90LVT)                 0.007545   0.342590 r
+  sub_64/U178/Z (AN2D2BWP16P90LVT)                    0.015788   0.358378 r
+  sub_64/U153/ZN (INR2D2BWP16P90LVT)                  0.015671   0.374050 r
+  sub_64/U113/ZN (CKND2D2BWP16P90LVT)                 0.007961   0.382010 f
+  sub_64/U119/ZN (CKNR2D2BWP16P90LVT)                 0.010288   0.392298 r
+  sub_64/U183/ZN (ND2D1BWP16P90LVT)                   0.010178   0.402476 f
+  sub_64/U185/ZN (ND2D2BWP16P90LVT)                   0.008581   0.411057 r
+  sub_64/DIFF[26] (FLP_adder_DW01_sub_34)             0.000000   0.411057 r
+  U977/ZN (CKND2BWP16P90LVT)                          0.006357   0.417414 f
+  U1249/Z (MUX2D4BWP16P90LVT)                         0.017172   0.434586 f
+  U1143/Z (AN2D2BWP16P90LVT)                          0.012900   0.447486 f
+  U555/Z (AN2D8BWP16P90LVT)                           0.013462   0.460948 f
+  U739/Z (AN2D2BWP16P90LVT)                           0.011946   0.472894 f
+  U920/ZN (ND2D2BWP16P90LVT)                          0.004862   0.477756 r
+  U962/Z (AN4D4BWP16P90LVT)                           0.018782   0.496538 r
+  U1180/ZN (ND3D2BWP16P90LVT)                         0.015286   0.511824 f
+  U1296/ZN (ND2D2BWP16P90LVT)                         0.010301   0.522125 r
+  U1072/Z (BUFFD4BWP16P90LVT)                         0.016505   0.538630 r
+  U637/ZN (MAOI22D1BWP16P90LVT)                       0.018172   0.556802 r
+  U535/ZN (ND2D1BWP16P90LVT)                          0.012515   0.569317 f
+  U873/ZN (MUX2ND2BWP16P90LVT)                        0.024207   0.593524 r
+  U693/ZN (AOI22D4BWP16P90LVT)                        0.006785   0.600309 f
+  U897/ZN (ND3D2BWP16P90LVT)                          0.007877   0.608186 r
+  add_95/A[24] (FLP_adder_DW01_add_7)                 0.000000   0.608186 r
+  add_95/U221/ZN (ND2D2BWP16P90LVT)                   0.008462   0.616648 f
+  add_95/U194/ZN (NR2D2BWP16P90LVT)                   0.006454   0.623102 r
+  add_95/U199/Z (AN2D2BWP16P90LVT)                    0.014926   0.638029 r
+  add_95/U220/ZN (CKND2D4BWP16P90LVT)                 0.009085   0.647114 f
+  add_95/U165/ZN (XNR2D8BWP16P90LVT)                  0.019315   0.666428 r
+  add_95/SUM[26] (FLP_adder_DW01_add_7)               0.000000   0.666428 r
+  U927/ZN (ND2D4BWP16P90LVT)                          0.008371   0.674799 f
+  U539/ZN (ND2D4BWP16P90LVT)                          0.006049   0.680848 r
+  U1164/ZN (OAI211D2BWP16P90LVT)                      0.012300   0.693147 f
+  sub_0_root_sub_1_root_add_102/A[1] (FLP_adder_DW01_sub_9)
+                                                      0.000000   0.693147 f
+  sub_0_root_sub_1_root_add_102/U85/ZN (NR2D2BWP16P90LVT)
+                                                      0.010547   0.703694 r
+  sub_0_root_sub_1_root_add_102/U92/ZN (OAI21D2BWP16P90LVT)
+                                                      0.010322   0.714016 f
+  sub_0_root_sub_1_root_add_102/U91/ZN (AOI21D2BWP16P90LVT)
+                                                      0.009021   0.723037 r
+  sub_0_root_sub_1_root_add_102/U89/ZN (OAI21D2BWP16P90LVT)
+                                                      0.008226   0.731263 f
+  sub_0_root_sub_1_root_add_102/U80/ZN (AOI21D1BWP16P90LVT)
+                                                      0.009399   0.740662 r
+  sub_0_root_sub_1_root_add_102/U94/ZN (OAI21D1BWP16P90LVT)
+                                                      0.009106   0.749768 f
+  sub_0_root_sub_1_root_add_102/U107/ZN (AOI21D1BWP16P90LVT)
+                                                      0.012502   0.762270 r
+  sub_0_root_sub_1_root_add_102/U74/Z (XOR2D1BWP16P90LVT)
+                                                      0.018161   0.780431 f
+  sub_0_root_sub_1_root_add_102/DIFF[7] (FLP_adder_DW01_sub_9)
+                                                      0.000000   0.780431 f
+  U1797/Z (AN2D1BWP16P90LVT)                          0.008901   0.789332 f
+  d[30] (out)                                         0.000000   0.789332 f
+  data arrival time                                              0.789332
+
+  max_delay                                           0.010000   0.010000
+  output external delay                               0.000000   0.010000
+  data required time                                             0.010000
+  --------------------------------------------------------------------------
+  data required time                                             0.010000
+  data arrival time                                              -0.789332
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.779332
+
+
+1

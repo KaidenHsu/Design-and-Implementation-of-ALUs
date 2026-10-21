@@ -1,0 +1,142 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FMA_pipe
+Version: T-2022.03
+Date   : Mon Oct 19 21:57:11 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[27] (input port clocked by clk)
+  Endpoint: mc_s1_reg_0_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FMA_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  input external delay                                0.000000   0.000000 f
+  a[27] (in)                                          0.000000   0.000000 f
+  U3509/ZN (NR4D1BWP16P90)                            0.021713   0.021713 r
+  U3508/ZN (ND2D1BWP16P90)                            0.141158   0.162871 f
+  U3194/ZN (IND2D1BWP16P90)                           0.052315   0.215186 r
+  U3104/Z (XOR2D1BWP16P90)                            0.051475   0.266661 f
+  add_0_root_sub_0_root_sub_102/B[1] (FMA_pipe_DW01_add_3)
+                                                      0.000000   0.266661 f
+  add_0_root_sub_0_root_sub_102/U1_1/CO (FA1D1BWP16P90LVT)
+                                                      0.030031   0.296693 f
+  add_0_root_sub_0_root_sub_102/U1_2/CO (FA1D1BWP16P90LVT)
+                                                      0.027636   0.324329 f
+  add_0_root_sub_0_root_sub_102/U1_3/CO (FA1D1BWP16P90LVT)
+                                                      0.027635   0.351964 f
+  add_0_root_sub_0_root_sub_102/U1_4/CO (FA1D1BWP16P90LVT)
+                                                      0.027635   0.379599 f
+  add_0_root_sub_0_root_sub_102/U1_5/CO (FA1D1BWP16P90LVT)
+                                                      0.027635   0.407234 f
+  add_0_root_sub_0_root_sub_102/U1_6/CO (FA1D1BWP16P90LVT)
+                                                      0.027635   0.434869 f
+  add_0_root_sub_0_root_sub_102/U1_7/S (FA1D1BWP16P90LVT)
+                                                      0.044749   0.479619 r
+  add_0_root_sub_0_root_sub_102/SUM[7] (FMA_pipe_DW01_add_3)
+                                                      0.000000   0.479619 r
+  sub_103/A[7] (FMA_pipe_DW01_sub_5)                  0.000000   0.479619 r
+  sub_103/U2_7/CO (FA1D1BWP16P90LVT)                  0.023812   0.503431 r
+  sub_103/U4/ZN (NR2D1BWP16P90LVT)                    0.006254   0.509685 f
+  sub_103/U3/Z (XOR2D1BWP16P90LVT)                    0.032374   0.542059 r
+  sub_103/DIFF[9] (FMA_pipe_DW01_sub_5)               0.000000   0.542059 r
+  U3987/ZN (NR3D1BWP16P90)                            0.016883   0.558942 f
+  U3986/ZN (INR2D1BWP16P90)                           0.020690   0.579632 f
+  U3985/ZN (ND2D1BWP16P90)                            0.015324   0.594955 r
+  U1568/Z (OR2D1BWP16P90LVT)                          0.035298   0.630253 r
+  U3345/ZN (NR2D1BWP16P90)                            0.017297   0.647550 f
+  sub_128/A[7] (FMA_pipe_DW01_dec_1)                  0.000000   0.647550 f
+  sub_128/U106/Z (OR4D1BWP16P90)                      0.037320   0.684870 f
+  sub_128/U105/ZN (NR4D1BWP16P90)                     0.019464   0.704334 r
+  sub_128/U104/Z (AN4D1BWP16P90)                      0.040730   0.745064 r
+  sub_128/U103/ZN (ND2D1BWP16P90)                     0.020011   0.765075 f
+  sub_128/U101/Z (OR2D1BWP16P90)                      0.027633   0.792709 f
+  sub_128/U99/Z (OR2D1BWP16P90)                       0.025091   0.817799 f
+  sub_128/U97/Z (OR2D1BWP16P90)                       0.025067   0.842867 f
+  sub_128/U95/Z (OR2D1BWP16P90)                       0.025067   0.867933 f
+  sub_128/U93/Z (OR2D1BWP16P90)                       0.025067   0.893000 f
+  sub_128/U91/Z (OR2D1BWP16P90)                       0.025067   0.918067 f
+  sub_128/U89/Z (OR2D1BWP16P90)                       0.025067   0.943134 f
+  sub_128/U87/Z (OR2D1BWP16P90)                       0.025071   0.968205 f
+  sub_128/U85/Z (OR2D1BWP16P90)                       0.025069   0.993274 f
+  sub_128/U83/Z (OR2D1BWP16P90)                       0.025069   1.018343 f
+  sub_128/U81/Z (OR2D1BWP16P90)                       0.025069   1.043412 f
+  sub_128/U79/Z (OR2D1BWP16P90)                       0.025069   1.068482 f
+  sub_128/U77/Z (OR2D1BWP16P90)                       0.025069   1.093551 f
+  sub_128/U75/Z (OR2D1BWP16P90)                       0.025069   1.118620 f
+  sub_128/U73/Z (OR2D1BWP16P90)                       0.025069   1.143689 f
+  sub_128/U71/Z (OR2D1BWP16P90)                       0.025069   1.168759 f
+  sub_128/U69/Z (OR2D1BWP16P90)                       0.025069   1.193828 f
+  sub_128/U67/Z (OR2D1BWP16P90)                       0.025069   1.218897 f
+  sub_128/U65/Z (OR2D1BWP16P90)                       0.025069   1.243966 f
+  sub_128/U63/Z (OR2D1BWP16P90)                       0.025069   1.269036 f
+  sub_128/U61/Z (OR2D1BWP16P90)                       0.025069   1.294105 f
+  sub_128/U59/Z (OR2D1BWP16P90)                       0.025069   1.319174 f
+  sub_128/U57/Z (OR2D1BWP16P90)                       0.025069   1.344243 f
+  sub_128/U55/Z (OR2D1BWP16P90)                       0.025068   1.369311 f
+  sub_128/U53/Z (OR2D1BWP16P90)                       0.025068   1.394379 f
+  sub_128/U51/Z (OR2D1BWP16P90)                       0.025068   1.419447 f
+  sub_128/U49/Z (OR2D1BWP16P90)                       0.025068   1.444515 f
+  sub_128/U47/Z (OR2D1BWP16P90)                       0.025068   1.469584 f
+  sub_128/U45/Z (OR2D1BWP16P90)                       0.025068   1.494652 f
+  sub_128/U43/Z (OR2D1BWP16P90)                       0.025068   1.519720 f
+  sub_128/U41/Z (OR2D1BWP16P90)                       0.025068   1.544788 f
+  sub_128/U39/Z (OR2D1BWP16P90)                       0.025068   1.569856 f
+  sub_128/U37/Z (OR2D1BWP16P90)                       0.025068   1.594924 f
+  sub_128/U35/Z (OR2D1BWP16P90)                       0.025068   1.619992 f
+  sub_128/U33/Z (OR2D1BWP16P90)                       0.025068   1.645060 f
+  sub_128/U31/Z (OR2D1BWP16P90)                       0.025067   1.670127 f
+  sub_128/U29/Z (OR2D1BWP16P90)                       0.025067   1.695194 f
+  sub_128/U27/Z (OR2D1BWP16P90)                       0.025067   1.720260 f
+  sub_128/U25/Z (OR2D1BWP16P90)                       0.025068   1.745328 f
+  sub_128/U23/Z (OR2D1BWP16P90)                       0.025067   1.770395 f
+  sub_128/U21/Z (OR2D1BWP16P90)                       0.025067   1.795462 f
+  sub_128/U19/Z (OR2D1BWP16P90)                       0.025067   1.820529 f
+  sub_128/U17/Z (OR2D1BWP16P90)                       0.025067   1.845596 f
+  sub_128/U15/Z (OR2D1BWP16P90)                       0.025067   1.870663 f
+  sub_128/U13/Z (OR2D1BWP16P90)                       0.025067   1.895730 f
+  sub_128/U11/Z (OR2D1BWP16P90)                       0.024724   1.920454 f
+  sub_128/U9/ZN (NR2D1BWP16P90)                       0.019987   1.940441 r
+  sub_128/U7/ZN (ND2D1BWP16P90)                       0.021809   1.962250 f
+  sub_128/U4/ZN (NR2D1BWP16P90)                       0.015636   1.977886 r
+  sub_128/U3/Z (XOR2D1BWP16P90)                       0.032771   2.010657 f
+  sub_128/SUM[75] (FMA_pipe_DW01_dec_1)               0.000000   2.010657 f
+  U3954/Z (OR4D1BWP16P90)                             0.033013   2.043669 f
+  U3953/ZN (NR4D1BWP16P90)                            0.019538   2.063207 r
+  U3952/ZN (ND4D1BWP16P90)                            0.026539   2.089746 f
+  U3913/ZN (AOI22D1BWP16P90)                          0.019201   2.108947 r
+  U3911/ZN (ND3D1BWP16P90)                            0.017447   2.126394 f
+  U3898/ZN (NR4D1BWP16P90)                            0.019845   2.146239 r
+  U3892/ZN (OAI32D1BWP16P90)                          0.018910   2.165149 f
+  mc_s1_reg_0_/D (DFQD2BWP16P90LVT)                   0.000000   2.165149 f
+  data arrival time                                              2.165149
+
+  clock clk (rise edge)                               2.572000   2.572000
+  clock network delay (ideal)                         0.000000   2.572000
+  mc_s1_reg_0_/CP (DFQD2BWP16P90LVT)                  0.000000   2.572000 r
+  library setup time                                  -0.006271  2.565729
+  data required time                                             2.565729
+  --------------------------------------------------------------------------
+  data required time                                             2.565729
+  data arrival time                                              -2.165149
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.400580
+
+
+1

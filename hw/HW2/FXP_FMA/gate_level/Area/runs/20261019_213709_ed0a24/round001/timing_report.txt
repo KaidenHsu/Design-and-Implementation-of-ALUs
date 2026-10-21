@@ -1,0 +1,144 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FXP_FMA
+Version: T-2022.03
+Date   : Mon Oct 19 21:38:45 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[5] (input port clocked by clk)
+  Endpoint: d[31] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FXP_FMA            ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 f
+  a[5] (in)                                           0.000000   0.000000 f
+  mult_17/a[5] (FXP_FMA_DW_mult_tc_0)                 0.000000   0.000000 f
+  mult_17/U2001/ZN (CKND1BWP16P90LVT)                 0.044586   0.044586 r
+  mult_17/U2304/ZN (XNR2D1BWP16P90)                   0.056416   0.101002 f
+  mult_17/U1934/ZN (NR2D1BWP16P90LVT)                 0.053979   0.154981 r
+  mult_17/U1901/ZN (CKND1BWP16P90LVT)                 0.041865   0.196846 f
+  mult_17/U2203/ZN (OAI22D1BWP16P90)                  0.026391   0.223237 r
+  mult_17/U2202/ZN (XNR2D1BWP16P90)                   0.038839   0.262076 f
+  mult_17/U609/S (HA1D2BWP16P90LVT)                   0.023768   0.285844 r
+  mult_17/U275/S (FA1D1BWP16P90LVT)                   0.036315   0.322159 f
+  mult_17/product[3] (FXP_FMA_DW_mult_tc_0)           0.000000   0.322159 f
+  add_19/A[3] (FXP_FMA_DW01_add_0)                    0.000000   0.322159 f
+  add_19/U58/ZN (OAI21D1BWP16P90)                     0.013570   0.335729 r
+  add_19/U57/ZN (IOA21D1BWP16P90)                     0.015919   0.351648 f
+  add_19/U56/ZN (OAI21D1BWP16P90)                     0.016561   0.368208 r
+  add_19/U55/ZN (IOA21D1BWP16P90)                     0.015919   0.384127 f
+  add_19/U54/ZN (OAI21D1BWP16P90)                     0.016561   0.400687 r
+  add_19/U53/ZN (IOA21D1BWP16P90)                     0.015919   0.416606 f
+  add_19/U52/ZN (OAI21D1BWP16P90)                     0.016561   0.433167 r
+  add_19/U51/ZN (IOA21D1BWP16P90)                     0.015919   0.449085 f
+  add_19/U50/ZN (OAI21D1BWP16P90)                     0.016561   0.465646 r
+  add_19/U49/ZN (IOA21D1BWP16P90)                     0.015919   0.481564 f
+  add_19/U48/ZN (OAI21D1BWP16P90)                     0.016561   0.498125 r
+  add_19/U47/ZN (IOA21D1BWP16P90)                     0.015919   0.514044 f
+  add_19/U46/ZN (OAI21D1BWP16P90)                     0.016561   0.530604 r
+  add_19/U45/ZN (IOA21D1BWP16P90)                     0.015919   0.546523 f
+  add_19/U44/ZN (OAI21D1BWP16P90)                     0.016561   0.563083 r
+  add_19/U43/ZN (IOA21D1BWP16P90)                     0.015919   0.579002 f
+  add_19/U42/ZN (OAI21D1BWP16P90)                     0.016561   0.595562 r
+  add_19/U41/ZN (IOA21D1BWP16P90)                     0.015919   0.611481 f
+  add_19/U40/ZN (OAI21D1BWP16P90)                     0.016561   0.628042 r
+  add_19/U39/ZN (IOA21D1BWP16P90)                     0.015919   0.643960 f
+  add_19/U38/ZN (OAI21D1BWP16P90)                     0.016561   0.660521 r
+  add_19/U37/ZN (IOA21D1BWP16P90)                     0.015919   0.676439 f
+  add_19/U36/ZN (OAI21D1BWP16P90)                     0.016561   0.693000 r
+  add_19/U35/ZN (IOA21D1BWP16P90)                     0.015919   0.708919 f
+  add_19/U34/ZN (OAI21D1BWP16P90)                     0.016561   0.725479 r
+  add_19/U33/ZN (IOA21D1BWP16P90)                     0.015919   0.741398 f
+  add_19/U32/ZN (OAI21D1BWP16P90)                     0.016561   0.757958 r
+  add_19/U31/ZN (IOA21D1BWP16P90)                     0.015919   0.773877 f
+  add_19/U30/ZN (OAI21D1BWP16P90)                     0.016561   0.790437 r
+  add_19/U29/ZN (IOA21D1BWP16P90)                     0.015919   0.806356 f
+  add_19/U28/ZN (OAI21D1BWP16P90)                     0.016561   0.822917 r
+  add_19/U27/ZN (IOA21D1BWP16P90)                     0.015919   0.838835 f
+  add_19/U26/ZN (OAI21D1BWP16P90)                     0.016561   0.855396 r
+  add_19/U25/ZN (IOA21D1BWP16P90)                     0.015919   0.871314 f
+  add_19/U24/ZN (OAI21D1BWP16P90)                     0.016561   0.887875 r
+  add_19/U23/ZN (IOA21D1BWP16P90)                     0.015919   0.903794 f
+  add_19/U22/ZN (OAI21D1BWP16P90)                     0.016561   0.920354 r
+  add_19/U21/ZN (IOA21D1BWP16P90)                     0.015919   0.936273 f
+  add_19/U20/ZN (OAI21D1BWP16P90)                     0.016561   0.952833 r
+  add_19/U19/ZN (IOA21D1BWP16P90)                     0.015919   0.968752 f
+  add_19/U18/ZN (OAI21D1BWP16P90)                     0.016561   0.985312 r
+  add_19/U17/ZN (IOA21D1BWP16P90)                     0.015919   1.001231 f
+  add_19/U16/ZN (OAI21D1BWP16P90)                     0.016561   1.017792 r
+  add_19/U15/ZN (IOA21D1BWP16P90)                     0.015919   1.033710 f
+  add_19/U14/ZN (OAI21D1BWP16P90)                     0.016561   1.050271 r
+  add_19/U13/ZN (IOA21D1BWP16P90)                     0.015919   1.066189 f
+  add_19/U12/ZN (OAI21D1BWP16P90)                     0.016561   1.082750 r
+  add_19/U11/ZN (IOA21D1BWP16P90)                     0.015919   1.098669 f
+  add_19/U10/ZN (OAI21D1BWP16P90)                     0.016561   1.115229 r
+  add_19/U9/ZN (IOA21D1BWP16P90)                      0.015919   1.131148 f
+  add_19/U8/ZN (OAI21D1BWP16P90)                      0.016561   1.147708 r
+  add_19/U7/ZN (IOA21D1BWP16P90)                      0.015919   1.163627 f
+  add_19/U6/ZN (OAI21D1BWP16P90)                      0.016561   1.180187 r
+  add_19/U5/ZN (IOA21D1BWP16P90)                      0.015919   1.196106 f
+  add_19/U4/ZN (OAI21D1BWP16P90)                      0.016561   1.212667 r
+  add_19/U3/ZN (IOA21D1BWP16P90)                      0.015919   1.228585 f
+  add_19/U2/ZN (OAI21D1BWP16P90)                      0.016561   1.245146 r
+  add_19/U1/ZN (IOA21D1BWP16P90)                      0.017632   1.262778 f
+  add_19/U1_32/CO (FA1D1BWP16P90LVT)                  0.029285   1.292063 f
+  add_19/U1_33/CO (FA1D1BWP16P90LVT)                  0.027647   1.319710 f
+  add_19/U1_34/CO (FA1D1BWP16P90LVT)                  0.027625   1.347335 f
+  add_19/U1_35/CO (FA1D1BWP16P90LVT)                  0.027625   1.374960 f
+  add_19/U1_36/CO (FA1D1BWP16P90LVT)                  0.027625   1.402585 f
+  add_19/U1_37/CO (FA1D1BWP16P90LVT)                  0.027625   1.430210 f
+  add_19/U1_38/CO (FA1D1BWP16P90LVT)                  0.027625   1.457835 f
+  add_19/U1_39/CO (FA1D1BWP16P90LVT)                  0.027625   1.485460 f
+  add_19/U1_40/CO (FA1D1BWP16P90LVT)                  0.027625   1.513085 f
+  add_19/U1_41/CO (FA1D1BWP16P90LVT)                  0.027625   1.540710 f
+  add_19/U1_42/CO (FA1D1BWP16P90LVT)                  0.027625   1.568335 f
+  add_19/U1_43/CO (FA1D1BWP16P90LVT)                  0.027625   1.595960 f
+  add_19/U1_44/CO (FA1D1BWP16P90LVT)                  0.027625   1.623585 f
+  add_19/U1_45/CO (FA1D1BWP16P90LVT)                  0.027625   1.651210 f
+  add_19/U1_46/CO (FA1D1BWP16P90LVT)                  0.027625   1.678835 f
+  add_19/U1_47/CO (FA1D1BWP16P90LVT)                  0.027625   1.706460 f
+  add_19/U1_48/CO (FA1D1BWP16P90LVT)                  0.027625   1.734085 f
+  add_19/U1_49/CO (FA1D1BWP16P90LVT)                  0.027625   1.761710 f
+  add_19/U1_50/CO (FA1D1BWP16P90LVT)                  0.027625   1.789335 f
+  add_19/U1_51/CO (FA1D1BWP16P90LVT)                  0.027625   1.816960 f
+  add_19/U1_52/CO (FA1D1BWP16P90LVT)                  0.027625   1.844585 f
+  add_19/U1_53/CO (FA1D1BWP16P90LVT)                  0.027625   1.872210 f
+  add_19/U1_54/CO (FA1D1BWP16P90LVT)                  0.027625   1.899835 f
+  add_19/U1_55/CO (FA1D1BWP16P90LVT)                  0.027625   1.927460 f
+  add_19/U1_56/CO (FA1D1BWP16P90LVT)                  0.027625   1.955085 f
+  add_19/U1_57/CO (FA1D1BWP16P90LVT)                  0.027625   1.982710 f
+  add_19/U1_58/CO (FA1D1BWP16P90LVT)                  0.027625   2.010334 f
+  add_19/U1_59/CO (FA1D1BWP16P90LVT)                  0.027625   2.037959 f
+  add_19/U1_60/CO (FA1D1BWP16P90LVT)                  0.027625   2.065584 f
+  add_19/U1_61/CO (FA1D1BWP16P90LVT)                  0.027625   2.093209 f
+  add_19/U1_62/CO (FA1D1BWP16P90LVT)                  0.027625   2.120834 f
+  add_19/U1_63/S (FA1D1BWP16P90LVT)                   0.036372   2.157206 r
+  add_19/SUM[63] (FXP_FMA_DW01_add_0)                 0.000000   2.157206 r
+  d[31] (out)                                         0.000000   2.157206 r
+  data arrival time                                              2.157206
+
+  max_delay                                           10.000000  10.000000
+  output external delay                               0.000000   10.000000
+  data required time                                             10.000000
+  --------------------------------------------------------------------------
+  data required time                                             10.000000
+  data arrival time                                              -2.157206
+  --------------------------------------------------------------------------
+  slack (MET)                                                    7.842794
+
+
+1

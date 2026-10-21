@@ -1,0 +1,190 @@
+$ bash scripts/run.sh all all all --suite all --jobs 9 
+2026-10-19T21:37:09 [INFO] Session 20261019_213709_ed0a24; HW2 root=/MasterClass/M143010027_ALU/Hws/HW2; jobs=9
+2026-10-19T21:37:09 [INFO] START FXP_FMA/pre
+2026-10-19T21:37:09 [INFO] START FLP_FMA/pre
+2026-10-19T21:37:09 [INFO] START FLP_FMA_4/pre
+2026-10-19T21:37:09 [INFO] [FXP_FMA/pre_sim/pre_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim/TB_FXP_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl/FXP_FMA.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/pre_sim
+2026-10-19T21:37:09 [INFO] [FLP_FMA/pre_sim/pre_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/pre_sim
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/pre_sim/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/pre_sim/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/pre_sim/TB_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/pre_sim
+2026-10-19T21:37:09 [INFO] [FLP_FMA_4/pre_sim/pre_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/pre_sim
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/pre_sim/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/pre_sim/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/rtl /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/pre_sim/TB_FMA_pipe.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/rtl/FMA_pipe.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/pre_sim
+2026-10-19T21:37:13 [INFO] FXP_FMA pre-sim PASS (200 vectors)
+2026-10-19T21:37:13 [INFO] DONE FXP_FMA/pre
+2026-10-19T21:37:13 [INFO] START FXP_FMA/Area/synth
+2026-10-19T21:37:13 [INFO] START FXP_FMA/Delay/synth
+2026-10-19T21:37:13 [INFO] FXP_FMA Delay synthesis #1: target 0.01 ns
+2026-10-19T21:37:13 [INFO] FXP_FMA Area synthesis #1: target 10 ns
+2026-10-19T21:37:13 [INFO] [FXP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round001/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round001
+$ env HW2_DESIGN=FXP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Delay/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=0.01 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:37:13 [INFO] [FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round001/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round001
+$ env HW2_DESIGN=FXP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=10 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:37:13 [INFO] FLP_FMA pre-sim PASS (215 vectors)
+2026-10-19T21:37:13 [INFO] DONE FLP_FMA/pre
+2026-10-19T21:37:13 [INFO] START FLP_FMA/Area/synth
+2026-10-19T21:37:13 [INFO] START FLP_FMA/Delay/synth
+2026-10-19T21:37:13 [INFO] FLP_FMA Area synthesis #1: target 10 ns
+2026-10-19T21:37:13 [INFO] [FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round001/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round001
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=10 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:37:13 [INFO] FLP_FMA Delay synthesis #1: target 0.01 ns
+2026-10-19T21:37:13 [INFO] [FLP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round001/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round001
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=0.01 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:37:13 [INFO] FLP_FMA_4 pre-sim PASS (215 vectors)
+2026-10-19T21:37:13 [INFO] DONE FLP_FMA_4/pre
+2026-10-19T21:37:13 [INFO] START FLP_FMA_4/Area/synth
+2026-10-19T21:37:13 [INFO] FLP_FMA_4 Delay synthesis #1: target 0.01 ns
+2026-10-19T21:37:13 [INFO] START FLP_FMA_4/Delay/synth
+2026-10-19T21:37:13 [INFO] FLP_FMA_4 Area synthesis #1: target 10 ns
+2026-10-19T21:37:13 [INFO] [FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round001/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round001
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=10 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:37:13 [INFO] [FLP_FMA_4/compile/Delay/runs/20261019_213709_ed0a24/round001/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Delay/runs/20261019_213709_ed0a24/round001
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Delay/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=0.01 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Delay/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:39:09 [INFO] FXP_FMA Area #1: slack=7.84279 ns area=969.356 um2
+2026-10-19T21:39:09 [INFO] FXP_FMA Area synthesis #2: target 2.158 ns
+2026-10-19T21:39:09 [INFO] [FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round002/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round002
+$ env HW2_DESIGN=FXP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round002 HW2_PERIOD=2.158 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round002/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:39:38 [INFO] FLP_FMA Area #1: slack=1.25243 ns area=1681.068 um2
+2026-10-19T21:39:38 [INFO] FLP_FMA Area synthesis #2: target 8.748 ns
+2026-10-19T21:39:38 [INFO] [FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round002/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round002
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round002 HW2_PERIOD=8.748 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round002/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:39:47 [INFO] FLP_FMA_4 Area #1: slack=4.77995 ns area=2213.153 um2
+2026-10-19T21:39:47 [INFO] FLP_FMA_4 Area synthesis #2: target 5.221 ns
+2026-10-19T21:39:47 [INFO] [FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round002/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round002
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area/runs/20261019_213709_ed0a24/round002 HW2_PERIOD=5.221 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round002/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:41:10 [INFO] FXP_FMA Area #2: slack=0.01792 ns area=969.304 um2
+2026-10-19T21:41:10 [INFO] FXP_FMA Area synthesis #3: target 2.141 ns
+2026-10-19T21:41:10 [INFO] [FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round003/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round003
+$ env HW2_DESIGN=FXP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round003 HW2_PERIOD=2.141 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round003/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:41:16 [INFO] FXP_FMA Delay #1: slack=-0.418297 ns area=1695.635 um2
+2026-10-19T21:41:16 [INFO] FXP_FMA Delay synthesis #2: target 0.429 ns
+2026-10-19T21:41:16 [INFO] [FXP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round002/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round002
+$ env HW2_DESIGN=FXP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Delay/runs/20261019_213709_ed0a24/round002 HW2_PERIOD=0.429 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round002/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:42:05 [INFO] FLP_FMA Area #2: slack=0.62553 ns area=1681.068 um2
+2026-10-19T21:42:05 [INFO] FLP_FMA Area synthesis #3: target 8.123 ns
+2026-10-19T21:42:05 [INFO] [FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round003/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round003
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round003 HW2_PERIOD=8.123 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round003/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:42:19 [INFO] FLP_FMA_4 Area #2: slack=0.267974 ns area=2213.153 um2
+2026-10-19T21:42:19 [INFO] FLP_FMA_4 Area synthesis #3: target 4.954 ns
+2026-10-19T21:42:19 [INFO] [FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round003/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round003
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area/runs/20261019_213709_ed0a24/round003 HW2_PERIOD=4.954 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round003/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:43:10 [INFO] FXP_FMA Area #3: slack=0.00092 ns area=969.304 um2
+2026-10-19T21:43:10 [INFO] DONE FXP_FMA/Area/synth
+2026-10-19T21:43:10 [INFO] START FXP_FMA/Area/post
+2026-10-19T21:43:10 [INFO] FXP_FMA Area post-sim: checker cycle=100 ns; synthesis target=2.141 ns
+2026-10-19T21:43:10 [INFO] [FXP_FMA/post_sim/Area/post_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/Area
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/Area/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/Area/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area/FXP_FMA.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/TB_FXP_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area/FXP_FMA.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim
+2026-10-19T21:43:17 [INFO] FXP_FMA Area PASS (200 vectors)
+2026-10-19T21:43:17 [INFO] DONE FXP_FMA/Area/post
+2026-10-19T21:44:47 [INFO] FLP_FMA Area #3: slack=0.928964 ns area=1680.549 um2
+2026-10-19T21:44:47 [INFO] FLP_FMA Area synthesis #4: target 7.195 ns
+2026-10-19T21:44:47 [INFO] [FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round004/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round004
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round004 HW2_PERIOD=7.195 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round004/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:44:50 [INFO] FLP_FMA_4 Area #3: slack=0.19042 ns area=2213.101 um2
+2026-10-19T21:44:50 [INFO] FLP_FMA_4 Area synthesis #4: target 4.764 ns
+2026-10-19T21:44:50 [INFO] [FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round004/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round004
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area/runs/20261019_213709_ed0a24/round004 HW2_PERIOD=4.764 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round004/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:45:08 [INFO] FLP_FMA_4 Delay #1: slack=-0.493658 ns area=2989.250 um2
+2026-10-19T21:45:08 [INFO] FLP_FMA_4 Delay synthesis #2: target 0.504 ns
+2026-10-19T21:45:08 [INFO] [FLP_FMA_4/compile/Delay/runs/20261019_213709_ed0a24/round002/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Delay/runs/20261019_213709_ed0a24/round002
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Delay/runs/20261019_213709_ed0a24/round002 HW2_PERIOD=0.504 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Delay/runs/20261019_213709_ed0a24/round002/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:45:18 [INFO] FXP_FMA Delay #2: slack=3.5e-05 ns area=1599.316 um2
+2026-10-19T21:45:18 [INFO] DONE FXP_FMA/Delay/synth
+2026-10-19T21:45:18 [INFO] START FXP_FMA/Delay/post
+2026-10-19T21:45:18 [INFO] START FXP_FMA/Between/synth
+2026-10-19T21:45:18 [INFO] FXP_FMA Between synthesis #1: target 1.285 ns
+2026-10-19T21:45:18 [INFO] [FXP_FMA/compile/Between/runs/20261019_213709_ed0a24/round001/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Between/runs/20261019_213709_ed0a24/round001
+$ env HW2_DESIGN=FXP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Between/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=1.285 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Between/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:45:18 [INFO] FXP_FMA Delay post-sim: checker cycle=100 ns; synthesis target=0.429 ns
+2026-10-19T21:45:18 [INFO] [FXP_FMA/post_sim/Delay/post_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/Delay
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Delay +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Delay/FXP_FMA.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/TB_FXP_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Delay/FXP_FMA.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim
+2026-10-19T21:45:25 [INFO] FXP_FMA Delay PASS (200 vectors)
+2026-10-19T21:45:25 [INFO] DONE FXP_FMA/Delay/post
+2026-10-19T21:47:22 [INFO] FLP_FMA_4 Area #4: slack=0.042608 ns area=2213.101 um2
+2026-10-19T21:47:22 [INFO] FLP_FMA_4 Area synthesis #5: target 4.722 ns
+2026-10-19T21:47:22 [INFO] [FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round005/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round005
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area/runs/20261019_213709_ed0a24/round005 HW2_PERIOD=4.722 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round005/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:47:23 [INFO] FLP_FMA Area #4: slack=1.40693 ns area=1738.817 um2
+2026-10-19T21:47:23 [INFO] FLP_FMA Area synthesis #5: target 5.789 ns
+2026-10-19T21:47:23 [INFO] [FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round005/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round005
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round005 HW2_PERIOD=5.789 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round005/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:48:10 [INFO] FXP_FMA Between #1: slack=0.004965 ns area=1049.501 um2
+2026-10-19T21:48:10 [INFO] DONE FXP_FMA/Between/synth
+2026-10-19T21:48:10 [INFO] START FXP_FMA/Between/post
+2026-10-19T21:48:10 [INFO] FXP_FMA Between post-sim: checker cycle=100 ns; synthesis target=1.285 ns
+2026-10-19T21:48:10 [INFO] [FXP_FMA/post_sim/Between/post_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/Between
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Between +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Between/FXP_FMA.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim/TB_FXP_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Between/FXP_FMA.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/post_sim
+2026-10-19T21:48:16 [INFO] FXP_FMA Between PASS (200 vectors)
+2026-10-19T21:48:16 [INFO] DONE FXP_FMA/Between/post
+2026-10-19T21:49:52 [INFO] FLP_FMA_4 Area #5: slack=0.029442 ns area=2213.101 um2
+2026-10-19T21:49:52 [INFO] FLP_FMA_4 Area synthesis #6: target 4.693 ns
+2026-10-19T21:49:52 [INFO] [FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round006/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round006
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area/runs/20261019_213709_ed0a24/round006 HW2_PERIOD=4.693 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round006/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:50:01 [INFO] FLP_FMA Area #5: slack=0.332076 ns area=1772.150 um2
+2026-10-19T21:50:01 [INFO] FLP_FMA Area synthesis #6: target 5.457 ns
+2026-10-19T21:50:01 [INFO] [FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round006/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round006
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round006 HW2_PERIOD=5.457 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Area/runs/20261019_213709_ed0a24/round006/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:51:18 [INFO] FLP_FMA Delay #1: slack=-1.13478 ns area=2584.224 um2
+2026-10-19T21:51:18 [INFO] FLP_FMA Delay synthesis #2: target 1.145 ns
+2026-10-19T21:51:18 [INFO] [FLP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round002/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round002
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/runs/20261019_213709_ed0a24/round002 HW2_PERIOD=1.145 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round002/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:52:21 [INFO] FLP_FMA_4 Area #6: slack=0.053117 ns area=2213.101 um2
+2026-10-19T21:52:21 [INFO] FLP_FMA_4 Area synthesis #7: target 4.640 ns
+2026-10-19T21:52:21 [INFO] [FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round007/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round007
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area/runs/20261019_213709_ed0a24/round007 HW2_PERIOD=4.640 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Area/runs/20261019_213709_ed0a24/round007/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:52:41 [INFO] FLP_FMA_4 Delay #2: slack=4e-06 ns area=2784.949 um2
+2026-10-19T21:52:41 [INFO] DONE FLP_FMA_4/Delay/synth
+2026-10-19T21:52:41 [INFO] START FLP_FMA_4/Delay/post
+2026-10-19T21:52:41 [INFO] FLP_FMA_4 Delay post-sim: checker cycle=100 ns; synthesis target=0.504 ns
+2026-10-19T21:52:41 [INFO] [FLP_FMA_4/post_sim/Delay/post_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/Delay
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/Delay/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/Delay/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Delay +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Delay/FMA_pipe.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/TB_FMA_pipe.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Delay/FMA_pipe.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim
+2026-10-19T21:52:43 [INFO] FLP_FMA Area #6: slack=7.5e-05 ns area=1772.150 um2
+2026-10-19T21:52:43 [INFO] DONE FLP_FMA/Area/synth
+2026-10-19T21:52:43 [INFO] START FLP_FMA/Area/post
+2026-10-19T21:52:43 [INFO] FLP_FMA Area post-sim: checker cycle=100 ns; synthesis target=5.457 ns
+2026-10-19T21:52:43 [INFO] [FLP_FMA/post_sim/Area/post_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Area
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Area/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Area/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Area +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Area/FMA.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/TB_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Area/FMA.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim
+2026-10-19T21:52:51 [INFO] FLP_FMA_4 Delay PASS (215 vectors)
+2026-10-19T21:52:51 [INFO] DONE FLP_FMA_4/Delay/post
+2026-10-19T21:52:52 [INFO] FLP_FMA Area PASS (215 vectors)
+2026-10-19T21:52:52 [INFO] DONE FLP_FMA/Area/post
+2026-10-19T21:54:44 [INFO] FLP_FMA_4 Area #7: slack=3.1e-05 ns area=2213.309 um2
+2026-10-19T21:54:44 [INFO] DONE FLP_FMA_4/Area/synth
+2026-10-19T21:54:44 [INFO] START FLP_FMA_4/Area/post
+2026-10-19T21:54:44 [INFO] START FLP_FMA_4/Between/synth
+2026-10-19T21:54:44 [INFO] FLP_FMA_4 Between synthesis #1: target 2.572 ns
+2026-10-19T21:54:44 [INFO] [FLP_FMA_4/compile/Between/runs/20261019_213709_ed0a24/round001/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Between/runs/20261019_213709_ed0a24/round001
+$ env HW2_DESIGN=FLP_FMA_4 HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4 HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Between/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=2.572 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/compile/Between/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T21:54:44 [INFO] FLP_FMA_4 Area post-sim: checker cycle=100 ns; synthesis target=4.64 ns
+2026-10-19T21:54:44 [INFO] [FLP_FMA_4/post_sim/Area/post_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/Area
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/Area/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/Area/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area/FMA_pipe.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/TB_FMA_pipe.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Area/FMA_pipe.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim
+2026-10-19T21:54:52 [INFO] FLP_FMA_4 Area PASS (215 vectors)
+2026-10-19T21:54:52 [INFO] DONE FLP_FMA_4/Area/post
+2026-10-19T21:57:19 [INFO] FLP_FMA_4 Between #1: slack=0.097211 ns area=2275.413 um2
+2026-10-19T21:57:19 [INFO] DONE FLP_FMA_4/Between/synth
+2026-10-19T21:57:19 [INFO] START FLP_FMA_4/Between/post
+2026-10-19T21:57:19 [INFO] FLP_FMA_4 Between post-sim: checker cycle=100 ns; synthesis target=2.572 ns
+2026-10-19T21:57:19 [INFO] [FLP_FMA_4/post_sim/Between/post_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/Between
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/Between/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/Between/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Between +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Between/FMA_pipe.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim/TB_FMA_pipe.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/gate_level/Between/FMA_pipe.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA_4/post_sim
+2026-10-19T21:57:28 [INFO] FLP_FMA_4 Between PASS (215 vectors)
+2026-10-19T21:57:28 [INFO] DONE FLP_FMA_4/Between/post
+2026-10-19T22:03:54 [INFO] FLP_FMA Delay #2: slack=9e-06 ns area=2715.638 um2
+2026-10-19T22:03:54 [INFO] DONE FLP_FMA/Delay/synth
+2026-10-19T22:03:54 [INFO] START FLP_FMA/Delay/post
+2026-10-19T22:03:54 [INFO] START FLP_FMA/Between/synth
+2026-10-19T22:03:54 [INFO] FLP_FMA Between synthesis #1: target 3.301 ns
+2026-10-19T22:03:54 [INFO] [FLP_FMA/compile/Between/runs/20261019_213709_ed0a24/round001/synth.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Between/runs/20261019_213709_ed0a24/round001
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=3.301 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Between/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+2026-10-19T22:03:54 [INFO] FLP_FMA Delay post-sim: checker cycle=100 ns; synthesis target=1.145 ns
+2026-10-19T22:03:54 [INFO] [FLP_FMA/post_sim/Delay/post_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Delay
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/TB_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim
+2026-10-19T22:04:04 [INFO] FLP_FMA Delay PASS (215 vectors)
+2026-10-19T22:04:04 [INFO] DONE FLP_FMA/Delay/post
+2026-10-19T22:07:57 [INFO] FLP_FMA Between #1: slack=0.000356 ns area=1935.498 um2
+2026-10-19T22:07:57 [INFO] DONE FLP_FMA/Between/synth
+2026-10-19T22:07:57 [INFO] START FLP_FMA/Between/post
+2026-10-19T22:07:57 [INFO] FLP_FMA Between post-sim: checker cycle=100 ns; synthesis target=3.301 ns
+2026-10-19T22:07:57 [INFO] [FLP_FMA/post_sim/Between/post_sim.log] cwd=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Between
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/TB_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim
+2026-10-19T22:08:06 [INFO] FLP_FMA Between PASS (215 vectors)
+2026-10-19T22:08:06 [INFO] DONE FLP_FMA/Between/post
+2026-10-19T22:08:06 [INFO] Collected 9 selections into result/

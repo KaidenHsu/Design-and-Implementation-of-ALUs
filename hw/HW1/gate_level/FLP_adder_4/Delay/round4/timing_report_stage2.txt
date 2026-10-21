@@ -1,0 +1,73 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:47:30 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: s1_mb_aligned_reg_4_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: s2_zero_reg
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s1_mb_aligned_reg_4_/CP (DFQD2BWP16P90LVT)          0.000000   0.000000 r
+  s1_mb_aligned_reg_4_/Q (DFQD2BWP16P90LVT) <-        0.031860   0.031860 r
+  add_79/B[4] (FLP_adder_DW01_add_9)                  0.000000   0.031860 r
+  add_79/U345/ZN (ND2D1BWP16P90LVT)                   0.007862   0.039722 f
+  add_79/U380/Z (OR2D2BWP16P90LVT)                    0.016160   0.055882 f
+  add_79/U358/ZN (ND2D2BWP16P90LVT)                   0.005216   0.061099 r
+  add_79/U374/ZN (AOI21D2BWP16P90LVT)                 0.010819   0.071917 f
+  add_79/U373/ZN (OAI21D2BWP16P90LVT)                 0.008857   0.080774 r
+  add_79/U364/ZN (CKND2BWP16P90LVT)                   0.007912   0.088686 f
+  add_79/U322/ZN (INR2D4BWP16P90LVT)                  0.009382   0.098069 r
+  add_79/U316/ZN (NR2D2BWP16P90LVT)                   0.006796   0.104864 f
+  add_79/U370/ZN (OAI21D2BWP16P90LVT)                 0.012199   0.117064 r
+  add_79/U306/ZN (XNR2D4BWP16P90LVT)                  0.022683   0.139746 f
+  add_79/SUM[17] (FLP_adder_DW01_add_9)               0.000000   0.139746 f
+  sub_83/B[17] (FLP_adder_DW01_sub_17)                0.000000   0.139746 f
+  sub_83/U193/ZN (CKNR2D4BWP16P90LVT)                 0.008105   0.147851 r
+  sub_83/U163/ZN (CKND2D2BWP16P90LVT)                 0.007735   0.155587 f
+  sub_83/U150/ZN (CKNR2D4BWP16P90LVT)                 0.005862   0.161449 r
+  sub_83/U172/ZN (ND2D2BWP16P90LVT)                   0.006328   0.167777 f
+  sub_83/U188/ZN (CKND2BWP16P90LVT)                   0.006770   0.174546 r
+  sub_83/U190/ZN (CKND2BWP16P90LVT)                   0.008769   0.183315 f
+  sub_83/U179/ZN (NR2D1BWP16P90LVT)                   0.011159   0.194474 r
+  sub_83/U174/ZN (XNR2D1BWP16P90LVT)                  0.017561   0.212035 f
+  sub_83/DIFF[26] (FLP_adder_DW01_sub_17)             0.000000   0.212035 f
+  U1493/ZN (INVD1BWP16P90LVT)                         0.007784   0.219820 r
+  U1495/ZN (ND4D1BWP16P90LVT)                         0.014190   0.234009 f
+  U1525/ZN (OAI211D1BWP16P90LVT)                      0.012619   0.246628 r
+  s2_zero_reg/D (DFQD2BWP16P90LVT)                    0.000000   0.246628 r
+  data arrival time                                              0.246628
+
+  clock clk (rise edge)                               0.261000   0.261000
+  clock network delay (ideal)                         0.000000   0.261000
+  s2_zero_reg/CP (DFQD2BWP16P90LVT)                   0.000000   0.261000 r
+  library setup time                                  -0.014243  0.246757
+  data required time                                             0.246757
+  --------------------------------------------------------------------------
+  data required time                                             0.246757
+  data arrival time                                              -0.246628
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.000129
+
+
+1

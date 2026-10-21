@@ -1,0 +1,92 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:48:52 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: s2_md_reg_26_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: s3_md_norm_reg_19_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s2_md_reg_26_/CP (DFQD2BWP16P90LVT)                 0.000000   0.000000 r
+  s2_md_reg_26_/Q (DFQD2BWP16P90LVT) <-               0.039312   0.039312 f
+  U1222/ZN (INVD1BWP16P90LVT)                         0.007055   0.046367 r
+  U750/ZN (ND2D1BWP16P90LVT)                          0.009789   0.056156 f
+  U551/ZN (INVD1BWP16P90LVT)                          0.013131   0.069287 r
+  U564/ZN (ND2D1BWP16P90LVT)                          0.008809   0.078095 f
+  U611/ZN (ND3D1BWP16P90LVT)                          0.008189   0.086284 r
+  U554/ZN (ND3D1BWP16P90LVT)                          0.012033   0.098316 f
+  U542/ZN (INVD1BWP16P90LVT)                          0.008773   0.107089 r
+  U624/ZN (ND2D1BWP16P90LVT)                          0.009417   0.116506 f
+  U562/ZN (INVD1BWP16P90LVT)                          0.013208   0.129714 r
+  U806/ZN (ND3D1BWP16P90LVT)                          0.013999   0.143713 f
+  U748/ZN (OAI21D1BWP16P90LVT)                        0.009697   0.153410 r
+  U550/ZN (INVD1BWP16P90LVT)                          0.010476   0.163887 f
+  U571/ZN (ND2D1BWP16P90LVT)                          0.011514   0.175400 r
+  U566/Z (AN4D1BWP16P90LVT)                           0.025535   0.200935 r
+  U807/ZN (ND2D1BWP16P90LVT)                          0.013364   0.214299 f
+  U805/ZN (ND3D1BWP16P90)                             0.014158   0.228457 r
+  U1230/ZN (ND4D1BWP16P90LVT)                         0.016118   0.244574 f
+  U747/ZN (IND2D2BWP16P90LVT)                         0.020405   0.264979 f
+  U583/ZN (CKND2BWP16P90LVT)                          0.009348   0.274327 r
+  U683/ZN (ND2D1BWP16P90LVT)                          0.013983   0.288310 f
+  U549/ZN (ND3D1BWP16P90LVT)                          0.012718   0.301029 r
+  U1238/ZN (OAI211D1BWP16P90LVT)                      0.012819   0.313848 f
+  U584/ZN (INVD1BWP16P90LVT)                          0.012340   0.326187 r
+  U625/Z (AN2D1BWP16P90LVT)                           0.014844   0.341032 r
+  U679/ZN (ND2D1BWP16P90LVT)                          0.013703   0.354735 f
+  U749/ZN (ND3D1BWP16P90LVT)                          0.010887   0.365622 r
+  U585/ZN (INVD1BWP16P90LVT)                          0.009571   0.375193 f
+  U1248/ZN (ND3D1BWP16P90LVT)                         0.008769   0.383962 r
+  U829/ZN (AOAI211D1BWP16P90)                         0.017019   0.400981 f
+  U1249/ZN (NR4D1BWP16P90LVT)                         0.014670   0.415651 r
+  U1250/ZN (ND4D1BWP16P90LVT)                         0.019288   0.434938 f
+  U1251/ZN (ND2D1BWP16P90LVT)                         0.011490   0.446429 r
+  U541/ZN (INVD1BWP16P90LVT)                          0.008329   0.454758 f
+  U614/ZN (ND2D1BWP16P90LVT)                          0.007986   0.462743 r
+  U576/ZN (INVD1BWP16P90LVT)                          0.008243   0.470986 f
+  U1252/ZN (ND2D1BWP16P90LVT)                         0.009693   0.480680 r
+  U1253/ZN (OAI21D1BWP16P90LVT)                       0.012255   0.492935 f
+  U580/ZN (INVD1BWP16P90LVT)                          0.010908   0.503843 r
+  U543/Z (AN2D1BWP16P90LVT)                           0.016085   0.519928 r
+  U540/Z (AN2D1BWP16P90)                              0.035863   0.555791 r
+  U1279/ZN (ND2D1BWP16P90LVT)                         0.014506   0.570297 f
+  U578/ZN (INVD1BWP16P90LVT)                          0.017558   0.587855 r
+  U567/ZN (AOI22D1BWP16P90)                           0.019362   0.607217 f
+  U1358/ZN (OAI211D1BWP16P90LVT)                      0.008800   0.616017 r
+  s3_md_norm_reg_19_/D (DFQD2BWP16P90LVT)             0.000000   0.616017 r
+  data arrival time                                              0.616017
+
+  clock clk (rise edge)                               0.633000   0.633000
+  clock network delay (ideal)                         0.000000   0.633000
+  s3_md_norm_reg_19_/CP (DFQD2BWP16P90LVT)            0.000000   0.633000 r
+  library setup time                                  -0.014535  0.618465
+  data required time                                             0.618465
+  --------------------------------------------------------------------------
+  data required time                                             0.618465
+  data arrival time                                              -0.616017
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.002448
+
+
+1

@@ -1,0 +1,54 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:39:17 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: s6_ed_renorm_reg_0_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: d[30] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s6_ed_renorm_reg_0_/CP (DFQD2BWP16P90LVT)           0.000000   0.000000 r
+  s6_ed_renorm_reg_0_/Q (DFQD2BWP16P90LVT) <-         0.041306   0.041306 f
+  U997/Z (OR2D1BWP16P90)                              0.024845   0.066150 f
+  U996/Z (OR2D1BWP16P90)                              0.027001   0.093152 f
+  U995/Z (OR2D1BWP16P90)                              0.027018   0.120170 f
+  U994/Z (OR2D1BWP16P90)                              0.027018   0.147187 f
+  U993/Z (OR2D1BWP16P90)                              0.027018   0.174205 f
+  U992/Z (OR2D1BWP16P90)                              0.021782   0.195987 f
+  U906/ZN (XNR2D1BWP16P90LVT)                         0.022086   0.218073 r
+  U905/ZN (NR2D1BWP16P90LVT)                          0.003878   0.221951 f
+  d[30] (out)                                         0.000000   0.221951 f
+  data arrival time                                              0.221951
+
+  clock clk (rise edge)                               1.000000   1.000000
+  clock network delay (ideal)                         0.000000   1.000000
+  output external delay                               0.000000   1.000000
+  data required time                                             1.000000
+  --------------------------------------------------------------------------
+  data required time                                             1.000000
+  data arrival time                                              -0.221951
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.778049
+
+
+1

@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "design": "FXP_adder",
+  "optimization": "Delay",
+  "round": 2,
+  "path": "gate_level/FXP_adder/Delay/round2",
+  "log": "log/FXP_adder/Delay/synth2.log",
+  "status": "complete",
+  "synthesis_id": "8c478eeda4262ff312707c2e2efb2a9cf1a01b7c92dad5a684f8f46b31506ef7",
+  "period_ns": "0.081",
+  "search_id": "1d2df4abb96f-Delay",
+  "attempt": 2,
+  "timestamp": "2026-10-05T20:37:20+0800",
+  "metrics": {
+    "schema": "1",
+    "period_ns": 0.081,
+    "slack_ns": -0.00426321,
+    "delay_ns": 0.085263,
+    "delay_basis": "timing_report_data_arrival",
+    "time_unit_ns": "1.0",
+    "comb_um2": 141.471362,
+    "seq_um2": 0.0,
+    "total_um2": 141.471362,
+    "dynamic_w": 0.0007259576,
+    "leakage_w": 1.375834e-07,
+    "power_w": 0.0007260951834,
+    "power_activity": "default_estimated",
+    "area_units": "TA_library_um2",
+    "sdf_corner": "min_typ_max",
+    "coverage_status": "clean",
+    "complete": "1"
+  },
+  "artifact_hashes": {
+    "netlist.v": "3be4dd486508a5b1da9faffac50ff13fc15fe7f409a21e6872085f6adfb9dcae",
+    "timing.sdf": "c5f9e7df4a28584a80e4f29c1ae8f0c56f99835e192261e17a76c94d6f20caa7",
+    "constraints.sdc": "372c165f6b43c916c92df526cd80e009e3ef854cbd299d1bf62cf5cb6cfae56e",
+    "design.ddc": "0bcb6704b7a45023c901d97ff541965e01042dae3f4fef3a79885dec3d561200"
+  }
+}

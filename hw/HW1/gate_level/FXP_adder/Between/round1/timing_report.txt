@@ -1,0 +1,75 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FXP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:44:08 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: b[1] (input port clocked by clk)
+  Endpoint: d[31] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FXP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 f
+  b[1] (in)                                           0.000000   0.000000 f
+  add_7/B[1] (FXP_adder_DW01_add_1)                   0.000000   0.000000 f
+  add_7/U293/ZN (NR2D1BWP16P90LVT)                    0.008940   0.008940 r
+  add_7/U198/ZN (OAI21D1BWP16P90LVT)                  0.013597   0.022537 f
+  add_7/U210/ZN (AOI21D1BWP16P90LVT)                  0.012419   0.034956 r
+  add_7/U203/ZN (OAI21D1BWP16P90LVT)                  0.013211   0.048167 f
+  add_7/U202/ZN (AOI21D1BWP16P90LVT)                  0.010813   0.058981 r
+  add_7/U216/ZN (OAI21D1BWP16P90LVT)                  0.009099   0.068080 f
+  add_7/U215/ZN (AOI21D1BWP16P90LVT)                  0.009645   0.077725 r
+  add_7/U204/ZN (OAI21D1BWP16P90LVT)                  0.013046   0.090770 f
+  add_7/U205/ZN (AOI21D1BWP16P90LVT)                  0.010813   0.101584 r
+  add_7/U262/ZN (OAI21D1BWP16P90LVT)                  0.013404   0.114988 f
+  add_7/U257/ZN (AOI21D1BWP16P90LVT)                  0.013111   0.128098 r
+  add_7/U263/ZN (OAI21D1BWP16P90LVT)                  0.014168   0.142267 f
+  add_7/U253/ZN (AOI21D1BWP16P90LVT)                  0.015826   0.158093 r
+  add_7/U261/ZN (OAI21D1BWP16P90LVT)                  0.015185   0.173278 f
+  add_7/U250/ZN (AOI21D1BWP16P90LVT)                  0.015826   0.189105 r
+  add_7/U259/ZN (OAI21D1BWP16P90LVT)                  0.015185   0.204290 f
+  add_7/U245/ZN (AOI21D1BWP16P90LVT)                  0.015826   0.220117 r
+  add_7/U260/ZN (OAI21D1BWP16P90LVT)                  0.015185   0.235302 f
+  add_7/U247/ZN (AOI21D1BWP16P90LVT)                  0.013111   0.248412 r
+  add_7/U199/ZN (OAI21D1BWP16P90LVT)                  0.016233   0.264646 f
+  add_7/U206/ZN (AOI21D1BWP16P90LVT)                  0.011526   0.276172 r
+  add_7/U207/ZN (OAI21D1BWP16P90LVT)                  0.009099   0.285271 f
+  add_7/U201/ZN (AOI21D1BWP16P90LVT)                  0.017088   0.302359 r
+  add_7/U211/ZN (OAI21D1BWP16P90LVT)                  0.011376   0.313735 f
+  add_7/U214/ZN (AOI21D1BWP16P90LVT)                  0.009645   0.323380 r
+  add_7/U288/ZN (OAI21D1BWP16P90LVT)                  0.012403   0.335783 f
+  add_7/U6/CO (FA1D1BWP16P90LVT)                      0.028051   0.363833 f
+  add_7/U5/CO (FA1D1BWP16P90LVT)                      0.027631   0.391464 f
+  add_7/U289/CO (FA1D1BWP16P90LVT)                    0.027625   0.419089 f
+  add_7/U290/CO (FA1D1BWP16P90LVT)                    0.027625   0.446714 f
+  add_7/U2/S (FA1D1BWP16P90LVT)                       0.036372   0.483086 r
+  add_7/SUM[31] (FXP_adder_DW01_add_1)                0.000000   0.483086 r
+  d[31] (out)                                         0.000000   0.483086 r
+  data arrival time                                              0.483086
+
+  max_delay                                           0.488000   0.488000
+  output external delay                               0.000000   0.488000
+  data required time                                             0.488000
+  --------------------------------------------------------------------------
+  data required time                                             0.488000
+  data arrival time                                              -0.483086
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.004914
+
+
+1

@@ -1,0 +1,45 @@
+ 
+****************************************
+Report : area
+Design : FXP_mul
+Version: T-2022.03
+Date   : Mon Oct  5 20:41:57 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                          256
+Number of nets:                          3608
+Number of cells:                         3093
+Number of combinational cells:           3092
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                        228
+Number of references:                       1
+
+Combinational area:               1492.162586
+Buf/Inv area:                       50.284801
+Noncombinational area:               0.000000
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  1492.162586
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  --------------------
+FXP_mul                           1492.1626    100.0     0.0000     0.0000  0.0000  FXP_mul
+mult_6                            1492.1626    100.0  1492.1626     0.0000  0.0000  FXP_mul_DW_mult_tc_1
+--------------------------------  ---------  -------  ---------  ---------  ------  --------------------
+Total                                                 1492.1626     0.0000  0.0000
+
+1
+

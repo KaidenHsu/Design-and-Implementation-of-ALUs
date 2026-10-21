@@ -1,0 +1,54 @@
+ 
+****************************************
+Report : area
+Design : FMA
+Version: T-2022.03
+Date   : Mon Oct 19 21:52:17 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                         1135
+Number of nets:                          6353
+Number of cells:                         4843
+Number of combinational cells:           4832
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                       1034
+Number of references:                      62
+
+Combinational area:               1772.150446
+Buf/Inv area:                      160.807687
+Noncombinational area:               0.000000
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  1772.150446
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  -----------------
+FMA                               1772.1504    100.0   785.1687     0.0000  0.0000  FMA
+add_0_root_sub_0_root_sub_86         9.0202      0.5     9.0202     0.0000  0.0000  FMA_DW01_add_7
+add_128                             77.4490      4.4    77.4490     0.0000  0.0000  FMA_DW01_add_2
+add_166                             30.2227      1.7    30.2227     0.0000  0.0000  FMA_DW01_add_6
+mult_92                            565.3152     31.9   565.3152     0.0000  0.0000  FMA_DW_mult_uns_0
+sub_0_root_sub_0_root_sub_88        18.5069      1.0    18.5069     0.0000  0.0000  FMA_DW01_sub_8
+sub_112                             70.9171      4.0    70.9171     0.0000  0.0000  FMA_DW01_dec_3
+sub_129                             77.3971      4.4    77.3971     0.0000  0.0000  FMA_DW01_sub_12
+sub_158                             62.1043      3.5    62.1043     0.0000  0.0000  FMA_DW01_dec_2
+sub_87                              10.5235      0.6    10.5235     0.0000  0.0000  FMA_DW01_sub_11
+sub_93                              43.9603      2.5    43.9603     0.0000  0.0000  FMA_DW01_sub_4
+sub_97                              21.5654      1.2    21.5654     0.0000  0.0000  FMA_DW01_sub_3
+--------------------------------  ---------  -------  ---------  ---------  ------  -----------------
+Total                                                 1772.1504     0.0000  0.0000
+
+1

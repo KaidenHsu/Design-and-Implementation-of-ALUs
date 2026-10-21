@@ -1,0 +1,68 @@
+
+::db::check_and_set_root_attr add_fillers_cells {FILL64BWP16P90 DCAP32BWP16P90 DCAP16BWP16P90 DCAP8BWP16P90 DCAP4BWP16P90 FILL2BWP16P90 FILL2BWP16P90LVT FILL1BWP16P90 FILL1BWP16P90LVT}
+::db::check_and_set_root_attr add_fillers_preserve_user_order true
+::db::check_and_set_root_attr add_rings_avoid_short false
+::db::check_and_set_root_attr add_rings_extend_over_row false
+::db::check_and_set_root_attr add_rings_ignore_rows false
+::db::check_and_set_root_attr add_rings_orthogonal_only true
+::db::check_and_set_root_attr add_rings_skip_shared_inner_ring none
+::db::check_and_set_root_attr add_rings_skip_via_on_pin standardcell
+::db::check_and_set_root_attr add_rings_skip_via_on_wire_shape noshape
+::db::check_and_set_root_attr add_rings_stacked_via_bottom_layer M1
+::db::check_and_set_root_attr add_rings_stacked_via_top_layer AP
+::db::check_and_set_root_attr add_rings_target default
+::db::check_and_set_root_attr add_rings_via_using_exact_crossover_size true
+::db::check_and_set_root_attr add_stripes_allow_jog none
+::db::check_and_set_root_attr add_stripes_break_at none
+::db::check_and_set_root_attr add_stripes_extend_to_closest_target ring
+::db::check_and_set_root_attr add_stripes_ignore_block_check false
+::db::check_and_set_root_attr add_stripes_ignore_non_default_domains false
+::db::check_and_set_root_attr add_stripes_orthogonal_only true
+::db::check_and_set_root_attr add_stripes_partial_set_through_domain false
+::db::check_and_set_root_attr add_stripes_route_over_rows_only false
+::db::check_and_set_root_attr add_stripes_rows_without_stripes_only false
+::db::check_and_set_root_attr add_stripes_skip_via_on_pin standardcell
+::db::check_and_set_root_attr add_stripes_skip_via_on_wire_shape noshape
+::db::check_and_set_root_attr add_stripes_spacing_from_block 0.0
+::db::check_and_set_root_attr add_stripes_spacing_type edge_to_edge
+::db::check_and_set_root_attr add_stripes_split_vias false
+::db::check_and_set_root_attr add_stripes_stacked_via_bottom_layer M1
+::db::check_and_set_root_attr add_stripes_stacked_via_top_layer M3
+::db::check_and_set_root_attr add_stripes_stop_at_last_wire_for_area false
+::db::check_and_set_root_attr add_stripes_stripe_min_length stripe_width
+::db::check_and_set_root_attr add_stripes_trim_antenna_back_to_shape none
+::db::check_and_set_root_attr add_stripes_via_using_exact_crossover_size false
+::db::check_and_set_root_attr add_tieoffs_cells {{TIEHBWP20P90 TIELBWP20P90}}
+::db::check_and_set_root_attr add_tieoffs_max_distance 100.0
+::db::check_and_set_root_attr add_tieoffs_max_fanout 10
+::db::check_and_set_root_attr check_drc_area {0.0 0.0 0.0 0.0}
+::db::check_and_set_root_attr check_drc_check_only default
+::db::check_and_set_root_attr check_drc_disable_rules {}
+::db::check_and_set_root_attr check_drc_exclude_pg_net false
+::db::check_and_set_root_attr check_drc_ignore_cell_blockage false
+::db::check_and_set_root_attr check_drc_ignore_trial_route false
+::db::check_and_set_root_attr check_drc_inside_via_def true
+::db::check_and_set_root_attr check_drc_limit 1000
+::db::check_and_set_root_attr check_drc_ndr_spacing auto
+::db::check_and_set_root_attr check_drc_report ${::IMEX::libVar}/misc/FMA_pipe.drc.rpt
+::db::check_and_set_root_attr check_drc_use_min_spacing_on_block_obs auto
+::db::check_and_set_root_attr design_bottom_routing_layer M2
+::db::check_and_set_root_attr design_top_routing_layer M9
+::db::check_and_set_root_attr extract_rc_coupling_cap_threshold 0.1
+::db::check_and_set_root_attr extract_rc_relative_cap_threshold 1.0
+::db::check_and_set_root_attr extract_rc_total_cap_threshold 0.0
+::db::check_and_set_root_attr floorplan_default_tech_site core
+::db::check_and_set_root_attr floorplan_max_io_height false
+::db::check_and_set_root_attr floorplan_snap_block_grid finfet_manufacturing
+::db::check_and_set_root_attr floorplan_snap_constraint_grid finfet_inst
+::db::check_and_set_root_attr floorplan_snap_core_grid finfet_placement
+::db::check_and_set_root_attr floorplan_snap_die_grid finfet_placement
+::db::check_and_set_root_attr floorplan_snap_io_grid finfet_manufacturing
+::db::check_and_set_root_attr floorplan_snap_place_blockage_grid inst
+::db::check_and_set_root_attr route_design_detail_use_min_spacing_for_blockage auto
+::db::check_and_set_root_attr route_design_extract_third_party_compatible false
+::db::check_and_set_root_attr route_design_re_insert_filler_cell_list {FILL64BWP16P90 DCAP32BWP16P90 DCAP16BWP16P90 DCAP8BWP16P90 DCAP4BWP16P90 FILL2BWP16P90 FILL2BWP16P90LVT FILL1BWP16P90 FILL1BWP16P90LVT}
+::db::check_and_set_root_attr route_design_re_insert_filler_cell_list_from_file false
+::db::check_and_set_root_attr route_design_strict_honor_route_rule false
+::db::check_and_set_root_attr route_special_via_connect_to_shape {ring stripe}
+::db::check_and_set_root_attr write_def_stream_check_uncolored false

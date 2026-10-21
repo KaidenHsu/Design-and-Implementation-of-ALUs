@@ -1,0 +1,64 @@
+{
+  "configuration": {
+    "identity": "8c478eeda4262ff312707c2e2efb2a9cf1a01b7c92dad5a684f8f46b31506ef7",
+    "optimization": "Between",
+    "tolerance": "0.001",
+    "resolution": "0.001",
+    "maximum": "1000",
+    "attempts": 20,
+    "environment": {
+      "HW1_EDA_LD_LIBRARY_PATH": "/usr/cad/cadence/INNOVUS/INNOVUS_21.17.000/tools/lib/64bit:/usr/cad/cadence/INNOVUS/INNOVUS_21.17.000/tools/lib64:/usr/cad/cadence/INNOVUS/INNOVUS_21.17.000/tools/lib:::::/usr/cad/synopsys/star-rcxt/2024.09-sp2//linux64_starrc/lib/::::/usr/cad/synopsys/verdi/2023.12/etc/lib/libstdc++/LINUX64/:/usr/cad/synopsys/verdi/2023.12/share/PLI/lib/LINUX64/:/usr/cad/synopsys/verdi/2023.12/share/PLI/VCS/LINUX64/::/usr/cad/synopsys/verdi/cur/share/PLI/VCS/LINUX64::/lib64:/usr/lib64:/usr/local/lib64::",
+      "HW1_EDA_LD_LIBRARY_PATH_SET": "1"
+    },
+    "dependencies": [
+      "1d2df4abb96f-Area",
+      "1d2df4abb96f-Delay"
+    ]
+  },
+  "id": "1d2df4abb96f-Between",
+  "attempts": [
+    {
+      "schema": 1,
+      "design": "FXP_adder",
+      "optimization": "Between",
+      "round": 1,
+      "path": "gate_level/FXP_adder/Between/round1",
+      "log": "log/FXP_adder/Between/synth1.log",
+      "status": "complete",
+      "synthesis_id": "8c478eeda4262ff312707c2e2efb2a9cf1a01b7c92dad5a684f8f46b31506ef7",
+      "period_ns": "0.488",
+      "search_id": "1d2df4abb96f-Between",
+      "attempt": 1,
+      "timestamp": "2026-10-05T20:42:58+0800",
+      "metrics": {
+        "schema": "1",
+        "period_ns": 0.488,
+        "slack_ns": 0.00491408,
+        "delay_ns": 0.483086,
+        "delay_basis": "timing_report_data_arrival",
+        "time_unit_ns": "1.0",
+        "comb_um2": 50.699521,
+        "seq_um2": 0.0,
+        "total_um2": 50.699521,
+        "dynamic_w": 5.19979e-05,
+        "leakage_w": 3.09183e-08,
+        "power_w": 5.20288183e-05,
+        "power_activity": "default_estimated",
+        "area_units": "TA_library_um2",
+        "sdf_corner": "min_typ_max",
+        "coverage_status": "clean",
+        "complete": "1"
+      },
+      "artifact_hashes": {
+        "netlist.v": "21239513bb0d6c9955cf651bae6f564a34d0b575fc861be95c5db1c0b951d73d",
+        "timing.sdf": "1b618d3e4d001cb634c7c0a8929f9a6be534668b7758f868762fddb9b8262b13",
+        "constraints.sdc": "4877dc46a9791ecc8ff38becfe7a369b51f7dfb4f62ab7c97bc046bf15de5bf9",
+        "design.ddc": "e5f3f3bef8bf73d26f57d30c3592d113ded4c1960a05b18d1b7797307b18e167"
+      }
+    }
+  ],
+  "next_period": "0.4875",
+  "finished": true,
+  "best": "gate_level/FXP_adder/Between/round1",
+  "converged": true
+}

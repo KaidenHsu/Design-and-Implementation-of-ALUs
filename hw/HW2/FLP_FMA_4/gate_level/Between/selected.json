@@ -1,0 +1,30 @@
+{
+  "design": "FLP_FMA_4",
+  "optimization": "Between",
+  "directory": "FLP_FMA_4/gate_level/Between/runs/20261019_213709_ed0a24/round001",
+  "metrics": {
+    "delay_ns": 2.469883,
+    "slack_ns": 0.097211,
+    "comb_um2": 1839.646128,
+    "seq_um2": 435.767046,
+    "total_um2": 2275.413174,
+    "dynamic_w": 0.0009780258,
+    "leakage_w": 1.2114e-06,
+    "power_w": 0.0009792372,
+    "period_ns": 2.572
+  },
+  "source_hash": "dfaf438a4f052408c1831ab8630f18ba43d660450d20b821b0c486ff3765c974",
+  "stage_delays_ns": [
+    2.165149,
+    2.281992,
+    2.469883,
+    0.84992
+  ],
+  "converged": true,
+  "artifact_hashes": {
+    "FMA_pipe.v": "c976ef26338c25d2b26a4a0c71a4531768e35012757bef349a09d1088092d998",
+    "FMA_pipe.sdf": "53c7c3e87844f36f32b88a5cb79a183c1927005750557428e434a82014f5cb6b",
+    "FMA_pipe.ddc": "9ea66153a2e3a552f54380a6ee8c6da51cd9e2c8d8d2a6e54f5fb28f0f3109c5",
+    "FMA_pipe.sdc": "04b818c73205570dc9b9d91d1c21a927feaabb1abf002cdb605897fd61300d37"
+  }
+}

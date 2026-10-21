@@ -1,0 +1,742 @@
+[10/20 16:08:30      0s] 
+[10/20 16:08:30      0s] Cadence Innovus(TM) Implementation System.
+[10/20 16:08:30      0s] Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+[10/20 16:08:30      0s] 
+[10/20 16:08:30      0s] Version:	v21.17-s075_1, built Wed Mar 15 11:17:40 PDT 2023
+[10/20 16:08:30      0s] Options:	-stylus 
+[10/20 16:08:30      0s] Date:		Tue Oct 20 16:08:29 2026
+[10/20 16:08:30      0s] Host:		DTrump (x86_64 w/Linux 3.10.0-1160.119.1.el7.x86_64) (8cores*32cpus*Intel(R) Xeon(R) CPU E5-2620 v4 @ 2.10GHz 20480KB)
+[10/20 16:08:30      0s] OS:		CentOS Linux 7 (Core)
+[10/20 16:08:30      0s] 
+[10/20 16:08:30      0s] License:
+[10/20 16:08:30      0s] 		[16:08:30.346003] Configured Lic search path (21.01-s002): 5280@lstc:26585@lstc:
+[10/20 16:08:30      0s] 
+[10/20 16:08:30      0s] 		invs	Innovus Implementation System	21.1	checkout succeeded
+[10/20 16:08:30      0s] 		8 CPU jobs allowed with the current license(s). Use set_multi_cpu_usage to set your required CPU count.
+[10/20 16:08:51     19s] 
+[10/20 16:08:51     19s] 
+[10/20 16:09:01     29s] Reset Parastics called with the command setExtractRCMode -reset[10/20 16:09:04     31s] **WARN: (IMPOPT-801):	Genus executable not found in PATH. Install Genus, add the path to the genus executable in the PATH variable and rerun Innovus.
+@(#)CDS: Innovus v21.17-s075_1 (64bit) 03/15/2023 11:17 (Linux 3.10.0-693.el7.x86_64)
+[10/20 16:09:06     34s] @(#)CDS: NanoRoute 21.17-s075_1 NR230308-2354/21_17-UB (database version 18.20.604) {superthreading v2.17}
+[10/20 16:09:06     34s] @(#)CDS: AAE 21.17-s026 (64bit) 03/15/2023 (Linux 3.10.0-693.el7.x86_64)
+[10/20 16:09:06     34s] @(#)CDS: CTE 21.17-s025_1 () Mar 14 2023 11:00:06 ( )
+[10/20 16:09:06     34s] @(#)CDS: SYNTECH 21.17-s007_1 () Feb 20 2023 06:56:35 ( )
+[10/20 16:09:06     34s] @(#)CDS: CPE v21.17-s068
+[10/20 16:09:06     34s] @(#)CDS: IQuantus/TQuantus 21.1.1-s939 (64bit) Wed Nov 9 09:34:24 PST 2022 (Linux 3.10.0-693.el7.x86_64)
+[10/20 16:09:06     34s] @(#)CDS: OA 22.60-p087 Thu Feb  9 09:35:26 2023
+[10/20 16:09:06     34s] @(#)CDS: SGN 20.10-d001 (01-Jun-2020) (64 bit executable, Qt5.9.0)
+[10/20 16:09:06     34s] @(#)CDS: RCDB 11.15.0
+[10/20 16:09:06     34s] @(#)CDS: STYLUS 21.12-s019_1 (12/20/2022 05:13 PST)
+[10/20 16:09:06     34s] @(#)CDS: SystemPlanner-21.17Rel-10251 (21.17) (2023-02-02 17:22:51+0800)
+[10/20 16:09:06     34s] Create and set the environment variable TMPDIR to /tmp/innovus_temp_29492_DTrump_M143010027_ALU_gDF68l.
+
+[10/20 16:09:06     34s] Create and set the environment variable TMPDIR to /tmp/innovus_temp_29492_DTrump_M143010027_ALU_gDF68l.
+[10/20 16:09:06     34s] 
+[10/20 16:09:07     34s] Change the soft stacksize limit to 0.2%RAM (289 mbytes). Set global soft_stack_size_limit to change the value.
+[10/20 16:09:12     39s] 
+[10/20 16:09:12     39s] **INFO:  MMMC transition support version v31-84 
+[10/20 16:09:12     39s] 
+[10/20 16:09:20     45s] @innovus 1> set_db init_power_nets VDD
+[10/20 16:16:23     74s] @innovus 2> set_db init_ground_nets VSS
+[10/20 16:16:23     74s] @innovus 3> #################################
+[10/20 16:16:23     74s] read_mmmc mmmc.view.stylus
+[10/20 16:16:23     74s] #################################
+[10/20 16:16:23     74s] #@ Begin verbose source mmmc.view.stylus (pre)
+[10/20 16:16:23     74s] @file 1: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 2: # Library sets
+[10/20 16:16:23     74s] @file 3: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 4: # A library set contains the timing library for one PVT corner.
+[10/20 16:16:23     74s] @@file 5: create_library_set -name lib_ss0p72v125c\
+[10/20 16:16:23     74s]     -timing\
+[10/20 16:16:23     74s]     {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib}
+[10/20 16:16:23     74s] @file 8:
+[10/20 16:16:23     74s] @@file 9: create_library_set -name lib_ss0p72vm40c\
+[10/20 16:16:23     74s]     -timing\
+[10/20 16:16:23     74s]     {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib}
+[10/20 16:16:23     74s] @file 12:
+[10/20 16:16:23     74s] @@file 13: create_library_set -name lib_ff0p88v125c\
+[10/20 16:16:23     74s]     -timing\
+[10/20 16:16:23     74s]     {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib}
+[10/20 16:16:23     74s] @file 16:
+[10/20 16:16:23     74s] @@file 17: create_library_set -name lib_ff0p88vm40c\
+[10/20 16:16:23     74s]     -timing\
+[10/20 16:16:23     74s]     {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib}
+[10/20 16:16:23     74s] @file 20:
+[10/20 16:16:23     74s] @file 21:
+[10/20 16:16:23     74s] @file 22: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 23: # Timing conditions
+[10/20 16:16:23     74s] @file 24: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 25: # Associate each timing condition with the corresponding standard-cell
+[10/20 16:16:23     74s] @file 26: # timing library set.
+[10/20 16:16:23     74s] @@file 27: create_timing_condition -name TC_ss0p72v125c\
+[10/20 16:16:23     74s]     -library_sets lib_ss0p72v125c
+[10/20 16:16:23     74s] @file 29:
+[10/20 16:16:23     74s] @@file 30: create_timing_condition -name TC_ff0p88vm40c\
+[10/20 16:16:23     74s]     -library_sets lib_ff0p88vm40c
+[10/20 16:16:23     74s] @file 32:
+[10/20 16:16:23     74s] @@file 33: create_timing_condition -name TC_ss0p72vm40c\
+[10/20 16:16:23     74s]     -library_sets lib_ss0p72vm40c
+[10/20 16:16:23     74s] @file 35:
+[10/20 16:16:23     74s] @@file 36: create_timing_condition -name TC_ff0p88v125c\
+[10/20 16:16:23     74s]     -library_sets lib_ff0p88v125c
+[10/20 16:16:23     74s] @file 38:
+[10/20 16:16:23     74s] @file 39: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 40: # RC corners
+[10/20 16:16:23     74s] @file 41: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 42: # Define best-case and worst-case interconnect parasitic corners using the
+[10/20 16:16:23     74s] @file 43: # technology-specific QRC extraction files.
+[10/20 16:16:23     74s] @@file 44: create_rc_corner -name RC_best\
+[10/20 16:16:23     74s]     -pre_route_res 1\
+[10/20 16:16:23     74s]     -post_route_res 1\
+[10/20 16:16:23     74s]     -pre_route_cap 1\
+[10/20 16:16:23     74s]     -post_route_cap 1\
+[10/20 16:16:23     74s]     -post_route_cross_cap 1\
+[10/20 16:16:23     74s]     -pre_route_clock_res 0\
+[10/20 16:16:23     74s]     -pre_route_clock_cap 0\
+[10/20 16:16:23     74s]     -qrc_tech /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/best/qrcTechFile
+[10/20 16:16:23     74s] @@file 53: create_rc_corner -name RC_worst\
+[10/20 16:16:23     74s]     -pre_route_res 1\
+[10/20 16:16:23     74s]     -post_route_res 1\
+[10/20 16:16:23     74s]     -pre_route_cap 1\
+[10/20 16:16:23     74s]     -post_route_cap 1\
+[10/20 16:16:23     74s]     -post_route_cross_cap 1\
+[10/20 16:16:23     74s]     -pre_route_clock_res 0\
+[10/20 16:16:23     74s]     -pre_route_clock_cap 0\
+[10/20 16:16:23     74s]     -qrc_tech /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile
+[10/20 16:16:23     74s] @file 62:
+[10/20 16:16:23     74s] @file 63: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 64: # Delay corners
+[10/20 16:16:23     74s] @file 65: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 66: # A delay corner combines a cell-library timing condition with an RC corner.
+[10/20 16:16:23     74s] @file 67: # Fast (FF) corners use best-case RC; slow (SS) corners use worst-case RC.
+[10/20 16:16:23     74s] @@file 68: create_delay_corner -name DC_ff0p88v125c\
+[10/20 16:16:23     74s]     -timing_condition {TC_ff0p88v125c}\
+[10/20 16:16:23     74s]     -rc_corner RC_best
+[10/20 16:16:23     74s] @file 71:
+[10/20 16:16:23     74s] @@file 72: create_delay_corner -name DC_ss0p72v125c\
+[10/20 16:16:23     74s]     -timing_condition {TC_ss0p72v125c}\
+[10/20 16:16:23     74s]     -rc_corner RC_worst
+[10/20 16:16:23     74s] @file 75:
+[10/20 16:16:23     74s] @@file 76: create_delay_corner -name DC_ff0p88vm40c\
+[10/20 16:16:23     74s]     -timing_condition {TC_ff0p88vm40c}\
+[10/20 16:16:23     74s]     -rc_corner RC_best
+[10/20 16:16:23     74s] @file 79:
+[10/20 16:16:23     74s] @@file 80: create_delay_corner -name DC_ss0p72vm40c\
+[10/20 16:16:23     74s]     -timing_condition {TC_ss0p72vm40c}\
+[10/20 16:16:23     74s]     -rc_corner RC_worst
+[10/20 16:16:23     74s] @file 83:
+[10/20 16:16:23     74s] @file 84: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 85: # Constraint mode
+[10/20 16:16:23     74s] @file 86: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 87: # Load the functional timing constraints, including clocks and I/O timing
+[10/20 16:16:23     74s] @file 88: # requirements, from the synthesized design's SDC file.
+[10/20 16:16:23     74s] @@file 89: create_constraint_mode -name CM_func\
+[10/20 16:16:23     74s]     -sdc_files ../gate_level/SYN/FMA_pipe_syn.sdc
+[10/20 16:16:23     74s] @file 91:
+[10/20 16:16:23     74s] @file 92: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 93: # Analysis views
+[10/20 16:16:23     74s] @file 94: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 95: # An analysis view combines the functional constraint mode with one delay
+[10/20 16:16:23     74s] @file 96: # corner. Each view is used to analyze a particular operating condition.
+[10/20 16:16:23     74s] @@file 97: create_analysis_view -name AV_func_ff0p88v125c -constraint_mode CM_func -delay_corner DC_ff0p88v125c
+[10/20 16:16:23     74s] @@file 98: create_analysis_view -name AV_func_ff0p88vm40c -constraint_mode CM_func -delay_corner DC_ff0p88vm40c
+[10/20 16:16:23     74s] @@file 99: create_analysis_view -name AV_func_ss0p72v125c -constraint_mode CM_func -delay_corner DC_ss0p72v125c
+[10/20 16:16:23     74s] @@file 100: create_analysis_view -name AV_func_ss0p72vm40c -constraint_mode CM_func -delay_corner DC_ss0p72vm40c
+[10/20 16:16:23     74s] @file 101:
+[10/20 16:16:23     74s] @file 102: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 103: # Active analysis views
+[10/20 16:16:23     74s] @file 104: # -----------------------------------------------------------------------------
+[10/20 16:16:23     74s] @file 105: # Use slow corners for setup analysis because they produce longer data delays.
+[10/20 16:16:23     74s] @file 106: # Include all corners for hold analysis to check both slow and fast behavior.
+[10/20 16:16:23     74s] @file 107: # Use the fast, high-voltage, 125Â°C corner for power analyses.
+[10/20 16:16:23     74s] @@file 108: set_analysis_view   -setup {AV_func_ss0p72v125c AV_func_ss0p72vm40c} -hold {AV_func_ss0p72v125c AV_func_ss0p72vm40c AV_func_ff0p88v125c AV_func_ff0p88vm40c}\
+[10/20 16:16:23     74s]                     -leakage AV_func_ff0p88v125c -dynamic AV_func_ff0p88v125c
+[10/20 16:16:23     74s] #@ End verbose source mmmc.view.stylus
+[10/20 16:16:23     74s] Reading lib_ss0p72v125c timing library '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib' ...
+[10/20 16:16:47     98s] **WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib, Line 6263790)
+[10/20 16:16:47     98s] **WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib, Line 6263791)
+[10/20 16:16:47     98s] **WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib, Line 6265900)
+[10/20 16:16:47     98s] **WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib, Line 6265901)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90_VPP_VSS'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90_VPP_VBB'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90LVT_VPP_VSS'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90LVT_VPP_VBB'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90_VPP_VSS'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90_VPP_VBB'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90LVT_VPP_VSS'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90LVT_VPP_VBB'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'FILL8BWP20P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'FILL8BWP20P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'FILL8BWP16P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'FILL8BWP16P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'FILL64BWP20P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'FILL64BWP20P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'FILL64BWP16P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] **WARN: (TECHLIB-302):	No function defined for cell 'FILL64BWP16P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+[10/20 16:17:34    145s] Message <TECHLIB-302> has exceeded the message display limit of '20'. Use 'set_message -no_limit -id list_of_msgIDs' to reset the message limit.
+[10/20 16:17:36    147s] Read 1480 cells in library 'N16ADFP_StdCellss0p72v125c_ccs' 
+[10/20 16:17:37    147s] Ending "PreSetAnalysisView" (total cpu=0:01:13, real=0:01:14, peak res=1396.1M, current mem=918.6M)
+[10/20 16:17:37    147s] #################################
+[10/20 16:17:37    147s] read_physical -lef {/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/LEF/lef/N16ADFP_StdCell.lef}
+[10/20 16:17:37    147s] #################################
+[10/20 16:17:37    147s] 
+[10/20 16:17:37    147s] Loading LEF file /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef ...
+[10/20 16:17:37    147s] 
+[10/20 16:17:37    147s] Loading LEF file /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/LEF/lef/N16ADFP_StdCell.lef ...
+[10/20 16:17:37    147s] Set DBUPerIGU to M1 pitch 180.
+[10/20 16:17:37    147s] [16:17:37.362113] Periodic Lic check successful
+[10/20 16:17:37    147s] [16:17:37.362154] Feature usage summary:
+[10/20 16:17:37    147s] [16:17:37.362155] Innovus_Impl_System
+[10/20 16:17:37    147s] [16:17:37.362155] Innovus_20nm_Opt
+[10/20 16:17:37    147s] 
+[10/20 16:17:37    147s] This command "read_physical -lef {/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef ..." required an extra checkout of license invs_20nm.
+[10/20 16:17:37    147s] Additional license(s) checked out: 1 'Innovus_20nm_Opt' license(s)
+[10/20 16:17:38    148s] 
+[10/20 16:17:38    148s] ##  Check design process and node:  
+[10/20 16:17:38    148s] ##  Both design process and tech node are not set.
+[10/20 16:17:38    148s] 
+[10/20 16:17:38    148s] #################################
+[10/20 16:17:38    148s] read_netlist ../gate_level/SYN/FMA_pipe_syn.v -top FMA_pipe
+[10/20 16:17:38    148s] #################################
+[10/20 16:17:38    148s] #% Begin Load netlist data ... (date=10/20 16:17:38, mem=927.6M)
+[10/20 16:17:38    148s] *** Begin netlist parsing (mem=1245.1M) ***
+[10/20 16:17:38    148s] Created 1480 new cells from 1 timing libraries.
+[10/20 16:17:38    148s] Reading netlist ...
+[10/20 16:17:38    148s] Backslashed names will retain backslash and a trailing blank character.
+[10/20 16:17:38    148s] Reading verilog netlist '../gate_level/SYN/FMA_pipe_syn.v'
+[10/20 16:17:38    148s] 
+[10/20 16:17:38    148s] *** Memory Usage v#1 (Current mem = 1245.062M, initial mem = 486.035M) ***
+[10/20 16:17:38    148s] *** End netlist parsing (cpu=0:00:00.2, real=0:00:00.0, mem=1245.1M) ***
+[10/20 16:17:38    148s] #% End Load netlist data ... (date=10/20 16:17:38, total cpu=0:00:00.2, real=0:00:00.0, peak res=956.7M, current mem=956.7M)
+[10/20 16:17:38    148s] Set top cell to FMA_pipe.
+[10/20 16:17:39    149s] Hooked 1480 DB cells to tlib cells.
+[10/20 16:17:39    149s] Ending "BindLib:" (total cpu=0:00:00.6, real=0:00:01.0, peak res=1012.7M, current mem=1012.7M)
+[10/20 16:17:39    149s] Starting recursive module instantiation check.
+[10/20 16:17:39    149s] No recursion found.
+[10/20 16:17:39    149s] Building hierarchical netlist for Cell FMA_pipe ...
+[10/20 16:17:39    149s] *** Netlist is unique.
+[10/20 16:17:39    149s] Setting Std. cell height to 1152 DBU (smallest netlist inst).
+[10/20 16:17:39    149s] ** info: there are 1492 modules.
+[10/20 16:17:39    149s] ** info: there are 5569 stdCell insts.
+[10/20 16:17:39    149s] 
+[10/20 16:17:39    149s] *** Memory Usage v#1 (Current mem = 1301.984M, initial mem = 486.035M) ***
+[10/20 16:17:39    149s] ** INFO: FINFET definition is detected in tech LEF. The pitch is 0.048 , offset is 0 and direction is Horizontal Enable FinFet support.
+[10/20 16:17:39    149s] block snap rule changed from un_init to FinFet/un_init
+[10/20 16:17:39    149s] IO pad snap rule changed from un_init to FinFet/FinFet/un_init
+[10/20 16:17:39    149s] constraint snap rule changed from un_init to FinFet/FinFet/FinFet/un_init
+[10/20 16:17:39    149s] DIE snap rule changed from un_init to FinFet/FinFet/FinFet/FinFet/un_init
+[10/20 16:17:39    149s] Core snap rule changed from un_init to FinFet/FinFet/FinFet/FinFet/FinFet/un_init
+[10/20 16:17:39    149s] **WARN: (IMPFP-3961):	The techSite 'dcore' has no related standard cells in the LEF/OA library. The calculations for this site type cannot be made unless standard cell models of this type exist in the LEF/OA library. Ignore this warning if the SITE is not used by the library. Alternatively, remove the SITE definition for the LEF/OA library to avoid this message.
+[10/20 16:17:39    149s] Type 'man IMPFP-3961' for more detail.
+[10/20 16:17:39    149s] **WARN: (IMPFP-3961):	The techSite 'bcore' has no related standard cells in the LEF/OA library. The calculations for this site type cannot be made unless standard cell models of this type exist in the LEF/OA library. Ignore this warning if the SITE is not used by the library. Alternatively, remove the SITE definition for the LEF/OA library to avoid this message.
+[10/20 16:17:39    149s] Type 'man IMPFP-3961' for more detail.
+[10/20 16:17:39    149s] **WARN: (IMPFP-3961):	The techSite 'coreExt' has no related standard cells in the LEF/OA library. The calculations for this site type cannot be made unless standard cell models of this type exist in the LEF/OA library. Ignore this warning if the SITE is not used by the library. Alternatively, remove the SITE definition for the LEF/OA library to avoid this message.
+[10/20 16:17:39    149s] Type 'man IMPFP-3961' for more detail.
+[10/20 16:17:39    149s] 
+[10/20 16:17:39    149s] Honor LEF defined pitches for advanced node
+[10/20 16:17:39    149s] Start create_tracks
+[10/20 16:17:40    150s] 
+[10/20 16:17:40    150s] Trim Metal Layers:
+[10/20 16:17:40    150s] Extraction setup Started 
+[10/20 16:17:40    150s] __QRC_SADV_USE_LE__ is set 0
+[10/20 16:17:40    150s] Initializing multi-corner RC extraction with 2 active RC Corners ...
+[10/20 16:17:40    150s] Captable file(s) not specified in multi-corner setup. PreRoute extraction will use technology file. For post_route extraction, default value for effort level would be 'medium' and effort level 'low' would not be allowed.
+[10/20 16:17:42    153s] Metal Layer Id 1 is M1 
+[10/20 16:17:42    153s] Metal Layer Id 2 is M2 
+[10/20 16:17:42    153s] Metal Layer Id 3 is M3 
+[10/20 16:17:42    153s] Metal Layer Id 4 is M4 
+[10/20 16:17:42    153s] Metal Layer Id 5 is M5 
+[10/20 16:17:42    153s] Metal Layer Id 6 is M6 
+[10/20 16:17:42    153s] Metal Layer Id 7 is M7 
+[10/20 16:17:42    153s] Metal Layer Id 8 is M8 
+[10/20 16:17:42    153s] Metal Layer Id 9 is M9 
+[10/20 16:17:42    153s] Metal Layer Id 10 is M10 
+[10/20 16:17:42    153s] Metal Layer Id 11 is M11 
+[10/20 16:17:42    153s] Metal Layer Id 12 is AP 
+[10/20 16:17:42    153s] Via Layer Id 33 is VIA0 
+[10/20 16:17:42    153s] Via Layer Id 34 is VIA1 
+[10/20 16:17:42    153s] Via Layer Id 35 is VIA2 
+[10/20 16:17:42    153s] Via Layer Id 36 is VIA3 
+[10/20 16:17:42    153s] Via Layer Id 37 is VIA4 
+[10/20 16:17:42    153s] Via Layer Id 38 is VIA5 
+[10/20 16:17:42    153s] Via Layer Id 39 is VIA6 
+[10/20 16:17:42    153s] Via Layer Id 40 is VIA7 
+[10/20 16:17:42    153s] Via Layer Id 41 is VIA8 
+[10/20 16:17:42    153s] Via Layer Id 42 is VIA9 
+[10/20 16:17:42    153s] Via Layer Id 43 is VIA10 
+[10/20 16:17:42    153s] Via Layer Id 44 is RV 
+[10/20 16:17:42    153s] 
+[10/20 16:17:42    153s] Trim Metal Layers:
+[10/20 16:17:42    153s]  lef metal Layer Id 1 mapped to tech Id 20 of Layer m1 
+[10/20 16:17:42    153s]  lef via Layer Id 1 mapped to tech Id 21 of Layer via1 
+[10/20 16:17:42    153s]  lef metal Layer Id 2 mapped to tech Id 22 of Layer m2 
+[10/20 16:17:42    153s] Generating auto layer map file.
+[10/20 16:17:42    153s]  lef via Layer Id 2 mapped to tech Id 23 of Layer via2 
+[10/20 16:17:42    153s]  lef metal Layer Id 3 mapped to tech Id 24 of Layer m3 
+[10/20 16:17:42    153s]  lef via Layer Id 3 mapped to tech Id 25 of Layer via3 
+[10/20 16:17:42    153s]  lef metal Layer Id 4 mapped to tech Id 26 of Layer m4 
+[10/20 16:17:42    153s]  lef via Layer Id 4 mapped to tech Id 27 of Layer via4 
+[10/20 16:17:42    153s]  lef metal Layer Id 5 mapped to tech Id 28 of Layer m5 
+[10/20 16:17:42    153s]  lef via Layer Id 5 mapped to tech Id 29 of Layer via5 
+[10/20 16:17:42    153s]  lef metal Layer Id 6 mapped to tech Id 30 of Layer m6 
+[10/20 16:17:42    153s]  lef via Layer Id 6 mapped to tech Id 31 of Layer via6 
+[10/20 16:17:42    153s]  lef metal Layer Id 7 mapped to tech Id 32 of Layer m7 
+[10/20 16:17:42    153s]  lef via Layer Id 7 mapped to tech Id 33 of Layer via7 
+[10/20 16:17:42    153s]  lef metal Layer Id 8 mapped to tech Id 34 of Layer m8 
+[10/20 16:17:42    153s]  lef via Layer Id 8 mapped to tech Id 35 of Layer via8 
+[10/20 16:17:42    153s]  lef metal Layer Id 9 mapped to tech Id 36 of Layer m9 
+[10/20 16:17:42    153s]  lef via Layer Id 9 mapped to tech Id 37 of Layer via9 
+[10/20 16:17:42    153s]  lef metal Layer Id 10 mapped to tech Id 38 of Layer m10 
+[10/20 16:17:42    153s]  lef via Layer Id 10 mapped to tech Id 39 of Layer via10 
+[10/20 16:17:42    153s]  lef metal Layer Id 11 mapped to tech Id 40 of Layer m11 
+[10/20 16:17:42    153s]  lef via Layer Id 11 mapped to tech Id 41 of Layer rv 
+[10/20 16:17:42    153s]  lef metal Layer Id 12 mapped to tech Id 42 of Layer ap 
+[10/20 16:17:42    153s] Metal Layer Id 1 mapped to 20 
+[10/20 16:17:42    153s] Via Layer Id 1 mapped to 21 
+[10/20 16:17:42    153s] Metal Layer Id 2 mapped to 22 
+[10/20 16:17:42    153s] Via Layer Id 2 mapped to 23 
+[10/20 16:17:42    153s] Metal Layer Id 3 mapped to 24 
+[10/20 16:17:42    153s] Via Layer Id 3 mapped to 25 
+[10/20 16:17:42    153s] Metal Layer Id 4 mapped to 26 
+[10/20 16:17:42    153s] Via Layer Id 4 mapped to 27 
+[10/20 16:17:42    153s] Metal Layer Id 5 mapped to 28 
+[10/20 16:17:42    153s] Via Layer Id 5 mapped to 29 
+[10/20 16:17:42    153s] Metal Layer Id 6 mapped to 30 
+[10/20 16:17:42    153s] Via Layer Id 6 mapped to 31 
+[10/20 16:17:42    153s] Metal Layer Id 7 mapped to 32 
+[10/20 16:17:42    153s] Via Layer Id 7 mapped to 33 
+[10/20 16:17:42    153s] Metal Layer Id 8 mapped to 34 
+[10/20 16:17:42    153s] Via Layer Id 8 mapped to 35 
+[10/20 16:17:42    153s] Metal Layer Id 9 mapped to 36 
+[10/20 16:17:42    153s] Via Layer Id 9 mapped to 37 
+[10/20 16:17:42    153s] Metal Layer Id 10 mapped to 38 
+[10/20 16:17:42    153s] Via Layer Id 10 mapped to 39 
+[10/20 16:17:42    153s] Metal Layer Id 11 mapped to 40 
+[10/20 16:17:42    153s] Via Layer Id 11 mapped to 41 
+[10/20 16:17:42    153s] Metal Layer Id 12 mapped to 42 
+[10/20 16:17:43    153s] eee: pegPreRouteEnableSaveRestoreRCPatterns:1, retVal:1, doesAnyTechFileNeedExtraction1
+[10/20 16:17:43    153s] eee: Reading patterns meta data.
+[10/20 16:17:43    153s] eee: PatternAvail:0, PreRoutePatternReadFailed:2
+[10/20 16:17:43    153s] Restore PreRoute Pattern Extraction data failed.
+[10/20 16:17:43    153s] Importing multi-corner technology file(s) for preRoute extraction...
+[10/20 16:17:43    153s] /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile
+[10/20 16:17:46    156s] Metal Layer Id 1 is M1 
+[10/20 16:17:46    156s] Metal Layer Id 2 is M2 
+[10/20 16:17:46    156s] Metal Layer Id 3 is M3 
+[10/20 16:17:46    156s] Metal Layer Id 4 is M4 
+[10/20 16:17:46    156s] Metal Layer Id 5 is M5 
+[10/20 16:17:46    156s] Metal Layer Id 6 is M6 
+[10/20 16:17:46    156s] Metal Layer Id 7 is M7 
+[10/20 16:17:46    156s] Metal Layer Id 8 is M8 
+[10/20 16:17:46    156s] Metal Layer Id 9 is M9 
+[10/20 16:17:46    156s] Metal Layer Id 10 is M10 
+[10/20 16:17:46    156s] Metal Layer Id 11 is M11 
+[10/20 16:17:46    156s] Metal Layer Id 12 is AP 
+[10/20 16:17:46    156s] Via Layer Id 33 is VIA0 
+[10/20 16:17:46    156s] Via Layer Id 34 is VIA1 
+[10/20 16:17:46    156s] Via Layer Id 35 is VIA2 
+[10/20 16:17:46    156s] Via Layer Id 36 is VIA3 
+[10/20 16:17:46    156s] Via Layer Id 37 is VIA4 
+[10/20 16:17:46    156s] Via Layer Id 38 is VIA5 
+[10/20 16:17:46    156s] Via Layer Id 39 is VIA6 
+[10/20 16:17:46    156s] Via Layer Id 40 is VIA7 
+[10/20 16:17:46    156s] Via Layer Id 41 is VIA8 
+[10/20 16:17:46    156s] Via Layer Id 42 is VIA9 
+[10/20 16:17:46    156s] Via Layer Id 43 is VIA10 
+[10/20 16:17:46    156s] Via Layer Id 44 is RV 
+[10/20 16:17:46    156s] 
+[10/20 16:17:46    156s] Trim Metal Layers:
+[10/20 16:17:46    156s]  lef metal Layer Id 1 mapped to tech Id 20 of Layer m1 
+[10/20 16:17:46    156s]  lef via Layer Id 1 mapped to tech Id 21 of Layer via1 
+[10/20 16:17:46    156s]  lef metal Layer Id 2 mapped to tech Id 22 of Layer m2 
+[10/20 16:17:46    156s]  lef via Layer Id 2 mapped to tech Id 23 of Layer via2 
+[10/20 16:17:46    156s]  lef metal Layer Id 3 mapped to tech Id 24 of Layer m3 
+[10/20 16:17:46    156s]  lef via Layer Id 3 mapped to tech Id 25 of Layer via3 
+[10/20 16:17:46    156s]  lef metal Layer Id 4 mapped to tech Id 26 of Layer m4 
+[10/20 16:17:46    156s]  lef via Layer Id 4 mapped to tech Id 27 of Layer via4 
+[10/20 16:17:46    156s]  lef metal Layer Id 5 mapped to tech Id 28 of Layer m5 
+[10/20 16:17:46    156s]  lef via Layer Id 5 mapped to tech Id 29 of Layer via5 
+[10/20 16:17:46    156s]  lef metal Layer Id 6 mapped to tech Id 30 of Layer m6 
+[10/20 16:17:46    156s]  lef via Layer Id 6 mapped to tech Id 31 of Layer via6 
+[10/20 16:17:46    156s]  lef metal Layer Id 7 mapped to tech Id 32 of Layer m7 
+[10/20 16:17:46    156s]  lef via Layer Id 7 mapped to tech Id 33 of Layer via7 
+[10/20 16:17:46    156s]  lef metal Layer Id 8 mapped to tech Id 34 of Layer m8 
+[10/20 16:17:46    156s]  lef via Layer Id 8 mapped to tech Id 35 of Layer via8 
+[10/20 16:17:46    156s]  lef metal Layer Id 9 mapped to tech Id 36 of Layer m9 
+[10/20 16:17:46    156s]  lef via Layer Id 9 mapped to tech Id 37 of Layer via9 
+[10/20 16:17:46    156s]  lef metal Layer Id 10 mapped to tech Id 38 of Layer m10 
+[10/20 16:17:46    156s]  lef via Layer Id 10 mapped to tech Id 39 of Layer via10 
+[10/20 16:17:46    156s]  lef metal Layer Id 11 mapped to tech Id 40 of Layer m11 
+[10/20 16:17:46    156s]  lef via Layer Id 11 mapped to tech Id 41 of Layer rv 
+[10/20 16:17:46    156s]  lef metal Layer Id 12 mapped to tech Id 42 of Layer ap 
+[10/20 16:17:46    156s] Metal Layer Id 1 mapped to 20 
+[10/20 16:17:46    156s] Via Layer Id 1 mapped to 21 
+[10/20 16:17:46    156s] Metal Layer Id 2 mapped to 22 
+[10/20 16:17:46    156s] Via Layer Id 2 mapped to 23 
+[10/20 16:17:46    156s] Metal Layer Id 3 mapped to 24 
+[10/20 16:17:46    156s] Generating auto layer map file.
+[10/20 16:17:46    156s] Via Layer Id 3 mapped to 25 
+[10/20 16:17:46    156s] Metal Layer Id 4 mapped to 26 
+[10/20 16:17:46    156s] Via Layer Id 4 mapped to 27 
+[10/20 16:17:46    156s] Metal Layer Id 5 mapped to 28 
+[10/20 16:17:46    156s] Via Layer Id 5 mapped to 29 
+[10/20 16:17:46    156s] Metal Layer Id 6 mapped to 30 
+[10/20 16:17:46    156s] Via Layer Id 6 mapped to 31 
+[10/20 16:17:46    156s] Metal Layer Id 7 mapped to 32 
+[10/20 16:17:46    156s] Via Layer Id 7 mapped to 33 
+[10/20 16:17:46    156s] Metal Layer Id 8 mapped to 34 
+[10/20 16:17:46    156s] Via Layer Id 8 mapped to 35 
+[10/20 16:17:46    156s] Metal Layer Id 9 mapped to 36 
+[10/20 16:17:46    156s] Via Layer Id 9 mapped to 37 
+[10/20 16:17:46    156s] Metal Layer Id 10 mapped to 38 
+[10/20 16:17:46    156s] Via Layer Id 10 mapped to 39 
+[10/20 16:17:46    156s] Metal Layer Id 11 mapped to 40 
+[10/20 16:17:46    156s] Via Layer Id 11 mapped to 41 
+[10/20 16:17:46    156s] Metal Layer Id 12 mapped to 42 
+[10/20 16:18:18    187s] /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/best/qrcTechFile
+[10/20 16:18:21    190s] Metal Layer Id 1 is M1 
+[10/20 16:18:21    190s] Metal Layer Id 2 is M2 
+[10/20 16:18:21    190s] Metal Layer Id 3 is M3 
+[10/20 16:18:21    190s] Metal Layer Id 4 is M4 
+[10/20 16:18:21    190s] Metal Layer Id 5 is M5 
+[10/20 16:18:21    190s] Metal Layer Id 6 is M6 
+[10/20 16:18:21    190s] Metal Layer Id 7 is M7 
+[10/20 16:18:21    190s] Metal Layer Id 8 is M8 
+[10/20 16:18:21    190s] Metal Layer Id 9 is M9 
+[10/20 16:18:21    190s] Metal Layer Id 10 is M10 
+[10/20 16:18:21    190s] Metal Layer Id 11 is M11 
+[10/20 16:18:21    190s] Metal Layer Id 12 is AP 
+[10/20 16:18:21    190s] Via Layer Id 33 is VIA0 
+[10/20 16:18:21    190s] Via Layer Id 34 is VIA1 
+[10/20 16:18:21    190s] Via Layer Id 35 is VIA2 
+[10/20 16:18:21    190s] Via Layer Id 36 is VIA3 
+[10/20 16:18:21    190s] Via Layer Id 37 is VIA4 
+[10/20 16:18:21    190s] Via Layer Id 38 is VIA5 
+[10/20 16:18:21    190s] Via Layer Id 39 is VIA6 
+[10/20 16:18:21    190s] Via Layer Id 40 is VIA7 
+[10/20 16:18:21    190s] Via Layer Id 41 is VIA8 
+[10/20 16:18:21    190s] Via Layer Id 42 is VIA9 
+[10/20 16:18:21    190s] Via Layer Id 43 is VIA10 
+[10/20 16:18:21    190s] Via Layer Id 44 is RV 
+[10/20 16:18:21    190s] 
+[10/20 16:18:21    190s] Trim Metal Layers:
+[10/20 16:18:21    190s]  lef metal Layer Id 1 mapped to tech Id 20 of Layer m1 
+[10/20 16:18:21    190s]  lef via Layer Id 1 mapped to tech Id 21 of Layer via1 
+[10/20 16:18:21    190s]  lef metal Layer Id 2 mapped to tech Id 22 of Layer m2 
+[10/20 16:18:21    190s]  lef via Layer Id 2 mapped to tech Id 23 of Layer via2 
+[10/20 16:18:21    190s]  lef metal Layer Id 3 mapped to tech Id 24 of Layer m3 
+[10/20 16:18:21    190s]  lef via Layer Id 3 mapped to tech Id 25 of Layer via3 
+[10/20 16:18:21    190s]  lef metal Layer Id 4 mapped to tech Id 26 of Layer m4 
+[10/20 16:18:21    190s]  lef via Layer Id 4 mapped to tech Id 27 of Layer via4 
+[10/20 16:18:21    190s]  lef metal Layer Id 5 mapped to tech Id 28 of Layer m5 
+[10/20 16:18:21    190s]  lef via Layer Id 5 mapped to tech Id 29 of Layer via5 
+[10/20 16:18:21    190s]  lef metal Layer Id 6 mapped to tech Id 30 of Layer m6 
+[10/20 16:18:21    190s]  lef via Layer Id 6 mapped to tech Id 31 of Layer via6 
+[10/20 16:18:21    190s]  lef metal Layer Id 7 mapped to tech Id 32 of Layer m7 
+[10/20 16:18:21    190s]  lef via Layer Id 7 mapped to tech Id 33 of Layer via7 
+[10/20 16:18:21    190s]  lef metal Layer Id 8 mapped to tech Id 34 of Layer m8 
+[10/20 16:18:21    190s]  lef via Layer Id 8 mapped to tech Id 35 of Layer via8 
+[10/20 16:18:21    190s]  lef metal Layer Id 9 mapped to tech Id 36 of Layer m9 
+[10/20 16:18:21    190s]  lef via Layer Id 9 mapped to tech Id 37 of Layer via9 
+[10/20 16:18:21    190s]  lef metal Layer Id 10 mapped to tech Id 38 of Layer m10 
+[10/20 16:18:21    190s]  lef via Layer Id 10 mapped to tech Id 39 of Layer via10 
+[10/20 16:18:21    190s]  lef metal Layer Id 11 mapped to tech Id 40 of Layer m11 
+[10/20 16:18:21    190s]  lef via Layer Id 11 mapped to tech Id 41 of Layer rv 
+[10/20 16:18:21    190s]  lef metal Layer Id 12 mapped to tech Id 42 of Layer ap 
+[10/20 16:18:21    190s] Metal Layer Id 1 mapped to 20 
+[10/20 16:18:21    190s] Via Layer Id 1 mapped to 21 
+[10/20 16:18:21    190s] Metal Layer Id 2 mapped to 22 
+[10/20 16:18:21    190s] Via Layer Id 2 mapped to 23 
+[10/20 16:18:21    190s] Metal Layer Id 3 mapped to 24 
+[10/20 16:18:21    190s] Via Layer Id 3 mapped to 25 
+[10/20 16:18:21    190s] Metal Layer Id 4 mapped to 26 
+[10/20 16:18:21    190s] Via Layer Id 4 mapped to 27 
+[10/20 16:18:21    190s] Metal Layer Id 5 mapped to 28 
+[10/20 16:18:21    190s] Via Layer Id 5 mapped to 29 
+[10/20 16:18:21    190s] Metal Layer Id 6 mapped to 30 
+[10/20 16:18:21    190s] Via Layer Id 6 mapped to 31 
+[10/20 16:18:21    190s] Metal Layer Id 7 mapped to 32 
+[10/20 16:18:21    190s] Via Layer Id 7 mapped to 33 
+[10/20 16:18:21    190s] Metal Layer Id 8 mapped to 34 
+[10/20 16:18:21    190s] Via Layer Id 8 mapped to 35 
+[10/20 16:18:21    190s] Metal Layer Id 9 mapped to 36 
+[10/20 16:18:21    190s] Via Layer Id 9 mapped to 37 
+[10/20 16:18:21    190s] Metal Layer Id 10 mapped to 38 
+[10/20 16:18:21    190s] Via Layer Id 10 mapped to 39 
+[10/20 16:18:21    190s] Metal Layer Id 11 mapped to 40 
+[10/20 16:18:21    190s] Via Layer Id 11 mapped to 41 
+[10/20 16:18:21    190s] Metal Layer Id 12 mapped to 42 
+[10/20 16:18:21    190s] Generating auto layer map file.
+[10/20 16:18:54    223s] Completed (cpu: 0:01:13 real: 0:01:14)
+[10/20 16:18:54    223s] Set Shrink Factor to 1.00000
+[10/20 16:18:54    223s] Summary of Active RC-Corners : 
+[10/20 16:18:54    223s]  
+[10/20 16:18:54    223s]  Analysis View: AV_func_ss0p72v125c
+[10/20 16:18:54    223s]     RC-Corner Name        : RC_worst
+[10/20 16:18:54    223s]     RC-Corner Index       : 0
+[10/20 16:18:54    223s]     RC-Corner Temperature : 25 Celsius
+[10/20 16:18:54    223s]     RC-Corner Cap Table   : ''
+[10/20 16:18:54    223s]     RC-Corner PreRoute Res Factor         : 1
+[10/20 16:18:54    223s]     RC-Corner PreRoute Cap Factor         : 1
+[10/20 16:18:54    223s]     RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+[10/20 16:18:54    223s]     RC-Corner Technology file: '/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile'
+[10/20 16:18:54    223s]  
+[10/20 16:18:54    223s]  Analysis View: AV_func_ss0p72vm40c
+[10/20 16:18:54    223s]     RC-Corner Name        : RC_worst
+[10/20 16:18:54    223s]     RC-Corner Index       : 0
+[10/20 16:18:54    223s]     RC-Corner Temperature : 25 Celsius
+[10/20 16:18:54    223s]     RC-Corner Cap Table   : ''
+[10/20 16:18:54    223s]     RC-Corner PreRoute Res Factor         : 1
+[10/20 16:18:54    223s]     RC-Corner PreRoute Cap Factor         : 1
+[10/20 16:18:54    223s]     RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+[10/20 16:18:54    223s]     RC-Corner Technology file: '/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile'
+[10/20 16:18:54    223s]  
+[10/20 16:18:54    223s]  Analysis View: AV_func_ff0p88v125c
+[10/20 16:18:54    223s]     RC-Corner Name        : RC_best
+[10/20 16:18:54    223s]     RC-Corner Index       : 1
+[10/20 16:18:54    223s]     RC-Corner Temperature : 25 Celsius
+[10/20 16:18:54    223s]     RC-Corner Cap Table   : ''
+[10/20 16:18:54    223s]     RC-Corner PreRoute Res Factor         : 1
+[10/20 16:18:54    223s]     RC-Corner PreRoute Cap Factor         : 1
+[10/20 16:18:54    223s]     RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+[10/20 16:18:54    223s]     RC-Corner Technology file: '/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/best/qrcTechFile'
+[10/20 16:18:54    223s]  
+[10/20 16:18:54    223s]  Analysis View: AV_func_ff0p88vm40c
+[10/20 16:18:54    223s]     RC-Corner Name        : RC_best
+[10/20 16:18:54    223s]     RC-Corner Index       : 1
+[10/20 16:18:54    223s]     RC-Corner Temperature : 25 Celsius
+[10/20 16:18:54    223s]     RC-Corner Cap Table   : ''
+[10/20 16:18:54    223s]     RC-Corner PreRoute Res Factor         : 1
+[10/20 16:18:54    223s]     RC-Corner PreRoute Cap Factor         : 1
+[10/20 16:18:54    223s]     RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+[10/20 16:18:54    223s]     RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+[10/20 16:18:54    223s]     RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+[10/20 16:18:54    223s]     RC-Corner Technology file: '/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/best/qrcTechFile'
+[10/20 16:18:54    223s] Technology file '/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile' associated with first view 'AV_func_ss0p72v125c' will be used as the primary corner for the multi-corner extraction.
+[10/20 16:18:54    223s] 
+[10/20 16:18:54    223s] Trim Metal Layers:
+[10/20 16:18:54    223s] LayerId::1 widthSet size::1
+[10/20 16:18:54    223s] LayerId::2 widthSet size::1
+[10/20 16:18:54    223s] LayerId::3 widthSet size::1
+[10/20 16:18:54    223s] LayerId::4 widthSet size::1
+[10/20 16:18:54    223s] LayerId::5 widthSet size::1
+[10/20 16:18:54    223s] LayerId::6 widthSet size::1
+[10/20 16:18:54    223s] LayerId::7 widthSet size::1
+[10/20 16:18:54    223s] LayerId::8 widthSet size::1
+[10/20 16:18:54    223s] LayerId::9 widthSet size::1
+[10/20 16:18:54    223s] LayerId::10 widthSet size::1
+[10/20 16:18:54    223s] LayerId::11 widthSet size::1
+[10/20 16:18:54    223s] LayerId::12 widthSet size::1
+[10/20 16:18:54    223s] eee: pegSigSF::0.990000
+[10/20 16:18:54    223s] Updating RC grid for preRoute extraction ...
+[10/20 16:18:54    223s] Initializing multi-corner resistance tables ...
+[10/20 16:18:54    223s] eee: l::1 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::2 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::3 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::4 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::5 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::6 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::7 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::8 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::9 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::10 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::11 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] eee: l::12 avDens::0.000000 usedTrk::0.000000 availTrk::0.000000 sigTrk::0.000000
+[10/20 16:18:54    223s] {RT RC_best 0 12 12 {4 1} {5 1} {8 0} {10 0} {11 0} 5}
+[10/20 16:18:54    223s] eee: LAM: n=16 LLS=2-3 HLS=3-5 rDens=0.000000 uaWl=0.000000 uaWlH=0.000000 aWlH=0.000000 lMod=18 pMax=0.850000 pMod=82 wcR=0.686300 newSi=0.000000 wHLS=1.715750 siPrev=0 viaL=0.000000 crit=0.000000 shortMod=0.000000 fMod=0.000000 
+[10/20 16:18:54    223s] Default value for post_route extraction mode's extract_rc_effort_level (extract_rc_effort_level option of set_db) changed to 'medium'.
+[10/20 16:18:54    223s] *Info: initialize multi-corner CTS.
+[10/20 16:18:54    223s] Reading lib_ss0p72vm40c timing library '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib' ...
+[10/20 16:19:18    247s] **WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib, Line 6263802)
+[10/20 16:19:18    247s] **WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib, Line 6263803)
+[10/20 16:19:18    247s] **WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib, Line 6265912)
+[10/20 16:19:18    247s] **WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib, Line 6265913)
+[10/20 16:20:08    297s] Read 1480 cells in library 'N16ADFP_StdCellss0p72vm40c_ccs' 
+[10/20 16:20:09    297s] Reading lib_ff0p88v125c timing library '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib' ...
+[10/20 16:20:33    321s] **WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib, Line 6263760)
+[10/20 16:20:33    321s] **WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib, Line 6263761)
+[10/20 16:20:33    321s] **WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib, Line 6265870)
+[10/20 16:20:33    321s] **WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib, Line 6265871)
+[10/20 16:21:24    371s] Read 1480 cells in library 'N16ADFP_StdCellff0p88v125c_ccs' 
+[10/20 16:21:24    371s] Reading lib_ff0p88vm40c timing library '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib' ...
+[10/20 16:21:48    395s] **WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib, Line 6263802)
+[10/20 16:21:48    395s] **WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib, Line 6263803)
+[10/20 16:21:48    395s] **WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib, Line 6265912)
+[10/20 16:21:48    395s] **WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib, Line 6265913)
+[10/20 16:22:38    445s] Read 1480 cells in library 'N16ADFP_StdCellff0p88vm40c_ccs' 
+[10/20 16:22:40    446s] Ending "SetAnalysisView" (total cpu=0:03:43, real=0:03:46, peak res=2249.8M, current mem=1303.6M)
+[10/20 16:22:40    446s] Reading timing constraints file '../gate_level/SYN/FMA_pipe_syn.sdc' ...
+[10/20 16:22:40    447s] Current (total cpu=0:07:27, real=0:14:11, peak res=2249.8M, current mem=1697.0M)
+[10/20 16:22:40    447s] INFO (CTE): Constraints read successfully.
+[10/20 16:22:40    447s] Ending "Constraint file reading stats" (total cpu=0:00:00.2, real=0:00:00.0, peak res=1715.2M, current mem=1715.2M)
+[10/20 16:22:40    447s] Current (total cpu=0:07:27, real=0:14:11, peak res=2249.8M, current mem=1715.2M)
+[10/20 16:22:41    447s] Tech dependent Parameter, Build TLibAnalyzer for: cellAreaConsiderPadding
+[10/20 16:22:41    447s] 
+[10/20 16:22:41    447s] TimeStamp Creating Cell Server ...(0, 1, 1, 1) Begin ...
+[10/20 16:22:41    447s] Summary for sequential cells identification: 
+[10/20 16:22:41    447s]   Identified SBFF number: 80
+[10/20 16:22:41    447s]   Identified MBFF number: 0
+[10/20 16:22:41    447s]   Identified SB Latch number: 0
+[10/20 16:22:41    447s]   Identified MB Latch number: 0
+[10/20 16:22:41    447s]   Not identified SBFF number: 0
+[10/20 16:22:41    447s]   Not identified MBFF number: 0
+[10/20 16:22:41    447s]   Not identified SB Latch number: 0
+[10/20 16:22:41    447s]   Not identified MB Latch number: 0
+[10/20 16:22:41    447s]   Number of sequential cells which are not FFs: 36
+[10/20 16:22:41    447s] Total number of combinational cells: 1136
+[10/20 16:22:41    447s] Total number of sequential cells: 116
+[10/20 16:22:41    447s] Total number of tristate cells: 0
+[10/20 16:22:41    447s] Total number of level shifter cells: 0
+[10/20 16:22:41    447s] Total number of power gating cells: 0
+[10/20 16:22:41    447s] Total number of isolation cells: 2
+[10/20 16:22:41    447s] Total number of power switch cells: 2
+[10/20 16:22:41    447s] Total number of pulse generator cells: 0
+[10/20 16:22:41    447s] Total number of always on buffers: 0
+[10/20 16:22:41    447s] Total number of retention cells: 0
+[10/20 16:22:41    447s] Total number of physical cells: 224
+[10/20 16:22:41    447s] List of usable buffers: BUFFD12BWP16P90 BUFFD12BWP16P90LVT BUFFD12BWP20P90LVT BUFFD12BWP20P90 BUFFD16BWP16P90 BUFFD16BWP16P90LVT BUFFD16BWP20P90 BUFFD16BWP20P90LVT BUFFD1BWP16P90 BUFFD1BWP16P90LVT BUFFD1BWP20P90LVT BUFFD1BWP20P90 BUFFD2BWP16P90 BUFFD2BWP16P90LVT BUFFD2BWP20P90LVT BUFFD2BWP20P90 BUFFD4BWP16P90 BUFFD4BWP16P90LVT BUFFD4BWP20P90LVT BUFFD4BWP20P90 BUFFD8BWP16P90 BUFFD8BWP16P90LVT BUFFD8BWP20P90LVT BUFFD8BWP20P90 CKBD12BWP16P90 CKBD12BWP16P90LVT CKBD12BWP20P90LVT CKBD12BWP20P90 CKBD16BWP16P90 CKBD16BWP16P90LVT CKBD16BWP20P90 CKBD16BWP20P90LVT CKBD1BWP16P90 CKBD1BWP16P90LVT CKBD1BWP20P90LVT CKBD1BWP20P90 CKBD2BWP16P90 CKBD2BWP16P90LVT CKBD2BWP20P90LVT CKBD2BWP20P90 CKBD4BWP16P90 CKBD4BWP16P90LVT CKBD4BWP20P90LVT CKBD4BWP20P90 CKBD8BWP16P90 CKBD8BWP16P90LVT CKBD8BWP20P90 CKBD8BWP20P90LVT DEL025D1BWP16P90LVT DEL025D1BWP20P90LVT
+[10/20 16:22:41    447s] Total number of usable buffers: 50
+[10/20 16:22:41    447s] List of unusable buffers: GBUFFMCOD1BWP16P90 GBUFFMCOD1BWP16P90LVT GBUFFMCOD1BWP20P90LVT GBUFFMCOD1BWP20P90 GBUFFMCOD2BWP16P90 GBUFFMCOD2BWP16P90LVT GBUFFMCOD2BWP20P90LVT GBUFFMCOD2BWP20P90 GBUFFMCOD4BWP16P90 GBUFFMCOD4BWP16P90LVT GBUFFMCOD4BWP20P90LVT GBUFFMCOD4BWP20P90 GBUFFMCOD8BWP16P90 GBUFFMCOD8BWP16P90LVT GBUFFMCOD8BWP20P90LVT GBUFFMCOD8BWP20P90
+[10/20 16:22:41    447s] Total number of unusable buffers: 16
+[10/20 16:22:41    447s] List of usable inverters: CKND12BWP16P90 CKND12BWP16P90LVT CKND12BWP20P90LVT CKND12BWP20P90 CKND16BWP16P90 CKND16BWP16P90LVT CKND16BWP20P90 CKND16BWP20P90LVT CKND1BWP16P90 CKND1BWP16P90LVT CKND1BWP20P90LVT CKND1BWP20P90 CKND2BWP16P90 CKND2BWP16P90LVT CKND2BWP20P90LVT CKND2BWP20P90 CKND4BWP16P90 CKND4BWP16P90LVT CKND4BWP20P90LVT[10/20 16:22:41    447s] 
+[10/20 16:22:41    447s] TimeStamp Creating Cell Server ...(0, 1, 1, 1) End ...
+ CKND4BWP20P90 CKND8BWP16P90 CKND8BWP16P90LVT CKND8BWP20P90 CKND8BWP20P90LVT INVD12BWP16P90 INVD12BWP16P90LVT INVD12BWP20P90LVT INVD12BWP20P90 INVD16BWP16P90 INVD16BWP16P90LVT INVD16BWP20P90 INVD16BWP20P90LVT INVD1BWP16P90 INVD1BWP16P90LVT INVD1BWP20P90LVT INVD1BWP20P90 INVD2BWP16P90 INVD2BWP16P90LVT INVD2BWP20P90LVT INVD2BWP20P90 INVD4BWP16P90 INVD4BWP16P90LVT INVD4BWP20P90LVT INVD4BWP20P90 INVD8BWP16P90 INVD8BWP16P90LVT INVD8BWP20P90LVT INVD8BWP20P90
+[10/20 16:22:41    447s] Total number of usable inverters: 48
+[10/20 16:22:41    447s] List of unusable inverters: GINVMCOD1BWP16P90 GINVMCOD1BWP16P90LVT GINVMCOD1BWP20P90 GINVMCOD1BWP20P90LVT GINVMCOD2BWP16P90 GINVMCOD2BWP16P90LVT GINVMCOD2BWP20P90LVT GINVMCOD2BWP20P90 GINVMCOD4BWP16P90 GINVMCOD4BWP16P90LVT GINVMCOD4BWP20P90LVT GINVMCOD4BWP20P90 GINVMCOD8BWP16P90 GINVMCOD8BWP16P90LVT GINVMCOD8BWP20P90 GINVMCOD8BWP20P90LVT
+[10/20 16:22:41    447s] Total number of unusable inverters: 16
+[10/20 16:22:41    447s] List of identified usable delay cells: DEL025D1BWP16P90 DEL025D1BWP20P90 DEL050D1BWP16P90 DEL050D1BWP16P90LVT DEL050D1BWP20P90LVT DEL050D1BWP20P90 DEL075D1BWP16P90 DEL075D1BWP16P90LVT DEL075D1BWP20P90 DEL075D1BWP20P90LVT
+[10/20 16:22:41    447s] Total number of identified usable delay cells: 10
+[10/20 16:22:41    447s] List of identified unusable delay cells:
+[10/20 16:22:41    447s] Total number of identified unusable delay cells: 0
+[10/20 16:22:41    447s] 
+[10/20 16:22:41    447s] TimeStamp Deleting Cell Server Begin ...
+[10/20 16:22:41    447s] 
+[10/20 16:22:41    447s] TimeStamp Deleting Cell Server End ...
+[10/20 16:22:41    447s] Ending "Cell type marking" (total cpu=0:00:00.0, real=0:00:00.0, peak res=1736.1M, current mem=1736.1M)
+[10/20 16:22:41    447s] 
+[10/20 16:22:41    447s] TimeStamp Creating Cell Server ...(0, 0, 0, 0) Begin ...
+[10/20 16:22:41    447s] Summary for sequential cells identification: 
+[10/20 16:22:41    447s]   Identified SBFF number: 80
+[10/20 16:22:41    447s]   Identified MBFF number: 0
+[10/20 16:22:41    447s]   Identified SB Latch number: 0
+[10/20 16:22:41    447s]   Identified MB Latch number: 0
+[10/20 16:22:41    447s]   Not identified SBFF number: 0
+[10/20 16:22:41    447s]   Not identified MBFF number: 0
+[10/20 16:22:41    447s]   Not identified SB Latch number: 0
+[10/20 16:22:41    447s]   Not identified MB Latch number: 0
+[10/20 16:22:41    447s]   Number of sequential cells which are not FFs: 36
+[10/20 16:22:41    447s]  Visiting view : AV_func_ss0p72v125c
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 4.20 (1.000) with rcCorner = 0
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 3.70 (1.000) with rcCorner = -1
+[10/20 16:22:41    447s]  Visiting view : AV_func_ss0p72vm40c
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 4.10 (1.000) with rcCorner = 0
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 3.60 (1.000) with rcCorner = -1
+[10/20 16:22:41    447s]  Visiting view : AV_func_ss0p72v125c
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 4.20 (1.000) with rcCorner = 0
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 3.70 (1.000) with rcCorner = -1
+[10/20 16:22:41    447s]  Visiting view : AV_func_ss0p72vm40c
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 4.10 (1.000) with rcCorner = 0
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 3.60 (1.000) with rcCorner = -1
+[10/20 16:22:41    447s]  Visiting view : AV_func_ff0p88v125c
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 3.40 (1.000) with rcCorner = 1
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 3.00 (1.000) with rcCorner = -1
+[10/20 16:22:41    447s]  Visiting view : AV_func_ff0p88vm40c
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 3.20 (1.000) with rcCorner = 1
+[10/20 16:22:41    447s]    : PowerDomain = none : Weighted F : unweighted  = 2.80 (1.000) with rcCorner = -1
+[10/20 16:22:41    447s] TLC MultiMap info (StdDelay):
+[10/20 16:22:41    447s]   : DC_ff0p88vm40c + lib_ff0p88vm40c + 1 + no RcCorner := 2.8ps
+[10/20 16:22:41    447s]   : DC_ff0p88vm40c + lib_ff0p88vm40c + 1 + RC_best := 3.2ps
+[10/20 16:22:41    447s]   : DC_ff0p88v125c + lib_ff0p88v125c + 1 + no RcCorner := 3ps
+[10/20 16:22:41    447s]   : DC_ff0p88v125c + lib_ff0p88v125c + 1 + RC_best := 3.4ps
+[10/20 16:22:41    447s]   : DC_ss0p72vm40c + lib_ss0p72vm40c + 1 + no RcCorner := 3.6ps
+[10/20 16:22:41    447s]   : DC_ss0p72vm40c + lib_ss0p72vm40c + 1 + RC_worst := 4.1ps
+[10/20 16:22:41    447s]   : DC_ss0p72v125c + lib_ss0p72v125c + 1 + no RcCorner := 3.7ps
+[10/20 16:22:41    447s]   : DC_ss0p72v125c + lib_ss0p72v125c + 1 + RC_worst := 4.2ps
+[10/20 16:22:41    447s]  Setting StdDelay to: 4.2ps
+[10/20 16:22:41    447s] 
+[10/20 16:22:41    447s] TimeStamp Creating Cell Server ...(0, 0, 0, 0) End ...
+[10/20 16:22:41    447s] 
+[10/20 16:22:41    447s] TimeStamp Deleting Cell Server Begin ...
+[10/20 16:22:41    447s] 
+[10/20 16:22:41    447s] TimeStamp Deleting Cell Server End ...
+[10/20 16:22:43    448s] #################################
+[10/20 16:22:43    448s] read_mmmc mmmc.view.stylus
+[10/20 16:22:43    448s] #################################
+[10/20 16:22:43    448s] **WARN: (TCLCMD-1306):	read_mmmc command should be called once before init_design.
+[10/20 16:30:29    536s] **ERROR: **ERROR: (IMPSYT-16031):	Failed to execute command 'read_mmmc mmmc.view.stylus'.For more details, refer to error message from console.
+[10/20 16:30:29    536s] 
+[10/20 16:30:29    536s] #################################
+[10/20 16:30:29    536s] read_physical -lef {/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/LEF/lef/N16ADFP_StdCell.lef}
+[10/20 16:30:29    536s] #################################
+[10/20 16:30:29    536s] **ERROR: (IMPIMEX-7030):	LEF files are not allowed to be read in after the design is in memory. If you want to modify the current list of LEF files, please refer to read_physical -add_lefs**ERROR: **ERROR: (IMPSYT-16031):	Failed to execute command 'read_physical -lef {/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/LEF/lef/N16ADFP_StdCell.lef}'.For more details, refer to error message from console.
+[10/20 16:30:41    539s] 
+[10/20 16:30:41    539s] #################################
+[10/20 16:30:41    539s] read_netlist ../gate_level/SYN/FMA_pipe_syn.v -top FMA_pipe
+[10/20 16:30:41    539s] #################################
+[10/20 16:30:45    539s] **ERROR: **ERROR: (IMPSYT-16031):	Failed to execute command 'read_netlist ../gate_level/SYN/FMA_pipe_syn.v -top FMA_pipe'.For more details, refer to error message from console.
+[10/20 16:30:45    539s] 
+[10/20 16:30:45    539s] **ERROR: (IMPIMEX-12):	'init_design' failed. You are missing one or more of the required commands before running init_design.
+[10/20 16:30:45    539s] The MMMC init sequence looks like this: 
+[10/20 16:30:45    539s] read_mmmc top.mmmc 
+[10/20 16:30:45    539s] read_physical -lef {tech.lef stdcell.lef}   #optional in Tempus, required for Innovus 
+[10/20 16:30:45    539s] read_netlist top.v 
+[10/20 16:30:45    539s] read_power_intent -1801 top.1801	    #only for MSV designs 
+[10/20 16:30:45    539s] init_design 
+[10/20 16:30:45    539s] 
+[10/20 16:30:45    539s] Tempus also supports a single-mode timing init sequence with no MMMC file like this: 
+[10/20 16:30:45    539s] read_libs all.lib 
+[10/20 16:30:45    539s] read_netlist top.v 
+[10/20 16:30:45    539s] read_sdc top.sdc 
+[10/20 16:30:45    539s] init_design 
+[10/20 16:30:45    539s] 
+[10/20 16:30:45    539s] See the 'Stylus Common UI Initialization' section in the 'Design Import and Export Capabilities' chapter of the Innovus Stylus 
+[10/20 16:30:45    539s] Common UI User Guide for more details.
+exit
+[10/20 16:31:44    541s] 
+[10/20 16:31:44    541s] 
+[10/20 16:31:44    541s] *** Memory Usage v#1 (Current mem = 2012.191M, initial mem = 486.035M) ***
+[10/20 16:31:44    541s] 
+[10/20 16:31:44    541s] *** Summary of all messages that are not suppressed in this session:
+[10/20 16:31:44    541s] Severity  ID               Count  Summary                                  
+[10/20 16:31:44    541s] WARNING   IMPFP-3961           3  The techSite '%s' has no related standar...
+[10/20 16:31:44    541s] ERROR     IMPSYT-16031         3  %s                                       
+[10/20 16:31:44    541s] WARNING   IMPOPT-801           1  Genus executable not found in PATH%s. In...
+[10/20 16:31:44    541s] ERROR     IMPIMEX-7041         1  Netlist files are not allowed to be read...
+[10/20 16:31:44    541s] ERROR     IMPIMEX-12           1  'init_design' failed. You are missing on...
+[10/20 16:31:44    541s] ERROR     IMPIMEX-7030         1  LEF files are not allowed to be read in ...
+[10/20 16:31:44    541s] WARNING   TCLCMD-1306          1  read_mmmc command should be called once ...
+[10/20 16:31:44    541s] WARNING   TECHLIB-302        544  No function defined for cell '%s'. The c...
+[10/20 16:31:44    541s] WARNING   TECHLIB-1277        16  The %s '%s' has been defined for %s %s '...
+[10/20 16:31:44    541s] *** Message Summary: 565 warning(s), 6 error(s)
+[10/20 16:31:44    541s] 
+[10/20 16:31:44    541s] --- Ending "Innovus" (totcpu=0:09:02, real=0:23:15, mem=2012.2M) ---

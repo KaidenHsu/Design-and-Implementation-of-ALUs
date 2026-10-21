@@ -1,0 +1,425 @@
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/TB_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim
+*** Using c compiler gcc instead of cc ...
+                         Chronologic VCS (TM)
+         Version V-2023.12_Full64 -- Mon Oct 19 22:03:55 2026
+
+                    Copyright (c) 1991 - 2023 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+Parsing design file '/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/TB_FMA.v'
+Parsing design file '/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v'
+Parsing design file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v'
+Top Level Modules:
+       testbench
+TimeScale is 1 ns / 1 ps
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v, 2092
+FMA_DW_mult_uns_2, "FA1D1BWP16P90LVT U2441( .A (n731),  .B (n714),  .CI (n729),  .CO (n2032));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+   ***   $sdf_annotate() version 1.2R
+   ***    SDF file: "/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf"
+   ***    Annotation scope: testbench.test_module
+   ***    SDF Annotator log file: "sdf_annotation.log"
+   ***    MTM selection: "MAXIMUM"
+   ***    No SCALE FACTORS argument specified
+   ***    No SCALE TYPE argument specified
+   ***    SCALE FACTORS defaulted to "1.0:1.0:1.0":
+   ***    SCALE TYPE defaulted to: "FROM_MTM"
+   ***    Turnoff delay: "FROM_FILE"
+   ***    Approximation (mipd) policy: "MAXIMUM"
+
+   ***    SDF annotation begin: Mon Oct 19 22:03:57 2026
+
+
+SDF Info: +pulse_r/100, +pulse_e/100 in effect
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 423
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U740"
+  SDF Warning: INTERCONNECT from sub_158.U740.Z to U4289.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 425
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U686"
+  SDF Warning: INTERCONNECT from sub_158.U686.Z to U4289.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 427
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U613"
+  SDF Warning: INTERCONNECT from sub_158.U613.Z to U4289.C1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 429
+module: XNR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U612"
+  SDF Warning: INTERCONNECT from sub_158.U612.ZN to U4288.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 431
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U757"
+  SDF Warning: INTERCONNECT from sub_158.U757.Z to U4288.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 436
+module: XOR2D1BWP16P90, "instance: testbench.test_module.sub_158.U611"
+  SDF Warning: INTERCONNECT from sub_158.U611.Z to U4286.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 442
+module: XOR2D1BWP16P90, "instance: testbench.test_module.sub_158.U630"
+  SDF Warning: INTERCONNECT from sub_158.U630.Z to U4284.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 444
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U777"
+  SDF Warning: INTERCONNECT from sub_158.U777.Z to U4284.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 446
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U610"
+  SDF Warning: INTERCONNECT from sub_158.U610.Z to U4283.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+All future warnings not reported; use +sdfverbose to report them.
+See also the log file: sdf_annotation.log
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf, 448
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U588"
+  SDF Warning: INTERCONNECT from sub_158.U588.Z to U4283.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.v:5981, 
+  delay will still be annotated.
+
+
+          Total errors: 0
+          Total warnings: 429
+   ***    SDF annotation completed: Mon Oct 19 22:03:57 2026
+
+
+Starting vcs inline pass...
+254 modules and 1 UDP read.
+recompiling module testbench
+recompiling module FMA_DW01_add_6
+recompiling module FMA_DW01_sub_8
+recompiling module FMA_DW01_sub_11
+recompiling module FMA_DW_mult_uns_2
+recompiling module FMA_DW01_sub_20
+recompiling module FMA_DW01_dec_17
+recompiling module FMA_DW01_add_23
+recompiling module FMA_DW01_sub_42
+recompiling module FMA_DW01_add_25
+recompiling module FMA_DW01_dec_16
+recompiling module FMA_DW01_sub_41
+recompiling module FMA
+recompiling module AN2D12BWP16P90LVT
+recompiling module AN2D1BWP16P90
+recompiling module AN2D1BWP16P90LVT
+recompiling module AN2D2BWP16P90
+recompiling module AN2D2BWP16P90LVT
+recompiling module AN2D4BWP16P90LVT
+recompiling module AN2D8BWP16P90LVT
+recompiling module AN3D1BWP16P90
+recompiling module AN3D1BWP16P90LVT
+recompiling module AN3D2BWP16P90LVT
+recompiling module AN3D4BWP16P90LVT
+recompiling module AN4D1BWP16P90LVT
+recompiling module AN4D2BWP16P90LVT
+recompiling module AN4D4BWP16P90LVT
+recompiling module AO21D1BWP16P90LVT
+recompiling module AO21D2BWP16P90LVT
+recompiling module AO21D4BWP16P90LVT
+recompiling module AO22D1BWP16P90LVT
+recompiling module AOAI211D1BWP16P90LVT
+recompiling module AOI211D1BWP16P90
+recompiling module AOI211D1BWP16P90LVT
+recompiling module AOI211D2BWP16P90LVT
+recompiling module AOI21D1BWP16P90
+recompiling module AOI21D1BWP16P90LVT
+recompiling module AOI21D2BWP16P90LVT
+recompiling module AOI21D4BWP16P90LVT
+recompiling module AOI221D1BWP16P90LVT
+recompiling module AOI221D2BWP16P90LVT
+recompiling module AOI222D1BWP16P90
+recompiling module AOI222D1BWP16P90LVT
+recompiling module AOI222D2BWP16P90LVT
+recompiling module AOI22D1BWP16P90
+recompiling module AOI22D1BWP16P90LVT
+recompiling module AOI22D2BWP16P90LVT
+recompiling module AOI22D4BWP16P90LVT
+recompiling module AOI31D1BWP16P90
+recompiling module AOI31D1BWP16P90LVT
+50 of 254 modules done
+recompiling module AOI31D2BWP16P90LVT
+recompiling module AOI32D1BWP16P90
+recompiling module AOI32D1BWP16P90LVT
+recompiling module AOI32D2BWP16P90LVT
+recompiling module AOI32D4BWP16P90LVT
+recompiling module AOI33D1BWP16P90LVT
+recompiling module AOI33D2BWP16P90LVT
+recompiling module BUFFD12BWP16P90LVT
+recompiling module BUFFD1BWP16P90
+recompiling module BUFFD1BWP16P90LVT
+recompiling module BUFFD2BWP16P90
+recompiling module BUFFD2BWP16P90LVT
+recompiling module BUFFD4BWP16P90LVT
+recompiling module BUFFD8BWP16P90LVT
+recompiling module CKBD12BWP16P90LVT
+recompiling module CKBD1BWP16P90LVT
+recompiling module CKBD4BWP16P90LVT
+recompiling module CKMUX2D1BWP16P90
+recompiling module CKMUX2D1BWP16P90LVT
+recompiling module CKMUX2D1BWP20P90
+recompiling module CKND12BWP16P90LVT
+recompiling module CKND16BWP16P90LVT
+recompiling module CKND1BWP16P90
+recompiling module CKND1BWP16P90LVT
+recompiling module CKND1BWP20P90
+recompiling module CKND2BWP16P90
+recompiling module CKND2BWP16P90LVT
+recompiling module CKND2D1BWP16P90
+recompiling module CKND2D1BWP16P90LVT
+recompiling module CKND2D2BWP16P90LVT
+recompiling module CKND2D4BWP16P90LVT
+recompiling module CKND2D8BWP16P90LVT
+recompiling module CKND4BWP16P90LVT
+recompiling module CKND8BWP16P90LVT
+recompiling module CKNR2D1BWP16P90LVT
+recompiling module CKNR2D2BWP16P90LVT
+recompiling module CKNR2D4BWP16P90LVT
+recompiling module CKOR2D1BWP16P90LVT
+recompiling module CKOR2D2BWP16P90
+recompiling module CKOR2D2BWP16P90LVT
+recompiling module CKOR2D4BWP16P90LVT
+recompiling module DEL025D1BWP16P90
+recompiling module DEL025D1BWP16P90LVT
+recompiling module DEL025D1BWP20P90LVT
+recompiling module FA1D1BWP16P90LVT
+recompiling module FA1D2BWP16P90LVT
+recompiling module FA1D4BWP16P90LVT
+recompiling module HA1D1BWP16P90LVT
+recompiling module HA1D2BWP16P90LVT
+recompiling module IAO21D1BWP16P90LVT
+100 of 254 modules done
+recompiling module IAO21D2BWP16P90LVT
+recompiling module IAOI21D1BWP16P90LVT
+recompiling module IAOI21D2BWP16P90LVT
+recompiling module IIND3D2BWP16P90LVT
+recompiling module IIND4D1BWP16P90
+recompiling module IIND4D1BWP16P90LVT
+recompiling module IINR3D2BWP16P90LVT
+recompiling module IINR4D1BWP16P90LVT
+recompiling module IND2D1BWP16P90
+recompiling module IND2D1BWP16P90LVT
+recompiling module IND2D1BWP20P90
+recompiling module IND2D2BWP16P90
+recompiling module IND2D2BWP16P90LVT
+recompiling module IND2D4BWP16P90LVT
+recompiling module IND2D8BWP16P90LVT
+recompiling module IND3D1BWP16P90
+recompiling module IND3D1BWP16P90LVT
+recompiling module IND3D2BWP16P90LVT
+recompiling module IND3D4BWP16P90LVT
+recompiling module IND4D1BWP16P90
+recompiling module IND4D1BWP16P90LVT
+recompiling module IND4D2BWP16P90LVT
+recompiling module INR2D1BWP16P90
+recompiling module INR2D1BWP16P90LVT
+recompiling module INR2D2BWP16P90
+recompiling module INR2D2BWP16P90LVT
+recompiling module INR2D4BWP16P90LVT
+recompiling module INR3D1BWP16P90LVT
+recompiling module INR4D1BWP16P90
+recompiling module INR4D1BWP16P90LVT
+recompiling module INR4D2BWP16P90LVT
+recompiling module INVD12BWP16P90LVT
+recompiling module INVD1BWP16P90
+recompiling module INVD1BWP16P90LVT
+recompiling module INVD2BWP16P90
+recompiling module INVD2BWP16P90LVT
+recompiling module INVD4BWP16P90
+recompiling module INVD4BWP16P90LVT
+recompiling module INVD4BWP20P90LVT
+recompiling module INVD8BWP16P90LVT
+recompiling module IOA21D1BWP16P90LVT
+recompiling module IOA22D1BWP16P90LVT
+recompiling module IOA22D2BWP16P90LVT
+recompiling module IOAI21D1BWP16P90LVT
+recompiling module IOAI21D1BWP20P90LVT
+recompiling module IOAI21D2BWP16P90LVT
+recompiling module IOAI21D4BWP16P90LVT
+recompiling module MAOI22D1BWP16P90LVT
+recompiling module MAOI22D2BWP16P90LVT
+recompiling module MAOI22D4BWP16P90LVT
+150 of 254 modules done
+recompiling module MOAI22D1BWP16P90LVT
+recompiling module MOAI22D2BWP16P90LVT
+recompiling module MUX2D1BWP16P90
+recompiling module MUX2D1BWP16P90LVT
+recompiling module MUX2D2BWP16P90LVT
+recompiling module MUX2D4BWP16P90LVT
+recompiling module MUX2ND1BWP16P90
+recompiling module MUX2ND1BWP16P90LVT
+recompiling module MUX2ND2BWP16P90LVT
+recompiling module MUX2ND4BWP16P90LVT
+recompiling module MUX2ND4BWP20P90
+recompiling module ND2D12BWP16P90LVT
+recompiling module ND2D16BWP16P90LVT
+recompiling module ND2D1BWP16P90
+recompiling module ND2D1BWP16P90LVT
+recompiling module ND2D2BWP16P90
+recompiling module ND2D2BWP16P90LVT
+recompiling module ND2D4BWP16P90LVT
+recompiling module ND2D8BWP16P90LVT
+recompiling module ND3D1BWP16P90
+recompiling module ND3D1BWP16P90LVT
+recompiling module ND3D2BWP16P90LVT
+recompiling module ND3D4BWP16P90LVT
+recompiling module ND3D8BWP16P90LVT
+recompiling module ND4D1BWP16P90
+recompiling module ND4D1BWP16P90LVT
+recompiling module ND4D2BWP16P90LVT
+recompiling module ND4D4BWP16P90LVT
+recompiling module NR2D1BWP16P90
+recompiling module NR2D1BWP16P90LVT
+recompiling module NR2D2BWP16P90LVT
+recompiling module NR2D4BWP16P90LVT
+recompiling module NR2D8BWP16P90LVT
+recompiling module NR3D1BWP16P90
+recompiling module NR3D1BWP16P90LVT
+recompiling module NR3D2BWP16P90LVT
+recompiling module NR3D4BWP16P90LVT
+recompiling module NR4D1BWP16P90
+recompiling module NR4D1BWP16P90LVT
+recompiling module NR4D2BWP16P90LVT
+recompiling module NR4D8BWP16P90LVT
+recompiling module OA21D1BWP16P90
+recompiling module OA21D1BWP16P90LVT
+recompiling module OA21D2BWP16P90LVT
+recompiling module OA21D4BWP16P90LVT
+recompiling module OA22D1BWP16P90
+recompiling module OA22D1BWP16P90LVT
+recompiling module OA22D2BWP16P90
+recompiling module OA22D2BWP16P90LVT
+recompiling module OA22D4BWP16P90LVT
+200 of 254 modules done
+recompiling module OAI211D1BWP16P90
+recompiling module OAI211D1BWP16P90LVT
+recompiling module OAI211D2BWP16P90LVT
+recompiling module OAI21D1BWP16P90
+recompiling module OAI21D1BWP16P90LVT
+recompiling module OAI21D2BWP16P90LVT
+recompiling module OAI21D4BWP16P90LVT
+recompiling module OAI221D1BWP16P90
+recompiling module OAI221D1BWP16P90LVT
+recompiling module OAI221D2BWP16P90LVT
+recompiling module OAI221D4BWP16P90LVT
+recompiling module OAI222D1BWP16P90
+recompiling module OAI222D1BWP16P90LVT
+recompiling module OAI222D2BWP16P90LVT
+recompiling module OAI22D1BWP16P90
+recompiling module OAI22D1BWP16P90LVT
+recompiling module OAI22D1BWP20P90
+recompiling module OAI22D2BWP16P90LVT
+recompiling module OAI22D4BWP16P90LVT
+recompiling module OAI31D1BWP16P90
+recompiling module OAI31D1BWP16P90LVT
+recompiling module OAI31D2BWP16P90LVT
+recompiling module OAI31D4BWP16P90LVT
+recompiling module OAI32D1BWP16P90
+recompiling module OAI32D1BWP16P90LVT
+recompiling module OAI32D2BWP16P90LVT
+recompiling module OAI33D1BWP16P90
+recompiling module OAI33D1BWP16P90LVT
+recompiling module OAI33D2BWP16P90LVT
+recompiling module OR2D1BWP16P90
+recompiling module OR2D1BWP16P90LVT
+recompiling module OR2D2BWP16P90LVT
+recompiling module OR2D4BWP16P90LVT
+recompiling module OR3D1BWP16P90
+recompiling module OR3D1BWP16P90LVT
+recompiling module OR3D2BWP16P90LVT
+recompiling module TIELBWP20P90LVT
+recompiling module XNR2D1BWP16P90
+recompiling module XNR2D1BWP16P90LVT
+recompiling module XNR2D1BWP20P90
+recompiling module XNR2D2BWP16P90
+recompiling module XNR2D2BWP16P90LVT
+recompiling module XNR2D4BWP16P90LVT
+recompiling module XNR2D8BWP16P90LVT
+recompiling module XOR2D1BWP16P90
+recompiling module XOR2D1BWP16P90LVT
+recompiling module XOR2D1BWP20P90
+recompiling module XOR2D2BWP16P90
+recompiling module XOR2D2BWP16P90LVT
+recompiling module XOR2D4BWP16P90LVT
+250 of 254 modules done
+recompiling module XOR2D8BWP16P90LVT
+recompiling module XOR3D1BWP16P90LVT
+recompiling module XOR3D2BWP16P90LVT
+recompiling module XOR3D4BWP16P90LVT
+All of 254 modules done
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/simv ]; then chmod a-x /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/simv; fi
+g++  -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/usr/cad/synopsys/vcs/2023.12/linux64/lib -L/usr/cad/synopsys/vcs/2023.12/linux64/lib  -Wl,-rpath-link=./  /usr/lib64/libnuma.so.1   objs/amcQw_d.o   _8007_archive_1.so objs/udps/JvR1L.o   SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /usr/cad/synopsys/vcs/2023.12/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive        _vcs_pli_stub_.o   /usr/cad/synopsys/vcs/2023.12/linux64/lib/vcs_save_restore_new.o /usr/cad/synopsys/verdi/2023.12/share/PLI/VCS/LINUX64/pli.a -ldl  -lc -lm -lpthread -ldl 
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Delay/.build/20261019_213709_ed0a24/simv up to date
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid re-execution or '-suppress=ASLR_DETECTED_INFO' to suppress this message.
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version V-2023.12_Full64; Runtime version V-2023.12_Full64;  Oct 19 22:04 2026
+Doing SDF annotation ...... Done
+HW2_SDF_ANNOTATION_REQUESTED /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/FMA.sdf
+--- normal: 200 vectors ---
+normal: checked=200 passed=200 failed=0
+--- special: 15 vectors ---
+special: checked=15 passed=15 failed=0
+OVERALL PASS: all 215 vectors correct
+$finish called from file "/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/TB_FMA.v", line 296.
+$finish at simulation time             21500000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 21500000 ps
+CPU Time:      1.890 seconds;       Data structure size:   1.7Mb
+Mon Oct 19 22:04:04 2026
+CPU time: 4.701 seconds to compile + .881 seconds to elab + .972 seconds to link + 1.935 seconds in simulation

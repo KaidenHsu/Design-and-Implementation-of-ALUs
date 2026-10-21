@@ -1,0 +1,1171 @@
+$ env HW2_DESIGN=FLP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=0.01 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+
+                            Design Compiler (R) NXT 
+
+                 Version T-2022.03 for linux64 - Feb 22, 2022 
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+Initializing...
+# Adapted from ALU_HW1_TA_dc.tcl. The launcher sets paths and period per attempt.
+# Keep TA libraries/corners, ZeroWireload, set_max_area 0, compile, naming,
+# report commands, and DDC/Verilog/SDF 2.1/SDC exports.
+proc env_or {name fallback} {
+    if {[info exists ::env($name)]} { return $::env($name) }
+    return $fallback
+}
+proc checked {command} {
+    if {[uplevel 1 $command] eq "0"} { error "DC command failed: $command" }
+}
+proc main {} {
+    set Company "NSYSU2026ALU"
+    set Designer "Kaiden Hsu"
+
+    # FLP_FMA is replaced when this template is installed under compile/.
+    set Design [env_or HW2_DESIGN "FLP_FMA"]
+    set tops [dict create FXP_FMA FXP_FMA FLP_FMA FMA FLP_FMA_4 FMA_pipe]
+    set Top [dict get $tops $Design]
+    set base [file normalize [file join [file dirname [info script]] ..]]
+    set Design_root [env_or HW2_DESIGN_ROOT $base]
+    set Path_Top [file join $Design_root rtl]
+    set Path_Syn [env_or HW2_OUT [file join $Design_root gate_level Between]]
+    set Dump_file_name $Top
+    set Clk_pin "clk"
+    set Period_ns [env_or HW2_PERIOD "0.49"]
+    if {![string is double -strict $Period_ns] || $Period_ns <= 0} {
+        error "Clock period must be positive"
+    }
+    file mkdir $Path_Syn work
+    define_design_lib WORK -path [file normalize work]
+
+    # Original TA library and tool settings.
+    set library_root [env_or HW2_LIBRARY_ROOT /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS]
+    set ::search_path [concat [list $library_root $Path_Top] $::search_path]
+    set ::target_library "N16ADFP_StdCellss0p72vm40c_ccs.db N16ADFP_StdCellff0p88v125c_ccs.db"
+    set ::link_library "* $::target_library dw_foundation.sldb"
+    set ::symbol_library "tsmc040.sdb generic.sdb"
+    set ::synthetic_library "dw_foundation.sldb"
+    set ::hdlin_translate_off_skip_text "TRUE"
+    set ::edifout_netlist_only "TRUE"
+    set ::verilogout_no_tri true
+    set ::hdlin_enable_presto_for_vhdl "TRUE"
+    set ::sh_enable_line_editing true
+    set ::sh_line_editing_mode emacs
+    history keep 100
+    alias h history
+
+    # The runner writes an ordered RTL list. Manual runs can discover rtl/*.v.
+    if {[info exists ::env(HW2_RTL_LIST)]} {
+        set fd [open $::env(HW2_RTL_LIST) r]
+        set sources [split [string trim [read $fd]] \n]
+        close $fd
+    } else {
+        set sources [glob -nocomplain [file join $Path_Top *.v]]
+    }
+    if {![llength $sources]} { error "No RTL files in $Path_Top" }
+    foreach source $sources {
+        set ::search_path [concat [list [file dirname $source]] $::search_path]
+        checked [list analyze -format verilog $source]
+    }
+    checked [list elaborate $Top]
+    current_design $Top
+    checked {link}
+    checked {check_design}
+
+    # Period settings from Python are ns; convert to this library's time unit.
+    redirect -variable units {report_units}
+    set fd [open [file join $Path_Syn units_report.txt] w]
+    puts $fd $units
+    close $fd
+    if {![regexp -nocase -line {Time(?:_|\s+)units?\s*:\s*([0-9.eE+-]+)\s*([A-Za-z]+)} $units all value unit]} {
+        error "Cannot determine library time unit"
+    }
+    set scales [dict create s 1e9 second 1e9 seconds 1e9 ms 1e6 us 1e3 ns 1 ps 1e-3 fs 1e-6]
+    set time_ns [expr {$value * [dict get $scales [string tolower $unit]]}]
+    set Clk_period [expr {$Period_ns / $time_ns}]
+
+    # Use the TA's virtual-clock alternative for the combinational targets.
+    # Preserve the physical-clock settings for FMA_pipe.
+    if {$Design eq "FLP_FMA_4"} {
+        create_clock -name $Clk_pin -period $Clk_period [get_ports $Clk_pin]
+        set_fix_hold [get_clocks $Clk_pin]
+        set_dont_touch_network [get_clocks $Clk_pin]
+        set_ideal_network [get_ports $Clk_pin]
+        set_input_delay 0 -clock $Clk_pin [remove_from_collection [all_inputs] [get_ports $Clk_pin]]
+    } else {
+        set_max_delay $Clk_period -from [all_inputs] -to [all_outputs]
+        create_clock -name $Clk_pin -period $Clk_period
+        set_input_delay 0 -clock $Clk_pin [all_inputs]
+    }
+    set_output_delay 0 -clock $Clk_pin [all_outputs]
+
+    set_operating_conditions -min_library N16ADFP_StdCellff0p88v125c_ccs -min ff0p88v125c \
+                            -max_library N16ADFP_StdCellss0p72vm40c_ccs -max ss0p72vm40c
+    set_wire_load_model -name ZeroWireload -library N16ADFP_StdCellss0p72vm40c_ccs
+    set_wire_load_mode top
+    set_max_area 0
+    checked {compile}
+
+    # Escape literal brackets so Tcl does not evaluate them as a command.
+    set ::bus_inference_style {%s[%d]}
+    set ::bus_naming_style {%s[%d]}
+    set ::hdlout_internal_busses true
+    change_names -hierarchy -rule verilog
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _" -max_length 255 -type cell
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _\[\]" -max_length 255 -type net
+    define_name_rules name_rule -map {{"\\*cell\\*" "cell"}}
+    define_name_rules name_rule -case_insensitive
+    change_names -hierarchy -rules name_rule
+    remove_unconnected_ports -blast_buses [get_cells -hierarchical *]
+
+    # Preserve TA report settings; add units/check_timing for result interpretation.
+    redirect -file [file join $Path_Syn check_timing.txt] {check_timing}
+    report_timing -significant_digits 6 -sort_by group
+    redirect -file [file join $Path_Syn timing_report.txt] {
+        report_timing -path full -delay max -significant_digits 6 -sort_by group
+    }
+    redirect -file [file join $Path_Syn area_report.txt] {report_area -hier -nosplit}
+    redirect -file [file join $Path_Syn power_report.txt] {report_power -analysis_effort low}
+
+    # Optional measured stage boundaries, filled in once pipeline RTL exists.
+    # These are from/to paths, not -through paths spanning unrelated stages.
+    set stage_file [file join $Design_root compile stage_paths.tcl]
+    if {$Design eq "FLP_FMA_4" && [file exists $stage_file]} {
+        set stage_paths {}
+        source $stage_file
+        set stage 0
+        foreach mapping $stage_paths {
+            incr stage
+            lassign $mapping from_pattern to_pattern
+            if {$from_pattern eq "INPUTS"} {
+                set from [remove_from_collection [all_inputs] [get_ports {clk rst}]]
+            } else { set from [get_pins -hierarchical -quiet $from_pattern] }
+            if {$to_pattern eq "OUTPUTS"} { set to [all_outputs] } \
+            else { set to [get_pins -hierarchical -quiet $to_pattern] }
+            if {[sizeof_collection $from] && [sizeof_collection $to]} {
+                redirect -file [file join $Path_Syn timing_report_stage${stage}.txt] {
+                    report_timing -from $from -to $to -path full -delay max \
+                        -nworst 1 -max_paths 1 -significant_digits 6 -sort_by group
+                }
+            } else { puts "Warning: Stage $stage has an empty timing boundary" }
+        }
+        if {$stage != 4} { puts "Warning: Configure four stage paths in $stage_file for pipeline reports" }
+    }
+
+    checked [list write -hierarchy -format ddc -output [file join $Path_Syn ${Dump_file_name}.ddc]]
+    checked [list write -format verilog -hierarchy -output [file join $Path_Syn ${Dump_file_name}.v]]
+    checked [list write_sdf -version 2.1 -context verilog [file join $Path_Syn ${Dump_file_name}.sdf]]
+    checked [list write_sdc [file join $Path_Syn ${Dump_file_name}.sdc]]
+    puts "HW2_DC_COMPLETE: $Design period=$Period_ns ns"
+}
+if {[catch {main} message options]} {
+    puts stderr "HW2_DC_ERROR: $message"
+    puts stderr [dict get $options -errorinfo]
+    exit 1
+}
+Information: Variable '::hdlin_translate_off_skip_text' is obsolete and is being ignored. (INFO-100)
+Information: Variable '::hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+Information: Variable '::hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+Running PRESTO HDLC
+Compiling source file /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v
+Presto compilation completed successfully.
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db'
+Information: Using CCS timing libraries. (TIM-024)
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/gtech.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/standard.sldb'
+  Loading link library 'N16ADFP_StdCellss0p72vm40c_ccs'
+  Loading link library 'N16ADFP_StdCellff0p88v125c_ccs'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v:93: unsigned to signed assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v:94: unsigned to signed assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v:97: unsigned to signed assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v:98: unsigned to signed assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v:112: signed to unsigned conversion occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v:129: signed to unsigned part selection occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v:138: signed to unsigned assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/rtl/FMA.v:205: signed to unsigned part selection occurs. (VER-318)
+Presto compilation completed successfully. (FMA)
+Elaborated 1 design.
+Current design is now 'FMA'.
+Current design is 'FMA'.
+
+  Linking design 'FMA'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  FMA                         /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/compile/Delay/runs/20261019_213709_ed0a24/round001/FMA.db
+  N16ADFP_StdCellss0p72vm40c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db
+  N16ADFP_StdCellff0p88v125c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db
+  dw_foundation.sldb (library) /usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb
+
+ 
+****************************************
+check_design summary:
+Version:     T-2022.03
+Date:        Mon Oct 19 21:38:35 2026
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Cells                                                               6
+    Cells do not drive (LINT-1)                                     6
+--------------------------------------------------------------------------------
+
+Warning: In design 'FMA', cell 'B_93' does not drive any nets. (LINT-1)
+Warning: In design 'FMA', cell 'B_94' does not drive any nets. (LINT-1)
+Warning: In design 'FMA', cell 'C2498' does not drive any nets. (LINT-1)
+Warning: In design 'FMA', cell 'C2502' does not drive any nets. (LINT-1)
+Warning: In design 'FMA', cell 'B_97' does not drive any nets. (LINT-1)
+Warning: In design 'FMA', cell 'C2887' does not drive any nets. (LINT-1)
+Warning: Creating virtual clock named 'clk' with no sources. (UID-348)
+Using operating conditions 'ss0p72vm40c' found in library 'N16ADFP_StdCellss0p72vm40c_ccs'.
+Using operating conditions 'ff0p88v125c' found in library 'N16ADFP_StdCellff0p88v125c_ccs'.
+Information: Checking out the license 'DesignWare'. (SEC-104)
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | S-2021.06-DWBB_202106.0 |     *     |
+| Licensed DW Building Blocks        | S-2021.06-DWBB_202106.0 |     *     |
+============================================================================
+
+====================================================================================================
+| Flow Information                                                                                 |
+----------------------------------------------------------------------------------------------------
+| Flow         | Design Compiler NXT                                                               |
+====================================================================================================
+| Design Information                                      | Value                                  |
+====================================================================================================
+| Number of Scenarios                                     | 0                                      |
+| Leaf Cell Count                                         | 1222                                   |
+| Number of User Hierarchies                              | 0                                      |
+| Sequential Cell Count                                   | 0                                      |
+| Macro Count                                             | 0                                      |
+| Number of Power Domains                                 | 0                                      |
+| Number of Path Groups                                   | 2                                      |
+| Number of VT class                                      | 0                                      |
+| Number of Clocks                                        | 1                                      |
+| Number of Dont Touch cells                              | 232                                    |
+| Number of Dont Touch nets                               | 0                                      |
+| Number of size only cells                               | 0                                      |
+| Design with UPF Data                                    | false                                  |
+====================================================================================================
+
+Information: There are 6 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+Warning: Operating condition ss0p72vm40c set on design FMA has different process,
+voltage and temperatures parameters than the parameters at which target library 
+N16ADFP_StdCellff0p88v125c_ccs is characterized. Delays may be inaccurate as a result. (OPT-998)
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'FMA'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Implementation Selection
+  ----------------------------------
+  Mapping 'FMA_DW_cmp_0'
+  Processing 'FMA_DW01_add_0'
+  Processing 'FMA_DW01_add_1'
+  Processing 'FMA_DW01_dec_0'
+  Mapping 'DW_leftsh'
+Information: Added key list 'DesignWare' to design 'FMA'. (DDB-72)
+  Mapping 'DW_rightsh'
+  Mapping 'FMA_DW_cmp_1'
+  Processing 'FMA_DW01_sub_0'
+  Mapping 'DW_leftsh'
+  Mapping 'FMA_DW_cmp_2'
+  Processing 'FMA_DW01_sub_1'
+  Processing 'FMA_DW01_add_2'
+  Mapping 'DW_leftsh'
+  Processing 'FMA_DW01_sub_2'
+  Mapping 'FMA_DW_cmp_3'
+  Processing 'FMA_DW01_dec_1'
+  Mapping 'DW_leftsh'
+  Mapping 'DW_rightsh'
+  Processing 'FMA_DW01_sub_3'
+  Mapping 'FMA_DW_cmp_4'
+  Processing 'FMA_DW01_sub_4'
+  Processing 'FMA_DW01_cmp2_0'
+  Processing 'FMA_DW01_sub_5'
+  Building model 'DW01_NAND2'
+  Processing 'DW01_NAND2'
+  Building model 'DW01_add_width10' (rpl)
+  Processing 'DW01_add_width10'
+  Building model 'DW01_sub_width10' (rpl)
+  Processing 'DW01_sub_width10'
+  Mapping 'FMA_DW_mult_uns_0'
+  Processing 'FMA_DW01_add_3'
+  Processing 'FMA_DW01_sub_6'
+  Processing 'FMA_DW01_sub_7'
+  Processing 'FMA_DW01_add_4'
+
+  Beginning Mapping Optimizations  (Medium effort)
+  -------------------------------
+  Mapping Optimization (Phase 1)
+  Mapping Optimization (Phase 2)
+  Mapping Optimization (Phase 3)
+  Mapping Optimization (Phase 4)
+  Mapping Optimization (Phase 5)
+  Mapping Optimization (Phase 6)
+  Mapping Optimization (Phase 7)
+  Mapping Optimization (Phase 8)
+  Mapping Optimization (Phase 9)
+  Mapping Optimization (Phase 10)
+  Mapping Optimization (Phase 11)
+  Mapping Optimization (Phase 12)
+  Mapping Optimization (Phase 13)
+  Mapping Optimization (Phase 14)
+  Mapping Optimization (Phase 15)
+  Mapping Optimization (Phase 16)
+  Mapping Optimization (Phase 17)
+  Mapping Optimization (Phase 18)
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:05:50    3401.6      1.30      42.7      18.1                          
+    0:05:50    3401.6      1.30      42.7      18.1                          
+    0:05:50    3401.6      1.30      42.7      18.1                          
+    0:05:50    3401.6      1.30      42.7      18.1                          
+    0:05:51    3401.6      1.30      42.7      18.1                          
+    0:05:56    2253.5      1.66      54.4      18.1                          
+    0:06:00    2261.5      1.57      51.3      18.1                          
+    0:06:01    2258.7      1.55      50.8      18.1                          
+    0:06:03    2260.9      1.50      49.1      18.1                          
+    0:06:04    2258.8      1.52      49.7      18.1                          
+    0:06:05    2260.1      1.48      48.5      18.1                          
+    0:06:06    2260.0      1.48      48.5      18.1                          
+    0:06:06    2260.0      1.48      48.4      18.1                          
+    0:06:07    2259.9      1.48      48.5      18.1                          
+    0:06:08    2260.3      1.48      48.4      18.1                          
+    0:06:08    2260.3      1.48      48.4      18.1                          
+    0:06:08    2260.3      1.48      48.4      18.1                          
+    0:06:08    2260.3      1.48      48.4      18.1                          
+    0:06:08    2260.3      1.48      48.4      18.1                          
+    0:06:08    2260.3      1.48      48.4      18.1                          
+    0:06:08    2260.3      1.48      48.4      18.1                          
+    0:06:11    2267.8      1.44      47.2      18.1 d[27]                    
+    0:06:14    2276.8      1.43      46.7      18.1 d[8]                     
+    0:06:16    2283.4      1.40      45.8      18.1 d[27]                    
+    0:06:19    2290.7      1.38      45.3      18.1 d[27]                    
+    0:06:21    2298.9      1.37      45.0      18.1 d[27]                    
+    0:06:23    2303.1      1.36      44.7      18.1 d[27]                    
+    0:06:26    2308.4      1.35      44.4      18.1 d[27]                    
+    0:06:30    2327.6      1.35      44.1      18.1 d[27]                    
+    0:06:38    2364.5      1.30      42.8      18.1 d[27]                    
+    0:06:39    2366.8      1.30      42.6      18.1                          
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:06:39    2366.8      1.30      42.6      18.1                          
+    0:06:42    2374.9      1.29      42.4      18.1 d[27]                    
+    0:06:46    2382.7      1.28      42.1      18.1 d[16]                    
+    0:06:47    2385.6      1.28      42.0      18.1 d[16]                    
+    0:06:49    2389.1      1.28      41.9      18.1 d[16]                    
+    0:06:51    2403.0      1.27      41.8      18.1 d[16]                    
+    0:06:53    2406.9      1.27      41.7      18.1 d[16]                    
+    0:06:55    2412.7      1.26      41.5      18.1 d[27]                    
+    0:06:57    2422.0      1.26      41.3      18.1 d[16]                    
+    0:06:59    2429.2      1.26      41.2      18.1 d[16]                    
+    0:07:00    2429.6      1.25      41.1      18.1 d[16]                    
+    0:07:01    2430.2      1.25      41.1      18.1 d[16]                    
+    0:07:04    2435.6      1.25      41.0      18.1 d[16]                    
+    0:07:05    2438.8      1.25      40.9      18.1 d[16]                    
+    0:07:07    2440.3      1.25      40.9      18.1 d[16]                    
+    0:07:09    2447.6      1.24      40.8      18.1 d[16]                    
+    0:07:10    2453.7      1.24      40.7      18.1 d[16]                    
+    0:07:11    2454.2      1.24      40.7      18.1 d[16]                    
+    0:07:13    2454.0      1.24      40.7      18.1 d[16]                    
+    0:07:16    2459.4      1.24      40.6      18.1 d[16]                    
+    0:07:18    2462.8      1.23      40.5      18.1 d[16]                    
+    0:07:19    2467.7      1.23      40.4      18.1 d[16]                    
+    0:07:20    2472.4      1.23      40.4      18.1 d[16]                    
+    0:07:21    2476.2      1.23      40.4      18.1 d[16]                    
+    0:07:23    2476.2      1.23      40.3      18.1 d[16]                    
+    0:07:24    2475.4      1.23      40.3      18.1 d[16]                    
+    0:07:25    2480.9      1.23      40.3      18.1 d[16]                    
+    0:07:26    2483.4      1.23      40.2      18.1 d[16]                    
+    0:07:27    2484.3      1.23      40.2      18.1 d[16]                    
+    0:07:29    2487.9      1.22      40.1      18.1 d[16]                    
+    0:07:31    2491.4      1.22      40.1      18.1 d[16]                    
+    0:07:32    2494.3      1.22      40.0      18.1 d[16]                    
+    0:07:33    2494.6      1.22      40.0      18.1 d[16]                    
+    0:07:34    2496.8      1.22      40.0      18.1 d[16]                    
+    0:07:36    2497.6      1.22      40.0      18.1 d[16]                    
+    0:07:36    2498.2      1.22      40.0      18.1 d[16]                    
+    0:07:38    2501.2      1.22      39.9      18.1 d[16]                    
+    0:07:40    2506.1      1.21      39.8      18.1 d[27]                    
+    0:07:41    2505.8      1.21      39.8      18.1 d[16]                    
+    0:07:42    2505.8      1.21      39.8      18.1 d[16]                    
+    0:07:43    2505.9      1.21      39.8      18.1 d[16]                    
+    0:07:44    2506.2      1.21      39.8      18.1 d[16]                    
+    0:07:44    2507.1      1.21      39.8      18.1 d[16]                    
+    0:07:45    2507.0      1.21      39.8      18.1 d[16]                    
+    0:07:46    2506.0      1.21      39.8      18.1 d[16]                    
+    0:07:48    2509.2      1.21      39.7      18.1 d[16]                    
+    0:07:49    2510.7      1.21      39.7      18.1 d[16]                    
+    0:07:50    2512.2      1.21      39.7      18.1 d[16]                    
+    0:07:51    2513.6      1.21      39.7      18.1 d[16]                    
+    0:07:53    2514.2      1.21      39.6      18.1 d[16]                    
+    0:07:54    2513.3      1.21      39.6      18.1 d[16]                    
+    0:07:55    2514.1      1.21      39.6      18.1 d[16]                    
+    0:07:57    2517.7      1.21      39.6      18.1 d[16]                    
+    0:07:58    2518.3      1.21      39.6      18.1 d[16]                    
+    0:07:59    2518.3      1.21      39.6      18.1 d[16]                    
+    0:08:00    2520.8      1.20      39.5      18.1 d[16]                    
+    0:08:00    2521.8      1.20      39.5      18.1 d[16]                    
+    0:08:02    2523.4      1.20      39.5      18.1 d[16]                    
+    0:08:04    2524.8      1.20      39.5      18.1 d[16]                    
+    0:08:05    2525.7      1.20      39.5      18.1 d[2]                     
+    0:08:06    2526.5      1.20      39.4      18.1 d[2]                     
+    0:08:07    2527.1      1.20      39.4      18.1 d[22]                    
+    0:08:08    2526.8      1.20      39.4      18.1 d[23]                    
+    0:08:09    2531.3      1.20      39.4      18.1 d[23]                    
+    0:08:10    2531.1      1.20      39.4      18.1 d[23]                    
+    0:08:11    2538.8      1.20      39.4      18.1 d[23]                    
+    0:08:12    2542.9      1.20      39.3      18.1 d[23]                    
+    0:08:14    2545.2      1.20      39.3      18.1 d[23]                    
+    0:08:16    2552.4      1.20      39.2      18.1 d[23]                    
+    0:08:17    2558.3      1.19      39.2      18.1 d[23]                    
+    0:08:19    2558.3      1.19      39.1      18.1 d[23]                    
+    0:08:20    2560.1      1.19      39.1      18.1 d[23]                    
+    0:08:22    2561.3      1.19      39.1      18.1 d[23]                    
+    0:08:24    2566.6      1.19      39.1      18.1 d[27]                    
+    0:08:25    2568.7      1.19      39.0      18.1 d[23]                    
+    0:08:26    2568.6      1.19      39.0      18.1 d[23]                    
+    0:08:27    2567.6      1.19      39.0      18.1 d[23]                    
+    0:08:28    2567.9      1.19      39.0      18.1 d[23]                    
+    0:08:30    2567.9      1.19      39.0      18.1 d[23]                    
+    0:08:32    2569.9      1.19      39.0      18.1 d[27]                    
+    0:08:36    2570.3      1.19      38.9      18.1 d[23]                    
+    0:08:36    2571.0      1.19      38.9      18.1 d[27]                    
+    0:08:37    2572.9      1.19      38.9      18.1 d[27]                    
+    0:08:37    2573.6      1.19      38.9      18.1 d[21]                    
+    0:08:38    2573.1      1.19      38.9      18.1 d[21]                    
+    0:08:38    2574.6      1.19      38.9      18.1 d[21]                    
+    0:08:39    2574.8      1.19      38.9      18.1 d[21]                    
+    0:08:40    2575.4      1.18      38.8      18.1 d[21]                    
+    0:08:40    2575.9      1.18      38.8      18.1 d[21]                    
+    0:08:41    2576.9      1.18      38.8      18.1 d[27]                    
+    0:08:42    2577.2      1.18      38.8      18.1 d[27]                    
+    0:08:42    2578.4      1.18      38.8      18.1 d[27]                    
+    0:08:43    2578.4      1.18      38.8      18.1 d[27]                    
+    0:08:44    2578.4      1.18      38.8      18.1 d[27]                    
+    0:08:44    2579.0      1.18      38.8      18.1 d[27]                    
+    0:08:45    2579.1      1.18      38.8      18.1 d[27]                    
+    0:08:46    2580.3      1.18      38.8      18.1 d[27]                    
+    0:08:47    2580.1      1.18      38.7      18.1 d[27]                    
+    0:08:48    2580.9      1.18      38.7      18.1 d[27]                    
+    0:08:48    2581.6      1.18      38.7      18.1 d[27]                    
+    0:08:48    2581.6      1.18      38.7      18.1 d[27]                    
+    0:08:49    2581.8      1.18      38.7      18.1 d[27]                    
+    0:08:49    2583.0      1.18      38.7      18.1 d[27]                    
+    0:08:50    2582.9      1.18      38.7      18.1 d[27]                    
+    0:08:51    2583.6      1.18      38.7      18.1 d[27]                    
+    0:08:52    2585.7      1.18      38.7      18.1 d[27]                    
+    0:08:52    2585.7      1.18      38.7      18.1 d[22]                    
+    0:08:53    2586.9      1.18      38.7      18.1 d[23]                    
+    0:08:54    2587.4      1.18      38.7      18.1 d[0]                     
+    0:08:55    2587.3      1.18      38.7      18.1 d[0]                     
+    0:08:55    2587.3      1.18      38.6      18.1 d[0]                     
+    0:08:56    2591.5      1.18      38.6      18.1 d[0]                     
+    0:08:58    2591.2      1.18      38.6      18.1 d[0]                     
+    0:08:59    2591.9      1.18      38.6      18.1 d[0]                     
+    0:08:59    2593.6      1.18      38.6      18.1 d[30]                    
+    0:09:00    2594.6      1.18      38.6      18.1 d[19]                    
+    0:09:00    2595.0      1.18      38.6      18.1 d[20]                    
+    0:09:01    2595.1      1.18      38.6      18.1 d[20]                    
+    0:09:01    2595.1      1.18      38.6      18.1 d[23]                    
+    0:09:02    2595.3      1.18      38.6      18.1 d[23]                    
+    0:09:03    2596.3      1.17      38.6      18.1 overflow                 
+    0:09:03    2597.2      1.17      38.5      18.1 d[20]                    
+    0:09:05    2597.3      1.17      38.5      18.1 d[23]                    
+    0:09:06    2597.9      1.17      38.5      18.1 d[23]                    
+    0:09:07    2598.6      1.17      38.5      18.1 d[23]                    
+    0:09:07    2600.7      1.17      38.5      18.1 d[23]                    
+    0:09:08    2601.5      1.17      38.5      18.1 d[23]                    
+    0:09:08    2603.0      1.17      38.5      18.1 d[23]                    
+    0:09:09    2603.4      1.17      38.5      18.1 d[23]                    
+    0:09:09    2604.3      1.17      38.4      18.1 d[20]                    
+    0:09:10    2604.4      1.17      38.4      18.1 d[12]                    
+    0:09:11    2605.3      1.17      38.4      18.1 d[16]                    
+    0:09:11    2605.3      1.17      38.4      18.1 d[27]                    
+    0:09:12    2605.2      1.17      38.4      18.1 d[27]                    
+    0:09:12    2607.2      1.17      38.4      18.1 d[27]                    
+    0:09:13    2607.7      1.17      38.4      18.1 d[27]                    
+    0:09:13    2608.3      1.17      38.4      18.1 d[27]                    
+    0:09:14    2608.6      1.17      38.4      18.1 d[27]                    
+    0:09:14    2609.9      1.17      38.4      18.1 d[27]                    
+    0:09:15    2609.9      1.17      38.4      18.1 d[12]                    
+    0:09:16    2609.9      1.17      38.3      18.1 d[27]                    
+    0:09:17    2610.6      1.17      38.3      18.1 d[27]                    
+    0:09:17    2612.0      1.17      38.3      18.1 d[12]                    
+    0:09:18    2612.5      1.17      38.3      18.1 d[27]                    
+    0:09:18    2612.6      1.17      38.3      18.1 d[13]                    
+    0:09:19    2612.8      1.17      38.3      18.1 d[27]                    
+    0:09:22    2613.1      1.17      38.3      18.1 d[27]                    
+    0:09:23    2613.4      1.17      38.3      18.1 d[12]                    
+    0:09:24    2613.4      1.17      38.3      18.1 d[12]                    
+    0:09:24    2614.6      1.17      38.3      18.1 d[27]                    
+    0:09:25    2615.4      1.17      38.3      18.1 d[27]                    
+    0:09:25    2616.3      1.17      38.3      18.1 d[12]                    
+    0:09:26    2616.3      1.17      38.3      18.1 d[7]                     
+    0:09:27    2616.5      1.17      38.3      18.1 d[26]                    
+    0:09:27    2616.4      1.17      38.3      18.1 d[27]                    
+    0:09:28    2617.3      1.16      38.2      18.1 d[27]                    
+    0:09:28    2617.5      1.16      38.2      18.1 d[18]                    
+    0:09:29    2617.5      1.16      38.2      18.1 d[18]                    
+    0:09:30    2618.5      1.16      38.2      18.1 d[18]                    
+    0:09:30    2619.0      1.16      38.2      18.1 d[18]                    
+    0:09:33    2618.7      1.16      38.2      18.1 d[18]                    
+    0:09:37    2618.7      1.16      38.2      18.1 d[18]                    
+    0:09:43    2618.6      1.16      38.2      18.1 d[12]                    
+    0:09:48    2617.8      1.16      38.2      18.1 d[20]                    
+    0:09:51    2619.7      1.16      38.2      18.1 d[20]                    
+    0:09:53    2619.0      1.16      38.2      18.1 d[20]                    
+    0:09:54    2618.4      1.16      38.2      18.1 d[20]                    
+    0:09:57    2625.7      1.16      38.1      18.1 d[12]                    
+    0:10:00    2626.3      1.16      38.1      18.1 d[20]                    
+    0:10:02    2628.0      1.16      38.1      18.1 d[20]                    
+    0:10:05    2629.5      1.16      38.1      18.1 d[20]                    
+    0:10:07    2631.2      1.16      38.1      18.1 d[20]                    
+    0:10:09    2632.6      1.16      38.1      18.1 d[12]                    
+    0:10:11    2633.7      1.16      38.1      18.1 d[20]                    
+    0:10:13    2634.2      1.16      38.1      18.1 d[20]                    
+    0:10:15    2635.8      1.16      38.0      18.1 d[12]                    
+    0:10:20    2636.0      1.16      38.0      18.1                          
+    0:10:20    2636.0      1.16      38.0      18.1                          
+
+
+  Beginning Design Rule Fixing  (min_capacitance)
+  ----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:10:20    2636.0      1.16      38.0      18.1                          
+    0:10:22    2636.2      1.16      38.0      18.1                          
+    0:10:23    2636.1      1.16      38.0      18.1                          
+    0:10:24    2637.4      1.16      38.0      18.1                          
+    0:10:24    2638.1      1.16      38.0      18.1                          
+    0:10:27    2637.9      1.16      38.0      18.1                          
+    0:10:27    2638.2      1.16      38.0      18.1                          
+    0:10:27    2637.6      1.16      38.0      18.1                          
+    0:10:28    2637.7      1.16      37.9      18.1                          
+    0:10:28    2637.9      1.16      37.9      18.1                          
+    0:10:29    2639.1      1.16      37.9      18.1                          
+    0:10:29    2638.4      1.16      37.9      18.1                          
+    0:10:30    2638.4      1.16      37.9      18.1                          
+
+
+  Beginning Area-Recovery Phase  (max_area 0)
+  -----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:10:30    2638.4      1.16      37.9      18.1                          
+    0:10:30    2638.4      1.16      37.9      18.1                          
+    0:10:31    2614.4      1.16      37.9      18.1                          
+    0:10:32    2610.2      1.16      37.9      18.1                          
+    0:10:32    2609.1      1.16      37.9      18.1                          
+    0:10:32    2608.4      1.16      37.9      18.1                          
+    0:10:32    2608.4      1.16      37.9      18.1                          
+    0:10:32    2608.4      1.16      37.9      18.1                          
+    0:10:32    2608.4      1.16      37.9      18.1                          
+    0:10:34    2590.0      1.16      37.9      18.1                          
+    0:10:35    2576.8      1.16      38.1      18.1                          
+    0:10:35    2570.8      1.16      38.1      18.1                          
+    0:10:36    2569.2      1.16      38.1      18.1                          
+    0:10:36    2569.1      1.16      38.1      18.1                          
+    0:10:36    2569.1      1.16      38.1      18.1                          
+    0:10:36    2569.1      1.16      38.1      18.1                          
+    0:10:36    2569.1      1.16      38.1      18.1                          
+    0:10:37    2570.9      1.16      38.1      18.1 d[16]                    
+    0:10:38    2573.3      1.16      38.0      18.1 d[16]                    
+    0:10:40    2574.8      1.16      37.9      18.1 d[16]                    
+    0:10:40    2576.0      1.16      37.9      18.1 d[16]                    
+    0:10:42    2581.1      1.16      37.9      18.1 d[16]                    
+    0:10:42    2585.1      1.16      37.9      18.1 d[16]                    
+    0:10:45    2587.3      1.15      37.8      18.1 d[16]                    
+    0:10:45    2587.4      1.15      37.8      18.1                          
+    0:10:45    2586.8      1.15      37.8      18.1                          
+    0:10:46    2585.7      1.15      37.8      18.1                          
+    0:10:47    2584.0      1.15      37.8      18.1                          
+    0:10:47    2580.5      1.15      37.8      18.1                          
+    0:10:48    2578.8      1.15      37.8      18.1                          
+    0:10:48    2578.3      1.15      37.8      18.1                          
+    0:10:49    2577.5      1.15      37.8      18.1                          
+    0:10:49    2577.6      1.15      37.8      18.1                          
+    0:10:50    2576.6      1.15      37.8      18.1                          
+    0:10:50    2573.9      1.15      37.8      18.1                          
+    0:10:51    2567.7      1.15      37.8      18.1                          
+    0:10:52    2562.2      1.15      37.8      18.1                          
+    0:10:53    2560.6      1.15      37.8      18.1                          
+    0:10:54    2558.3      1.15      37.8      18.1                          
+    0:10:54    2557.1      1.15      37.8      18.1                          
+    0:10:56    2546.2      1.16      38.0      18.1                          
+    0:10:57    2538.7      1.16      38.0      18.1                          
+    0:10:57    2537.0      1.16      38.0      18.1                          
+    0:10:57    2536.8      1.16      38.0      18.1                          
+    0:10:57    2536.8      1.16      38.0      18.1                          
+    0:10:57    2536.8      1.16      38.0      18.1                          
+    0:10:57    2536.8      1.16      38.0      18.1                          
+    0:10:57    2536.8      1.16      38.0      18.1                          
+    0:10:59    2538.9      1.16      37.9      18.1 d[16]                    
+    0:10:59    2539.7      1.16      37.9      18.1 d[16]                    
+    0:11:00    2542.9      1.16      37.8      18.1 d[12]                    
+    0:11:01    2543.8      1.15      37.8      18.1 d[16]                    
+    0:11:02    2545.0      1.15      37.8      18.1 d[18]                    
+    0:11:04    2548.4      1.15      37.7      18.1 d[16]                    
+    0:11:05    2551.6      1.15      37.7      18.1 d[16]                    
+    0:11:07    2550.5      1.15      37.7      18.1 d[16]                    
+    0:11:07    2553.9      1.15      37.7      18.1 d[16]                    
+    0:11:07    2553.9      1.15      37.6      18.1 d[16]                    
+    0:11:09    2553.9      1.15      37.6      18.1 d[16]                    
+    0:11:10    2556.1      1.15      37.6      18.1 d[16]                    
+    0:11:13    2556.2      1.15      37.6      18.1                          
+    0:11:13    2556.6      1.15      37.6      18.1                          
+    0:11:13    2555.0      1.15      37.6      18.1                          
+    0:11:14    2554.7      1.15      37.6      18.1                          
+    0:11:14    2553.6      1.15      37.6      18.1                          
+    0:11:15    2552.0      1.15      37.6      18.1                          
+    0:11:15    2551.1      1.15      37.6      18.1                          
+    0:11:15    2550.8      1.15      37.6      18.1                          
+    0:11:15    2549.6      1.15      37.6      18.1                          
+    0:11:16    2550.1      1.15      37.6      18.1                          
+    0:11:16    2550.1      1.15      37.6      18.1                          
+    0:11:18    2549.9      1.15      37.6      18.1                          
+    0:11:18    2549.6      1.15      37.6      18.1                          
+    0:11:19    2550.2      1.15      37.6      18.1                          
+    0:11:20    2550.4      1.15      37.6      18.1                          
+    0:11:20    2551.3      1.15      37.5      18.1                          
+    0:11:21    2552.0      1.15      37.5      18.1                          
+    0:11:21    2551.9      1.15      37.5      18.1                          
+    0:11:22    2552.3      1.15      37.5      18.1                          
+    0:11:22    2552.4      1.15      37.5      18.1                          
+    0:11:24    2553.1      1.15      37.5      18.1                          
+    0:11:25    2553.0      1.15      37.5      18.1                          
+    0:11:25    2552.7      1.15      37.5      18.1                          
+    0:11:26    2552.3      1.15      37.5      18.1                          
+    0:11:26    2552.2      1.15      37.5      18.1                          
+    0:11:26    2553.2      1.15      37.5      18.1                          
+    0:11:27    2553.2      1.15      37.4      18.1                          
+    0:11:27    2553.1      1.15      37.4      18.1                          
+    0:11:28    2553.3      1.15      37.4      18.1                          
+    0:11:29    2554.4      1.15      37.4      18.1                          
+    0:11:30    2554.1      1.15      37.4      18.1                          
+    0:11:31    2555.0      1.15      37.4      18.1 d[16]                    
+    0:11:32    2556.6      1.15      37.4      18.1 d[16]                    
+    0:11:32    2556.9      1.14      37.4      18.1 d[16]                    
+    0:11:33    2557.8      1.14      37.4      18.1 d[16]                    
+    0:11:35    2559.0      1.14      37.4      18.1 d[16]                    
+    0:11:37    2560.3      1.14      37.3      18.1 d[16]                    
+    0:11:38    2561.1      1.14      37.3      18.1 d[16]                    
+    0:11:38    2562.6      1.14      37.3      18.1 d[16]                    
+    0:11:39    2563.4      1.14      37.3      18.1 d[16]                    
+    0:11:40    2563.4      1.14      37.3      18.1 d[16]                    
+    0:11:41    2563.6      1.14      37.3      18.1 d[16]                    
+    0:11:43    2564.9      1.14      37.3      18.1 d[16]                    
+    0:11:43    2564.9      1.14      37.3      18.1 d[16]                    
+    0:11:44    2565.1      1.14      37.3      18.1 d[16]                    
+    0:11:44    2565.5      1.14      37.3      18.1 d[16]                    
+    0:11:45    2565.7      1.14      37.3      18.1 d[16]                    
+    0:11:45    2567.8      1.14      37.3      18.1 d[16]                    
+    0:11:47    2570.6      1.14      37.2      18.1 d[16]                    
+    0:11:49    2570.6      1.14      37.2      18.1 d[16]                    
+    0:11:50    2570.8      1.14      37.2      18.1 d[16]                    
+    0:11:51    2571.6      1.14      37.2      18.1 d[16]                    
+    0:11:52    2572.0      1.14      37.2      18.1 d[16]                    
+    0:11:52    2574.2      1.14      37.2      18.1 d[16]                    
+    0:11:53    2575.6      1.14      37.2      18.1 d[16]                    
+    0:11:53    2575.6      1.14      37.2      18.1 d[16]                    
+    0:11:54    2576.7      1.14      37.2      18.1 d[16]                    
+    0:11:55    2577.0      1.14      37.2      18.1 d[16]                    
+    0:11:56    2577.4      1.14      37.2      18.1 d[16]                    
+    0:11:57    2577.5      1.14      37.2      18.1 d[16]                    
+    0:11:58    2577.5      1.14      37.2      18.1 d[16]                    
+    0:11:59    2578.5      1.14      37.2      18.1 d[1]                     
+    0:12:00    2582.3      1.14      37.2      18.1 d[16]                    
+    0:12:00    2583.2      1.14      37.2      18.1 d[16]                    
+    0:12:01    2583.6      1.14      37.2      18.1 d[16]                    
+    0:12:01    2583.8      1.14      37.1      18.1 d[16]                    
+    0:12:02    2585.3      1.14      37.1      18.1 d[16]                    
+    0:12:06    2585.7      1.14      37.1      18.1 d[22]                    
+    0:12:08    2585.5      1.14      37.1      18.1 d[16]                    
+    0:12:09    2585.9      1.13      37.1      18.1 d[2]                     
+    0:12:11    2586.8      1.13      37.1      18.1 d[2]                     
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Warning: In the design FMA_DW01_sub_11, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design FMA_DW01_sub_20, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design FMA_DW01_add_31, net 'B[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design FMA_DW01_add_31, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design FMA_DW01_sub_11, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design FMA_DW01_sub_20, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design FMA_DW01_add_31, net 'B[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design FMA_DW01_add_31, net 'B[0]' is connecting multiple ports. (UCN-1)
+Removing port 'SUM[24]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[23]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[22]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[21]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[20]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[19]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[18]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[17]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[16]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[15]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[14]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[13]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[12]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[11]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[10]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[9]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[8]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[7]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[6]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[5]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[4]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[3]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[2]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[1]' from design 'FMA_DW01_dec_16'
+Removing port 'SUM[0]' from design 'FMA_DW01_dec_16'
+Removing port 'A[9]' from design 'FMA_DW01_add_33'
+Removing port 'A[8]' from design 'FMA_DW01_add_33'
+Removing port 'B[8]' from design 'FMA_DW01_add_33'
+Removing port 'CI' from design 'FMA_DW01_add_33'
+Removing port 'CO' from design 'FMA_DW01_add_33'
+Removing port 'A[75]' from design 'FMA_DW01_sub_43'
+Removing port 'A[74]' from design 'FMA_DW01_sub_43'
+Removing port 'A[73]' from design 'FMA_DW01_sub_43'
+Removing port 'A[72]' from design 'FMA_DW01_sub_43'
+Removing port 'A[71]' from design 'FMA_DW01_sub_43'
+Removing port 'A[70]' from design 'FMA_DW01_sub_43'
+Removing port 'A[69]' from design 'FMA_DW01_sub_43'
+Removing port 'A[68]' from design 'FMA_DW01_sub_43'
+Removing port 'A[67]' from design 'FMA_DW01_sub_43'
+Removing port 'A[66]' from design 'FMA_DW01_sub_43'
+Removing port 'A[65]' from design 'FMA_DW01_sub_43'
+Removing port 'A[64]' from design 'FMA_DW01_sub_43'
+Removing port 'A[63]' from design 'FMA_DW01_sub_43'
+Removing port 'A[62]' from design 'FMA_DW01_sub_43'
+Removing port 'A[61]' from design 'FMA_DW01_sub_43'
+Removing port 'A[60]' from design 'FMA_DW01_sub_43'
+Removing port 'A[59]' from design 'FMA_DW01_sub_43'
+Removing port 'A[58]' from design 'FMA_DW01_sub_43'
+Removing port 'A[57]' from design 'FMA_DW01_sub_43'
+Removing port 'A[56]' from design 'FMA_DW01_sub_43'
+Removing port 'A[55]' from design 'FMA_DW01_sub_43'
+Removing port 'A[54]' from design 'FMA_DW01_sub_43'
+Removing port 'A[53]' from design 'FMA_DW01_sub_43'
+Removing port 'A[52]' from design 'FMA_DW01_sub_43'
+Removing port 'A[51]' from design 'FMA_DW01_sub_43'
+Removing port 'A[50]' from design 'FMA_DW01_sub_43'
+Removing port 'A[49]' from design 'FMA_DW01_sub_43'
+Removing port 'A[48]' from design 'FMA_DW01_sub_43'
+Removing port 'A[47]' from design 'FMA_DW01_sub_43'
+Removing port 'A[46]' from design 'FMA_DW01_sub_43'
+Removing port 'A[45]' from design 'FMA_DW01_sub_43'
+Removing port 'A[44]' from design 'FMA_DW01_sub_43'
+Removing port 'A[43]' from design 'FMA_DW01_sub_43'
+Removing port 'A[42]' from design 'FMA_DW01_sub_43'
+Removing port 'A[41]' from design 'FMA_DW01_sub_43'
+Removing port 'A[40]' from design 'FMA_DW01_sub_43'
+Removing port 'A[39]' from design 'FMA_DW01_sub_43'
+Removing port 'A[38]' from design 'FMA_DW01_sub_43'
+Removing port 'A[37]' from design 'FMA_DW01_sub_43'
+Removing port 'A[36]' from design 'FMA_DW01_sub_43'
+Removing port 'A[35]' from design 'FMA_DW01_sub_43'
+Removing port 'A[34]' from design 'FMA_DW01_sub_43'
+Removing port 'A[33]' from design 'FMA_DW01_sub_43'
+Removing port 'A[32]' from design 'FMA_DW01_sub_43'
+Removing port 'A[31]' from design 'FMA_DW01_sub_43'
+Removing port 'A[30]' from design 'FMA_DW01_sub_43'
+Removing port 'A[29]' from design 'FMA_DW01_sub_43'
+Removing port 'A[28]' from design 'FMA_DW01_sub_43'
+Removing port 'A[27]' from design 'FMA_DW01_sub_43'
+Removing port 'A[26]' from design 'FMA_DW01_sub_43'
+Removing port 'A[25]' from design 'FMA_DW01_sub_43'
+Removing port 'A[24]' from design 'FMA_DW01_sub_43'
+Removing port 'A[23]' from design 'FMA_DW01_sub_43'
+Removing port 'A[22]' from design 'FMA_DW01_sub_43'
+Removing port 'A[21]' from design 'FMA_DW01_sub_43'
+Removing port 'A[20]' from design 'FMA_DW01_sub_43'
+Removing port 'A[19]' from design 'FMA_DW01_sub_43'
+Removing port 'A[18]' from design 'FMA_DW01_sub_43'
+Removing port 'A[17]' from design 'FMA_DW01_sub_43'
+Removing port 'A[16]' from design 'FMA_DW01_sub_43'
+Removing port 'A[15]' from design 'FMA_DW01_sub_43'
+Removing port 'A[14]' from design 'FMA_DW01_sub_43'
+Removing port 'A[13]' from design 'FMA_DW01_sub_43'
+Removing port 'A[12]' from design 'FMA_DW01_sub_43'
+Removing port 'A[11]' from design 'FMA_DW01_sub_43'
+Removing port 'A[10]' from design 'FMA_DW01_sub_43'
+Removing port 'A[9]' from design 'FMA_DW01_sub_43'
+Removing port 'A[8]' from design 'FMA_DW01_sub_43'
+Removing port 'A[7]' from design 'FMA_DW01_sub_43'
+Removing port 'A[6]' from design 'FMA_DW01_sub_43'
+Removing port 'A[5]' from design 'FMA_DW01_sub_43'
+Removing port 'A[4]' from design 'FMA_DW01_sub_43'
+Removing port 'A[3]' from design 'FMA_DW01_sub_43'
+Removing port 'A[2]' from design 'FMA_DW01_sub_43'
+Removing port 'A[1]' from design 'FMA_DW01_sub_43'
+Removing port 'A[0]' from design 'FMA_DW01_sub_43'
+Removing port 'CI' from design 'FMA_DW01_sub_43'
+Removing port 'CO' from design 'FMA_DW01_sub_43'
+Removing port 'A[76]' from design 'FMA_DW01_add_31'
+Removing port 'A[75]' from design 'FMA_DW01_add_31'
+Removing port 'A[74]' from design 'FMA_DW01_add_31'
+Removing port 'A[73]' from design 'FMA_DW01_add_31'
+Removing port 'A[72]' from design 'FMA_DW01_add_31'
+Removing port 'A[71]' from design 'FMA_DW01_add_31'
+Removing port 'A[70]' from design 'FMA_DW01_add_31'
+Removing port 'A[69]' from design 'FMA_DW01_add_31'
+Removing port 'A[68]' from design 'FMA_DW01_add_31'
+Removing port 'A[67]' from design 'FMA_DW01_add_31'
+Removing port 'A[66]' from design 'FMA_DW01_add_31'
+Removing port 'A[65]' from design 'FMA_DW01_add_31'
+Removing port 'A[64]' from design 'FMA_DW01_add_31'
+Removing port 'A[63]' from design 'FMA_DW01_add_31'
+Removing port 'A[62]' from design 'FMA_DW01_add_31'
+Removing port 'A[61]' from design 'FMA_DW01_add_31'
+Removing port 'A[60]' from design 'FMA_DW01_add_31'
+Removing port 'A[59]' from design 'FMA_DW01_add_31'
+Removing port 'A[58]' from design 'FMA_DW01_add_31'
+Removing port 'A[57]' from design 'FMA_DW01_add_31'
+Removing port 'A[56]' from design 'FMA_DW01_add_31'
+Removing port 'A[55]' from design 'FMA_DW01_add_31'
+Removing port 'A[54]' from design 'FMA_DW01_add_31'
+Removing port 'A[53]' from design 'FMA_DW01_add_31'
+Removing port 'A[52]' from design 'FMA_DW01_add_31'
+Removing port 'A[1]' from design 'FMA_DW01_add_31'
+Removing port 'A[0]' from design 'FMA_DW01_add_31'
+Removing port 'B[75]' from design 'FMA_DW01_add_31'
+Removing port 'CI' from design 'FMA_DW01_add_31'
+Removing port 'CO' from design 'FMA_DW01_add_31'
+Removing port 'SUM[51]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[50]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[49]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[48]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[47]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[46]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[45]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[44]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[43]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[42]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[41]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[40]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[39]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[38]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[37]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[36]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[35]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[34]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[33]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[32]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[31]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[30]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[29]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[28]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[27]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[26]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[25]' from design 'FMA_DW01_dec_15'
+Removing port 'SUM[24]' from design 'FMA_DW01_dec_15'
+Removing port 'B[9]' from design 'FMA_DW01_sub_26'
+Removing port 'B[8]' from design 'FMA_DW01_sub_26'
+Removing port 'CI' from design 'FMA_DW01_sub_26'
+Removing port 'CO' from design 'FMA_DW01_sub_26'
+Removing port 'A[48]' from design 'FMA_DW01_sub_20'
+Removing port 'A[47]' from design 'FMA_DW01_sub_20'
+Removing port 'A[46]' from design 'FMA_DW01_sub_20'
+Removing port 'A[45]' from design 'FMA_DW01_sub_20'
+Removing port 'A[44]' from design 'FMA_DW01_sub_20'
+Removing port 'A[43]' from design 'FMA_DW01_sub_20'
+Removing port 'A[42]' from design 'FMA_DW01_sub_20'
+Removing port 'A[41]' from design 'FMA_DW01_sub_20'
+Removing port 'A[40]' from design 'FMA_DW01_sub_20'
+Removing port 'A[39]' from design 'FMA_DW01_sub_20'
+Removing port 'A[38]' from design 'FMA_DW01_sub_20'
+Removing port 'A[37]' from design 'FMA_DW01_sub_20'
+Removing port 'A[36]' from design 'FMA_DW01_sub_20'
+Removing port 'A[35]' from design 'FMA_DW01_sub_20'
+Removing port 'A[34]' from design 'FMA_DW01_sub_20'
+Removing port 'A[33]' from design 'FMA_DW01_sub_20'
+Removing port 'A[32]' from design 'FMA_DW01_sub_20'
+Removing port 'A[31]' from design 'FMA_DW01_sub_20'
+Removing port 'A[30]' from design 'FMA_DW01_sub_20'
+Removing port 'A[29]' from design 'FMA_DW01_sub_20'
+Removing port 'A[28]' from design 'FMA_DW01_sub_20'
+Removing port 'A[27]' from design 'FMA_DW01_sub_20'
+Removing port 'A[26]' from design 'FMA_DW01_sub_20'
+Removing port 'A[25]' from design 'FMA_DW01_sub_20'
+Removing port 'A[24]' from design 'FMA_DW01_sub_20'
+Removing port 'A[23]' from design 'FMA_DW01_sub_20'
+Removing port 'A[22]' from design 'FMA_DW01_sub_20'
+Removing port 'A[21]' from design 'FMA_DW01_sub_20'
+Removing port 'A[20]' from design 'FMA_DW01_sub_20'
+Removing port 'A[19]' from design 'FMA_DW01_sub_20'
+Removing port 'A[18]' from design 'FMA_DW01_sub_20'
+Removing port 'A[17]' from design 'FMA_DW01_sub_20'
+Removing port 'A[16]' from design 'FMA_DW01_sub_20'
+Removing port 'A[15]' from design 'FMA_DW01_sub_20'
+Removing port 'A[14]' from design 'FMA_DW01_sub_20'
+Removing port 'A[13]' from design 'FMA_DW01_sub_20'
+Removing port 'A[12]' from design 'FMA_DW01_sub_20'
+Removing port 'A[11]' from design 'FMA_DW01_sub_20'
+Removing port 'A[10]' from design 'FMA_DW01_sub_20'
+Removing port 'A[9]' from design 'FMA_DW01_sub_20'
+Removing port 'A[8]' from design 'FMA_DW01_sub_20'
+Removing port 'A[7]' from design 'FMA_DW01_sub_20'
+Removing port 'A[6]' from design 'FMA_DW01_sub_20'
+Removing port 'A[5]' from design 'FMA_DW01_sub_20'
+Removing port 'A[4]' from design 'FMA_DW01_sub_20'
+Removing port 'A[3]' from design 'FMA_DW01_sub_20'
+Removing port 'A[2]' from design 'FMA_DW01_sub_20'
+Removing port 'A[1]' from design 'FMA_DW01_sub_20'
+Removing port 'A[0]' from design 'FMA_DW01_sub_20'
+Removing port 'B[48]' from design 'FMA_DW01_sub_20'
+Removing port 'CI' from design 'FMA_DW01_sub_20'
+Removing port 'CO' from design 'FMA_DW01_sub_20'
+Removing port 'A[24]' from design 'FMA_DW01_sub_11'
+Removing port 'A[23]' from design 'FMA_DW01_sub_11'
+Removing port 'A[22]' from design 'FMA_DW01_sub_11'
+Removing port 'A[21]' from design 'FMA_DW01_sub_11'
+Removing port 'A[20]' from design 'FMA_DW01_sub_11'
+Removing port 'A[19]' from design 'FMA_DW01_sub_11'
+Removing port 'A[18]' from design 'FMA_DW01_sub_11'
+Removing port 'A[17]' from design 'FMA_DW01_sub_11'
+Removing port 'A[16]' from design 'FMA_DW01_sub_11'
+Removing port 'A[15]' from design 'FMA_DW01_sub_11'
+Removing port 'A[14]' from design 'FMA_DW01_sub_11'
+Removing port 'A[13]' from design 'FMA_DW01_sub_11'
+Removing port 'A[12]' from design 'FMA_DW01_sub_11'
+Removing port 'A[11]' from design 'FMA_DW01_sub_11'
+Removing port 'A[10]' from design 'FMA_DW01_sub_11'
+Removing port 'A[9]' from design 'FMA_DW01_sub_11'
+Removing port 'A[8]' from design 'FMA_DW01_sub_11'
+Removing port 'A[7]' from design 'FMA_DW01_sub_11'
+Removing port 'A[6]' from design 'FMA_DW01_sub_11'
+Removing port 'A[5]' from design 'FMA_DW01_sub_11'
+Removing port 'A[4]' from design 'FMA_DW01_sub_11'
+Removing port 'A[3]' from design 'FMA_DW01_sub_11'
+Removing port 'A[2]' from design 'FMA_DW01_sub_11'
+Removing port 'A[1]' from design 'FMA_DW01_sub_11'
+Removing port 'A[0]' from design 'FMA_DW01_sub_11'
+Removing port 'B[24]' from design 'FMA_DW01_sub_11'
+Removing port 'CI' from design 'FMA_DW01_sub_11'
+Removing port 'CO' from design 'FMA_DW01_sub_11'
+Removing port 'B[9]' from design 'FMA_DW01_sub_8'
+Removing port 'B[8]' from design 'FMA_DW01_sub_8'
+Removing port 'B[7]' from design 'FMA_DW01_sub_8'
+Removing port 'CI' from design 'FMA_DW01_sub_8'
+Removing port 'CO' from design 'FMA_DW01_sub_8'
+Removing port 'A[24]' from design 'FMA_DW01_add_6'
+Removing port 'B[24]' from design 'FMA_DW01_add_6'
+Removing port 'B[23]' from design 'FMA_DW01_add_6'
+Removing port 'B[22]' from design 'FMA_DW01_add_6'
+Removing port 'B[21]' from design 'FMA_DW01_add_6'
+Removing port 'B[20]' from design 'FMA_DW01_add_6'
+Removing port 'B[19]' from design 'FMA_DW01_add_6'
+Removing port 'B[18]' from design 'FMA_DW01_add_6'
+Removing port 'B[17]' from design 'FMA_DW01_add_6'
+Removing port 'B[16]' from design 'FMA_DW01_add_6'
+Removing port 'B[15]' from design 'FMA_DW01_add_6'
+Removing port 'B[14]' from design 'FMA_DW01_add_6'
+Removing port 'B[13]' from design 'FMA_DW01_add_6'
+Removing port 'B[12]' from design 'FMA_DW01_add_6'
+Removing port 'B[11]' from design 'FMA_DW01_add_6'
+Removing port 'B[10]' from design 'FMA_DW01_add_6'
+Removing port 'B[9]' from design 'FMA_DW01_add_6'
+Removing port 'B[8]' from design 'FMA_DW01_add_6'
+Removing port 'B[7]' from design 'FMA_DW01_add_6'
+Removing port 'B[6]' from design 'FMA_DW01_add_6'
+Removing port 'B[5]' from design 'FMA_DW01_add_6'
+Removing port 'B[4]' from design 'FMA_DW01_add_6'
+Removing port 'B[3]' from design 'FMA_DW01_add_6'
+Removing port 'B[2]' from design 'FMA_DW01_add_6'
+Removing port 'B[1]' from design 'FMA_DW01_add_6'
+Removing port 'CI' from design 'FMA_DW01_add_6'
+Removing port 'CO' from design 'FMA_DW01_add_6'
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FMA
+Version: T-2022.03
+Date   : Mon Oct 19 21:50:52 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[15] (input port clocked by clk)
+  Endpoint: d[16] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FMA                ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 r
+  a[15] (in)                                          0.000000   0.000000 r
+  mult_92/a[15] (FMA_DW_mult_uns_2)                   0.000000   0.000000 r
+  mult_92/U1618/ZN (XNR2D8BWP16P90LVT)                0.027243   0.027243 f
+  mult_92/U1706/ZN (ND2D12BWP16P90LVT)                0.011129   0.038372 r
+  mult_92/U1832/ZN (OAI22D1BWP16P90LVT)               0.015074   0.053446 f
+  mult_92/U720/S (FA1D1BWP16P90LVT)                   0.044543   0.097989 r
+  mult_92/U716/S (FA1D1BWP16P90LVT)                   0.038776   0.136765 f
+  mult_92/U2849/CO (FA1D2BWP16P90LVT)                 0.023149   0.159914 f
+  mult_92/U703/S (FA1D1BWP16P90LVT)                   0.040274   0.200189 r
+  mult_92/U702/S (FA1D1BWP16P90LVT)                   0.038183   0.238372 f
+  mult_92/U1704/Z (OR2D2BWP16P90LVT)                  0.018582   0.256954 f
+  mult_92/U2279/ZN (ND2D4BWP16P90LVT)                 0.006757   0.263711 r
+  mult_92/U2278/ZN (CKNR2D4BWP16P90LVT)               0.009121   0.272833 f
+  mult_92/U2871/ZN (AOI21D4BWP16P90LVT)               0.016135   0.288968 r
+  mult_92/U1902/ZN (OAI21D1BWP16P90LVT)               0.010617   0.299586 f
+  mult_92/U2558/ZN (AOI21D1BWP16P90LVT)               0.012752   0.312337 r
+  mult_92/U2387/Z (XOR2D2BWP16P90LVT)                 0.021655   0.333992 f
+  mult_92/product[35] (FMA_DW_mult_uns_2)             0.000000   0.333992 f
+  sub_93/B[35] (FMA_DW01_sub_20)                      0.000000   0.333992 f
+  sub_93/U199/Z (CKOR2D4BWP16P90LVT)                  0.016739   0.350731 f
+  sub_93/U258/ZN (CKNR2D4BWP16P90LVT)                 0.007856   0.358587 r
+  sub_93/U250/ZN (INVD2BWP16P90LVT)                   0.007574   0.366161 f
+  sub_93/U265/ZN (CKNR2D2BWP16P90LVT)                 0.008043   0.374203 r
+  sub_93/U260/ZN (ND2D2BWP16P90LVT)                   0.007442   0.381645 f
+  sub_93/U236/Z (XOR2D2BWP16P90LVT)                   0.015957   0.397602 f
+  sub_93/DIFF[39] (FMA_DW01_sub_20)                   0.000000   0.397602 f
+  U2841/Z (MUX2D1BWP16P90LVT)                         0.018083   0.415685 f
+  add_128/A[41] (FMA_DW01_add_31)                     0.000000   0.415685 f
+  add_128/U1052/ZN (NR2D2BWP16P90LVT)                 0.014484   0.430169 r
+  add_128/U1058/ZN (OAI21D4BWP16P90LVT)               0.010286   0.440454 f
+  add_128/U1103/ZN (AOI21D2BWP16P90LVT)               0.011939   0.452394 r
+  add_128/U1372/ZN (OAI21D2BWP16P90LVT)               0.011430   0.463824 f
+  add_128/U1375/ZN (AOI21D4BWP16P90LVT)               0.013158   0.476982 r
+  add_128/U934/ZN (INVD4BWP16P90LVT)                  0.009551   0.486533 f
+  add_128/U875/ZN (AOI21D1BWP16P90LVT)                0.012346   0.498879 r
+  add_128/U1067/Z (XOR2D2BWP16P90LVT)                 0.022386   0.521265 f
+  add_128/SUM[54] (FMA_DW01_add_31)                   0.000000   0.521265 f
+  sub_129/B[54] (FMA_DW01_sub_43)                     0.000000   0.521265 f
+  sub_129/U397/ZN (CKND2BWP16P90LVT)                  0.007286   0.528551 r
+  sub_129/U361/ZN (CKND2D4BWP16P90LVT)                0.006231   0.534783 f
+  sub_129/U461/ZN (CKNR2D4BWP16P90LVT)                0.007819   0.542601 r
+  sub_129/U447/ZN (CKND2D2BWP16P90LVT)                0.007314   0.549915 f
+  sub_129/U416/ZN (CKNR2D4BWP16P90LVT)                0.007329   0.557244 r
+  sub_129/U473/ZN (CKND2BWP16P90LVT)                  0.010128   0.567373 f
+  sub_129/U465/ZN (NR2D1BWP16P90LVT)                  0.011604   0.578977 r
+  sub_129/U356/ZN (XNR2D2BWP16P90LVT)                 0.017792   0.596769 r
+  sub_129/DIFF[62] (FMA_DW01_sub_43)                  0.000000   0.596769 r
+  U1677/ZN (NR2D1BWP16P90LVT)                         0.006108   0.602876 f
+  U1676/Z (OR2D1BWP16P90LVT)                          0.012463   0.615339 f
+  U2794/Z (AO21D2BWP16P90LVT)                         0.022164   0.637504 f
+  U1297/ZN (IND2D4BWP16P90LVT)                        0.015074   0.652577 f
+  U1121/Z (AN2D1BWP16P90LVT)                          0.011768   0.664346 f
+  U1985/ZN (ND2D2BWP16P90LVT)                         0.007644   0.671989 r
+  U1862/ZN (INVD4BWP16P90LVT)                         0.008284   0.680273 f
+  U1594/Z (OA21D2BWP16P90LVT)                         0.013729   0.694002 f
+  U1626/ZN (ND2D2BWP16P90LVT)                         0.005148   0.699150 r
+  U1934/ZN (OAI31D2BWP16P90LVT)                       0.006713   0.705863 f
+  U1158/ZN (NR4D2BWP16P90LVT)                         0.010006   0.715869 r
+  U1214/Z (AN4D1BWP16P90LVT)                          0.021727   0.737595 r
+  U1358/Z (AN2D2BWP16P90LVT)                          0.018047   0.755642 r
+  U958/ZN (ND3D2BWP16P90LVT)                          0.014705   0.770347 f
+  U1115/ZN (INVD4BWP16P90LVT)                         0.007887   0.778234 r
+  U1009/ZN (CKND2D2BWP16P90LVT)                       0.008174   0.786408 f
+  U1820/ZN (CKND2BWP16P90LVT)                         0.009958   0.796365 r
+  U1794/ZN (INVD4BWP16P90LVT)                         0.011694   0.808059 f
+  U3692/ZN (OAI22D1BWP16P90LVT)                       0.017509   0.825568 r
+  U1451/Z (OR2D1BWP16P90LVT)                          0.015177   0.840745 r
+  U1452/ZN (AOI22D1BWP16P90LVT)                       0.012073   0.852818 f
+  U1167/ZN (OAI221D2BWP16P90LVT)                      0.009586   0.862404 r
+  U1734/ZN (CKND2BWP16P90LVT)                         0.008977   0.871382 f
+  U976/ZN (AOI222D4BWP16P90LVT)                       0.017215   0.888597 r
+  U1652/ZN (OAI211D1BWP16P90LVT)                      0.018065   0.906662 f
+  U3854/ZN (OAI22D1BWP16P90LVT)                       0.016650   0.923312 r
+  U1870/Z (OR2D2BWP16P90LVT)                          0.015425   0.938737 r
+  U1686/ZN (AOI22D1BWP16P90LVT)                       0.010020   0.948757 f
+  U1168/ZN (OAI221D2BWP16P90LVT)                      0.010056   0.958812 r
+  U1417/ZN (CKND2BWP16P90LVT)                         0.005978   0.964791 f
+  U1779/ZN (AOI31D1BWP16P90LVT)                       0.009944   0.974734 r
+  U1776/ZN (ND2D1BWP16P90LVT)                         0.008388   0.983122 f
+  U4209/ZN (NR4D1BWP16P90LVT)                         0.012088   0.995210 r
+  U4210/ZN (ND4D1BWP16P90LVT)                         0.015474   1.010684 f
+  U4211/ZN (AOI211D1BWP16P90LVT)                      0.013633   1.024317 r
+  U4212/ZN (ND4D1BWP16P90LVT)                         0.015250   1.039567 f
+  U4218/ZN (NR4D1BWP16P90LVT)                         0.015000   1.054567 r
+  U4220/ZN (NR2D1BWP16P90LVT)                         0.012593   1.067160 f
+  add_166/B[0] (FMA_DW01_add_6)                       0.000000   1.067160 f
+  add_166/U156/Z (AN2D8BWP16P90LVT)                   0.015759   1.082919 f
+  add_166/U210/ZN (CKND8BWP16P90LVT)                  0.007928   1.090846 r
+  add_166/U215/Z (OR2D2BWP16P90LVT)                   0.012238   1.103084 r
+  add_166/U189/ZN (XNR2D2BWP16P90LVT)                 0.019063   1.122147 f
+  add_166/SUM[17] (FMA_DW01_add_6)                    0.000000   1.122147 f
+  U1591/ZN (AOI221D2BWP16P90LVT)                      0.016562   1.138709 r
+  U934/ZN (OAI21D2BWP16P90LVT)                        0.006071   1.144781 f
+  d[16] (out)                                         0.000000   1.144781 f
+  data arrival time                                              1.144781
+
+  max_delay                                           0.010000   0.010000
+  output external delay                               0.000000   0.010000
+  data required time                                             0.010000
+  --------------------------------------------------------------------------
+  data required time                                             0.010000
+  data arrival time                                              -1.144781
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -1.134781
+
+
+Writing ddc file '/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/runs/20261019_213709_ed0a24/round001/FMA.ddc'.
+Writing verilog file '/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/runs/20261019_213709_ed0a24/round001/FMA.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+Information: Annotated 'cell' delays are assumed to include load delay. (UID-282)
+Information: Writing timing information to file '/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Delay/runs/20261019_213709_ed0a24/round001/FMA.sdf'. (WT-3)
+HW2_DC_COMPLETE: FLP_FMA period=0.01 ns
+exit 0
+
+Memory usage for this session 1667 Mbytes.
+Memory usage for this session including child processes 1667 Mbytes.
+CPU usage for this session 833 seconds ( 0.23 hours ).
+Elapsed time for this session 844 seconds ( 0.23 hours ).
+
+Thank you...

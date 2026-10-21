@@ -1,0 +1,672 @@
+$ env HW2_DESIGN=FXP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Between/runs/20261019_213709_ed0a24/round001 HW2_PERIOD=1.285 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Between/runs/20261019_213709_ed0a24/round001/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+
+                            Design Compiler (R) NXT 
+
+                 Version T-2022.03 for linux64 - Feb 22, 2022 
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+Initializing...
+# Adapted from ALU_HW1_TA_dc.tcl. The launcher sets paths and period per attempt.
+# Keep TA libraries/corners, ZeroWireload, set_max_area 0, compile, naming,
+# report commands, and DDC/Verilog/SDF 2.1/SDC exports.
+proc env_or {name fallback} {
+    if {[info exists ::env($name)]} { return $::env($name) }
+    return $fallback
+}
+proc checked {command} {
+    if {[uplevel 1 $command] eq "0"} { error "DC command failed: $command" }
+}
+proc main {} {
+    set Company "NSYSU2026ALU"
+    set Designer "Kaiden Hsu"
+
+    # FXP_FMA is replaced when this template is installed under compile/.
+    set Design [env_or HW2_DESIGN "FXP_FMA"]
+    set tops [dict create FXP_FMA FXP_FMA FLP_FMA FMA FLP_FMA_4 FMA_pipe]
+    set Top [dict get $tops $Design]
+    set base [file normalize [file join [file dirname [info script]] ..]]
+    set Design_root [env_or HW2_DESIGN_ROOT $base]
+    set Path_Top [file join $Design_root rtl]
+    set Path_Syn [env_or HW2_OUT [file join $Design_root gate_level Between]]
+    set Dump_file_name $Top
+    set Clk_pin "clk"
+    set Period_ns [env_or HW2_PERIOD "0.49"]
+    if {![string is double -strict $Period_ns] || $Period_ns <= 0} {
+        error "Clock period must be positive"
+    }
+    file mkdir $Path_Syn work
+    define_design_lib WORK -path [file normalize work]
+
+    # Original TA library and tool settings.
+    set library_root [env_or HW2_LIBRARY_ROOT /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS]
+    set ::search_path [concat [list $library_root $Path_Top] $::search_path]
+    set ::target_library "N16ADFP_StdCellss0p72vm40c_ccs.db N16ADFP_StdCellff0p88v125c_ccs.db"
+    set ::link_library "* $::target_library dw_foundation.sldb"
+    set ::symbol_library "tsmc040.sdb generic.sdb"
+    set ::synthetic_library "dw_foundation.sldb"
+    set ::hdlin_translate_off_skip_text "TRUE"
+    set ::edifout_netlist_only "TRUE"
+    set ::verilogout_no_tri true
+    set ::hdlin_enable_presto_for_vhdl "TRUE"
+    set ::sh_enable_line_editing true
+    set ::sh_line_editing_mode emacs
+    history keep 100
+    alias h history
+
+    # The runner writes an ordered RTL list. Manual runs can discover rtl/*.v.
+    if {[info exists ::env(HW2_RTL_LIST)]} {
+        set fd [open $::env(HW2_RTL_LIST) r]
+        set sources [split [string trim [read $fd]] \n]
+        close $fd
+    } else {
+        set sources [glob -nocomplain [file join $Path_Top *.v]]
+    }
+    if {![llength $sources]} { error "No RTL files in $Path_Top" }
+    foreach source $sources {
+        set ::search_path [concat [list [file dirname $source]] $::search_path]
+        checked [list analyze -format verilog $source]
+    }
+    checked [list elaborate $Top]
+    current_design $Top
+    checked {link}
+    checked {check_design}
+
+    # Period settings from Python are ns; convert to this library's time unit.
+    redirect -variable units {report_units}
+    set fd [open [file join $Path_Syn units_report.txt] w]
+    puts $fd $units
+    close $fd
+    if {![regexp -nocase -line {Time(?:_|\s+)units?\s*:\s*([0-9.eE+-]+)\s*([A-Za-z]+)} $units all value unit]} {
+        error "Cannot determine library time unit"
+    }
+    set scales [dict create s 1e9 second 1e9 seconds 1e9 ms 1e6 us 1e3 ns 1 ps 1e-3 fs 1e-6]
+    set time_ns [expr {$value * [dict get $scales [string tolower $unit]]}]
+    set Clk_period [expr {$Period_ns / $time_ns}]
+
+    # Use the TA's virtual-clock alternative for the combinational targets.
+    # Preserve the physical-clock settings for FMA_pipe.
+    if {$Design eq "FLP_FMA_4"} {
+        create_clock -name $Clk_pin -period $Clk_period [get_ports $Clk_pin]
+        set_fix_hold [get_clocks $Clk_pin]
+        set_dont_touch_network [get_clocks $Clk_pin]
+        set_ideal_network [get_ports $Clk_pin]
+        set_input_delay 0 -clock $Clk_pin [remove_from_collection [all_inputs] [get_ports $Clk_pin]]
+    } else {
+        set_max_delay $Clk_period -from [all_inputs] -to [all_outputs]
+        create_clock -name $Clk_pin -period $Clk_period
+        set_input_delay 0 -clock $Clk_pin [all_inputs]
+    }
+    set_output_delay 0 -clock $Clk_pin [all_outputs]
+
+    set_operating_conditions -min_library N16ADFP_StdCellff0p88v125c_ccs -min ff0p88v125c \
+                            -max_library N16ADFP_StdCellss0p72vm40c_ccs -max ss0p72vm40c
+    set_wire_load_model -name ZeroWireload -library N16ADFP_StdCellss0p72vm40c_ccs
+    set_wire_load_mode top
+    set_max_area 0
+    checked {compile}
+
+    # Escape literal brackets so Tcl does not evaluate them as a command.
+    set ::bus_inference_style {%s[%d]}
+    set ::bus_naming_style {%s[%d]}
+    set ::hdlout_internal_busses true
+    change_names -hierarchy -rule verilog
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _" -max_length 255 -type cell
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _\[\]" -max_length 255 -type net
+    define_name_rules name_rule -map {{"\\*cell\\*" "cell"}}
+    define_name_rules name_rule -case_insensitive
+    change_names -hierarchy -rules name_rule
+    remove_unconnected_ports -blast_buses [get_cells -hierarchical *]
+
+    # Preserve TA report settings; add units/check_timing for result interpretation.
+    redirect -file [file join $Path_Syn check_timing.txt] {check_timing}
+    report_timing -significant_digits 6 -sort_by group
+    redirect -file [file join $Path_Syn timing_report.txt] {
+        report_timing -path full -delay max -significant_digits 6 -sort_by group
+    }
+    redirect -file [file join $Path_Syn area_report.txt] {report_area -hier -nosplit}
+    redirect -file [file join $Path_Syn power_report.txt] {report_power -analysis_effort low}
+
+    # Optional measured stage boundaries, filled in once pipeline RTL exists.
+    # These are from/to paths, not -through paths spanning unrelated stages.
+    set stage_file [file join $Design_root compile stage_paths.tcl]
+    if {$Design eq "FLP_FMA_4" && [file exists $stage_file]} {
+        set stage_paths {}
+        source $stage_file
+        set stage 0
+        foreach mapping $stage_paths {
+            incr stage
+            lassign $mapping from_pattern to_pattern
+            if {$from_pattern eq "INPUTS"} {
+                set from [remove_from_collection [all_inputs] [get_ports {clk rst}]]
+            } else { set from [get_pins -hierarchical -quiet $from_pattern] }
+            if {$to_pattern eq "OUTPUTS"} { set to [all_outputs] } \
+            else { set to [get_pins -hierarchical -quiet $to_pattern] }
+            if {[sizeof_collection $from] && [sizeof_collection $to]} {
+                redirect -file [file join $Path_Syn timing_report_stage${stage}.txt] {
+                    report_timing -from $from -to $to -path full -delay max \
+                        -nworst 1 -max_paths 1 -significant_digits 6 -sort_by group
+                }
+            } else { puts "Warning: Stage $stage has an empty timing boundary" }
+        }
+        if {$stage != 4} { puts "Warning: Configure four stage paths in $stage_file for pipeline reports" }
+    }
+
+    checked [list write -hierarchy -format ddc -output [file join $Path_Syn ${Dump_file_name}.ddc]]
+    checked [list write -format verilog -hierarchy -output [file join $Path_Syn ${Dump_file_name}.v]]
+    checked [list write_sdf -version 2.1 -context verilog [file join $Path_Syn ${Dump_file_name}.sdf]]
+    checked [list write_sdc [file join $Path_Syn ${Dump_file_name}.sdc]]
+    puts "HW2_DC_COMPLETE: $Design period=$Period_ns ns"
+}
+if {[catch {main} message options]} {
+    puts stderr "HW2_DC_ERROR: $message"
+    puts stderr [dict get $options -errorinfo]
+    exit 1
+}
+Information: Variable '::hdlin_translate_off_skip_text' is obsolete and is being ignored. (INFO-100)
+Information: Variable '::hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+Information: Variable '::hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+Running PRESTO HDLC
+Compiling source file /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl/FXP_FMA.v
+Presto compilation completed successfully.
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db'
+Information: Using CCS timing libraries. (TIM-024)
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/gtech.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/standard.sldb'
+  Loading link library 'N16ADFP_StdCellss0p72vm40c_ccs'
+  Loading link library 'N16ADFP_StdCellff0p88v125c_ccs'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl/FXP_FMA.v:18: unsigned to signed assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl/FXP_FMA.v:21: signed to unsigned part selection occurs. (VER-318)
+Presto compilation completed successfully. (FXP_FMA)
+Elaborated 1 design.
+Current design is now 'FXP_FMA'.
+Current design is 'FXP_FMA'.
+
+  Linking design 'FXP_FMA'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  FXP_FMA                     /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Between/runs/20261019_213709_ed0a24/round001/FXP_FMA.db
+  N16ADFP_StdCellss0p72vm40c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db
+  N16ADFP_StdCellff0p88v125c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db
+  dw_foundation.sldb (library) /usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb
+
+Warning: Creating virtual clock named 'clk' with no sources. (UID-348)
+Using operating conditions 'ss0p72vm40c' found in library 'N16ADFP_StdCellss0p72vm40c_ccs'.
+Using operating conditions 'ff0p88v125c' found in library 'N16ADFP_StdCellff0p88v125c_ccs'.
+Information: Checking out the license 'DesignWare'. (SEC-104)
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | S-2021.06-DWBB_202106.0 |     *     |
+| Licensed DW Building Blocks        | S-2021.06-DWBB_202106.0 |     *     |
+============================================================================
+
+====================================================================================================
+| Flow Information                                                                                 |
+----------------------------------------------------------------------------------------------------
+| Flow         | Design Compiler NXT                                                               |
+====================================================================================================
+| Design Information                                      | Value                                  |
+====================================================================================================
+| Number of Scenarios                                     | 0                                      |
+| Leaf Cell Count                                         | 2                                      |
+| Number of User Hierarchies                              | 0                                      |
+| Sequential Cell Count                                   | 0                                      |
+| Macro Count                                             | 0                                      |
+| Number of Power Domains                                 | 0                                      |
+| Number of Path Groups                                   | 2                                      |
+| Number of VT class                                      | 0                                      |
+| Number of Clocks                                        | 1                                      |
+| Number of Dont Touch cells                              | 0                                      |
+| Number of Dont Touch nets                               | 0                                      |
+| Number of size only cells                               | 0                                      |
+| Design with UPF Data                                    | false                                  |
+====================================================================================================
+
+Warning: Operating condition ss0p72vm40c set on design FXP_FMA has different process,
+voltage and temperatures parameters than the parameters at which target library 
+N16ADFP_StdCellff0p88v125c_ccs is characterized. Delays may be inaccurate as a result. (OPT-998)
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'FXP_FMA'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Implementation Selection
+  ----------------------------------
+  Building model 'DW01_NAND2'
+  Processing 'DW01_NAND2'
+  Building model 'DW01_add_width64' (rpl)
+  Processing 'DW01_add_width64'
+  Processing 'FXP_FMA_DW01_add_0'
+  Mapping 'FXP_FMA_DW_mult_tc_0'
+
+  Beginning Mapping Optimizations  (Medium effort)
+  -------------------------------
+  Mapping Optimization (Phase 1)
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:16    2177.1      0.00       0.0      17.5 *cell*1604/*cell*1723/ZN 
+    0:00:16    2177.1      0.00       0.0      17.5 *cell*1604/*cell*1723/ZN 
+    0:00:16    2163.0      0.00       0.0      17.5 *cell*1604/*cell*1683/ZN 
+    0:00:17    2146.8      0.00       0.0      17.5 *cell*1604/*cell*1631/ZN 
+    0:00:18    2137.2      0.00       0.0      17.5 *cell*1604/U2047/ZN      
+    0:00:18    2132.3      0.00       0.0      17.5 *cell*1604/*cell*1748/Z  
+    0:00:19    2114.5      0.00       0.0      17.5 *cell*1604/U876/S        
+    0:00:19    2099.2      0.00       0.0      17.5 *cell*1604/*cell*1846/ZN 
+    0:00:20    2077.6      0.00       0.0      17.5 *cell*1604/*cell*1959/Z  
+    0:00:21    2070.2      0.00       0.0      17.5 *cell*1604/U1911/Z       
+    0:00:21    2055.2      0.00       0.0      17.5 *cell*1604/*cell*2002/Z  
+    0:00:21    2047.4      0.00       0.0      17.5 *cell*1604/U2513/ZN      
+    0:00:22    2039.1      0.00       0.0      17.5 *cell*1604/*cell*1833/ZN 
+    0:00:22    2032.9      0.00       0.0      17.5 *cell*1604/*cell*1879/Z  
+    0:00:23    2021.4      0.00       0.0      17.5 *cell*1604/U1785/ZN      
+    0:00:23    2017.1      0.00       0.0      17.5 *cell*1604/U1788/ZN      
+    0:00:23    2014.2      0.00       0.0      17.5 *cell*1604/U556/ZN       
+    0:00:24    2012.5      0.00       0.0      17.5 *cell*1604/U2456/ZN      
+    0:00:24    2007.5      0.00       0.0      17.5 *cell*1604/U2167/Z       
+    0:00:25    2005.8      0.00       0.0      17.5 *cell*1604/*cell*1747/Z  
+    0:00:25    2002.0      0.00       0.0      17.5 *cell*1604/*cell*2120/ZN 
+    0:00:25    1997.1      0.00       0.0      17.5 *cell*1604/*cell*1836/ZN 
+    0:00:26    1994.5      0.00       0.0      17.5 *cell*1604/*cell*2071/ZN 
+    0:00:26    1988.6      0.00       0.0      17.5 *cell*1604/U2088/Z       
+    0:00:26    1981.5      0.00       0.0      17.5 *cell*1604/*cell*2157/Z  
+    0:00:27    1977.2      0.00       0.0      17.5 *cell*1604/U1988/ZN      
+    0:00:27    1973.6      0.00       0.0      17.5 *cell*1604/*cell*2180/ZN 
+    0:00:27    1968.6      0.00       0.0      17.5 *cell*1604/*cell*2078/Z  
+    0:00:28    1944.6      0.00       0.0      17.5 *cell*1604/*cell*2216/Z  
+    0:00:28    1923.4      0.00       0.0      17.5 *cell*1604/*cell*2015/Z  
+    0:00:29    1916.2      0.00       0.0      17.5 *cell*1604/*cell*2259/ZN 
+    0:00:29    1905.3      0.00       0.0      17.5 *cell*1604/*cell*2284/Z  
+    0:00:30    1892.2      0.00       0.0      17.5 *cell*1604/U2083/Z       
+    0:00:31    1867.3      0.00       0.0      17.5 *cell*1604/U2408/ZN      
+    0:00:31    1865.3      0.00       0.0      17.5 *cell*1604/U2405/ZN      
+    0:00:31    1848.6      0.00       0.0      17.5 *cell*1604/*cell*2353/ZN 
+    0:00:32    1842.1      0.00       0.0      17.5 *cell*1604/*cell*2370/Z  
+    0:00:32    1820.7      0.00       0.0      17.5 *cell*1604/*cell*2140/Z  
+    0:00:33    1812.4      0.00       0.0      17.5 *cell*1604/U1585/ZN      
+    0:00:34    1807.7      0.00       0.0      17.5 *cell*1604/*cell*2156/Z  
+    0:00:34    1803.6      0.00       0.0      17.5 *cell*1604/*cell*2445/ZN 
+    0:00:34    1800.1      0.00       0.0      17.5 *cell*1604/*cell*2419/Z  
+    0:00:35    1796.9      0.00       0.0      17.5 *cell*1604/*cell*2462/ZN 
+    0:00:35    1788.5      0.00       0.0      17.5 *cell*1604/U2095/Z       
+    0:00:36    1774.7      0.00       0.0      17.5 *cell*1604/U428/ZN       
+    0:00:36    1770.8      0.00       0.0      17.5 *cell*1604/U414/ZN       
+    0:00:36    1768.6      0.00       0.0      17.5 *cell*1604/*cell*2282/Z  
+    0:00:37    1756.2      0.00       0.0      17.5 *cell*1604/*cell*2523/Z  
+    0:00:38    1733.1      0.00       0.0      17.5 *cell*1604/*cell*2539/Z  
+    0:00:38    1731.1      0.00       0.0      17.5 *cell*1604/U802/S        
+    0:00:39    1714.2      0.00       0.0      17.5 *cell*1604/*cell*2307/Z  
+    0:00:39    1703.9      0.00       0.0      17.5 *cell*1604/*cell*2578/Z  
+    0:00:39    1699.2      0.00       0.0      17.5 *cell*1604/U83/Z         
+    0:00:40    1670.6      0.00       0.0      17.5 *cell*1604/U1372/Z       
+    0:00:40    1664.0      0.00       0.0      17.5 *cell*1604/U2364/ZN      
+    0:00:41    1657.0      0.00       0.0      17.5 *cell*1604/*cell*2596/ZN 
+    0:00:41    1653.2      0.00       0.0      17.5 *cell*1604/*cell*2522/Z  
+    0:00:41    1648.7      0.00       0.0      17.5 *cell*1604/*cell*2430/Z  
+    0:00:42    1642.1      0.00       0.0      17.5 *cell*1604/*cell*2539/Z  
+    0:00:43    1638.3      0.00       0.0      17.5 *cell*1604/U2123/ZN      
+    0:00:43    1621.6      0.00       0.0      17.5 *cell*1604/U1361/ZN      
+    0:00:44    1614.8      0.00       0.0      17.5 *cell*1604/U777/S        
+    0:00:44    1605.4      0.00       0.0      17.5 *cell*1604/U2074/Z       
+    0:00:45    1602.5      0.00       0.0      17.5 *cell*1604/U1269/Z       
+    0:00:45    1596.7      0.00       0.0      17.5 *cell*1604/*cell*2650/Z  
+    0:00:46    1562.0      0.00       0.0      17.5 *cell*1604/*cell*2576/Z  
+    0:00:46    1554.2      0.00       0.0      17.5 *cell*1604/U1171/ZN      
+    0:00:47    1541.3      0.00       0.0      17.5 *cell*1604/*cell*2708/ZN 
+    0:00:47    1535.4      0.00       0.0      17.5 *cell*1604/U2111/Z       
+    0:00:47    1528.3      0.00       0.0      17.5 *cell*1604/*cell*2763/ZN 
+    0:00:48    1524.9      0.00       0.0      17.5 *cell*1604/*cell*2862/ZN 
+    0:00:48    1522.8      0.00       0.0      17.5 *cell*1604/*cell*2703/Z  
+    0:00:48    1520.7      0.00       0.0      17.5 *cell*1604/U1255/ZN      
+    0:00:49    1514.2      0.00       0.0      17.5 *cell*1604/*cell*2866/ZN 
+    0:00:49    1510.2      0.00       0.0      17.5 *cell*1604/*cell*2882/Z  
+    0:00:49    1504.3      0.00       0.0      17.5 *cell*1604/*cell*2889/Z  
+    0:00:50    1481.1      0.00       0.0      17.5 *cell*1604/*cell*2897/Z  
+    0:00:50    1475.8      0.00       0.0      17.5 *cell*1604/U2277/ZN      
+    0:00:51    1472.9      0.00       0.0      17.5 *cell*1604/U1066/ZN      
+    0:00:51    1425.9      0.00       0.0      17.5 *cell*1604/*cell*2972/Z  
+    0:00:52    1421.2      0.00       0.0      17.5 *cell*1604/*cell*2820/Z  
+    0:00:52    1401.9      0.00       0.0      17.5 *cell*1604/*cell*2887/Z  
+    0:00:52    1398.7      0.00       0.0      17.5 *cell*1604/*cell*2935/Z  
+    0:00:53    1393.1      0.00       0.0      17.5 *cell*1604/*cell*3000/Z  
+    0:00:53    1390.3      0.00       0.0      17.5 *cell*1604/U1822/ZN      
+    0:00:53    1384.0      0.00       0.0      17.5 *cell*1604/U2110/Z       
+    0:00:54    1380.7      0.00       0.0      17.5 *cell*1604/*cell*3031/Z  
+    0:00:54    1377.0      0.00       0.0      17.5 *cell*1604/U1727/Z       
+    0:00:55    1372.6      0.00       0.0      17.5 *cell*1604/*cell*2997/Z  
+    0:00:55    1338.6      0.00       0.0      17.5 *cell*1604/*cell*3067/Z  
+    0:00:56    1335.2      0.00       0.0      17.5 *cell*1604/*cell*2970/Z  
+    0:00:56    1332.4      0.00       0.0      17.5 *cell*1604/*cell*3066/Z  
+    0:00:57    1326.6      0.00       0.0      17.5 *cell*1604/U2211/ZN      
+    0:00:57    1323.2      0.00       0.0      17.5 *cell*1604/*cell*2933/Z  
+    0:00:57    1309.6      0.00       0.0      17.5 *cell*1604/*cell*3061/Z  
+    0:00:58    1308.6      0.00       0.0      17.5 *cell*1604/U302/ZN       
+    0:00:58    1307.2      0.00       0.0      17.5 *cell*1604/*cell*3143/ZN 
+    0:00:58    1303.3      0.00       0.0      17.5 *cell*1604/*cell*3146/ZN 
+    0:00:59    1298.3      0.00       0.0      17.5 *cell*1604/U949/Z        
+    0:00:59    1290.9      0.00       0.0      17.5 *cell*1604/U2056/Z       
+    0:01:00    1283.8      0.00       0.0      17.5 *cell*1604/*cell*3067/Z  
+    0:01:00    1280.0      0.00       0.0      17.5 *cell*1604/U2059/Z       
+    0:01:01    1276.6      0.00       0.0      17.5 *cell*1604/U2022/ZN      
+    0:01:01    1273.8      0.00       0.0      17.5 *cell*1604/U270/ZN       
+    0:01:01    1272.4      0.00       0.0      17.5 *cell*1604/U936/Z        
+    0:01:02    1270.3      0.00       0.0      17.5 *cell*1604/U256/ZN       
+    0:01:02    1269.5      0.00       0.0      17.5 *cell*1604/U620/S        
+    0:01:02    1266.4      0.00       0.0      17.5 *cell*1604/U930/Z        
+    0:01:03    1265.2      0.00       0.0      17.5 *cell*1604/U933/Z        
+    0:01:03    1262.7      0.00       0.0      17.5 *cell*1604/U924/Z        
+    0:01:03    1260.6      0.00       0.0      17.5 *cell*1604/U923/Z        
+    0:01:03    1259.1      0.00       0.0      17.5 *cell*1604/U921/Z        
+    0:01:04    1257.0      0.00       0.0      17.5 *cell*1604/U917/Z        
+    0:01:04    1254.4      0.00       0.0      17.5 *cell*1604/U277/ZN       
+    0:01:04    1251.9      0.00       0.0      17.5 *cell*1604/U909/Z        
+    0:01:04    1248.3      0.00       0.0      17.5 *cell*1604/U903/Z        
+    0:01:06    1142.7      0.01       0.0      17.5 *cell*3253/U54/ZN        
+    0:01:07    1114.6      0.00       0.0      17.5 *cell*3253/*cell*3268/ZN 
+    0:01:07    1109.3      0.00       0.0      17.5 *cell*3253/*cell*3344/ZN 
+    0:01:07    1104.2      0.00       0.0      17.5 *cell*3253/*cell*3370/ZN 
+    0:01:07    1100.4      0.00       0.0      17.5 *cell*3253/*cell*3384/ZN 
+    0:01:07    1097.1      0.00       0.0      17.5 *cell*3253/U201/ZN       
+    0:01:08    1094.4      0.00       0.0      17.5 *cell*3253/U252/ZN       
+    0:01:08    1090.5      0.00       0.0      17.5 *cell*3253/*cell*3438/ZN 
+    0:01:08    1086.2      0.00       0.0      17.5 *cell*3253/U349/ZN       
+    0:01:08    1082.8      0.00       0.0      17.5 *cell*3253/U383/ZN       
+    0:01:09    1080.6      0.00       0.0      17.5                          
+    0:01:09    1080.6      0.00       0.0      17.5                          
+    0:01:09    1080.6      0.00       0.0      17.5                          
+    0:01:09    1080.6      0.00       0.0      17.5                          
+    0:01:09    1080.6      0.00       0.0      17.5                          
+    0:01:10    1055.9      0.11       0.3      17.5                          
+    0:01:11    1058.2      0.09       0.2      17.5                          
+    0:01:11    1058.1      0.07       0.2      17.5                          
+    0:01:11    1059.4      0.04       0.1      17.5                          
+    0:01:12    1060.1      0.03       0.0      17.5                          
+    0:01:12    1060.6      0.02       0.0      17.5                          
+    0:01:12    1060.8      0.01       0.0      17.5                          
+    0:01:12    1060.2      0.02       0.0      17.5                          
+    0:01:12    1061.6      0.00       0.0      17.5                          
+    0:01:13    1060.3      0.01       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+
+
+  Beginning Design Rule Fixing  (min_capacitance)
+  ----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:01:13    1061.5      0.00       0.0      17.5                          
+
+
+  Beginning Area-Recovery Phase  (max_area 0)
+  -----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1061.5      0.00       0.0      17.5                          
+    0:01:13    1054.3      0.00       0.0      17.5                          
+    0:01:13    1053.1      0.00       0.0      17.5                          
+    0:01:13    1053.0      0.00       0.0      17.5                          
+    0:01:13    1053.0      0.00       0.0      17.5                          
+    0:01:13    1053.0      0.00       0.0      17.5                          
+    0:01:13    1053.0      0.00       0.0      17.5                          
+    0:01:13    1051.1      0.03       0.0      17.5                          
+    0:01:13    1051.1      0.03       0.0      17.5                          
+    0:01:13    1051.1      0.03       0.0      17.5                          
+    0:01:13    1051.1      0.03       0.0      17.5                          
+    0:01:13    1051.1      0.03       0.0      17.5                          
+    0:01:13    1051.1      0.03       0.0      17.5                          
+    0:01:14    1051.6      0.00       0.0      17.5                          
+    0:01:14    1051.2      0.00       0.0      17.5                          
+    0:01:14    1049.1      0.01       0.0      17.5                          
+    0:01:14    1049.1      0.01       0.0      17.5                          
+    0:01:14    1049.1      0.01       0.0      17.5                          
+    0:01:14    1049.1      0.01       0.0      17.5                          
+    0:01:14    1049.1      0.01       0.0      17.5                          
+    0:01:14    1049.1      0.01       0.0      17.5                          
+    0:01:15    1049.5      0.00       0.0      17.5                          
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Removing port 'B[63]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[62]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[61]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[60]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[59]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[58]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[57]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[56]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[55]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[54]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[53]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[52]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[51]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[50]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[49]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[48]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[47]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[46]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[45]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[44]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[43]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[42]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[41]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[40]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[39]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[38]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[37]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[36]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[35]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[34]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[33]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'B[32]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'CI' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[31]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[30]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[29]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[28]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[27]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[26]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[25]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[24]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[23]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[22]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[21]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[20]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[19]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[18]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[17]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[16]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[15]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[14]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[13]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[12]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[11]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[10]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[9]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[8]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[7]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[6]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[5]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[4]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[3]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[2]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[1]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'SUM[0]' from design 'FXP_FMA_DW01_add_2'
+Removing port 'CO' from design 'FXP_FMA_DW01_add_2'
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FXP_FMA
+Version: T-2022.03
+Date   : Mon Oct 19 21:47:46 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[9] (input port clocked by clk)
+  Endpoint: d[31] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FXP_FMA            ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 r
+  a[9] (in)                                           0.000000   0.000000 r
+  mult_17/a[9] (FXP_FMA_DW_mult_tc_2)                 0.000000   0.000000 r
+  mult_17/U2531/ZN (XNR2D1BWP16P90LVT)                0.026391   0.026391 f
+  mult_17/U2605/ZN (IND2D2BWP16P90LVT)                0.049782   0.076172 f
+  mult_17/U1701/ZN (OAI21D1BWP16P90LVT)               0.021786   0.097959 r
+  mult_17/U3611/Z (XOR2D1BWP16P90LVT)                 0.022189   0.120148 r
+  mult_17/U884/CO (HA1D2BWP16P90LVT)                  0.020223   0.140371 r
+  mult_17/U881/S (HA1D2BWP16P90LVT)                   0.020464   0.160836 f
+  mult_17/U880/S (FA1D1BWP16P90LVT)                   0.041125   0.201961 r
+  mult_17/U879/S (FA1D1BWP16P90LVT)                   0.036686   0.238647 f
+  mult_17/U2665/Z (OR2D1BWP16P90LVT)                  0.014959   0.253606 f
+  mult_17/U3748/ZN (AOI21D1BWP16P90LVT)               0.014428   0.268034 r
+  mult_17/U486/ZN (OAI21D1BWP16P90LVT)                0.015948   0.283982 f
+  mult_17/U3751/ZN (AOI21D1BWP16P90LVT)               0.016600   0.300581 r
+  mult_17/U2600/ZN (OAI21D1BWP16P90LVT)               0.018009   0.318590 f
+  mult_17/U2594/ZN (AOI21D1BWP16P90LVT)               0.014353   0.332943 r
+  mult_17/U2595/ZN (OAI21D1BWP16P90LVT)               0.011488   0.344431 f
+  mult_17/U2522/ZN (AOI21D2BWP16P90LVT)               0.012719   0.357149 r
+  mult_17/U2585/ZN (OAI21D1BWP16P90LVT)               0.009553   0.366703 f
+  mult_17/U2584/ZN (AOI21D1BWP16P90LVT)               0.009672   0.376375 r
+  mult_17/U2525/ZN (OAI21D1BWP16P90LVT)               0.013882   0.390257 f
+  mult_17/U2541/ZN (AOI21D1BWP16P90LVT)               0.016600   0.406856 r
+  mult_17/U3709/ZN (OAI21D1BWP16P90LVT)               0.015894   0.422750 f
+  mult_17/U3707/ZN (AOI21D1BWP16P90LVT)               0.016600   0.439350 r
+  mult_17/U3702/ZN (OAI21D1BWP16P90LVT)               0.015894   0.455244 f
+  mult_17/U3700/ZN (AOI21D1BWP16P90LVT)               0.016600   0.471844 r
+  mult_17/U3698/ZN (OAI21D1BWP16P90LVT)               0.015894   0.487738 f
+  mult_17/U3696/ZN (AOI21D1BWP16P90LVT)               0.016600   0.504337 r
+  mult_17/U2533/ZN (OAI21D1BWP16P90LVT)               0.015894   0.520231 f
+  mult_17/U2543/ZN (AOI21D1BWP16P90LVT)               0.016600   0.536831 r
+  mult_17/U3692/ZN (OAI21D1BWP16P90LVT)               0.015894   0.552725 f
+  mult_17/U3690/ZN (AOI21D1BWP16P90LVT)               0.016600   0.569325 r
+  mult_17/U3688/ZN (OAI21D1BWP16P90LVT)               0.015894   0.585219 f
+  mult_17/U3686/ZN (AOI21D1BWP16P90LVT)               0.016600   0.601818 r
+  mult_17/U3684/ZN (OAI21D1BWP16P90LVT)               0.015894   0.617712 f
+  mult_17/U3682/ZN (AOI21D1BWP16P90LVT)               0.016600   0.634312 r
+  mult_17/U3680/ZN (OAI21D1BWP16P90LVT)               0.015894   0.650206 f
+  mult_17/U3678/ZN (AOI21D1BWP16P90LVT)               0.016600   0.666806 r
+  mult_17/U3676/ZN (OAI21D1BWP16P90LVT)               0.015894   0.682700 f
+  mult_17/U2580/ZN (AOI21D1BWP16P90LVT)               0.016006   0.698706 r
+  mult_17/U2581/ZN (OAI21D1BWP16P90LVT)               0.010528   0.709235 f
+  mult_17/U2583/ZN (AOI21D1BWP16P90LVT)               0.009665   0.718900 r
+  mult_17/U2591/ZN (OAI21D1BWP16P90LVT)               0.009104   0.728004 f
+  mult_17/U2590/ZN (AOI21D1BWP16P90LVT)               0.009665   0.737670 r
+  mult_17/U2604/ZN (OAI21D1BWP16P90LVT)               0.009104   0.746774 f
+  mult_17/U2603/ZN (AOI21D1BWP16P90LVT)               0.009665   0.756439 r
+  mult_17/U2618/ZN (OAI21D1BWP16P90LVT)               0.009516   0.765955 f
+  mult_17/U2650/ZN (IOA21D1BWP16P90LVT)               0.016932   0.782887 f
+  mult_17/U2544/CO (FA1D1BWP16P90LVT)                 0.027383   0.810270 f
+  mult_17/U2545/CO (FA1D1BWP16P90LVT)                 0.027622   0.837891 f
+  mult_17/U2651/CO (FA1D1BWP16P90LVT)                 0.027625   0.865516 f
+  mult_17/U2652/CO (FA1D1BWP16P90LVT)                 0.027625   0.893141 f
+  mult_17/U2546/CO (FA1D1BWP16P90LVT)                 0.027625   0.920766 f
+  mult_17/U2653/CO (FA1D1BWP16P90LVT)                 0.027625   0.948391 f
+  mult_17/U2547/CO (FA1D1BWP16P90LVT)                 0.027625   0.976016 f
+  mult_17/U2654/CO (FA1D1BWP16P90LVT)                 0.027625   1.003641 f
+  mult_17/U2660/CO (FA1D1BWP16P90LVT)                 0.027625   1.031266 f
+  mult_17/U2661/CO (FA1D1BWP16P90LVT)                 0.027625   1.058891 f
+  mult_17/U2663/CO (FA1D1BWP16P90LVT)                 0.027625   1.086516 f
+  mult_17/U2662/CO (FA1D1BWP16P90LVT)                 0.027625   1.114141 f
+  mult_17/U2659/CO (FA1D1BWP16P90LVT)                 0.027625   1.141766 f
+  mult_17/U2664/CO (FA1D1BWP16P90LVT)                 0.027625   1.169391 f
+  mult_17/U2668/CO (FA1D1BWP16P90LVT)                 0.027625   1.197016 f
+  mult_17/U222/CO (FA1D1BWP16P90LVT)                  0.026767   1.223783 f
+  mult_17/U2534/Z (XOR2D1BWP16P90LVT)                 0.020034   1.243817 r
+  mult_17/product[63] (FXP_FMA_DW_mult_tc_2)          0.000000   1.243817 r
+  add_19/A[63] (FXP_FMA_DW01_add_2)                   0.000000   1.243817 r
+  add_19/U564/Z (XOR2D1BWP16P90LVT)                   0.016853   1.260670 f
+  add_19/U599/Z (XOR2D1BWP16P90LVT)                   0.019366   1.280035 r
+  add_19/SUM[63] (FXP_FMA_DW01_add_2)                 0.000000   1.280035 r
+  d[31] (out)                                         0.000000   1.280035 r
+  data arrival time                                              1.280035
+
+  max_delay                                           1.285000   1.285000
+  output external delay                               0.000000   1.285000
+  data required time                                             1.285000
+  --------------------------------------------------------------------------
+  data required time                                             1.285000
+  data arrival time                                              -1.280035
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.004965
+
+
+Writing ddc file '/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Between/runs/20261019_213709_ed0a24/round001/FXP_FMA.ddc'.
+Writing verilog file '/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Between/runs/20261019_213709_ed0a24/round001/FXP_FMA.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+Information: Annotated 'cell' delays are assumed to include load delay. (UID-282)
+Information: Writing timing information to file '/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Between/runs/20261019_213709_ed0a24/round001/FXP_FMA.sdf'. (WT-3)
+HW2_DC_COMPLETE: FXP_FMA period=1.285 ns
+exit 0
+
+Memory usage for this session 1667 Mbytes.
+Memory usage for this session including child processes 1667 Mbytes.
+CPU usage for this session 165 seconds ( 0.05 hours ).
+Elapsed time for this session 171 seconds ( 0.05 hours ).
+
+Thank you...

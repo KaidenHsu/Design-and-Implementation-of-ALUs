@@ -1,0 +1,47 @@
+ 
+****************************************
+Report : area
+Design : FLP_mul
+Version: T-2022.03
+Date   : Mon Oct  5 20:42:13 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                          242
+Number of nets:                          2623
+Number of cells:                         2230
+Number of combinational cells:           2227
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                        240
+Number of references:                      32
+
+Combinational area:               1034.363537
+Buf/Inv area:                       51.477121
+Noncombinational area:               0.000000
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  1034.363537
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  ---------------------
+FLP_mul                           1034.3635    100.0    38.0506     0.0000  0.0000  FLP_mul
+add_1_root_add_1_root_add_46        19.8547      1.9    19.8547     0.0000  0.0000  FLP_mul_DW01_add_3
+add_42                              34.3699      3.3    34.3699     0.0000  0.0000  FLP_mul_DW01_add_4
+mult_31                            942.0883     91.1   942.0883     0.0000  0.0000  FLP_mul_DW_mult_uns_1
+--------------------------------  ---------  -------  ---------  ---------  ------  ---------------------
+Total                                                 1034.3635     0.0000  0.0000
+
+1
+

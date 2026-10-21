@@ -1,0 +1,81 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:48:52 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: s3_md_norm_reg_2_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: d[30] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s3_md_norm_reg_2_/CP (DFQD2BWP16P90LVT)             0.000000   0.000000 r
+  s3_md_norm_reg_2_/Q (DFQD2BWP16P90LVT) <-           0.033401   0.033401 r
+  add_114/A[2] (FLP_adder_DW01_add_4)                 0.000000   0.033401 r
+  add_114/U60/CO (HA1D2BWP16P90LVT)                   0.020155   0.053557 r
+  add_114/U75/ZN (INR2D1BWP16P90LVT)                  0.015248   0.068804 r
+  add_114/U30/ZN (ND2D1BWP16P90LVT)                   0.010809   0.079613 f
+  add_114/U76/ZN (NR2D1BWP16P90LVT)                   0.013102   0.092715 r
+  add_114/U14/CO (HA1D2BWP16P90LVT)                   0.020306   0.113020 r
+  add_114/U13/CO (HA1D2BWP16P90LVT)                   0.018528   0.131549 r
+  add_114/U12/CO (HA1D2BWP16P90LVT)                   0.018522   0.150070 r
+  add_114/U11/CO (HA1D2BWP16P90LVT)                   0.018522   0.168592 r
+  add_114/U10/CO (HA1D2BWP16P90LVT)                   0.018522   0.187113 r
+  add_114/U9/CO (HA1D2BWP16P90LVT)                    0.018522   0.205635 r
+  add_114/U8/CO (HA1D2BWP16P90LVT)                    0.018522   0.224157 r
+  add_114/U7/CO (HA1D2BWP16P90LVT)                    0.018522   0.242678 r
+  add_114/U6/CO (HA1D2BWP16P90LVT)                    0.018522   0.261200 r
+  add_114/U5/CO (HA1D2BWP16P90LVT)                    0.018522   0.279721 r
+  add_114/U4/CO (HA1D2BWP16P90LVT)                    0.018522   0.298243 r
+  add_114/U3/CO (HA1D2BWP16P90LVT)                    0.018522   0.316764 r
+  add_114/U2/CO (HA1D2BWP16P90LVT)                    0.017710   0.334474 r
+  add_114/U73/Z (XOR2D1BWP16P90LVT)                   0.016458   0.350933 f
+  add_114/SUM[26] (FLP_adder_DW01_add_4)              0.000000   0.350933 f
+  U1391/ZN (MUX2ND2BWP16P90LVT)                       0.026261   0.377194 r
+  U1500/ZN (ND2D1BWP16P90LVT)                         0.010445   0.387639 f
+  U699/ZN (CKND1BWP16P90LVT)                          0.008427   0.396066 r
+  U1504/ZN (ND2D1BWP16P90LVT)                         0.009558   0.405624 f
+  U695/ZN (CKND1BWP16P90LVT)                          0.008326   0.413949 r
+  U1508/ZN (ND2D1BWP16P90LVT)                         0.009539   0.423489 f
+  U696/ZN (CKND1BWP16P90LVT)                          0.008323   0.431812 r
+  U1512/ZN (ND2D1BWP16P90LVT)                         0.009539   0.441351 f
+  U697/ZN (CKND1BWP16P90LVT)                          0.008323   0.449675 r
+  U1516/ZN (ND2D1BWP16P90LVT)                         0.009539   0.459214 f
+  U698/ZN (CKND1BWP16P90LVT)                          0.008323   0.467537 r
+  U1520/ZN (ND2D1BWP16P90LVT)                         0.014363   0.481900 f
+  U1525/ZN (NR2D1BWP16P90LVT)                         0.010091   0.491991 r
+  U819/Z (XOR2D1BWP16P90LVT)                          0.022113   0.514104 f
+  U1526/ZN (NR2D1BWP16P90LVT)                         0.005898   0.520002 r
+  d[30] (out)                                         0.000000   0.520002 r
+  data arrival time                                              0.520002
+
+  clock clk (rise edge)                               0.633000   0.633000
+  clock network delay (ideal)                         0.000000   0.633000
+  output external delay                               0.000000   0.633000
+  data required time                                             0.633000
+  --------------------------------------------------------------------------
+  data required time                                             0.633000
+  data arrival time                                              -0.520002
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.112998
+
+
+1

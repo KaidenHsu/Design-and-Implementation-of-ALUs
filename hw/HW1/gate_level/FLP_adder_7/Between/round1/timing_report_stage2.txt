@@ -1,0 +1,55 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:47:43 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: s1_e_diff_reg_0_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: s2_mb_aligned_reg_25_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s1_e_diff_reg_0_/CP (DFQD2BWP16P90LVT)              0.000000   0.000000 r
+  s1_e_diff_reg_0_/Q (DFQD2BWP16P90LVT) <-            0.077847   0.077847 f
+  U874/ZN (MUX2ND2BWP16P90LVT)                        0.031679   0.109526 r
+  U1648/Z (MUX2D1BWP16P90LVT)                         0.016711   0.126236 r
+  U1663/Z (MUX2D1BWP16P90LVT)                         0.018014   0.144250 r
+  U1697/Z (MUX2D1BWP16P90LVT)                         0.017926   0.162176 r
+  U1698/Z (MUX2D1BWP16P90LVT)                         0.015776   0.177952 r
+  U1699/Z (MUX2D1BWP16P90LVT)                         0.014513   0.192465 r
+  U1112/Z (AN2D1BWP16P90LVT)                          0.012397   0.204862 r
+  s2_mb_aligned_reg_25_/D (DFQD2BWP16P90LVT)          0.000000   0.204862 r
+  data arrival time                                              0.204862
+
+  clock clk (rise edge)                               0.619000   0.619000
+  clock network delay (ideal)                         0.000000   0.619000
+  s2_mb_aligned_reg_25_/CP (DFQD2BWP16P90LVT)         0.000000   0.619000 r
+  library setup time                                  -0.013804  0.605196
+  data required time                                             0.605196
+  --------------------------------------------------------------------------
+  data required time                                             0.605196
+  data arrival time                                              -0.204862
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.400334
+
+
+1

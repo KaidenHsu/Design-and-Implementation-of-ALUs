@@ -1,0 +1,538 @@
+$ env HW2_DESIGN=FXP_FMA HW2_DESIGN_ROOT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA HW2_OUT=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round003 HW2_PERIOD=2.141 HW2_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round003/rtl_files.txt /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f dc.tcl
+
+                            Design Compiler (R) NXT 
+
+                 Version T-2022.03 for linux64 - Feb 22, 2022 
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+Initializing...
+# Adapted from ALU_HW1_TA_dc.tcl. The launcher sets paths and period per attempt.
+# Keep TA libraries/corners, ZeroWireload, set_max_area 0, compile, naming,
+# report commands, and DDC/Verilog/SDF 2.1/SDC exports.
+proc env_or {name fallback} {
+    if {[info exists ::env($name)]} { return $::env($name) }
+    return $fallback
+}
+proc checked {command} {
+    if {[uplevel 1 $command] eq "0"} { error "DC command failed: $command" }
+}
+proc main {} {
+    set Company "NSYSU2026ALU"
+    set Designer "Kaiden Hsu"
+
+    # FXP_FMA is replaced when this template is installed under compile/.
+    set Design [env_or HW2_DESIGN "FXP_FMA"]
+    set tops [dict create FXP_FMA FXP_FMA FLP_FMA FMA FLP_FMA_4 FMA_pipe]
+    set Top [dict get $tops $Design]
+    set base [file normalize [file join [file dirname [info script]] ..]]
+    set Design_root [env_or HW2_DESIGN_ROOT $base]
+    set Path_Top [file join $Design_root rtl]
+    set Path_Syn [env_or HW2_OUT [file join $Design_root gate_level Between]]
+    set Dump_file_name $Top
+    set Clk_pin "clk"
+    set Period_ns [env_or HW2_PERIOD "0.49"]
+    if {![string is double -strict $Period_ns] || $Period_ns <= 0} {
+        error "Clock period must be positive"
+    }
+    file mkdir $Path_Syn work
+    define_design_lib WORK -path [file normalize work]
+
+    # Original TA library and tool settings.
+    set library_root [env_or HW2_LIBRARY_ROOT /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS]
+    set ::search_path [concat [list $library_root $Path_Top] $::search_path]
+    set ::target_library "N16ADFP_StdCellss0p72vm40c_ccs.db N16ADFP_StdCellff0p88v125c_ccs.db"
+    set ::link_library "* $::target_library dw_foundation.sldb"
+    set ::symbol_library "tsmc040.sdb generic.sdb"
+    set ::synthetic_library "dw_foundation.sldb"
+    set ::hdlin_translate_off_skip_text "TRUE"
+    set ::edifout_netlist_only "TRUE"
+    set ::verilogout_no_tri true
+    set ::hdlin_enable_presto_for_vhdl "TRUE"
+    set ::sh_enable_line_editing true
+    set ::sh_line_editing_mode emacs
+    history keep 100
+    alias h history
+
+    # The runner writes an ordered RTL list. Manual runs can discover rtl/*.v.
+    if {[info exists ::env(HW2_RTL_LIST)]} {
+        set fd [open $::env(HW2_RTL_LIST) r]
+        set sources [split [string trim [read $fd]] \n]
+        close $fd
+    } else {
+        set sources [glob -nocomplain [file join $Path_Top *.v]]
+    }
+    if {![llength $sources]} { error "No RTL files in $Path_Top" }
+    foreach source $sources {
+        set ::search_path [concat [list [file dirname $source]] $::search_path]
+        checked [list analyze -format verilog $source]
+    }
+    checked [list elaborate $Top]
+    current_design $Top
+    checked {link}
+    checked {check_design}
+
+    # Period settings from Python are ns; convert to this library's time unit.
+    redirect -variable units {report_units}
+    set fd [open [file join $Path_Syn units_report.txt] w]
+    puts $fd $units
+    close $fd
+    if {![regexp -nocase -line {Time(?:_|\s+)units?\s*:\s*([0-9.eE+-]+)\s*([A-Za-z]+)} $units all value unit]} {
+        error "Cannot determine library time unit"
+    }
+    set scales [dict create s 1e9 second 1e9 seconds 1e9 ms 1e6 us 1e3 ns 1 ps 1e-3 fs 1e-6]
+    set time_ns [expr {$value * [dict get $scales [string tolower $unit]]}]
+    set Clk_period [expr {$Period_ns / $time_ns}]
+
+    # Use the TA's virtual-clock alternative for the combinational targets.
+    # Preserve the physical-clock settings for FMA_pipe.
+    if {$Design eq "FLP_FMA_4"} {
+        create_clock -name $Clk_pin -period $Clk_period [get_ports $Clk_pin]
+        set_fix_hold [get_clocks $Clk_pin]
+        set_dont_touch_network [get_clocks $Clk_pin]
+        set_ideal_network [get_ports $Clk_pin]
+        set_input_delay 0 -clock $Clk_pin [remove_from_collection [all_inputs] [get_ports $Clk_pin]]
+    } else {
+        set_max_delay $Clk_period -from [all_inputs] -to [all_outputs]
+        create_clock -name $Clk_pin -period $Clk_period
+        set_input_delay 0 -clock $Clk_pin [all_inputs]
+    }
+    set_output_delay 0 -clock $Clk_pin [all_outputs]
+
+    set_operating_conditions -min_library N16ADFP_StdCellff0p88v125c_ccs -min ff0p88v125c \
+                            -max_library N16ADFP_StdCellss0p72vm40c_ccs -max ss0p72vm40c
+    set_wire_load_model -name ZeroWireload -library N16ADFP_StdCellss0p72vm40c_ccs
+    set_wire_load_mode top
+    set_max_area 0
+    checked {compile}
+
+    # Escape literal brackets so Tcl does not evaluate them as a command.
+    set ::bus_inference_style {%s[%d]}
+    set ::bus_naming_style {%s[%d]}
+    set ::hdlout_internal_busses true
+    change_names -hierarchy -rule verilog
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _" -max_length 255 -type cell
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _\[\]" -max_length 255 -type net
+    define_name_rules name_rule -map {{"\\*cell\\*" "cell"}}
+    define_name_rules name_rule -case_insensitive
+    change_names -hierarchy -rules name_rule
+    remove_unconnected_ports -blast_buses [get_cells -hierarchical *]
+
+    # Preserve TA report settings; add units/check_timing for result interpretation.
+    redirect -file [file join $Path_Syn check_timing.txt] {check_timing}
+    report_timing -significant_digits 6 -sort_by group
+    redirect -file [file join $Path_Syn timing_report.txt] {
+        report_timing -path full -delay max -significant_digits 6 -sort_by group
+    }
+    redirect -file [file join $Path_Syn area_report.txt] {report_area -hier -nosplit}
+    redirect -file [file join $Path_Syn power_report.txt] {report_power -analysis_effort low}
+
+    # Optional measured stage boundaries, filled in once pipeline RTL exists.
+    # These are from/to paths, not -through paths spanning unrelated stages.
+    set stage_file [file join $Design_root compile stage_paths.tcl]
+    if {$Design eq "FLP_FMA_4" && [file exists $stage_file]} {
+        set stage_paths {}
+        source $stage_file
+        set stage 0
+        foreach mapping $stage_paths {
+            incr stage
+            lassign $mapping from_pattern to_pattern
+            if {$from_pattern eq "INPUTS"} {
+                set from [remove_from_collection [all_inputs] [get_ports {clk rst}]]
+            } else { set from [get_pins -hierarchical -quiet $from_pattern] }
+            if {$to_pattern eq "OUTPUTS"} { set to [all_outputs] } \
+            else { set to [get_pins -hierarchical -quiet $to_pattern] }
+            if {[sizeof_collection $from] && [sizeof_collection $to]} {
+                redirect -file [file join $Path_Syn timing_report_stage${stage}.txt] {
+                    report_timing -from $from -to $to -path full -delay max \
+                        -nworst 1 -max_paths 1 -significant_digits 6 -sort_by group
+                }
+            } else { puts "Warning: Stage $stage has an empty timing boundary" }
+        }
+        if {$stage != 4} { puts "Warning: Configure four stage paths in $stage_file for pipeline reports" }
+    }
+
+    checked [list write -hierarchy -format ddc -output [file join $Path_Syn ${Dump_file_name}.ddc]]
+    checked [list write -format verilog -hierarchy -output [file join $Path_Syn ${Dump_file_name}.v]]
+    checked [list write_sdf -version 2.1 -context verilog [file join $Path_Syn ${Dump_file_name}.sdf]]
+    checked [list write_sdc [file join $Path_Syn ${Dump_file_name}.sdc]]
+    puts "HW2_DC_COMPLETE: $Design period=$Period_ns ns"
+}
+if {[catch {main} message options]} {
+    puts stderr "HW2_DC_ERROR: $message"
+    puts stderr [dict get $options -errorinfo]
+    exit 1
+}
+Information: Variable '::hdlin_translate_off_skip_text' is obsolete and is being ignored. (INFO-100)
+Information: Variable '::hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+Information: Variable '::hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+Running PRESTO HDLC
+Compiling source file /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl/FXP_FMA.v
+Presto compilation completed successfully.
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db'
+Information: Using CCS timing libraries. (TIM-024)
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/gtech.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/standard.sldb'
+  Loading link library 'N16ADFP_StdCellss0p72vm40c_ccs'
+  Loading link library 'N16ADFP_StdCellff0p88v125c_ccs'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl/FXP_FMA.v:18: unsigned to signed assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/rtl/FXP_FMA.v:21: signed to unsigned part selection occurs. (VER-318)
+Presto compilation completed successfully. (FXP_FMA)
+Elaborated 1 design.
+Current design is now 'FXP_FMA'.
+Current design is 'FXP_FMA'.
+
+  Linking design 'FXP_FMA'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  FXP_FMA                     /MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/compile/Area/runs/20261019_213709_ed0a24/round003/FXP_FMA.db
+  N16ADFP_StdCellss0p72vm40c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db
+  N16ADFP_StdCellff0p88v125c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db
+  dw_foundation.sldb (library) /usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb
+
+Warning: Creating virtual clock named 'clk' with no sources. (UID-348)
+Using operating conditions 'ss0p72vm40c' found in library 'N16ADFP_StdCellss0p72vm40c_ccs'.
+Using operating conditions 'ff0p88v125c' found in library 'N16ADFP_StdCellff0p88v125c_ccs'.
+Information: Checking out the license 'DesignWare'. (SEC-104)
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | S-2021.06-DWBB_202106.0 |     *     |
+| Licensed DW Building Blocks        | S-2021.06-DWBB_202106.0 |     *     |
+============================================================================
+
+====================================================================================================
+| Flow Information                                                                                 |
+----------------------------------------------------------------------------------------------------
+| Flow         | Design Compiler NXT                                                               |
+====================================================================================================
+| Design Information                                      | Value                                  |
+====================================================================================================
+| Number of Scenarios                                     | 0                                      |
+| Leaf Cell Count                                         | 2                                      |
+| Number of User Hierarchies                              | 0                                      |
+| Sequential Cell Count                                   | 0                                      |
+| Macro Count                                             | 0                                      |
+| Number of Power Domains                                 | 0                                      |
+| Number of Path Groups                                   | 2                                      |
+| Number of VT class                                      | 0                                      |
+| Number of Clocks                                        | 1                                      |
+| Number of Dont Touch cells                              | 0                                      |
+| Number of Dont Touch nets                               | 0                                      |
+| Number of size only cells                               | 0                                      |
+| Design with UPF Data                                    | false                                  |
+====================================================================================================
+
+Warning: Operating condition ss0p72vm40c set on design FXP_FMA has different process,
+voltage and temperatures parameters than the parameters at which target library 
+N16ADFP_StdCellff0p88v125c_ccs is characterized. Delays may be inaccurate as a result. (OPT-998)
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'FXP_FMA'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Implementation Selection
+  ----------------------------------
+  Building model 'DW01_NAND2'
+  Processing 'DW01_NAND2'
+  Building model 'DW01_add_width64' (rpl)
+  Processing 'DW01_add_width64'
+  Processing 'FXP_FMA_DW01_add_0'
+  Mapping 'FXP_FMA_DW_mult_tc_0'
+
+  Beginning Mapping Optimizations  (Medium effort)
+  -------------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:12    1134.2      0.00       0.0      17.5                          
+    0:00:12    1134.2      0.00       0.0      17.5                          
+    0:00:12    1134.2      0.00       0.0      17.5                          
+    0:00:12    1134.2      0.00       0.0      17.5                          
+    0:00:12    1134.2      0.00       0.0      17.5                          
+    0:00:13     982.9      0.02       0.0      17.5                          
+    0:00:14     982.9      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+
+
+  Beginning Design Rule Fixing  (min_capacitance)
+  ----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:14     982.7      0.00       0.0      17.5                          
+
+
+  Beginning Area-Recovery Phase  (max_area 0)
+  -----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     982.7      0.00       0.0      17.5                          
+    0:00:14     977.7      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     974.3      0.00       0.0      17.5                          
+    0:00:15     969.3      0.00       0.0      17.5                          
+    0:00:15     969.3      0.00       0.0      17.5                          
+    0:00:15     969.3      0.00       0.0      17.5                          
+    0:00:15     969.3      0.00       0.0      17.5                          
+    0:00:15     969.3      0.00       0.0      17.5                          
+    0:00:15     969.3      0.00       0.0      17.5                          
+    0:00:15     969.3      0.00       0.0      17.5                          
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Removing port 'B[31]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'CI' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[31]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[30]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[29]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[28]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[27]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[26]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[25]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[24]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[23]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[22]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[21]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[20]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[19]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[18]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[17]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[16]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[15]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[14]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[13]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[12]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[11]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[10]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[9]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[8]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[7]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[6]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[5]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[4]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[3]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[2]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[1]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'SUM[0]' from design 'FXP_FMA_DW01_add_0'
+Removing port 'CO' from design 'FXP_FMA_DW01_add_0'
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FXP_FMA
+Version: T-2022.03
+Date   : Mon Oct 19 21:42:47 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[5] (input port clocked by clk)
+  Endpoint: d[31] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FXP_FMA            ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 f
+  a[5] (in)                                           0.000000   0.000000 f
+  mult_17/a[5] (FXP_FMA_DW_mult_tc_0)                 0.000000   0.000000 f
+  mult_17/U2001/ZN (CKND1BWP16P90LVT)                 0.044586   0.044586 r
+  mult_17/U2304/ZN (XNR2D1BWP16P90)                   0.055862   0.100448 f
+  mult_17/U1936/ZN (NR2D1BWP16P90LVT)                 0.053688   0.154136 r
+  mult_17/U1892/ZN (INVD1BWP16P90LVT)                 0.041847   0.195983 f
+  mult_17/U2203/ZN (OAI22D1BWP16P90)                  0.026388   0.222371 r
+  mult_17/U2202/ZN (XNR2D1BWP16P90)                   0.038839   0.261210 f
+  mult_17/U609/S (HA1D2BWP16P90LVT)                   0.023768   0.284978 r
+  mult_17/U275/S (FA1D1BWP16P90LVT)                   0.036315   0.321293 f
+  mult_17/product[3] (FXP_FMA_DW_mult_tc_0)           0.000000   0.321293 f
+  add_19/A[3] (FXP_FMA_DW01_add_0)                    0.000000   0.321293 f
+  add_19/U58/ZN (OAI21D1BWP16P90)                     0.013570   0.334863 r
+  add_19/U57/ZN (IOA21D1BWP16P90)                     0.015919   0.350781 f
+  add_19/U56/ZN (OAI21D1BWP16P90)                     0.016561   0.367342 r
+  add_19/U55/ZN (IOA21D1BWP16P90)                     0.015919   0.383261 f
+  add_19/U54/ZN (OAI21D1BWP16P90)                     0.016561   0.399821 r
+  add_19/U53/ZN (IOA21D1BWP16P90)                     0.015919   0.415740 f
+  add_19/U52/ZN (OAI21D1BWP16P90)                     0.016561   0.432300 r
+  add_19/U51/ZN (IOA21D1BWP16P90)                     0.015919   0.448219 f
+  add_19/U50/ZN (OAI21D1BWP16P90)                     0.016561   0.464779 r
+  add_19/U49/ZN (IOA21D1BWP16P90)                     0.015919   0.480698 f
+  add_19/U48/ZN (OAI21D1BWP16P90)                     0.016561   0.497259 r
+  add_19/U47/ZN (IOA21D1BWP16P90)                     0.015919   0.513177 f
+  add_19/U46/ZN (OAI21D1BWP16P90)                     0.016561   0.529738 r
+  add_19/U45/ZN (IOA21D1BWP16P90)                     0.015919   0.545656 f
+  add_19/U44/ZN (OAI21D1BWP16P90)                     0.016561   0.562217 r
+  add_19/U43/ZN (IOA21D1BWP16P90)                     0.015919   0.578136 f
+  add_19/U42/ZN (OAI21D1BWP16P90)                     0.016561   0.594696 r
+  add_19/U41/ZN (IOA21D1BWP16P90)                     0.015919   0.610615 f
+  add_19/U40/ZN (OAI21D1BWP16P90)                     0.016561   0.627175 r
+  add_19/U39/ZN (IOA21D1BWP16P90)                     0.015919   0.643094 f
+  add_19/U38/ZN (OAI21D1BWP16P90)                     0.016561   0.659654 r
+  add_19/U37/ZN (IOA21D1BWP16P90)                     0.015919   0.675573 f
+  add_19/U36/ZN (OAI21D1BWP16P90)                     0.016561   0.692134 r
+  add_19/U35/ZN (IOA21D1BWP16P90)                     0.015919   0.708052 f
+  add_19/U34/ZN (OAI21D1BWP16P90)                     0.016561   0.724613 r
+  add_19/U33/ZN (IOA21D1BWP16P90)                     0.015919   0.740531 f
+  add_19/U32/ZN (OAI21D1BWP16P90)                     0.016561   0.757092 r
+  add_19/U31/ZN (IOA21D1BWP16P90)                     0.015919   0.773011 f
+  add_19/U30/ZN (OAI21D1BWP16P90)                     0.016561   0.789571 r
+  add_19/U29/ZN (IOA21D1BWP16P90)                     0.015919   0.805490 f
+  add_19/U28/ZN (OAI21D1BWP16P90)                     0.016561   0.822050 r
+  add_19/U27/ZN (IOA21D1BWP16P90)                     0.015919   0.837969 f
+  add_19/U26/ZN (OAI21D1BWP16P90)                     0.016561   0.854530 r
+  add_19/U25/ZN (IOA21D1BWP16P90)                     0.015919   0.870448 f
+  add_19/U24/ZN (OAI21D1BWP16P90)                     0.016561   0.887009 r
+  add_19/U23/ZN (IOA21D1BWP16P90)                     0.015919   0.902927 f
+  add_19/U22/ZN (OAI21D1BWP16P90)                     0.016561   0.919488 r
+  add_19/U21/ZN (IOA21D1BWP16P90)                     0.015919   0.935406 f
+  add_19/U20/ZN (OAI21D1BWP16P90)                     0.016561   0.951967 r
+  add_19/U19/ZN (IOA21D1BWP16P90)                     0.015919   0.967886 f
+  add_19/U18/ZN (OAI21D1BWP16P90)                     0.016561   0.984446 r
+  add_19/U17/ZN (IOA21D1BWP16P90)                     0.015919   1.000365 f
+  add_19/U16/ZN (OAI21D1BWP16P90)                     0.016561   1.016925 r
+  add_19/U15/ZN (IOA21D1BWP16P90)                     0.015919   1.032844 f
+  add_19/U14/ZN (OAI21D1BWP16P90)                     0.016561   1.049405 r
+  add_19/U13/ZN (IOA21D1BWP16P90)                     0.015919   1.065323 f
+  add_19/U12/ZN (OAI21D1BWP16P90)                     0.016561   1.081884 r
+  add_19/U11/ZN (IOA21D1BWP16P90)                     0.015919   1.097802 f
+  add_19/U10/ZN (OAI21D1BWP16P90)                     0.016561   1.114363 r
+  add_19/U9/ZN (IOA21D1BWP16P90)                      0.015919   1.130281 f
+  add_19/U8/ZN (OAI21D1BWP16P90)                      0.016561   1.146842 r
+  add_19/U7/ZN (IOA21D1BWP16P90)                      0.015919   1.162761 f
+  add_19/U6/ZN (OAI21D1BWP16P90)                      0.016561   1.179321 r
+  add_19/U5/ZN (IOA21D1BWP16P90)                      0.015919   1.195240 f
+  add_19/U4/ZN (OAI21D1BWP16P90)                      0.016561   1.211800 r
+  add_19/U3/ZN (IOA21D1BWP16P90)                      0.015919   1.227719 f
+  add_19/U2/ZN (OAI21D1BWP16P90)                      0.016561   1.244280 r
+  add_19/U1/ZN (IOA21D1BWP16P90)                      0.017632   1.261911 f
+  add_19/U1_32/CO (FA1D1BWP16P90LVT)                  0.029285   1.291196 f
+  add_19/U1_33/CO (FA1D1BWP16P90LVT)                  0.027647   1.318844 f
+  add_19/U1_34/CO (FA1D1BWP16P90LVT)                  0.027625   1.346469 f
+  add_19/U1_35/CO (FA1D1BWP16P90LVT)                  0.027625   1.374094 f
+  add_19/U1_36/CO (FA1D1BWP16P90LVT)                  0.027625   1.401719 f
+  add_19/U1_37/CO (FA1D1BWP16P90LVT)                  0.027625   1.429344 f
+  add_19/U1_38/CO (FA1D1BWP16P90LVT)                  0.027625   1.456969 f
+  add_19/U1_39/CO (FA1D1BWP16P90LVT)                  0.027625   1.484594 f
+  add_19/U1_40/CO (FA1D1BWP16P90LVT)                  0.027625   1.512219 f
+  add_19/U1_41/CO (FA1D1BWP16P90LVT)                  0.027625   1.539844 f
+  add_19/U1_42/CO (FA1D1BWP16P90LVT)                  0.027625   1.567469 f
+  add_19/U1_43/CO (FA1D1BWP16P90LVT)                  0.027625   1.595094 f
+  add_19/U1_44/CO (FA1D1BWP16P90LVT)                  0.027625   1.622719 f
+  add_19/U1_45/CO (FA1D1BWP16P90LVT)                  0.027625   1.650344 f
+  add_19/U1_46/CO (FA1D1BWP16P90LVT)                  0.027625   1.677969 f
+  add_19/U1_47/CO (FA1D1BWP16P90LVT)                  0.027625   1.705594 f
+  add_19/U1_48/CO (FA1D1BWP16P90LVT)                  0.027625   1.733219 f
+  add_19/U1_49/CO (FA1D1BWP16P90LVT)                  0.027625   1.760844 f
+  add_19/U1_50/CO (FA1D1BWP16P90LVT)                  0.027625   1.788469 f
+  add_19/U1_51/CO (FA1D1BWP16P90LVT)                  0.027625   1.816094 f
+  add_19/U1_52/CO (FA1D1BWP16P90LVT)                  0.027625   1.843719 f
+  add_19/U1_53/CO (FA1D1BWP16P90LVT)                  0.027625   1.871343 f
+  add_19/U1_54/CO (FA1D1BWP16P90LVT)                  0.027625   1.898968 f
+  add_19/U1_55/CO (FA1D1BWP16P90LVT)                  0.027625   1.926593 f
+  add_19/U1_56/CO (FA1D1BWP16P90LVT)                  0.027625   1.954218 f
+  add_19/U1_57/CO (FA1D1BWP16P90LVT)                  0.027625   1.981843 f
+  add_19/U1_58/CO (FA1D1BWP16P90LVT)                  0.027625   2.009468 f
+  add_19/U1_59/CO (FA1D1BWP16P90LVT)                  0.027625   2.037093 f
+  add_19/U1_60/CO (FA1D1BWP16P90LVT)                  0.027625   2.064718 f
+  add_19/U1_61/CO (FA1D1BWP16P90LVT)                  0.027625   2.092343 f
+  add_19/U1_62/CO (FA1D1BWP16P90LVT)                  0.022838   2.115181 f
+  add_19/U1_63/Z (XOR3D2BWP16P90LVT)                  0.024899   2.140080 f
+  add_19/SUM[63] (FXP_FMA_DW01_add_0)                 0.000000   2.140080 f
+  d[31] (out)                                         0.000000   2.140080 f
+  data arrival time                                              2.140080
+
+  max_delay                                           2.141000   2.141000
+  output external delay                               0.000000   2.141000
+  data required time                                             2.141000
+  --------------------------------------------------------------------------
+  data required time                                             2.141000
+  data arrival time                                              -2.140080
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.000920
+
+
+Writing ddc file '/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round003/FXP_FMA.ddc'.
+Writing verilog file '/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round003/FXP_FMA.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+Information: Annotated 'cell' delays are assumed to include load delay. (UID-282)
+Information: Writing timing information to file '/MasterClass/M143010027_ALU/Hws/HW2/FXP_FMA/gate_level/Area/runs/20261019_213709_ed0a24/round003/FXP_FMA.sdf'. (WT-3)
+HW2_DC_COMPLETE: FXP_FMA period=2.141 ns
+exit 0
+
+Memory usage for this session 1667 Mbytes.
+Memory usage for this session including child processes 1667 Mbytes.
+CPU usage for this session 113 seconds ( 0.03 hours ).
+Elapsed time for this session 120 seconds ( 0.03 hours ).
+
+Thank you...

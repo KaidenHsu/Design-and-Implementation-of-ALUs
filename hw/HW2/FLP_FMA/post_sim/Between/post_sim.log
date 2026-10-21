@@ -1,0 +1,302 @@
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -R -full64 +v2k -debug_access+all -top testbench -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/csrc +define+CYCLE=100 +incdir+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG '+define+SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf"' -error=noMPD +neg_tchk /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/TB_FMA.v /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v +DATA_DIR=/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim
+*** Using c compiler gcc instead of cc ...
+                         Chronologic VCS (TM)
+         Version V-2023.12_Full64 -- Mon Oct 19 22:07:58 2026
+
+                    Copyright (c) 1991 - 2023 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+Parsing design file '/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/TB_FMA.v'
+Parsing design file '/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v'
+Parsing design file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v'
+Top Level Modules:
+       testbench
+TimeScale is 1 ns / 1 ps
+
+   ***   $sdf_annotate() version 1.2R
+   ***    SDF file: "/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf"
+   ***    Annotation scope: testbench.test_module
+   ***    SDF Annotator log file: "sdf_annotation.log"
+   ***    MTM selection: "MAXIMUM"
+   ***    No SCALE FACTORS argument specified
+   ***    No SCALE TYPE argument specified
+   ***    SCALE FACTORS defaulted to "1.0:1.0:1.0":
+   ***    SCALE TYPE defaulted to: "FROM_MTM"
+   ***    Turnoff delay: "FROM_FILE"
+   ***    Approximation (mipd) policy: "MAXIMUM"
+
+   ***    SDF annotation begin: Mon Oct 19 22:08:00 2026
+
+
+SDF Info: +pulse_r/100, +pulse_e/100 in effect
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 779
+module: XOR2D1BWP16P90, "instance: testbench.test_module.sub_158.U599"
+  SDF Warning: INTERCONNECT from sub_158.U599.Z to U3378.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 781
+module: XOR2D1BWP16P90, "instance: testbench.test_module.sub_158.U600"
+  SDF Warning: INTERCONNECT from sub_158.U600.Z to U3378.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 1280
+module: XNR2D1BWP16P90, "instance: testbench.test_module.sub_158.U650"
+  SDF Warning: INTERCONNECT from sub_158.U650.ZN to U3262.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 1282
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U696"
+  SDF Warning: INTERCONNECT from sub_158.U696.Z to U3262.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 1284
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U750"
+  SDF Warning: INTERCONNECT from sub_158.U750.Z to U3262.C1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 1286
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U684"
+  SDF Warning: INTERCONNECT from sub_158.U684.Z to U3261.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 1288
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U685"
+  SDF Warning: INTERCONNECT from sub_158.U685.Z to U3261.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 1290
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U686"
+  SDF Warning: INTERCONNECT from sub_158.U686.Z to U3261.C1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 1292
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U707"
+  SDF Warning: INTERCONNECT from sub_158.U707.Z to U3260.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+All future warnings not reported; use +sdfverbose to report them.
+See also the log file: sdf_annotation.log
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf, 1294
+module: XOR2D1BWP16P90LVT, "instance: testbench.test_module.sub_158.U700"
+  SDF Warning: INTERCONNECT from sub_158.U700.Z to U3260.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.v:4854, 
+  delay will still be annotated.
+
+
+          Total errors: 0
+          Total warnings: 642
+   ***    SDF annotation completed: Mon Oct 19 22:08:00 2026
+
+
+Starting vcs inline pass...
+142 modules and 1 UDP read.
+recompiling module testbench
+recompiling module FMA_DW01_dec_2
+recompiling module FMA_DW01_dec_3
+recompiling module FMA_DW01_add_6
+recompiling module FMA_DW01_sub_8
+recompiling module FMA_DW01_sub_11
+recompiling module FMA_DW_mult_uns_2
+recompiling module FMA_DW01_sub_13
+recompiling module FMA_DW01_add_8
+recompiling module FMA_DW01_add_9
+recompiling module FMA_DW01_sub_14
+recompiling module FMA_DW01_sub_15
+recompiling module FMA
+recompiling module AN2D1BWP16P90
+recompiling module AN2D1BWP16P90LVT
+recompiling module AN2D1BWP20P90
+recompiling module AN2D2BWP16P90
+recompiling module AN2D2BWP16P90LVT
+recompiling module AN2D8BWP16P90LVT
+recompiling module AN3D1BWP16P90
+recompiling module AN3D1BWP16P90LVT
+recompiling module AN3D2BWP16P90
+recompiling module AN3D2BWP16P90LVT
+recompiling module AN4D1BWP16P90
+recompiling module AN4D1BWP16P90LVT
+recompiling module AO21D1BWP16P90LVT
+recompiling module AOAI211D1BWP16P90LVT
+recompiling module AOI211D1BWP16P90LVT
+recompiling module AOI21D1BWP16P90
+recompiling module AOI21D1BWP16P90LVT
+recompiling module AOI21D2BWP16P90LVT
+recompiling module AOI221D1BWP16P90LVT
+recompiling module AOI222D1BWP16P90
+recompiling module AOI222D1BWP16P90LVT
+recompiling module AOI222D2BWP16P90LVT
+recompiling module AOI22D1BWP16P90
+recompiling module AOI22D1BWP16P90LVT
+recompiling module AOI31D1BWP16P90
+recompiling module AOI31D1BWP16P90LVT
+recompiling module AOI32D1BWP16P90LVT
+recompiling module BUFFD1BWP16P90
+recompiling module BUFFD1BWP16P90LVT
+recompiling module BUFFD2BWP16P90
+recompiling module BUFFD2BWP16P90LVT
+recompiling module BUFFD4BWP16P90LVT
+recompiling module BUFFD4BWP20P90LVT
+recompiling module CKBD1BWP16P90
+recompiling module CKBD1BWP16P90LVT
+recompiling module CKBD4BWP16P90LVT
+recompiling module CKMUX2D1BWP16P90LVT
+50 of 142 modules done
+recompiling module CKND1BWP16P90
+recompiling module CKND1BWP16P90LVT
+recompiling module CKND1BWP20P90LVT
+recompiling module CKND2BWP16P90LVT
+recompiling module CKND2D1BWP16P90LVT
+recompiling module CKND8BWP16P90LVT
+recompiling module FA1D1BWP16P90LVT
+recompiling module FA1D1BWP20P90LVT
+recompiling module FA1D2BWP16P90LVT
+recompiling module HA1D1BWP16P90LVT
+recompiling module HA1D2BWP16P90LVT
+recompiling module IAO21D1BWP16P90
+recompiling module IAO21D1BWP16P90LVT
+recompiling module IINR3D1BWP16P90
+recompiling module IINR4D1BWP16P90LVT
+recompiling module IND2D1BWP16P90
+recompiling module IND2D1BWP16P90LVT
+recompiling module IND2D2BWP16P90
+recompiling module IND2D2BWP16P90LVT
+recompiling module IND3D1BWP16P90
+recompiling module IND3D1BWP16P90LVT
+recompiling module IND4D1BWP16P90
+recompiling module IND4D1BWP16P90LVT
+recompiling module INR2D1BWP16P90
+recompiling module INR2D1BWP16P90LVT
+recompiling module INR2D2BWP16P90LVT
+recompiling module INR3D1BWP16P90
+recompiling module INR4D1BWP16P90LVT
+recompiling module INVD1BWP16P90
+recompiling module INVD1BWP16P90LVT
+recompiling module INVD2BWP16P90LVT
+recompiling module INVD4BWP16P90LVT
+recompiling module IOA21D1BWP16P90LVT
+recompiling module IOAI21D1BWP16P90LVT
+recompiling module MUX2D1BWP16P90
+recompiling module MUX2D1BWP16P90LVT
+recompiling module MUX2ND1BWP16P90
+recompiling module MUX2ND1BWP16P90LVT
+recompiling module MUX2ND2BWP16P90LVT
+recompiling module ND2D1BWP16P90
+recompiling module ND2D1BWP16P90LVT
+recompiling module ND2D2BWP16P90LVT
+recompiling module ND2D4BWP16P90LVT
+recompiling module ND3D1BWP16P90
+recompiling module ND3D1BWP16P90LVT
+recompiling module ND3D2BWP16P90LVT
+recompiling module ND3D4BWP16P90LVT
+recompiling module ND4D1BWP16P90
+recompiling module ND4D1BWP16P90LVT
+recompiling module ND4D2BWP16P90LVT
+100 of 142 modules done
+recompiling module NR2D1BWP16P90
+recompiling module NR2D1BWP16P90LVT
+recompiling module NR2D1BWP20P90
+recompiling module NR2D2BWP16P90LVT
+recompiling module NR3D1BWP16P90LVT
+recompiling module NR4D1BWP16P90
+recompiling module NR4D1BWP16P90LVT
+recompiling module OA21D1BWP16P90
+recompiling module OA21D1BWP16P90LVT
+recompiling module OA22D1BWP16P90
+recompiling module OAI211D1BWP16P90
+recompiling module OAI211D1BWP16P90LVT
+recompiling module OAI21D1BWP16P90
+recompiling module OAI21D1BWP16P90LVT
+recompiling module OAI21D2BWP16P90LVT
+recompiling module OAI221D1BWP16P90
+recompiling module OAI221D1BWP16P90LVT
+recompiling module OAI222D1BWP16P90
+recompiling module OAI222D1BWP16P90LVT
+recompiling module OAI22D1BWP16P90
+recompiling module OAI22D1BWP16P90LVT
+recompiling module OAI31D1BWP16P90
+recompiling module OAI31D1BWP16P90LVT
+recompiling module OAI32D1BWP16P90LVT
+recompiling module OAI33D1BWP16P90
+recompiling module OR2D1BWP16P90
+recompiling module OR2D1BWP16P90LVT
+recompiling module OR3D1BWP16P90
+recompiling module OR3D1BWP16P90LVT
+recompiling module OR4D1BWP16P90LVT
+recompiling module TIELBWP20P90LVT
+recompiling module XNR2D1BWP16P90
+recompiling module XNR2D1BWP16P90LVT
+recompiling module XNR2D1BWP20P90
+recompiling module XNR2D1BWP20P90LVT
+recompiling module XNR2D4BWP16P90LVT
+recompiling module XOR2D1BWP16P90
+recompiling module XOR2D1BWP16P90LVT
+recompiling module XOR2D1BWP20P90
+recompiling module XOR2D2BWP16P90
+recompiling module XOR2D2BWP16P90LVT
+recompiling module XOR3D1BWP16P90LVT
+All of 142 modules done
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/simv ]; then chmod a-x /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/simv; fi
+g++  -o /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/usr/cad/synopsys/vcs/2023.12/linux64/lib -L/usr/cad/synopsys/vcs/2023.12/linux64/lib  -Wl,-rpath-link=./  /usr/lib64/libnuma.so.1   objs/amcQw_d.o   _31912_archive_1.so objs/udps/JvR1L.o   SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /usr/cad/synopsys/vcs/2023.12/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive        _vcs_pli_stub_.o   /usr/cad/synopsys/vcs/2023.12/linux64/lib/vcs_save_restore_new.o /usr/cad/synopsys/verdi/2023.12/share/PLI/VCS/LINUX64/pli.a -ldl  -lc -lm -lpthread -ldl 
+/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/Between/.build/20261019_213709_ed0a24/simv up to date
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid re-execution or '-suppress=ASLR_DETECTED_INFO' to suppress this message.
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version V-2023.12_Full64; Runtime version V-2023.12_Full64;  Oct 19 22:08 2026
+Doing SDF annotation ...... Done
+HW2_SDF_ANNOTATION_REQUESTED /MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/gate_level/Between/FMA.sdf
+--- normal: 200 vectors ---
+normal: checked=200 passed=200 failed=0
+--- special: 15 vectors ---
+special: checked=15 passed=15 failed=0
+OVERALL PASS: all 215 vectors correct
+$finish called from file "/MasterClass/M143010027_ALU/Hws/HW2/FLP_FMA/post_sim/TB_FMA.v", line 296.
+$finish at simulation time             21500000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 21500000 ps
+CPU Time:      1.900 seconds;       Data structure size:   1.6Mb
+Mon Oct 19 22:08:06 2026
+CPU time: 3.479 seconds to compile + .837 seconds to elab + .855 seconds to link + 1.945 seconds in simulation

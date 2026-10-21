@@ -1,0 +1,51 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FXP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:36:58 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: b[5] (input port clocked by clk)
+  Endpoint: d[26] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FXP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 f
+  b[5] (in)                                           0.000000   0.000000 f
+  add_7/B[5] (FXP_adder_DW01_add_1)                   0.000000   0.000000 f
+  add_7/U486/ZN (CKNR2D8BWP16P90LVT)                  0.005382   0.005382 r
+  add_7/U494/ZN (OAI21D4BWP16P90LVT)                  0.006502   0.011884 f
+  add_7/U596/ZN (AOI21D2BWP16P90LVT)                  0.010904   0.022788 r
+  add_7/U684/ZN (OAI21D4BWP16P90LVT)                  0.012759   0.035547 f
+  add_7/U642/ZN (AOI21D4BWP16P90LVT)                  0.016600   0.052147 r
+  add_7/U554/ZN (OAI21D1BWP16P90LVT)                  0.013627   0.065775 f
+  add_7/U653/ZN (XNR2D1BWP16P90LVT)                   0.014713   0.080488 r
+  add_7/SUM[26] (FXP_adder_DW01_add_1)                0.000000   0.080488 r
+  d[26] (out)                                         0.000000   0.080488 r
+  data arrival time                                              0.080488
+
+  max_delay                                           0.010000   0.010000
+  output external delay                               0.000000   0.010000
+  data required time                                             0.010000
+  --------------------------------------------------------------------------
+  data required time                                             0.010000
+  data arrival time                                              -0.080488
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.070488
+
+
+1

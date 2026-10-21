@@ -1,0 +1,264 @@
+Information: Updating design information... (UID-85)
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : FMA_pipe
+Version: T-2022.03
+Date   : Tue Oct 20 15:42:14 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: raw_s2_reg_74_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: round_s3_reg_0_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FMA_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                                 0.0000     0.0000
+  clock network delay (ideal)                           0.2000     0.2000
+  raw_s2_reg_74_/CP (DFQD2BWP16P90LVT)                  0.0000     0.2000 r
+  raw_s2_reg_74_/Q (DFQD2BWP16P90LVT)                   0.0621     0.2621 f
+  U1989/ZN (INVD1BWP16P90LVT)                           0.0067     0.2688 r
+  U1991/ZN (ND2D1BWP16P90LVT)                           0.0110     0.2798 f
+  U1607/ZN (CKND1BWP16P90LVT)                           0.0110     0.2908 r
+  U1779/ZN (OAI21D1BWP16P90LVT)                         0.0147     0.3054 f
+  U1605/Z (AN3D1BWP16P90LVT)                            0.0190     0.3244 f
+  U1993/ZN (ND2D1BWP16P90LVT)                           0.0116     0.3361 r
+  U1994/ZN (ND3D1BWP16P90LVT)                           0.0147     0.3508 f
+  U1622/Z (AN2D1BWP16P90LVT)                            0.0138     0.3645 f
+  U1995/ZN (ND3D1BWP16P90LVT)                           0.0089     0.3735 r
+  U1996/ZN (ND2D1BWP16P90LVT)                           0.0103     0.3838 f
+  U1044/ZN (CKND1BWP16P90LVT)                           0.0066     0.3904 r
+  U1436/Z (AN2D1BWP16P90LVT)                            0.0177     0.4081 r
+  U1773/ZN (ND3D1BWP16P90LVT)                           0.0183     0.4263 f
+  U1999/ZN (ND3D1BWP16P90LVT)                           0.0125     0.4388 r
+  U1445/ZN (CKND1BWP16P90LVT)                           0.0084     0.4472 f
+  U2000/ZN (ND2D1BWP16P90LVT)                           0.0097     0.4569 r
+  U2001/ZN (ND3D1BWP16P90LVT)                           0.0142     0.4711 f
+  U2002/ZN (ND2D1BWP16P90LVT)                           0.0097     0.4808 r
+  U1769/ZN (IINR3D1BWP16P90LVT)                         0.0104     0.4912 f
+  U2003/ZN (ND3D1BWP16P90LVT)                           0.0104     0.5016 r
+  U1599/Z (AN3D1BWP16P90LVT)                            0.0206     0.5222 r
+  U1776/ZN (ND2D1BWP16P90LVT)                           0.0152     0.5374 f
+  U2004/ZN (ND3D1BWP16P90LVT)                           0.0139     0.5513 r
+  U1604/Z (AN3D1BWP16P90LVT)                            0.0226     0.5739 r
+  U2006/ZN (ND3D1BWP16P90LVT)                           0.0174     0.5913 f
+  U2007/ZN (ND3D1BWP16P90LVT)                           0.0121     0.6034 r
+  U1446/ZN (CKND1BWP16P90LVT)                           0.0083     0.6117 f
+  U2012/ZN (OAI21D1BWP16P90LVT)                         0.0080     0.6197 r
+  U1608/ZN (CKND1BWP16P90LVT)                           0.0105     0.6302 f
+  U1766/ZN (AOI21D1BWP16P90LVT)                         0.0101     0.6402 r
+  U2013/ZN (ND3D1BWP16P90LVT)                           0.0146     0.6548 f
+  U1598/ZN (IND2D1BWP16P90LVT)                          0.0158     0.6706 f
+  U1442/ZN (CKND1BWP16P90LVT)                           0.0116     0.6823 r
+  U2017/ZN (ND2D1BWP16P90LVT)                           0.0176     0.6998 f
+  U2019/ZN (ND3D1BWP16P90LVT)                           0.0146     0.7144 r
+  U1438/ZN (CKND1BWP16P90LVT)                           0.0105     0.7250 f
+  U2024/ZN (ND3D1BWP16P90LVT)                           0.0121     0.7370 r
+  U2025/ZN (ND4D1BWP16P90LVT)                           0.0189     0.7559 f
+  U2026/ZN (ND2D1BWP16P90LVT)                           0.0110     0.7669 r
+  U1775/ZN (INR2D1BWP16P90LVT)                          0.0105     0.7774 f
+  U1602/Z (AN3D1BWP16P90LVT)                            0.0184     0.7958 f
+  U2028/ZN (ND2D1BWP16P90LVT)                           0.0123     0.8081 r
+  U2029/ZN (ND3D1BWP16P90LVT)                           0.0148     0.8229 f
+  U1615/Z (AN2D1BWP16P90LVT)                            0.0138     0.8367 f
+  U2030/ZN (ND3D1BWP16P90LVT)                           0.0089     0.8457 r
+  U1597/ZN (ND2D1BWP16P90LVT)                           0.0128     0.8585 f
+  U1447/ZN (CKND1BWP16P90LVT)                           0.0093     0.8678 r
+  U1614/Z (AN3D1BWP16P90LVT)                            0.0200     0.8878 r
+  U1606/Z (AN2D1BWP16P90LVT)                            0.0143     0.9020 r
+  U1435/ZN (ND2D1BWP16P90LVT)                           0.0122     0.9142 f
+  U1433/ZN (ND2D1BWP16P90LVT)                           0.0138     0.9280 r
+  U1239/ZN (CKND1BWP16P90LVT)                           0.0115     0.9394 f
+  U1613/Z (AN2D1BWP16P90LVT)                            0.0146     0.9540 f
+  U2036/ZN (ND2D1BWP16P90LVT)                           0.0104     0.9644 r
+  U2037/ZN (ND3D1BWP16P90LVT)                           0.0147     0.9791 f
+  U1616/Z (AN2D1BWP16P90LVT)                            0.0138     0.9929 f
+  U1780/ZN (ND3D1BWP16P90LVT)                           0.0088     1.0016 r
+  U2038/ZN (OAI211D1BWP16P90LVT)                        0.0146     1.0162 f
+  U1441/ZN (CKND1BWP16P90LVT)                           0.0117     1.0279 r
+  U1431/ZN (IOAI21D1BWP16P90LVT)                        0.0120     1.0400 f
+  U1045/ZN (CKND1BWP16P90LVT)                           0.0071     1.0471 r
+  U1238/Z (AN2D1BWP16P90LVT)                            0.0146     1.0617 r
+  U2039/ZN (ND2D1BWP16P90LVT)                           0.0149     1.0766 f
+  U1767/ZN (ND3D1BWP16P90LVT)                           0.0140     1.0906 r
+  U2040/ZN (ND3D1BWP16P90LVT)                           0.0151     1.1057 f
+  U1432/ZN (CKND1BWP16P90LVT)                           0.0165     1.1222 r
+  U2041/ZN (ND3D1BWP16P90LVT)                           0.0161     1.1382 f
+  U1620/Z (OA21D1BWP16P90LVT)                           0.0162     1.1544 f
+  U2042/ZN (ND3D1BWP16P90LVT)                           0.0095     1.1639 r
+  U1612/Z (AN2D1BWP16P90LVT)                            0.0147     1.1787 r
+  U2043/ZN (ND3D1BWP16P90LVT)                           0.0134     1.1921 f
+  U2044/ZN (ND2D1BWP16P90LVT)                           0.0122     1.2043 r
+  U1439/ZN (CKND1BWP16P90LVT)                           0.0106     1.2149 f
+  U1772/ZN (ND3D1BWP16P90LVT)                           0.0103     1.2253 r
+  U2045/ZN (ND4D1BWP16P90LVT)                           0.0188     1.2441 f
+  U1621/Z (AN2D1BWP16P90LVT)                            0.0151     1.2592 f
+  U1443/Z (AN3D1BWP16P90LVT)                            0.0155     1.2747 f
+  U2046/ZN (ND2D1BWP16P90LVT)                           0.0105     1.2852 r
+  U2047/ZN (ND3D1BWP16P90LVT)                           0.0173     1.3025 f
+  U1600/Z (AN3D1BWP16P90LVT)                            0.0218     1.3243 f
+  U2049/ZN (ND3D1BWP16P90LVT)                           0.0131     1.3374 r
+  U1617/Z (AN3D1BWP16P90LVT)                            0.0191     1.3565 r
+  U2050/ZN (ND2D1BWP16P90LVT)                           0.0120     1.3686 f
+  U2051/ZN (ND3D1BWP16P90LVT)                           0.0108     1.3794 r
+  U1765/ZN (CKND1BWP16P90LVT)                           0.0062     1.3855 f
+  U2052/ZN (AOI21D1BWP16P90LVT)                         0.0087     1.3943 r
+  U2053/ZN (ND3D1BWP16P90LVT)                           0.0141     1.4083 f
+  U1609/ZN (CKND1BWP16P90LVT)                           0.0115     1.4198 r
+  U2054/ZN (ND3D1BWP16P90LVT)                           0.0139     1.4337 f
+  U1603/Z (AN3D1BWP16P90LVT)                            0.0194     1.4531 f
+  U1771/ZN (ND2D1BWP16P90LVT)                           0.0133     1.4663 r
+  U2055/ZN (ND3D1BWP16P90LVT)                           0.0181     1.4844 f
+  U1618/Z (AN3D1BWP16P90LVT)                            0.0173     1.5017 f
+  U2056/ZN (ND2D1BWP16P90LVT)                           0.0098     1.5115 r
+  U1611/Z (AN2D1BWP16P90LVT)                            0.0182     1.5296 r
+  U2059/ZN (ND3D1BWP16P90LVT)                           0.0175     1.5471 f
+  U2060/ZN (ND4D1BWP16P90LVT)                           0.0135     1.5606 r
+  U1778/Z (AN3D1BWP16P90LVT)                            0.0191     1.5797 r
+  U1610/Z (AN4D1BWP16P90LVT)                            0.0224     1.6021 r
+  U1440/Z (AN2D1BWP16P90LVT)                            0.0198     1.6219 r
+  U2063/ZN (ND3D1BWP16P90LVT)                           0.0174     1.6393 f
+  U2064/ZN (ND4D1BWP16P90LVT)                           0.0129     1.6522 r
+  U1770/Z (AN3D1BWP16P90LVT)                            0.0190     1.6712 r
+  U2065/ZN (ND2D1BWP16P90LVT)                           0.0101     1.6812 f
+  U1437/ZN (CKND1BWP16P90LVT)                           0.0135     1.6948 r
+  U2066/ZN (ND3D1BWP16P90LVT)                           0.0177     1.7125 f
+  U1619/Z (OA21D1BWP16P90LVT)                           0.0173     1.7297 f
+  U2067/ZN (ND3D1BWP16P90LVT)                           0.0094     1.7392 r
+  U1596/Z (AN2D1BWP16P90LVT)                            0.0179     1.7571 r
+  U2082/ZN (ND3D1BWP16P90LVT)                           0.0147     1.7718 f
+  U1601/Z (AN3D1BWP16P90LVT)                            0.0174     1.7893 f
+  U1774/ZN (ND2D1BWP16P90LVT)                           0.0117     1.8010 r
+  U2083/ZN (ND3D1BWP16P90LVT)                           0.0174     1.8184 f
+  U2084/ZN (ND4D1BWP16P90LVT)                           0.0125     1.8308 r
+  U2085/ZN (ND4D1BWP16P90LVT)                           0.0180     1.8488 f
+  U2088/ZN (NR3D1BWP16P90LVT)                           0.0139     1.8627 r
+  U2089/ZN (ND3D1BWP16P90LVT)                           0.0300     1.8927 f
+  U1451/ZN (CKND1BWP16P90LVT)                           0.0370     1.9297 r
+  U1242/ZN (ND2D1BWP16P90LVT)                           0.0609     1.9906 f
+  U2095/ZN (ND2D1BWP16P90LVT)                           0.0259     2.0165 r
+  add_0_root_sub_0_root_sub_104/B[3] (FMA_pipe_DW01_add_4)
+                                                        0.0000     2.0165 r
+  add_0_root_sub_0_root_sub_104/U1_3/S (FA1D1BWP16P90LVT)
+                                                        0.0400     2.0565 f
+  add_0_root_sub_0_root_sub_104/SUM[3] (FMA_pipe_DW01_add_4)
+                                                        0.0000     2.0565 f
+  U1632/Z (XOR2D1BWP16P90LVT)                           0.0553     2.1118 r
+  U1460/ZN (CKND1BWP16P90LVT)                           0.0412     2.1530 f
+  U2177/ZN (ND2D1BWP16P90LVT)                           0.0721     2.2251 r
+  U1459/Z (BUFFD1BWP16P90LVT)                           0.0232     2.2483 r
+  U1246/ZN (CKND1BWP16P90LVT)                           0.0320     2.2803 f
+  U2182/ZN (ND2D1BWP16P90LVT)                           0.0259     2.3062 r
+  U2252/ZN (NR2D1BWP16P90LVT)                           0.0125     2.3187 f
+  sub_174/A[1] (FMA_pipe_DW01_dec_0)                    0.0000     2.3187 f
+  sub_174/U3/Z (OR2D1BWP16P90LVT)                       0.0173     2.3360 f
+  sub_174/U150/Z (OR2D1BWP16P90)                        0.0238     2.3598 f
+  sub_174/U149/Z (OR2D1BWP16P90)                        0.0251     2.3848 f
+  sub_174/U148/Z (OR2D1BWP16P90)                        0.0251     2.4099 f
+  sub_174/U147/Z (OR2D1BWP16P90)                        0.0251     2.4349 f
+  sub_174/U146/Z (OR2D1BWP16P90)                        0.0251     2.4600 f
+  sub_174/U145/Z (OR2D1BWP16P90)                        0.0253     2.4853 f
+  sub_174/U2/Z (OR2D1BWP16P90LVT)                       0.0170     2.5023 f
+  sub_174/U1/ZN (NR2D1BWP16P90LVT)                      0.0131     2.5154 r
+  sub_174/U4/ZN (ND2D1BWP16P90LVT)                      0.0141     2.5295 f
+  sub_174/U5/Z (OR2D1BWP16P90LVT)                       0.0176     2.5470 f
+  sub_174/U6/Z (OR2D1BWP16P90LVT)                       0.0164     2.5634 f
+  sub_174/U7/Z (OR2D1BWP16P90LVT)                       0.0162     2.5796 f
+  sub_174/U140/Z (OR2D1BWP16P90)                        0.0238     2.6034 f
+  sub_174/U138/Z (OR2D1BWP16P90)                        0.0251     2.6284 f
+  sub_174/U136/Z (OR2D1BWP16P90)                        0.0251     2.6535 f
+  sub_174/U134/Z (OR2D1BWP16P90)                        0.0251     2.6786 f
+  sub_174/U132/Z (OR2D1BWP16P90)                        0.0251     2.7036 f
+  sub_174/U130/Z (OR2D1BWP16P90)                        0.0251     2.7287 f
+  sub_174/U127/Z (OR2D1BWP16P90)                        0.0253     2.7540 f
+  sub_174/U13/Z (OR2D1BWP16P90LVT)                      0.0173     2.7713 f
+  sub_174/U19/Z (OR2D1BWP16P90LVT)                      0.0164     2.7877 f
+  sub_174/U23/Z (OR2D1BWP16P90LVT)                      0.0162     2.8039 f
+  sub_174/U122/Z (OR2D1BWP16P90)                        0.0238     2.8277 f
+  sub_174/U120/Z (OR2D1BWP16P90)                        0.0251     2.8528 f
+  sub_174/U118/Z (OR2D1BWP16P90)                        0.0251     2.8778 f
+  sub_174/U116/Z (OR2D1BWP16P90)                        0.0251     2.9029 f
+  sub_174/U114/Z (OR2D1BWP16P90)                        0.0251     2.9280 f
+  sub_174/U112/Z (OR2D1BWP16P90)                        0.0251     2.9530 f
+  sub_174/U109/Z (OR2D1BWP16P90)                        0.0253     2.9783 f
+  sub_174/U14/Z (OR2D1BWP16P90LVT)                      0.0173     2.9957 f
+  sub_174/U10/Z (OR2D1BWP16P90LVT)                      0.0164     3.0121 f
+  sub_174/U22/Z (OR2D1BWP16P90LVT)                      0.0162     3.0282 f
+  sub_174/U104/Z (OR2D1BWP16P90)                        0.0238     3.0520 f
+  sub_174/U102/Z (OR2D1BWP16P90)                        0.0251     3.0771 f
+  sub_174/U100/Z (OR2D1BWP16P90)                        0.0251     3.1021 f
+  sub_174/U98/Z (OR2D1BWP16P90)                         0.0251     3.1272 f
+  sub_174/U96/Z (OR2D1BWP16P90)                         0.0251     3.1523 f
+  sub_174/U94/Z (OR2D1BWP16P90)                         0.0251     3.1773 f
+  sub_174/U91/Z (OR2D1BWP16P90)                         0.0253     3.2027 f
+  sub_174/U8/Z (OR2D1BWP16P90LVT)                       0.0173     3.2200 f
+  sub_174/U9/Z (OR2D1BWP16P90LVT)                       0.0164     3.2364 f
+  sub_174/U11/Z (OR2D1BWP16P90LVT)                      0.0162     3.2526 f
+  sub_174/U86/Z (OR2D1BWP16P90)                         0.0238     3.2763 f
+  sub_174/U84/Z (OR2D1BWP16P90)                         0.0251     3.3014 f
+  sub_174/U82/Z (OR2D1BWP16P90)                         0.0251     3.3264 f
+  sub_174/U80/Z (OR2D1BWP16P90)                         0.0251     3.3515 f
+  sub_174/U78/Z (OR2D1BWP16P90)                         0.0251     3.3766 f
+  sub_174/U76/Z (OR2D1BWP16P90)                         0.0251     3.4016 f
+  sub_174/U73/Z (OR2D1BWP16P90)                         0.0253     3.4270 f
+  sub_174/U15/Z (OR2D1BWP16P90LVT)                      0.0173     3.4443 f
+  sub_174/U17/Z (OR2D1BWP16P90LVT)                      0.0164     3.4607 f
+  sub_174/U20/Z (OR2D1BWP16P90LVT)                      0.0162     3.4769 f
+  sub_174/U68/Z (OR2D1BWP16P90)                         0.0238     3.5006 f
+  sub_174/U66/Z (OR2D1BWP16P90)                         0.0251     3.5257 f
+  sub_174/U64/Z (OR2D1BWP16P90)                         0.0251     3.5508 f
+  sub_174/U62/Z (OR2D1BWP16P90)                         0.0251     3.5758 f
+  sub_174/U60/Z (OR2D1BWP16P90)                         0.0251     3.6009 f
+  sub_174/U58/Z (OR2D1BWP16P90)                         0.0251     3.6260 f
+  sub_174/U55/Z (OR2D1BWP16P90)                         0.0253     3.6513 f
+  sub_174/U16/Z (OR2D1BWP16P90LVT)                      0.0173     3.6686 f
+  sub_174/U18/Z (OR2D1BWP16P90LVT)                      0.0164     3.6850 f
+  sub_174/U21/Z (OR2D1BWP16P90LVT)                      0.0162     3.7012 f
+  sub_174/U50/Z (OR2D1BWP16P90)                         0.0238     3.7249 f
+  sub_174/U48/Z (OR2D1BWP16P90)                         0.0251     3.7500 f
+  sub_174/U46/Z (OR2D1BWP16P90)                         0.0251     3.7751 f
+  sub_174/U44/Z (OR2D1BWP16P90)                         0.0251     3.8001 f
+  sub_174/U42/Z (OR2D1BWP16P90)                         0.0251     3.8252 f
+  sub_174/U40/Z (OR2D1BWP16P90)                         0.0251     3.8503 f
+  sub_174/U37/Z (OR2D1BWP16P90)                         0.0251     3.8753 f
+  sub_174/U35/Z (OR2D1BWP16P90)                         0.0251     3.9004 f
+  sub_174/U33/Z (OR2D1BWP16P90)                         0.0251     3.9255 f
+  sub_174/U31/Z (OR2D1BWP16P90)                         0.0245     3.9500 f
+  sub_174/U28/ZN (NR2D1BWP16P90)                        0.0132     3.9632 r
+  sub_174/U27/Z (XOR2D1BWP16P90)                        0.0331     3.9963 f
+  sub_174/SUM[75] (FMA_pipe_DW01_dec_0)                 0.0000     3.9963 f
+  U2781/ZN (AOI222D1BWP16P90LVT)                        0.0193     4.0157 r
+  U2783/ZN (ND4D1BWP16P90LVT)                           0.0161     4.0318 f
+  U2794/ZN (NR4D1BWP16P90LVT)                           0.0158     4.0476 r
+  U2798/ZN (IOA21D1BWP16P90LVT)                         0.0153     4.0629 r
+  U2808/ZN (OAI211D1BWP16P90LVT)                        0.0113     4.0743 f
+  round_s3_reg_0_/D (DFQD2BWP16P90LVT)                  0.0000     4.0743 f
+  data arrival time                                                4.0743
+
+  clock clk (rise edge)                                 4.0000     4.0000
+  clock network delay (ideal)                           0.2000     4.2000
+  clock uncertainty                                    -0.0200     4.1800
+  round_s3_reg_0_/CP (DFQD2BWP16P90LVT)                 0.0000     4.1800 r
+  library setup time                                    0.0196     4.1996
+  data required time                                               4.1996
+  --------------------------------------------------------------------------
+  data required time                                               4.1996
+  data arrival time                                               -4.0743
+  --------------------------------------------------------------------------
+  slack (MET)                                                      0.1253
+
+
+1

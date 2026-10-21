@@ -1,0 +1,75 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FXP_FMA
+Version: T-2022.03
+Date   : Mon Oct 19 21:40:51 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: a[9] (input port clocked by clk)
+  Endpoint: d[22] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FXP_FMA            ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 f
+  a[9] (in)                                           0.000000   0.000000 f
+  mult_17/a[9] (FXP_FMA_DW_mult_tc_2)                 0.000000   0.000000 f
+  mult_17/U3513/ZN (CKND16BWP16P90LVT)                0.002836   0.002836 r
+  mult_17/U3148/ZN (ND2D8BWP16P90LVT)                 0.005695   0.008531 f
+  mult_17/U2875/ZN (ND2D4BWP16P90LVT)                 0.005355   0.013886 r
+  mult_17/U3107/ZN (IND2D4BWP16P90LVT)                0.012276   0.026162 r
+  mult_17/U3574/Z (BUFFD4BWP16P90LVT)                 0.014384   0.040546 r
+  mult_17/U3542/ZN (OAI22D4BWP16P90LVT)               0.009395   0.049940 f
+  mult_17/U1155/S (FA1D1BWP16P90LVT)                  0.042152   0.092093 r
+  mult_17/U4819/ZN (ND2D1BWP16P90LVT)                 0.010544   0.102637 f
+  mult_17/U4136/ZN (ND3D2BWP16P90LVT)                 0.008362   0.110999 r
+  mult_17/U4302/CO (FA1D2BWP16P90LVT)                 0.027020   0.138019 r
+  mult_17/U4301/S (FA1D2BWP16P90LVT)                  0.047926   0.185945 f
+  mult_17/U3971/Z (XOR2D4BWP16P90LVT)                 0.021113   0.207058 r
+  mult_17/U3972/Z (XOR2D4BWP16P90LVT)                 0.017789   0.224847 f
+  mult_17/U3483/Z (OR2D2BWP16P90LVT)                  0.016715   0.241562 f
+  mult_17/U2618/ZN (ND2D2BWP16P90LVT)                 0.008372   0.249934 r
+  mult_17/U4003/ZN (OAI21D2BWP16P90LVT)               0.007844   0.257778 f
+  mult_17/U582/ZN (AOI21D2BWP16P90LVT)                0.012759   0.270537 r
+  mult_17/U4841/ZN (OAI21D4BWP16P90LVT)               0.014699   0.285236 f
+  mult_17/U3423/ZN (AOI21D4BWP16P90LVT)               0.012250   0.297486 r
+  mult_17/U3065/Z (BUFFD4BWP16P90LVT)                 0.014649   0.312135 r
+  mult_17/U296/ZN (OAI21D1BWP16P90LVT)                0.011269   0.323404 f
+  mult_17/U4829/ZN (XNR2D2BWP16P90LVT)                0.020385   0.343789 r
+  mult_17/product[52] (FXP_FMA_DW_mult_tc_2)          0.000000   0.343789 r
+  add_19/A[52] (FXP_FMA_DW01_add_2)                   0.000000   0.343789 r
+  add_19/U743/ZN (NR2D2BWP16P90LVT)                   0.007628   0.351417 f
+  add_19/U710/ZN (NR2D2BWP16P90LVT)                   0.011104   0.362521 r
+  add_19/U675/ZN (ND2D2BWP16P90LVT)                   0.010977   0.373498 f
+  add_19/U914/ZN (OAI21D2BWP16P90LVT)                 0.014430   0.387928 r
+  add_19/U912/ZN (AOI21D4BWP16P90LVT)                 0.010822   0.398750 f
+  add_19/U122/ZN (OAI21D1BWP16P90LVT)                 0.014278   0.413029 r
+  add_19/U896/ZN (XNR2D1BWP16P90LVT)                  0.015268   0.428297 f
+  add_19/SUM[54] (FXP_FMA_DW01_add_2)                 0.000000   0.428297 f
+  d[22] (out)                                         0.000000   0.428297 f
+  data arrival time                                              0.428297
+
+  max_delay                                           0.010000   0.010000
+  output external delay                               0.000000   0.010000
+  data required time                                             0.010000
+  --------------------------------------------------------------------------
+  data required time                                             0.010000
+  data arrival time                                              -0.428297
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.418297
+
+
+1

@@ -1,0 +1,864 @@
+#######################################################
+#                                                     
+#  Innovus Command Logging File                     
+#  Created on Tue Oct 20 16:32:38 2026                
+#                                                     
+#######################################################
+
+#@(#)CDS: Innovus v21.17-s075_1 (64bit) 03/15/2023 11:17 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: NanoRoute 21.17-s075_1 NR230308-2354/21_17-UB (database version 18.20.604) {superthreading v2.17}
+#@(#)CDS: AAE 21.17-s026 (64bit) 03/15/2023 (Linux 3.10.0-693.el7.x86_64)
+#@(#)CDS: CTE 21.17-s025_1 () Mar 14 2023 11:00:06 ( )
+#@(#)CDS: SYNTECH 21.17-s007_1 () Feb 20 2023 06:56:35 ( )
+#@(#)CDS: CPE v21.17-s068
+#@(#)CDS: IQuantus/TQuantus 21.1.1-s939 (64bit) Wed Nov 9 09:34:24 PST 2022 (Linux 3.10.0-693.el7.x86_64)
+
+set_db init_power_nets VDD
+set_db init_ground_nets VSS
+read_mmmc mmmc.view.stylus
+#@ Begin verbose source mmmc.view.stylus (pre)
+create_library_set -name lib_ss0p72v125c\
+    -timing\
+    {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib}
+create_library_set -name lib_ss0p72vm40c\
+    -timing\
+    {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib}
+create_library_set -name lib_ff0p88v125c\
+    -timing\
+    {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib}
+create_library_set -name lib_ff0p88vm40c\
+    -timing\
+    {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib}
+create_timing_condition -name TC_ss0p72v125c\
+    -library_sets lib_ss0p72v125c
+create_timing_condition -name TC_ff0p88vm40c\
+    -library_sets lib_ff0p88vm40c
+create_timing_condition -name TC_ss0p72vm40c\
+    -library_sets lib_ss0p72vm40c
+create_timing_condition -name TC_ff0p88v125c\
+    -library_sets lib_ff0p88v125c
+create_rc_corner -name RC_best\
+    -pre_route_res 1\
+    -post_route_res 1\
+    -pre_route_cap 1\
+    -post_route_cap 1\
+    -post_route_cross_cap 1\
+    -pre_route_clock_res 0\
+    -pre_route_clock_cap 0\
+    -qrc_tech /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/best/qrcTechFile
+create_rc_corner -name RC_worst\
+    -pre_route_res 1\
+    -post_route_res 1\
+    -pre_route_cap 1\
+    -post_route_cap 1\
+    -post_route_cross_cap 1\
+    -pre_route_clock_res 0\
+    -pre_route_clock_cap 0\
+    -qrc_tech /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile
+create_delay_corner -name DC_ff0p88v125c\
+    -timing_condition {TC_ff0p88v125c}\
+    -rc_corner RC_best
+create_delay_corner -name DC_ss0p72v125c\
+    -timing_condition {TC_ss0p72v125c}\
+    -rc_corner RC_worst
+create_delay_corner -name DC_ff0p88vm40c\
+    -timing_condition {TC_ff0p88vm40c}\
+    -rc_corner RC_best
+create_delay_corner -name DC_ss0p72vm40c\
+    -timing_condition {TC_ss0p72vm40c}\
+    -rc_corner RC_worst
+create_constraint_mode -name CM_func\
+    -sdc_files ../gate_level/SYN/FMA_pipe_syn.sdc
+create_analysis_view -name AV_func_ff0p88v125c -constraint_mode CM_func -delay_corner DC_ff0p88v125c
+create_analysis_view -name AV_func_ff0p88vm40c -constraint_mode CM_func -delay_corner DC_ff0p88vm40c
+create_analysis_view -name AV_func_ss0p72v125c -constraint_mode CM_func -delay_corner DC_ss0p72v125c
+create_analysis_view -name AV_func_ss0p72vm40c -constraint_mode CM_func -delay_corner DC_ss0p72vm40c
+set_analysis_view   -setup {AV_func_ss0p72v125c AV_func_ss0p72vm40c} -hold {AV_func_ss0p72v125c AV_func_ss0p72vm40c AV_func_ff0p88v125c AV_func_ff0p88vm40c}\
+                    -leakage AV_func_ff0p88v125c -dynamic AV_func_ff0p88v125c
+#@ End verbose source mmmc.view.stylus
+source -quiet lab_script/config.tcl
+#@ source lab_script/config_cts.tcl
+#@ Begin verbose source (pre): source lab_script/config_cts.tcl
+set_db cts_buffer_cells {CKBD16BWP16P90LVT CKBD12BWP16P90LVT CKBD8BWP16P90LVT CKBD4BWP16P90LVT CKBD2BWP16P90LVT}
+set_db cts_inverter_cells {CKND16BWP16P90LVT CKND12BWP16P90LVT CKND8BWP16P90LVT CKND4BWP16P90LVT CKND2BWP16P90LVT}
+create_route_rule -name TrunkNDR \
+    -width {M1:M3 0.032 M4:M7 0.04 M8:M9 0.124 M10:M11 0.45}\
+    -spacing {M1 0.03 M2:M3 0.032 M4:M7 0.04 M8:M9 0.128 M10:M11 0.45}\
+    -generate_via
+create_route_rule -name LeafNDR \
+    -width {M1:M3 0.032 M4:M7 0.04 M8:M9 0.062 M10:M11 0.45}\
+    -spacing {M1 0.03 M2:M3 0.032 M4:M7 0.08 M8:M9 0.064 M10:M11 0.45}\
+    -generate_via
+if {[llength [get_db route_types ClkTrunkNDR]] == 0} {
+create_route_type -name ClkTrunkNDR  -route_rule TrunkNDR  -top_preferred_layer 7  -bottom_preferred_layer 6  -min_stack_layer 5  -shield_net VSS
+}
+if {[llength [get_db route_types ClkLeafNDR]] == 0} {
+create_route_type   -name ClkLeafNDR  -route_rule LeafNDR  -top_preferred_layer 5  -bottom_preferred_layer 4  -min_stack_layer 5  
+}
+set_db cts_route_type_top ClkTrunkNDR
+set_db cts_route_type_trunk ClkTrunkNDR
+set_db cts_route_type_leaf ClkLeafNDR
+set_db cts_target_max_transition_time_top 150ps
+set_db cts_target_max_transition_time_trunk 150ps
+set_db cts_target_max_transition_time_leaf 100ps
+set_db timing_enable_generated_clock_edge_based_source_latency false
+set_db cts_update_clock_latency false
+#@ End verbose source: lab_script/config_cts.tcl
+write_db dbs/init.enc
+set_io_flow_flag 0
+create_floorplan -site core -core_density_size 1 0.5 80.0 80.0 80.0 80.0
+#@ source lab_script/pns.tcl
+#@ Begin verbose source (pre): source lab_script/pns.tcl
+proc createPowerStripeRail { direction layer nets offset width spacing pitch RTopLayer RBotLayer BTopLayer BBotLayer} {
+    variable curRegionBKG
+
+    # Convert the short direction name into the value expected by add_stripes.
+    set direction [expr {$direction eq "H" ? "horizontal" : "vertical" }]
+   
+    # Configure stripe behavior for rails that connect to existing rings.
+    set_db add_stripes_ignore_block_check false
+    set_db add_stripes_break_at none
+    set_db add_stripes_route_over_rows_only false
+    set_db add_stripes_rows_without_stripes_only false
+    set_db add_stripes_extend_to_closest_target ring
+    set_db add_stripes_stop_at_last_wire_for_area false
+    set_db add_stripes_partial_set_through_domain false
+    set_db add_stripes_ignore_non_default_domains false
+    set_db add_stripes_trim_antenna_back_to_shape none
+    set_db add_stripes_spacing_type edge_to_edge
+    set_db add_stripes_spacing_from_block 0
+    set_db add_stripes_stripe_min_length stripe_width
+    set_db add_stripes_stacked_via_top_layer M5
+    set_db add_stripes_stacked_via_bottom_layer M1
+    set_db add_stripes_via_using_exact_crossover_size false
+    set_db add_stripes_split_vias false
+    set_db add_stripes_orthogonal_only true
+    set_db add_stripes_allow_jog { block_ring }
+    set_db add_stripes_skip_via_on_pin {  Block standardcell }
+    set_db add_stripes_skip_via_on_wire_shape {  noshape Stripe  }
+    add_stripes -nets $nets -layer $layer -direction $direction -width $width -spacing $spacing -set_to_set_distance $pitch  -start_from bottom -start_offset $offset -switch_layer_over_obs false -pad_core_ring_top_layer_limit $RTopLayer -pad_core_ring_bottom_layer_limit $RBotLayer -block_ring_top_layer_limit $BTopLayer -block_ring_bottom_layer_limit $BBotLayer -use_wire_group 0 -snap_wire_center_to_grid none -user_class "manual_rail"
+}
+proc createPowerStripe { direction layer nets offset width spacing pitch snap} {
+
+    # Find the neighboring routing layers for stacked-via generation.
+    set LayerNum [get_db layer:$layer .route_index] 
+    if {$LayerNum > 1} {
+        set botLayerNum [expr $LayerNum - 1]
+    }
+    if {$LayerNum < 11} {
+        set topLayerNum [expr $LayerNum + 1]
+    }
+    set botLayer    [get_db layer:$botLayerNum .name]
+    set topLayer    [get_db layer:$topLayerNum .name]
+
+    # Convert the short direction name into the value expected by add_stripes.
+    set direction [expr {$direction eq "H" ? "horizontal" : "vertical" }]
+   
+    # Configure stripe creation, via generation, obstacle handling, and snapping.
+    set_db add_stripes_ignore_block_check false
+    set_db add_stripes_break_at none
+    set_db add_stripes_route_over_rows_only false
+    set_db add_stripes_rows_without_stripes_only false
+    set_db add_stripes_extend_to_closest_target ring
+    set_db add_stripes_stop_at_last_wire_for_area false
+    set_db add_stripes_partial_set_through_domain false
+    set_db add_stripes_ignore_non_default_domains false
+    set_db add_stripes_trim_antenna_back_to_shape none
+    set_db add_stripes_spacing_type edge_to_edge
+    set_db add_stripes_spacing_from_block 0
+    set_db add_stripes_stripe_min_length stripe_width
+    set_db add_stripes_stacked_via_top_layer $topLayer
+    set_db add_stripes_stacked_via_bottom_layer $botLayer
+    set_db add_stripes_via_using_exact_crossover_size false
+    set_db add_stripes_split_vias false
+    set_db add_stripes_orthogonal_only true
+    set_db add_stripes_allow_jog { block_ring }
+    set_db add_stripes_skip_via_on_pin {  standardcell }
+    set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+    add_stripes -nets $nets -layer $layer -direction $direction -width $width -spacing $spacing -set_to_set_distance $pitch -start_from bottom -start_offset $offset -switch_layer_over_obs false -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit $topLayer -pad_core_ring_bottom_layer_limit $botLayer -block_ring_top_layer_limit $topLayer -block_ring_bottom_layer_limit $botLayer -use_wire_group 0 -snap_wire_center_to_grid $snap 
+}
+proc createSelectBlockStripe { direction layer nets offset width spacing pitch snap} {
+
+    # Find the neighboring routing layers for stacked-via generation.
+    set LayerNum [get_db layer:$layer .route_index] 
+    if {$LayerNum > 1} {
+        set botLayerNum [expr $LayerNum - 1]
+    }
+    if {$LayerNum < 11} {
+        set topLayerNum [expr $LayerNum + 1]
+    }
+    set botLayer    [get_db layer:$botLayerNum .name]
+    set topLayer    [get_db layer:$topLayerNum .name]
+
+    # Convert the short direction name into the value expected by add_stripes.
+    set direction [expr {$direction eq "H" ? "horizontal" : "vertical" }]
+
+    # Configure stripe creation for selected block/power-domain regions.
+    set_db add_stripes_ignore_block_check false
+    set_db add_stripes_break_at none
+    set_db add_stripes_route_over_rows_only false
+    set_db add_stripes_rows_without_stripes_only false
+    set_db add_stripes_extend_to_closest_target ring
+    set_db add_stripes_stop_at_last_wire_for_area false
+    set_db add_stripes_partial_set_through_domain false
+    set_db add_stripes_ignore_non_default_domains false
+    set_db add_stripes_trim_antenna_back_to_shape none
+    set_db add_stripes_spacing_type edge_to_edge
+    set_db add_stripes_spacing_from_block 0
+    set_db add_stripes_stripe_min_length stripe_width
+    set_db add_stripes_stacked_via_top_layer $topLayer
+    set_db add_stripes_stacked_via_bottom_layer $botLayer
+    set_db add_stripes_via_using_exact_crossover_size false
+    set_db add_stripes_split_vias false
+    set_db add_stripes_orthogonal_only true
+    set_db add_stripes_allow_jog none
+    set_db add_stripes_skip_via_on_pin {  standardcell }
+    set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+    add_stripes -nets $nets -layer $layer -direction $direction -width $width -spacing $spacing -set_to_set_distance $pitch -over_power_domain 1 -start_from bottom -start_offset $offset -switch_layer_over_obs false -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit $topLayer -pad_core_ring_bottom_layer_limit $botLayer -block_ring_top_layer_limit $topLayer -block_ring_bottom_layer_limit $botLayer -use_wire_group 0 -snap_wire_center_to_grid $snap 
+}
+proc createRegionStripe { direction layer nets offset width spacing pitch region} {
+
+    # Select the target area from the requested physical region.
+    if { $region == "Core" } {
+        set area [get_db designs .core_bbox]
+    } elseif {$region == "Die" } {
+        set area [get_db designs .bbox]
+    } else {
+        puts "unknow region"
+        return;
+    }
+
+    # Select adjacent layers, clamping the result to the available layer range.
+    set LayerNum [get_db layer:$layer .route_index] 
+    set botLayerNum [expr $LayerNum - 1]
+    if {$botLayerNum < 1 } {
+        set botLayerNum 1
+    }
+    set topLayerNum [expr $LayerNum + 1]
+    if {$topLayerNum > 11} {
+        set topLayerNum 11
+    } 
+    set botLayer    [get_db layer:$botLayerNum .name]
+    set topLayer    [get_db layer:$topLayerNum .name]
+
+    # Convert the short direction name into the value expected by add_stripes.
+    set direction [expr {$direction eq "H" ? "horizontal" : "vertical" }]
+   
+    # Configure stripe creation for the selected area.
+    set_db add_stripes_ignore_block_check false
+    set_db add_stripes_break_at none
+    set_db add_stripes_route_over_rows_only false
+    set_db add_stripes_rows_without_stripes_only false
+    set_db add_stripes_extend_to_closest_target none
+    set_db add_stripes_stop_at_last_wire_for_area false
+    set_db add_stripes_partial_set_through_domain false
+    set_db add_stripes_ignore_non_default_domains false
+    set_db add_stripes_trim_antenna_back_to_shape none
+    set_db add_stripes_spacing_type edge_to_edge
+    set_db add_stripes_spacing_from_block 0
+    set_db add_stripes_stripe_min_length stripe_width
+    set_db add_stripes_stacked_via_top_layer $topLayer
+    set_db add_stripes_stacked_via_bottom_layer $botLayer
+    set_db add_stripes_via_using_exact_crossover_size false
+    set_db add_stripes_split_vias false
+    set_db add_stripes_orthogonal_only true
+    set_db add_stripes_allow_jog { block_ring }
+    set_db add_stripes_skip_via_on_pin {  standardcell }
+    set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+    add_stripes -nets $nets -layer $layer -direction $direction -width $width -spacing $spacing -set_to_set_distance $pitch -start_from bottom -start_offset $offset -switch_layer_over_obs false -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit $topLayer -pad_core_ring_bottom_layer_limit $botLayer -block_ring_top_layer_limit $topLayer -block_ring_bottom_layer_limit $botLayer -use_wire_group 0 -snap_wire_center_to_grid none -area $area
+}
+proc createPowerRing { nets hlayer vlayer width spacing offset wire_group } {
+    # Determine the lower and upper layers needed for stacked vias.
+    set vLayerNum [get_db layer:$vlayer .route_index] 
+    set hLayerNum [get_db layer:$hlayer .route_index] 
+    if { $vLayerNum > $hLayerNum } {
+        set botLayerNum $hLayerNum
+        set topLayerNum $vLayerNum
+    } else {
+        set botLayerNum $vLayerNum
+        set topLayerNum $hLayerNum
+    }
+
+    if {$botLayerNum >= 1} {
+        set botLayerNum [expr $botLayerNum - 1]
+    }
+    if {$topLayerNum < 11} {
+        set topLayerNum [expr $topLayerNum + 1]
+    }
+    set botLayer    [get_db layer:$botLayerNum .name]
+
+    # Configure ring shape, spacing, via, and wire-group behavior.
+    set_db add_rings_target default
+    set_db add_rings_extend_over_row 0
+    set_db add_rings_ignore_rows 0
+    set_db add_rings_avoid_short 0
+    set_db add_rings_skip_shared_inner_ring none
+    set_db add_rings_stacked_via_top_layer $topLayerNum
+    set_db add_rings_stacked_via_bottom_layer $botLayerNum
+    set_db add_rings_via_using_exact_crossover_size 1
+    set_db add_rings_orthogonal_only true
+    set_db add_rings_skip_via_on_pin {  standardcell }
+    set_db add_rings_skip_via_on_wire_shape {  noshape }
+    add_rings -nets $nets -type core_rings -follow core -layer [list top $hlayer bottom $hlayer left $vlayer right $vlayer] -width [list top $width bottom $width left $width right $width] -spacing [list top $spacing bottom $spacing left $spacing right $spacing] -offset [list top $offset bottom $offset left $offset right $offset] -center 0 -threshold 0 -jog_distance 0 -snap_wire_center_to_grid none -use_wire_group 1 -use_wire_group_bits $wire_group -use_interleaving_wire_group 1
+    
+}
+#@ End verbose source: lab_script/pns.tcl
+set_db add_rings_target default
+set_db add_rings_extend_over_row 0
+set_db add_rings_ignore_rows 0
+set_db add_rings_avoid_short 0
+set_db add_rings_skip_shared_inner_ring none
+set_db add_rings_stacked_via_top_layer AP
+set_db add_rings_stacked_via_bottom_layer M1
+set_db add_rings_via_using_exact_crossover_size 1
+set_db add_rings_orthogonal_only true
+set_db add_rings_skip_via_on_pin {  standardcell }
+set_db add_rings_skip_via_on_wire_shape {  noshape }
+add_rings -nets {VDD VSS} -type core_rings -follow core -layer {top M8 bottom M8 left M7 right M7} -width {top 2 bottom 2 left 2 right 2} -spacing {top 1.1 bottom 1.1 left 1.1 right 1.1} -offset {top 0.8 bottom 0.8 left 0.8 right 0.8} -center 0 -threshold 0 -jog_distance 0 -snap_wire_center_to_grid none
+gui_select -point {106.21900 151.71950}
+gui_select -point {145.63400 149.50750}
+gui_select -point {133.97050 151.31750}
+set_db add_rings_target default
+set_db add_rings_extend_over_row 0
+set_db add_rings_ignore_rows 0
+set_db add_rings_avoid_short 0
+set_db add_rings_skip_shared_inner_ring none
+set_db add_rings_stacked_via_top_layer AP
+set_db add_rings_stacked_via_bottom_layer M1
+set_db add_rings_via_using_exact_crossover_size 1
+set_db add_rings_orthogonal_only true
+set_db add_rings_skip_via_on_pin {  standardcell }
+set_db add_rings_skip_via_on_wire_shape {  noshape }
+add_rings -nets {VDD VSS} -type core_rings -follow core -layer {top M8 bottom M8 left M7 right M7} -width {top 2 bottom 2 left 2 right 2} -spacing {top 1.1 bottom 1.1 left 1.1 right 1.1} -offset {top 0.8 bottom 0.8 left 0.8 right 0.8} -center 0 -threshold 0 -jog_distance 0 -snap_wire_center_to_grid none -use_wire_group 1 -use_wire_group_bits 12 -use_interleaving_wire_group 1
+set_db add_rings_target default
+set_db add_rings_extend_over_row 0
+set_db add_rings_ignore_rows 0
+set_db add_rings_avoid_short 0
+set_db add_rings_skip_shared_inner_ring none
+set_db add_rings_stacked_via_top_layer AP
+set_db add_rings_stacked_via_bottom_layer M1
+set_db add_rings_via_using_exact_crossover_size 1
+set_db add_rings_orthogonal_only true
+set_db add_rings_skip_via_on_pin {  standardcell }
+set_db add_rings_skip_via_on_wire_shape {  noshape }
+add_rings -nets {VDD VSS} -type core_rings -follow core -layer {top M6 bottom M6 left M5 right M5} -width {top 2 bottom 2 left 2 right 2} -spacing {top 1.1 bottom 1.1 left 1.1 right 1.1} -offset {top 0.8 bottom 0.8 left 0.8 right 0.8} -center 0 -threshold 0 -jog_distance 0 -snap_wire_center_to_grid none -use_wire_group 1 -use_wire_group_bits 12 -use_interleaving_wire_group 1
+edit_trim_routes -nets {VDD VSS} -layer {M8 M7 M6 M5}
+set_layer_preference VIA6 -is_visible 0
+set_layer_preference M7 -is_visible 0
+set_layer_preference VIA7 -is_visible 0
+set_layer_preference M8 -is_visible 0
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M10
+set_db add_stripes_stacked_via_bottom_layer M8
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets {VDD VSS} -layer M9 -direction vertical -width 1.8 -spacing 1.8 -set_to_set_distance 7.2 -start_from left -start_offset 1.8 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid none
+gui_select -point {257.24350 118.94050}
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M9
+set_db add_stripes_stacked_via_bottom_layer M7
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VDD -layer M8 -direction horizontal -width 0.864 -spacing 0 -set_to_set_distance 2.88 -start_from bottom -start_offset 0 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid half_grid
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M9
+set_db add_stripes_stacked_via_bottom_layer M7
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VDD -layer M8 -direction horizontal -width 0.864 -spacing 0 -set_to_set_distance 2.88 -start_from bottom -start_offset 1.44 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid half_grid
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M9
+set_db add_stripes_stacked_via_bottom_layer M7
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VSS -layer M8 -direction horizontal -width 0.864 -spacing 0 -set_to_set_distance 2.88 -start_from bottom -start_offset 1.44 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid half_grid
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M8
+set_db add_stripes_stacked_via_bottom_layer M6
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VDD -layer M7 -direction vertical -width 0.24 -spacing 0 -set_to_set_distance 7.2 -start_from left -start_offset 7.2 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid grid
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M8
+set_db add_stripes_stacked_via_bottom_layer M6
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VDD -layer M7 -direction vertical -width 0.24 -spacing 0 -set_to_set_distance 7.2 -start_from left -start_offset 7.2 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid grid
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M8
+set_db add_stripes_stacked_via_bottom_layer M6
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VSS -layer M7 -direction vertical -width 0.24 -spacing 0 -set_to_set_distance 7.2 -start_from left -start_offset 3.6 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid grid
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M7
+set_db add_stripes_stacked_via_bottom_layer M5
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VDD -layer M6 -direction horizontal -width 0.24 -spacing 0 -set_to_set_distance 7.2 -start_from bottom -start_offset 3.6 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid grid
+set_layer_preference VIA6 -is_visible 1
+set_layer_preference VIA6 -is_visible 0
+set_layer_preference M7 -is_visible 1
+set_layer_preference M7 -is_visible 0
+set_layer_preference M7 -is_visible 1
+set_layer_preference M7 -is_visible 0
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M7
+set_db add_stripes_stacked_via_bottom_layer M5
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VDD -layer M6 -direction horizontal -width 0.24 -spacing 0 -set_to_set_distance 7.2 -start_from bottom -start_offset 0 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid grid
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M7
+set_db add_stripes_stacked_via_bottom_layer M5
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VSS -layer M6 -direction horizontal -width 0.24 -spacing 0 -set_to_set_distance 7.2 -start_from bottom -start_offset 3.6 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid grid
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M6
+set_db add_stripes_stacked_via_bottom_layer M4
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VDD -layer M5 -direction vertical -width 0.24 -spacing 0 -set_to_set_distance 7.2 -start_from left -start_offset 0 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid grid
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M6
+set_db add_stripes_stacked_via_bottom_layer M4
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VSS -layer M5 -direction vertical -width 0.24 -spacing 0 -set_to_set_distance 7.2 -start_from left -start_offset 3.6 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid grid
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report FMA_pipe.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+set_db route_special_via_connect_to_shape { ring stripe }
+route_special -connect core_pin -layer_change_range { M1(1) M5(5) } -block_pin_target nearest_target -core_pin_target first_after_row_end -allow_jogging 0 -crossover_via_layer_range { M1(1) M5(5) } -allow_layer_change 1 -target_via_layer_range { M1(1) M5(5) }
+set_layer_preference node_layer -is_visible 1
+set_layer_preference node_layer -is_visible 0
+set_layer_preference M1 -is_visible 1
+gui_select -point {286.60350 98.02650}
+#@ source lab_script/shrink_via.tcl
+#@ Begin verbose source (pre): source lab_script/shrink_via.tcl
+select_routes -shapes followpin -via_cell {VIAGEN12* VIAGEN23*}
+update_power_via -bottom_layer M1 -top_layer M4 -update_vias 1 -selected_vias 1 -via_scale_height 70 -via_scale_width 130
+deselect_obj -all
+select_routes -shapes followpin -via_cell {VIAGEN34*}
+update_power_via -bottom_layer M1 -top_layer M4 -update_vias 1 -selected_vias 1 -via_scale_height 100 -via_scale_width 130
+#@ End verbose source: lab_script/shrink_via.tcl
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M3
+set_db add_stripes_stacked_via_bottom_layer M1
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VSS -layer M2 -direction horizontal -width 0.064 -spacing 0 -set_to_set_distance 1.152 -start_from bottom -start_offset 0.544 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid none
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M3
+set_db add_stripes_stacked_via_bottom_layer M1
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VDD -layer M2 -direction horizontal -width 0.064 -spacing 0 -set_to_set_distance 1.152 -start_from bottom -start_offset -0.032 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid none
+set_db add_stripes_ignore_block_check false
+set_db add_stripes_break_at none
+set_db add_stripes_route_over_rows_only false
+set_db add_stripes_rows_without_stripes_only false
+set_db add_stripes_extend_to_closest_target ring
+set_db add_stripes_stop_at_last_wire_for_area false
+set_db add_stripes_partial_set_through_domain false
+set_db add_stripes_ignore_non_default_domains false
+set_db add_stripes_trim_antenna_back_to_shape none
+set_db add_stripes_spacing_type edge_to_edge
+set_db add_stripes_spacing_from_block 0
+set_db add_stripes_stripe_min_length stripe_width
+set_db add_stripes_stacked_via_top_layer M3
+set_db add_stripes_stacked_via_bottom_layer M1
+set_db add_stripes_via_using_exact_crossover_size false
+set_db add_stripes_split_vias false
+set_db add_stripes_orthogonal_only true
+set_db add_stripes_allow_jog none
+set_db add_stripes_skip_via_on_pin {  standardcell }
+set_db add_stripes_skip_via_on_wire_shape {  noshape   }
+add_stripes -nets VDD -layer M2 -direction horizontal -width 0.064 -spacing 0 -set_to_set_distance 1.152 -start_from bottom -start_offset -0.032 -switch_layer_over_obs false -merge_stripes_value auto -max_same_layer_jog_length 2 -pad_core_ring_top_layer_limit AP -pad_core_ring_bottom_layer_limit M1 -block_ring_top_layer_limit AP -block_ring_bottom_layer_limit M1 -use_wire_group 0 -snap_wire_center_to_grid none
+check_connectivity -nets {VDD VSS} -type special -ignore_dangling_wires -error 1000 -warning 50
+check_connectivity -nets {VDD VSS} -type special -ignore_dangling_wires -error 1000 -warning 50
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report FMA_pipe.drc.rpt
+set_db check_drc_limit 1000
+check_drc
+set_db check_drc_area {0 0 0 0}
+write_db dbs/powerplan.enc
+set_layer_preference VIA1 -is_visible 1
+set_layer_preference M2 -is_visible 1
+set_layer_preference M2 -is_visible 0
+set_layer_preference M2 -is_visible 1
+#@ source lab_script/add_well_taps.tcl
+#@ Begin verbose source (pre): source lab_script/add_well_taps.tcl
+set_db add_well_taps_insert_cells {TAPCELLBWP20P90LVT rule 50.76}
+add_well_taps -checker_board
+#@ End verbose source: lab_script/add_well_taps.tcl
+set_db place_design_floorplan_mode false
+place_design
+check_place FMA_pipe.checkPlace
+time_design -pre_cts -path_report -drv_report -slack_report -num_paths 50 -report_prefix FMA_pipe_preCTS -report_dir timingReports
+set_db opt_drv_fix_max_cap true
+set_db opt_drv_fix_max_tran true
+set_db opt_fix_fanout_load true
+opt_design -pre_cts
+time_design -pre_cts -path_report -drv_report -slack_report -num_paths 50 -report_prefix FMA_pipe_preCTS -report_dir timingReports
+write_db dbs/placement.enc
+set_interactive_constraint_modes [all_constraint_modes]
+all_clocks
+reset_clock_latency [all_clocks]
+ccopt_design
+time_design -post_cts -path_report -drv_report -slack_report -num_paths 50 -report_prefix FMA_pipe_postCTS -report_dir timingReports
+time_design -post_cts -hold -path_report -slack_report -num_paths 50 -report_prefix FMA_pipe_postCTS -report_dir timingReports
+add_tieoffs -lib_cell {TIEHBWP20P90 TIELBWP20P90} -prefix LTIE
+write_db dbs/cts.enc
+gui_select -rect {130.06150 99.49450 139.50800 94.27600}
+gui_select -point {0.43150 -0.75800}
+gui_select -rect {101.18200 56.15300 93.94250 27.99900}
+set_db route_design_with_timing_driven 1
+set_db route_design_with_si_driven 1
+set_db route_design_top_routing_layer 12
+set_db route_design_bottom_routing_layer 1
+set_db route_design_detail_end_iteration 10
+set_db route_design_with_timing_driven true
+set_db route_design_with_si_driven true
+route_design -global_detail -via_opt -wire_opt
+set_db delaycal_enable_si true
+time_design -post_route -path_report -drv_report -slack_report -num_paths 50 -report_prefix FMA_pipe_postRoute -report_dir timingReports
+set_db opt_drv_fix_max_cap true
+set_db opt_drv_fix_max_tran true
+set_db opt_fix_fanout_load true
+eval_legacy { setDelayCalMode -engine default -siAware true }
+opt_design -post_route
+time_design -post_route -path_report -drv_report -slack_report -num_paths 50 -report_prefix FMA_pipe_postRoute -report_dir timingReports
+set_db opt_drv_fix_max_cap true
+set_db opt_drv_fix_max_tran true
+set_db opt_fix_fanout_load true
+eval_legacy { setDelayCalMode -engine default -siAware true }
+opt_design -post_route
+set_db opt_drv_fix_max_cap true
+set_db opt_drv_fix_max_tran true
+set_db opt_fix_fanout_load true
+opt_design -post_route
+opt_design -post_route -hold
+innovus > remote_host 8set_multi_cpu_usage 
+remote_host 8set_multi_cpu_usage 
+set_multi_cpu_usage -remote_host 8
+opt_signoff -hold
+time_design -sign_off -hold -path_report -slack_report -num_paths 50 -report_prefix FMA_pipe_signOff -report_dir timingReports
+opt_signoff -hold
+write_db dbs/route.enc
+get_db add_fillers_cells
+#@ source lab_script/post_via_drop.tcl
+#@ Begin verbose source (pre): source lab_script/post_via_drop.tcl
+set_db generate_special_via_rule_preference default
+select_routes -shapes stripe -layer M2 -sub_class "manual_rail"
+update_power_vias -bottom_layer M1 -top_layer M2 -selected_wires 1 -add_vias 1 -orthogonal_only 0 -via_using_exact_crossover_size 1 -skip_via_on_pin {pad cover standardcell}  -skip_via_on_wire_shape {Blockring Blockwire Iowire Padring Ring Fillwire Noshape} -user_class "VIA12_Manual" -split_long_via {0.2 0.2 -1 -1}
+update_power_vias -bottom_layer M2 -top_layer M3 -selected_wires 1 -add_vias 1 -orthogonal_only 1 -via_using_exact_crossover_size 1 -skip_via_on_pin {pad cover standardcell}  -skip_via_on_wire_shape {Blockwire Iowire Padring Ring Fillwire Noshape}   -user_class "VIA23_Manual"
+#@ End verbose source: lab_script/post_via_drop.tcl
+set_db check_drc_limit 10000
+check_drc
+#@ source lab_script/fix_manual_via12.tcl
+#@ Begin verbose source (pre): source lab_script/fix_manual_via12.tcl
+set errors [get_db current_design .markers -if {.subtype == Cut_Spacing}]
+foreach marker $errors {
+   set mbox [get_db $marker .bbox]
+   foreach via [get_obj_in_area -areas $mbox -obj_type special_via] {
+      if { [get_db $via .user_class] == "VIA12_Manual" } {
+         delete_obj $via
+      }
+   }
+}
+#@ End verbose source: lab_script/fix_manual_via12.tcl
+set_db check_drc_disable_rules {}
+set_db check_drc_ndr_spacing auto
+set_db check_drc_check_only default
+set_db check_drc_inside_via_def true
+set_db check_drc_exclude_pg_net false
+set_db check_drc_ignore_trial_route false
+set_db check_drc_ignore_cell_blockage false
+set_db check_drc_use_min_spacing_on_block_obs auto
+set_db check_drc_report FMA_pipe.drc.rpt
+set_db check_drc_limit 10000
+check_drc
+set_db check_drc_area {0 0 0 0}
+check_connectivity -type regular -ignore_dangling_wires -error 1000 -warning 50
+#@ source lab_script/write_netlist.tcl
+#@ Begin verbose source (pre): source lab_script/write_netlist.tcl
+delete_empty_hinsts
+write_netlist outputs/FMA_pipe_pr.v
+set TAP_CELL_LIST [get_db [get_db base_cells TAP_*] .name]
+set BOUNDARY_CELL_LIST [get_db [get_db base_cells BOUNDARY_*] .name]
+set DECAP_CELL_LIST [get_db [get_db base_cells DCAP_*] .name]
+set PVDD_CELL_LIST [get_db [get_db base_cells PVDD*] .name]
+set FILLER_CELL_LIST [get_db [get_db base_cells FILL*] .name]
+set PFILLER_CELL_LIST [get_db [get_db base_cells PFILL*] .name]
+set PCORNER_CELL_LIST [get_db [get_db base_cells PCORNER*] .name]
+write_netlist -include_pg_ports  -include_phys_cells "$TAP_CELL_LIST $BOUNDARY_CELL_LIST $DECAP_CELL_LIST $PVDD_CELL_LIST $FILLER_CELL_LIST $PFILLER_CELL_LIST $PCORNER_CELL_LIST" outputs/FMA_pipe_pg.v
+#@ End verbose source: lab_script/write_netlist.tcl
+#@ source lab_APR_script/write_sdf.tcl
+#@ source lab__script/write_sdf.tcl
+#@ source lab_script/write_sdf.tcl
+#@ Begin verbose source (pre): source lab_script/write_sdf.tcl
+write_sdf outputs/FMA_pipe_ff0p88v125c.sdf -max_view AV_func_ff0p88v125c -typical_view AV_func_ff0p88v125c -min_view  AV_func_ff0p88v125c -map_removal -recompute_delaycal
+write_sdf outputs/FMA_pipe_ss0p72vm40c.sdf -max_view AV_func_ss0p72vm40c -typical_view AV_func_ss0p72vm40c -min_view  AV_func_ss0p72vm40c -map_removal -recompute_delaycal
+#@ End verbose source: lab_script/write_sdf.tcl
+#@ source lab_script/write_stream.tcl
+#@ Begin verbose source (pre): source lab_script/write_stream.tcl
+set_db write_stream_text_size 10
+set streamOutMapLink /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_Gdsout_11M.10a.map
+set_db write_stream_text_size 10
+if {! [file exists stream_out_map]} {
+set streamOutMapFile [file dirname [file normalize $streamOutMapLink/___]]
+if {1} {
+file copy $streamOutMapFile stream_out_map
+set outfile [open stream_out_map a]
+puts  $outfile "CUSTOM_CB CUSTOM 108 250"
+close $outfile
+}
+}
+write_stream outputs/FMA_pipe.gds -map_file stream_out_map -lib_name DesignLib \
+      -merge { \
+            /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/GDS/N16ADFP_StdCell.gds      \
+      } \
+      -uniquify_cell_names -unit 1000 -mode all -report_file write_stream.log
+#@ End verbose source: lab_script/write_stream.tcl
+write_db dbs/post_processing.enc
+set_layer_preference node_layer -is_visible 1
+set_layer_preference node_layer -is_visible 0
+set_layer_preference node_layer -is_visible 1
+set_layer_preference node_layer -is_visible 0
+gui_select -rect {157.61900 117.90850 181.88950 95.86900}
+set_layer_preference node_layer -is_visible 1
+gui_select -rect {241.49450 114.69600 255.68150 101.75800}
+gui_select -rect {79.67400 145.08350 146.63950 80.93300}
+set_layer_preference node_layer -is_visible 0
+set_layer_preference node_layer -is_visible 1
+gui_select -rect {240.37150 109.95400 284.68600 115.18450}
+write_db dbs/finish.enc
+exit

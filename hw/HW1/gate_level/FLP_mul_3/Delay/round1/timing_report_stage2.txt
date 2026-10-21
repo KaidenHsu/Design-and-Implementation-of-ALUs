@@ -1,0 +1,72 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_mul
+Version: T-2022.03
+Date   : Mon Oct  5 20:39:15 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: s1_ma_reg_7_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: s2_md_raw_reg_38_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_mul            ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s1_ma_reg_7_/CP (DFQD2BWP16P90LVT)                  0.000000   0.000000 r
+  s1_ma_reg_7_/Q (DFQD2BWP16P90LVT) <-                0.040854   0.040854 f
+  mult_28/a[7] (FLP_mul_DW_mult_uns_2)                0.000000   0.040854 f
+  mult_28/U3055/ZN (INVD4BWP16P90LVT)                 0.008245   0.049100 r
+  mult_28/U3045/ZN (CKND8BWP16P90LVT)                 0.009842   0.058942 f
+  mult_28/U2017/ZN (XNR2D8BWP16P90LVT)                0.021834   0.080776 r
+  mult_28/U1692/ZN (CKND2D8BWP16P90LVT)               0.008869   0.089645 f
+  mult_28/U3053/ZN (OAI22D1BWP16P90LVT)               0.013015   0.102661 r
+  mult_28/U1962/Z (XOR2D2BWP16P90LVT)                 0.027377   0.130038 f
+  mult_28/U1873/Z (XOR2D2BWP16P90LVT)                 0.019477   0.149515 r
+  mult_28/U733/S (FA1D1BWP16P90LVT)                   0.040123   0.189638 f
+  mult_28/U1728/ZN (ND2D2BWP16P90LVT)                 0.009435   0.199073 r
+  mult_28/U1731/ZN (ND3D4BWP16P90LVT)                 0.012254   0.211327 f
+  mult_28/U2522/ZN (ND2D1BWP16P90LVT)                 0.009964   0.221291 r
+  mult_28/U2047/ZN (ND3D2BWP16P90LVT)                 0.010950   0.232241 f
+  mult_28/U2948/ZN (XNR2D2BWP16P90LVT)                0.020689   0.252930 r
+  mult_28/U2920/ZN (XNR2D4BWP16P90LVT)                0.020941   0.273870 f
+  mult_28/U2292/ZN (NR2D4BWP16P90LVT)                 0.008778   0.282648 r
+  mult_28/U2755/ZN (CKNR2D2BWP16P90LVT)               0.009444   0.292092 f
+  mult_28/U2834/ZN (CKND2D2BWP16P90LVT)               0.009376   0.301468 r
+  mult_28/U3002/ZN (OAI21D2BWP16P90LVT)               0.010977   0.312445 f
+  mult_28/U3361/ZN (AOI21D4BWP16P90LVT)               0.014517   0.326962 r
+  mult_28/U2833/ZN (INVD1BWP16P90)                    0.013939   0.340901 f
+  mult_28/U2469/ZN (XNR2D2BWP16P90LVT)                0.017419   0.358320 r
+  mult_28/product[38] (FLP_mul_DW_mult_uns_2)         0.000000   0.358320 r
+  U331/Z (AN2D1BWP16P90LVT)                           0.011727   0.370047 r
+  s2_md_raw_reg_38_/D (DFQD2BWP16P90LVT)              0.000000   0.370047 r
+  data arrival time                                              0.370047
+
+  clock clk (rise edge)                               0.010000   0.010000
+  clock network delay (ideal)                         0.000000   0.010000
+  s2_md_raw_reg_38_/CP (DFQD2BWP16P90LVT)             0.000000   0.010000 r
+  library setup time                                  -0.013639  -0.003639
+  data required time                                             -0.003639
+  --------------------------------------------------------------------------
+  data required time                                             -0.003639
+  data arrival time                                              -0.370047
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.373686
+
+
+1

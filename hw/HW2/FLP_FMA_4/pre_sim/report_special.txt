@@ -1,0 +1,47 @@
+  overflow_expected=0 overflow_actual=0
+PASS #1 A=ffffffff B=3f800000 C=3f800000 golden=ffffffff actual=ffffffff
+  absolute_error=N/A relative_error=N/A (NaN/Inf/X/Z)
+  overflow_expected=0 overflow_actual=0
+PASS #2 A=3f800000 B=00000000 C=00000000 golden=00000000 actual=00000000
+  absolute_error=0 relative_error=0
+  overflow_expected=0 overflow_actual=0
+PASS #3 A=00000000 B=00000000 C=00000000 golden=00000000 actual=00000000
+  absolute_error=0 relative_error=0
+  overflow_expected=0 overflow_actual=0
+PASS #4 A=3f800000 B=3f800000 C=00000000 golden=3f800000 actual=3f800000
+  absolute_error=0.000000e+00 relative_error=0.000000e+00
+  overflow_expected=0 overflow_actual=0
+PASS #5 A=bf800000 B=3f800000 C=3f800000 golden=00000000 actual=00000000
+  absolute_error=0 relative_error=0
+  overflow_expected=0 overflow_actual=0
+PASS #6 A=7f800000 B=3f800000 C=3f800000 golden=7f800000 actual=7f800000
+  absolute_error=N/A relative_error=N/A (NaN/Inf/X/Z)
+  overflow_expected=0 overflow_actual=0
+PASS #7 A=ff800000 B=3f800000 C=3f800000 golden=ff800000 actual=ff800000
+  absolute_error=N/A relative_error=N/A (NaN/Inf/X/Z)
+  overflow_expected=0 overflow_actual=0
+PASS #8 A=ff800000 B=bf800000 C=3f800000 golden=7f800000 actual=7f800000
+  absolute_error=N/A relative_error=N/A (NaN/Inf/X/Z)
+  overflow_expected=0 overflow_actual=0
+PASS #9 A=7f800000 B=bf800000 C=3f800000 golden=ff800000 actual=ff800000
+  absolute_error=N/A relative_error=N/A (NaN/Inf/X/Z)
+  overflow_expected=1 overflow_actual=1
+PASS #10 A=78000000 B=78000000 C=00000000 golden=7f800000 actual=7f800000
+  absolute_error=N/A relative_error=N/A (NaN/Inf/X/Z)
+  overflow_expected=1 overflow_actual=1
+PASS #11 A=7f000000 B=3f800000 C=7f000000 golden=7f800000 actual=7f800000
+  absolute_error=N/A relative_error=N/A (NaN/Inf/X/Z)
+  overflow_expected=1 overflow_actual=1
+PASS #12 A=ff000000 B=7f000000 C=00000000 golden=ff800000 actual=ff800000
+  absolute_error=N/A relative_error=N/A (NaN/Inf/X/Z)
+  overflow_expected=0 overflow_actual=0
+PASS #13 A=00000001 B=3f800000 C=00000001 golden=00000002 actual=00000002
+  absolute_error=0.000000e+00 relative_error=0.000000e+00
+  overflow_expected=0 overflow_actual=0
+PASS #14 A=00400000 B=40000000 C=00000000 golden=00800000 actual=00800000
+  absolute_error=0.000000e+00 relative_error=0.000000e+00
+  overflow_expected=0 overflow_actual=0
+PASS #15 A=ff800000 B=00000000 C=00000000 golden=ffffffff actual=ffffffff
+  absolute_error=N/A relative_error=N/A (NaN/Inf/X/Z)
+SUMMARY special checked=15 passed=15 failed=0
+Finite comparisons only: max_absolute=0.000000e+00 max_relative=0.000000e+00

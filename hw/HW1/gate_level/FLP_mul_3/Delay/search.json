@@ -1,0 +1,138 @@
+{
+  "configuration": {
+    "identity": "9ab782ebdb84c2ad44d2847ed7bc7963ce9dba5f26868bc39508cb5552936c03",
+    "optimization": "Delay",
+    "tolerance": "0.001",
+    "resolution": "0.001",
+    "maximum": "1000",
+    "attempts": 20,
+    "environment": {
+      "HW1_EDA_LD_LIBRARY_PATH": "/usr/cad/cadence/INNOVUS/INNOVUS_21.17.000/tools/lib/64bit:/usr/cad/cadence/INNOVUS/INNOVUS_21.17.000/tools/lib64:/usr/cad/cadence/INNOVUS/INNOVUS_21.17.000/tools/lib:::::/usr/cad/synopsys/star-rcxt/2024.09-sp2//linux64_starrc/lib/::::/usr/cad/synopsys/verdi/2023.12/etc/lib/libstdc++/LINUX64/:/usr/cad/synopsys/verdi/2023.12/share/PLI/lib/LINUX64/:/usr/cad/synopsys/verdi/2023.12/share/PLI/VCS/LINUX64/::/usr/cad/synopsys/verdi/cur/share/PLI/VCS/LINUX64::/lib64:/usr/lib64:/usr/local/lib64::",
+      "HW1_EDA_LD_LIBRARY_PATH_SET": "1"
+    }
+  },
+  "id": "1d2df4abb96f-Delay",
+  "attempts": [
+    {
+      "schema": 1,
+      "design": "FLP_mul_3",
+      "optimization": "Delay",
+      "round": 1,
+      "path": "gate_level/FLP_mul_3/Delay/round1",
+      "log": "log/FLP_mul_3/Delay/synth1.log",
+      "status": "complete",
+      "synthesis_id": "9ab782ebdb84c2ad44d2847ed7bc7963ce9dba5f26868bc39508cb5552936c03",
+      "period_ns": "0.010",
+      "search_id": "1d2df4abb96f-Delay",
+      "attempt": 1,
+      "timestamp": "2026-10-05T20:35:20+0800",
+      "metrics": {
+        "schema": "1",
+        "period_ns": 0.01,
+        "slack_ns": -0.373686,
+        "delay_ns": 0.370047,
+        "delay_basis": "timing_report_data_arrival",
+        "time_unit_ns": "1.0",
+        "comb_um2": 1061.994259,
+        "seq_um2": 93.312001,
+        "total_um2": 1155.306261,
+        "dynamic_w": 0.0894095,
+        "leakage_w": 1.1572e-06,
+        "power_w": 0.0894106572,
+        "power_activity": "default_estimated",
+        "area_units": "TA_library_um2",
+        "sdf_corner": "min_typ_max",
+        "coverage_status": "clean",
+        "complete": "1"
+      },
+      "artifact_hashes": {
+        "netlist.v": "3efafd26147e3e064ff97725bd506f6c7425744f09ebe5bf9f156020ce174610",
+        "timing.sdf": "eddc7fa17dc8527a4b384a7760c15890195738252e3420f0af6a6b7f69249088",
+        "constraints.sdc": "57c1f8d6343262645206109b3d24bd087674e97e7694ac83c5f12290c37fc13b",
+        "design.ddc": "478b37bb776ddbcce4d7d5e155ebabc6e8ab08bf2f5f1df1cc0fe5ed661636b1"
+      }
+    },
+    {
+      "schema": 1,
+      "design": "FLP_mul_3",
+      "optimization": "Delay",
+      "round": 2,
+      "path": "gate_level/FLP_mul_3/Delay/round2",
+      "log": "log/FLP_mul_3/Delay/synth2.log",
+      "status": "complete",
+      "synthesis_id": "9ab782ebdb84c2ad44d2847ed7bc7963ce9dba5f26868bc39508cb5552936c03",
+      "period_ns": "0.384",
+      "search_id": "1d2df4abb96f-Delay",
+      "attempt": 2,
+      "timestamp": "2026-10-05T20:39:17+0800",
+      "metrics": {
+        "schema": "1",
+        "period_ns": 0.384,
+        "slack_ns": -6.05583e-05,
+        "delay_ns": 0.370354,
+        "delay_basis": "timing_report_data_arrival",
+        "time_unit_ns": "1.0",
+        "comb_um2": 1048.98242,
+        "seq_um2": 95.800322,
+        "total_um2": 1144.782741,
+        "dynamic_w": 0.0023053,
+        "leakage_w": 1.0954e-06,
+        "power_w": 0.0023063954,
+        "power_activity": "default_estimated",
+        "area_units": "TA_library_um2",
+        "sdf_corner": "min_typ_max",
+        "coverage_status": "clean",
+        "complete": "1"
+      },
+      "artifact_hashes": {
+        "netlist.v": "681874291e70eca45c79c681aeddc59b0b55755f3850371942abf3af41419b74",
+        "timing.sdf": "4e70893af1eaeb80af963684251b8e556582e7d767e3a3c87062a1e3c46ee7cf",
+        "constraints.sdc": "c105debb7319340509e72f1e0e1cc975b37dc5cb8c07b901b46fb2f93f139823",
+        "design.ddc": "a063db023d301afbf82169b4ebb4e71e973b5b7bf711831ae5a08e04a10993ae"
+      }
+    },
+    {
+      "schema": 1,
+      "design": "FLP_mul_3",
+      "optimization": "Delay",
+      "round": 3,
+      "path": "gate_level/FLP_mul_3/Delay/round3",
+      "log": "log/FLP_mul_3/Delay/synth3.log",
+      "status": "complete",
+      "synthesis_id": "9ab782ebdb84c2ad44d2847ed7bc7963ce9dba5f26868bc39508cb5552936c03",
+      "period_ns": "0.385",
+      "search_id": "1d2df4abb96f-Delay",
+      "attempt": 3,
+      "timestamp": "2026-10-05T20:42:57+0800",
+      "metrics": {
+        "schema": "1",
+        "period_ns": 0.385,
+        "slack_ns": 9.77516e-06,
+        "delay_ns": 0.371309,
+        "delay_basis": "timing_report_data_arrival",
+        "time_unit_ns": "1.0",
+        "comb_um2": 1046.597779,
+        "seq_um2": 96.111362,
+        "total_um2": 1142.709141,
+        "dynamic_w": 0.0022573,
+        "leakage_w": 1.0987e-06,
+        "power_w": 0.0022583987,
+        "power_activity": "default_estimated",
+        "area_units": "TA_library_um2",
+        "sdf_corner": "min_typ_max",
+        "coverage_status": "clean",
+        "complete": "1"
+      },
+      "artifact_hashes": {
+        "netlist.v": "6591e4c91c4d76b00ed4ad761bbd149d61fefcdf360278e3551cc46da0ca32c4",
+        "timing.sdf": "0da028653e24604e35ed662c86594d734c0780e6b17338d1f5861e2ba91c7e2f",
+        "constraints.sdc": "46077164e149517bb46e6a45d439a07ba5eec946184e7cf9f5a014e8ef3ed305",
+        "design.ddc": "8a0828d92549738eaab47081820682208db098f22bc7098342588257c8d80e15"
+      }
+    }
+  ],
+  "next_period": "0.385",
+  "finished": true,
+  "best": "gate_level/FLP_mul_3/Delay/round3",
+  "converged": true
+}

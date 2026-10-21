@@ -1,0 +1,54 @@
+ 
+****************************************
+Report : area
+Design : FMA_pipe
+Version: T-2022.03
+Date   : Mon Oct 19 21:44:35 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                         1164
+Number of nets:                          9617
+Number of cells:                         8224
+Number of combinational cells:           7746
+Number of sequential cells:               467
+Number of macros/black boxes:               0
+Number of buf/inv:                       1979
+Number of references:                     189
+
+Combinational area:               2553.482937
+Buf/Inv area:                      374.647692
+Noncombinational area:             435.767046
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  2989.249983
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  ----------------------
+FMA_pipe                          2989.2500    100.0  1166.3482   435.7670  0.0000  FMA_pipe
+add_0_root_sub_0_root_sub_102       17.7811      0.6    17.7811     0.0000  0.0000  FMA_pipe_DW01_add_7
+add_0_root_sub_0_root_sub_104       28.2010      0.9    28.2010     0.0000  0.0000  FMA_pipe_DW01_add_16
+add_144                            188.8531      6.3   188.8531     0.0000  0.0000  FMA_pipe_DW01_add_6
+add_182                             31.0522      1.0    31.0522     0.0000  0.0000  FMA_pipe_DW01_add_10
+mult_108                           725.8637     24.3   725.8637     0.0000  0.0000  FMA_pipe_DW_mult_uns_1
+sub_103                             21.9802      0.7    21.9802     0.0000  0.0000  FMA_pipe_DW01_sub_9
+sub_109                             66.9254      2.2    66.9254     0.0000  0.0000  FMA_pipe_DW01_sub_10
+sub_113                             27.1123      0.9    27.1123     0.0000  0.0000  FMA_pipe_DW01_sub_11
+sub_128                             73.6128      2.5    73.6128     0.0000  0.0000  FMA_pipe_DW01_dec_3
+sub_174                            115.1366      3.9   115.1366     0.0000  0.0000  FMA_pipe_DW01_dec_2
+sub_252                             90.6163      3.0    90.6163     0.0000  0.0000  FMA_pipe_DW01_sub_8
+--------------------------------  ---------  -------  ---------  ---------  ------  ----------------------
+Total                                                 2553.4829   435.7670  0.0000
+
+1

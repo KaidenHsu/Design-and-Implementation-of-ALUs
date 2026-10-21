@@ -1,0 +1,45 @@
+ 
+****************************************
+Report : area
+Design : FXP_FMA
+Version: T-2022.03
+Date   : Mon Oct 19 21:47:46 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                          384
+Number of nets:                          3060
+Number of cells:                         2383
+Number of combinational cells:           2381
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                        154
+Number of references:                       3
+
+Combinational area:               1049.500825
+Buf/Inv area:                       24.572161
+Noncombinational area:               0.000000
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  1049.500825
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  --------------------
+FXP_FMA                           1049.5008    100.0     0.2592     0.0000  0.0000  FXP_FMA
+add_19                              71.1763      6.8    71.1763     0.0000  0.0000  FXP_FMA_DW01_add_2
+mult_17                            978.0653     93.2   978.0653     0.0000  0.0000  FXP_FMA_DW_mult_tc_2
+--------------------------------  ---------  -------  ---------  ---------  ------  --------------------
+Total                                                 1049.5008     0.0000  0.0000
+
+1

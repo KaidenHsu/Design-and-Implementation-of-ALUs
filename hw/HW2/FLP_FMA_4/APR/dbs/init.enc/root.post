@@ -1,0 +1,22 @@
+::db::check_and_set_root_attr add_fillers_cells {FILL64BWP16P90 DCAP32BWP16P90 DCAP16BWP16P90 DCAP8BWP16P90 DCAP4BWP16P90 FILL2BWP16P90 FILL2BWP16P90LVT FILL1BWP16P90 FILL1BWP16P90LVT}
+::db::check_and_set_root_attr add_fillers_preserve_user_order true
+::db::check_and_set_root_attr add_tieoffs_cells {{TIEHBWP20P90 TIELBWP20P90}}
+::db::check_and_set_root_attr add_tieoffs_max_distance 100.0
+::db::check_and_set_root_attr add_tieoffs_max_fanout 10
+::db::check_and_set_root_attr design_bottom_routing_layer M2
+::db::check_and_set_root_attr design_top_routing_layer M9
+::db::check_and_set_root_attr extract_rc_coupling_cap_threshold 0.1
+::db::check_and_set_root_attr extract_rc_relative_cap_threshold 1.0
+::db::check_and_set_root_attr extract_rc_total_cap_threshold 0.0
+::db::check_and_set_root_attr floorplan_default_tech_site core
+::db::check_and_set_root_attr floorplan_max_io_height false
+::db::check_and_set_root_attr floorplan_snap_block_grid finfet_manufacturing
+::db::check_and_set_root_attr floorplan_snap_constraint_grid finfet_inst
+::db::check_and_set_root_attr floorplan_snap_core_grid finfet_placement
+::db::check_and_set_root_attr floorplan_snap_die_grid finfet_placement
+::db::check_and_set_root_attr floorplan_snap_io_grid finfet_manufacturing
+::db::check_and_set_root_attr floorplan_snap_place_blockage_grid inst
+::db::check_and_set_root_attr route_design_extract_third_party_compatible false
+::db::check_and_set_root_attr route_design_re_insert_filler_cell_list {FILL64BWP16P90 DCAP32BWP16P90 DCAP16BWP16P90 DCAP8BWP16P90 DCAP4BWP16P90 FILL2BWP16P90 FILL2BWP16P90LVT FILL1BWP16P90 FILL1BWP16P90LVT}
+::db::check_and_set_root_attr route_design_re_insert_filler_cell_list_from_file false
+::db::check_and_set_root_attr write_def_stream_check_uncolored false

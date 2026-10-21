@@ -1,0 +1,53 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FXP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:42:37 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: b[4] (input port clocked by clk)
+  Endpoint: d[20] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FXP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  input external delay                                0.000000   0.000000 r
+  b[4] (in)                                           0.000000   0.000000 r
+  add_7/B[4] (FXP_adder_DW01_add_1)                   0.000000   0.000000 r
+  add_7/U459/ZN (NR2D2BWP16P90LVT)                    0.005159   0.005159 f
+  add_7/U394/ZN (NR2D2BWP16P90LVT)                    0.005832   0.010991 r
+  add_7/U482/ZN (ND2D1BWP16P90LVT)                    0.008470   0.019460 f
+  add_7/U487/ZN (OAI21D2BWP16P90LVT)                  0.012778   0.032238 r
+  add_7/U505/ZN (ND2D2BWP16P90LVT)                    0.009393   0.041631 f
+  add_7/U453/Z (AN2D2BWP16P90LVT)                     0.014278   0.055908 f
+  add_7/U512/ZN (NR2D1BWP16P90LVT)                    0.007793   0.063702 r
+  add_7/U498/Z (OR2D2BWP16P90LVT)                     0.012563   0.076265 r
+  add_7/U678/ZN (XNR2D1BWP16P90LVT)                   0.012674   0.088939 f
+  add_7/SUM[20] (FXP_adder_DW01_add_1)                0.000000   0.088939 f
+  d[20] (out)                                         0.000000   0.088939 f
+  data arrival time                                              0.088939
+
+  max_delay                                           0.089000   0.089000
+  output external delay                               0.000000   0.089000
+  data required time                                             0.089000
+  --------------------------------------------------------------------------
+  data required time                                             0.089000
+  data arrival time                                              -0.088939
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.000061
+
+
+1

@@ -1,0 +1,393 @@
+
+Cadence Innovus(TM) Implementation System.
+Copyright 2021 Cadence Design Systems, Inc. All rights reserved worldwide.
+
+Version:	v21.17-s075_1, built Wed Mar 15 11:17:40 PDT 2023
+Options:	-stylus 
+Date:		Tue Oct 20 16:08:29 2026
+Host:		DTrump (x86_64 w/Linux 3.10.0-1160.119.1.el7.x86_64) (8cores*32cpus*Intel(R) Xeon(R) CPU E5-2620 v4 @ 2.10GHz 20480KB)
+OS:		CentOS Linux 7 (Core)
+
+License:
+		[16:08:30.346003] Configured Lic search path (21.01-s002): 5280@lstc:26585@lstc:
+
+		invs	Innovus Implementation System	21.1	checkout succeeded
+		8 CPU jobs allowed with the current license(s). Use set_multi_cpu_usage to set your required CPU count.
+
+
+**WARN: (IMPOPT-801):	Genus executable not found in PATH. Install Genus, add the path to the genus executable in the PATH variable and rerun Innovus.
+Create and set the environment variable TMPDIR to /tmp/innovus_temp_29492_DTrump_M143010027_ALU_gDF68l.
+
+Change the soft stacksize limit to 0.2%RAM (289 mbytes). Set global soft_stack_size_limit to change the value.
+
+**INFO:  MMMC transition support version v31-84 
+
+@innovus 1> set_db init_power_nets VDD
+@innovus 2> set_db init_ground_nets VSS
+@innovus 3> #################################
+read_mmmc mmmc.view.stylus
+#################################
+#@ Begin verbose source mmmc.view.stylus (pre)
+@file 1: # -----------------------------------------------------------------------------
+@file 2: # Library sets
+@file 3: # -----------------------------------------------------------------------------
+@file 4: # A library set contains the timing library for one PVT corner.
+@@file 5: create_library_set -name lib_ss0p72v125c\
+    -timing\
+    {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib}
+@file 8:
+@@file 9: create_library_set -name lib_ss0p72vm40c\
+    -timing\
+    {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib}
+@file 12:
+@@file 13: create_library_set -name lib_ff0p88v125c\
+    -timing\
+    {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib}
+@file 16:
+@@file 17: create_library_set -name lib_ff0p88vm40c\
+    -timing\
+    {/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib}
+@file 20:
+@file 21:
+@file 22: # -----------------------------------------------------------------------------
+@file 23: # Timing conditions
+@file 24: # -----------------------------------------------------------------------------
+@file 25: # Associate each timing condition with the corresponding standard-cell
+@file 26: # timing library set.
+@@file 27: create_timing_condition -name TC_ss0p72v125c\
+    -library_sets lib_ss0p72v125c
+@file 29:
+@@file 30: create_timing_condition -name TC_ff0p88vm40c\
+    -library_sets lib_ff0p88vm40c
+@file 32:
+@@file 33: create_timing_condition -name TC_ss0p72vm40c\
+    -library_sets lib_ss0p72vm40c
+@file 35:
+@@file 36: create_timing_condition -name TC_ff0p88v125c\
+    -library_sets lib_ff0p88v125c
+@file 38:
+@file 39: # -----------------------------------------------------------------------------
+@file 40: # RC corners
+@file 41: # -----------------------------------------------------------------------------
+@file 42: # Define best-case and worst-case interconnect parasitic corners using the
+@file 43: # technology-specific QRC extraction files.
+@@file 44: create_rc_corner -name RC_best\
+    -pre_route_res 1\
+    -post_route_res 1\
+    -pre_route_cap 1\
+    -post_route_cap 1\
+    -post_route_cross_cap 1\
+    -pre_route_clock_res 0\
+    -pre_route_clock_cap 0\
+    -qrc_tech /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/best/qrcTechFile
+@@file 53: create_rc_corner -name RC_worst\
+    -pre_route_res 1\
+    -post_route_res 1\
+    -pre_route_cap 1\
+    -post_route_cap 1\
+    -post_route_cross_cap 1\
+    -pre_route_clock_res 0\
+    -pre_route_clock_cap 0\
+    -qrc_tech /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile
+@file 62:
+@file 63: # -----------------------------------------------------------------------------
+@file 64: # Delay corners
+@file 65: # -----------------------------------------------------------------------------
+@file 66: # A delay corner combines a cell-library timing condition with an RC corner.
+@file 67: # Fast (FF) corners use best-case RC; slow (SS) corners use worst-case RC.
+@@file 68: create_delay_corner -name DC_ff0p88v125c\
+    -timing_condition {TC_ff0p88v125c}\
+    -rc_corner RC_best
+@file 71:
+@@file 72: create_delay_corner -name DC_ss0p72v125c\
+    -timing_condition {TC_ss0p72v125c}\
+    -rc_corner RC_worst
+@file 75:
+@@file 76: create_delay_corner -name DC_ff0p88vm40c\
+    -timing_condition {TC_ff0p88vm40c}\
+    -rc_corner RC_best
+@file 79:
+@@file 80: create_delay_corner -name DC_ss0p72vm40c\
+    -timing_condition {TC_ss0p72vm40c}\
+    -rc_corner RC_worst
+@file 83:
+@file 84: # -----------------------------------------------------------------------------
+@file 85: # Constraint mode
+@file 86: # -----------------------------------------------------------------------------
+@file 87: # Load the functional timing constraints, including clocks and I/O timing
+@file 88: # requirements, from the synthesized design's SDC file.
+@@file 89: create_constraint_mode -name CM_func\
+    -sdc_files ../gate_level/SYN/FMA_pipe_syn.sdc
+@file 91:
+@file 92: # -----------------------------------------------------------------------------
+@file 93: # Analysis views
+@file 94: # -----------------------------------------------------------------------------
+@file 95: # An analysis view combines the functional constraint mode with one delay
+@file 96: # corner. Each view is used to analyze a particular operating condition.
+@@file 97: create_analysis_view -name AV_func_ff0p88v125c -constraint_mode CM_func -delay_corner DC_ff0p88v125c
+@@file 98: create_analysis_view -name AV_func_ff0p88vm40c -constraint_mode CM_func -delay_corner DC_ff0p88vm40c
+@@file 99: create_analysis_view -name AV_func_ss0p72v125c -constraint_mode CM_func -delay_corner DC_ss0p72v125c
+@@file 100: create_analysis_view -name AV_func_ss0p72vm40c -constraint_mode CM_func -delay_corner DC_ss0p72vm40c
+@file 101:
+@file 102: # -----------------------------------------------------------------------------
+@file 103: # Active analysis views
+@file 104: # -----------------------------------------------------------------------------
+@file 105: # Use slow corners for setup analysis because they produce longer data delays.
+@file 106: # Include all corners for hold analysis to check both slow and fast behavior.
+@file 107: # Use the fast, high-voltage, 125Â°C corner for power analyses.
+@@file 108: set_analysis_view   -setup {AV_func_ss0p72v125c AV_func_ss0p72vm40c} -hold {AV_func_ss0p72v125c AV_func_ss0p72vm40c AV_func_ff0p88v125c AV_func_ff0p88vm40c}\
+                    -leakage AV_func_ff0p88v125c -dynamic AV_func_ff0p88v125c
+#@ End verbose source mmmc.view.stylus
+Reading lib_ss0p72v125c timing library '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib' ...
+**WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib, Line 6263790)
+**WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib, Line 6263791)
+**WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib, Line 6265900)
+**WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib, Line 6265901)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90_VPP_VSS'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90_VPP_VBB'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90LVT_VPP_VSS'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90LVT_VPP_VBB'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP20P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90_VPP_VSS'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90_VPP_VBB'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90LVT_VPP_VSS'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90LVT_VPP_VBB'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'TAPCELLBWP16P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'FILL8BWP20P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'FILL8BWP20P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'FILL8BWP16P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'FILL8BWP16P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'FILL64BWP20P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'FILL64BWP20P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'FILL64BWP16P90LVT'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+**WARN: (TECHLIB-302):	No function defined for cell 'FILL64BWP16P90'. The cell will only be used for analysis. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72v125c_ccs.lib)
+Message <TECHLIB-302> has exceeded the message display limit of '20'. Use 'set_message -no_limit -id list_of_msgIDs' to reset the message limit.
+Read 1480 cells in library 'N16ADFP_StdCellss0p72v125c_ccs' 
+#################################
+read_physical -lef {/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/LEF/lef/N16ADFP_StdCell.lef}
+#################################
+
+Loading LEF file /cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef ...
+
+Loading LEF file /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/LEF/lef/N16ADFP_StdCell.lef ...
+Set DBUPerIGU to M1 pitch 180.
+[16:17:37.362113] Periodic Lic check successful
+[16:17:37.362154] Feature usage summary:
+[16:17:37.362155] Innovus_Impl_System
+[16:17:37.362155] Innovus_20nm_Opt
+
+This command "read_physical -lef {/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef ..." required an extra checkout of license invs_20nm.
+Additional license(s) checked out: 1 'Innovus_20nm_Opt' license(s)
+
+##  Check design process and node:  
+##  Both design process and tech node are not set.
+
+#################################
+read_netlist ../gate_level/SYN/FMA_pipe_syn.v -top FMA_pipe
+#################################
+#% Begin Load netlist data ... (date=10/20 16:17:38, mem=927.6M)
+*** Begin netlist parsing (mem=1245.1M) ***
+Created 1480 new cells from 1 timing libraries.
+Reading netlist ...
+Backslashed names will retain backslash and a trailing blank character.
+Reading verilog netlist '../gate_level/SYN/FMA_pipe_syn.v'
+
+*** Memory Usage v#1 (Current mem = 1245.062M, initial mem = 486.035M) ***
+*** End netlist parsing (cpu=0:00:00.2, real=0:00:00.0, mem=1245.1M) ***
+#% End Load netlist data ... (date=10/20 16:17:38, total cpu=0:00:00.2, real=0:00:00.0, peak res=956.7M, current mem=956.7M)
+Set top cell to FMA_pipe.
+Hooked 1480 DB cells to tlib cells.
+Starting recursive module instantiation check.
+No recursion found.
+Building hierarchical netlist for Cell FMA_pipe ...
+*** Netlist is unique.
+** info: there are 1492 modules.
+** info: there are 5569 stdCell insts.
+
+*** Memory Usage v#1 (Current mem = 1301.984M, initial mem = 486.035M) ***
+** INFO: FINFET definition is detected in tech LEF. The pitch is 0.048 , offset is 0 and direction is Horizontal Enable FinFet support.
+block snap rule changed from un_init to FinFet/un_init
+IO pad snap rule changed from un_init to FinFet/FinFet/un_init
+constraint snap rule changed from un_init to FinFet/FinFet/FinFet/un_init
+DIE snap rule changed from un_init to FinFet/FinFet/FinFet/FinFet/un_init
+Core snap rule changed from un_init to FinFet/FinFet/FinFet/FinFet/FinFet/un_init
+**WARN: (IMPFP-3961):	The techSite 'dcore' has no related standard cells in the LEF/OA library. The calculations for this site type cannot be made unless standard cell models of this type exist in the LEF/OA library. Ignore this warning if the SITE is not used by the library. Alternatively, remove the SITE definition for the LEF/OA library to avoid this message.
+Type 'man IMPFP-3961' for more detail.
+**WARN: (IMPFP-3961):	The techSite 'bcore' has no related standard cells in the LEF/OA library. The calculations for this site type cannot be made unless standard cell models of this type exist in the LEF/OA library. Ignore this warning if the SITE is not used by the library. Alternatively, remove the SITE definition for the LEF/OA library to avoid this message.
+Type 'man IMPFP-3961' for more detail.
+**WARN: (IMPFP-3961):	The techSite 'coreExt' has no related standard cells in the LEF/OA library. The calculations for this site type cannot be made unless standard cell models of this type exist in the LEF/OA library. Ignore this warning if the SITE is not used by the library. Alternatively, remove the SITE definition for the LEF/OA library to avoid this message.
+Type 'man IMPFP-3961' for more detail.
+
+Honor LEF defined pitches for advanced node
+Start create_tracks
+Extraction setup Started 
+Initializing multi-corner RC extraction with 2 active RC Corners ...
+Captable file(s) not specified in multi-corner setup. PreRoute extraction will use technology file. For post_route extraction, default value for effort level would be 'medium' and effort level 'low' would not be allowed.
+Generating auto layer map file.
+Importing multi-corner technology file(s) for preRoute extraction...
+/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile
+Generating auto layer map file.
+/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/best/qrcTechFile
+Generating auto layer map file.
+Completed (cpu: 0:01:13 real: 0:01:14)
+Set Shrink Factor to 1.00000
+Summary of Active RC-Corners : 
+ 
+ Analysis View: AV_func_ss0p72v125c
+    RC-Corner Name        : RC_worst
+    RC-Corner Index       : 0
+    RC-Corner Temperature : 25 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile'
+ 
+ Analysis View: AV_func_ss0p72vm40c
+    RC-Corner Name        : RC_worst
+    RC-Corner Index       : 0
+    RC-Corner Temperature : 25 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/worst/qrcTechFile'
+ 
+ Analysis View: AV_func_ff0p88v125c
+    RC-Corner Name        : RC_best
+    RC-Corner Index       : 1
+    RC-Corner Temperature : 25 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/best/qrcTechFile'
+ 
+ Analysis View: AV_func_ff0p88vm40c
+    RC-Corner Name        : RC_best
+    RC-Corner Index       : 1
+    RC-Corner Temperature : 25 Celsius
+    RC-Corner Cap Table   : ''
+    RC-Corner PreRoute Res Factor         : 1
+    RC-Corner PreRoute Cap Factor         : 1
+    RC-Corner PostRoute Res Factor        : 1 {1 1 1}
+    RC-Corner PostRoute Cap Factor        : 1 {1 1 1}
+    RC-Corner PostRoute XCap Factor       : 1 {1 1 1}
+    RC-Corner PreRoute Clock Res Factor   : 1	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PreRoute Clock Cap Factor   : 1	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Cap Factor  : 1 {1 1 1} 	[Derived from postRoute_cap (effortLevel low)]
+    RC-Corner PostRoute Clock Res Factor  : 1 {1 1 1} 	[Derived from postRoute_res (effortLevel low)]
+    RC-Corner PostRoute Clock coupling capacitance Factor : 1 {1 1 1} 
+    RC-Corner Technology file: '/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/RC/N16ADFP_QRC/best/qrcTechFile'
+Updating RC grid for preRoute extraction ...
+Initializing multi-corner resistance tables ...
+Default value for post_route extraction mode's extract_rc_effort_level (extract_rc_effort_level option of set_db) changed to 'medium'.
+*Info: initialize multi-corner CTS.
+Reading lib_ss0p72vm40c timing library '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib' ...
+**WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib, Line 6263802)
+**WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib, Line 6263803)
+**WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib, Line 6265912)
+**WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.lib, Line 6265913)
+Read 1480 cells in library 'N16ADFP_StdCellss0p72vm40c_ccs' 
+Reading lib_ff0p88v125c timing library '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib' ...
+**WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib, Line 6263760)
+**WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib, Line 6263761)
+**WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib, Line 6265870)
+**WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.lib, Line 6265871)
+Read 1480 cells in library 'N16ADFP_StdCellff0p88v125c_ccs' 
+Reading lib_ff0p88vm40c timing library '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib' ...
+**WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib, Line 6263802)
+**WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib, Line 6263803)
+**WARN: (TECHLIB-1277):	The attribute 'max_capacitance' has been defined for internal pin 'INTERNAL'. 'max_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib, Line 6265912)
+**WARN: (TECHLIB-1277):	The attribute 'min_capacitance' has been defined for internal pin 'INTERNAL'. 'min_capacitance' cannot be defined at this level and is being ignored. (File /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88vm40c_ccs.lib, Line 6265913)
+Read 1480 cells in library 'N16ADFP_StdCellff0p88vm40c_ccs' 
+Reading timing constraints file '../gate_level/SYN/FMA_pipe_syn.sdc' ...
+Current (total cpu=0:07:27, real=0:14:11, peak res=2249.8M, current mem=1697.0M)
+INFO (CTE): Constraints read successfully.
+Ending "Constraint file reading stats" (total cpu=0:00:00.2, real=0:00:00.0, peak res=1715.2M, current mem=1715.2M)
+Current (total cpu=0:07:27, real=0:14:11, peak res=2249.8M, current mem=1715.2M)
+Total number of combinational cells: 1136
+Total number of sequential cells: 116
+Total number of tristate cells: 0
+Total number of level shifter cells: 0
+Total number of power gating cells: 0
+Total number of isolation cells: 2
+Total number of power switch cells: 2
+Total number of pulse generator cells: 0
+Total number of always on buffers: 0
+Total number of retention cells: 0
+Total number of physical cells: 224
+List of usable buffers: BUFFD12BWP16P90 BUFFD12BWP16P90LVT BUFFD12BWP20P90LVT BUFFD12BWP20P90 BUFFD16BWP16P90 BUFFD16BWP16P90LVT BUFFD16BWP20P90 BUFFD16BWP20P90LVT BUFFD1BWP16P90 BUFFD1BWP16P90LVT BUFFD1BWP20P90LVT BUFFD1BWP20P90 BUFFD2BWP16P90 BUFFD2BWP16P90LVT BUFFD2BWP20P90LVT BUFFD2BWP20P90 BUFFD4BWP16P90 BUFFD4BWP16P90LVT BUFFD4BWP20P90LVT BUFFD4BWP20P90 BUFFD8BWP16P90 BUFFD8BWP16P90LVT BUFFD8BWP20P90LVT BUFFD8BWP20P90 CKBD12BWP16P90 CKBD12BWP16P90LVT CKBD12BWP20P90LVT CKBD12BWP20P90 CKBD16BWP16P90 CKBD16BWP16P90LVT CKBD16BWP20P90 CKBD16BWP20P90LVT CKBD1BWP16P90 CKBD1BWP16P90LVT CKBD1BWP20P90LVT CKBD1BWP20P90 CKBD2BWP16P90 CKBD2BWP16P90LVT CKBD2BWP20P90LVT CKBD2BWP20P90 CKBD4BWP16P90 CKBD4BWP16P90LVT CKBD4BWP20P90LVT CKBD4BWP20P90 CKBD8BWP16P90 CKBD8BWP16P90LVT CKBD8BWP20P90 CKBD8BWP20P90LVT DEL025D1BWP16P90LVT DEL025D1BWP20P90LVT
+Total number of usable buffers: 50
+List of unusable buffers: GBUFFMCOD1BWP16P90 GBUFFMCOD1BWP16P90LVT GBUFFMCOD1BWP20P90LVT GBUFFMCOD1BWP20P90 GBUFFMCOD2BWP16P90 GBUFFMCOD2BWP16P90LVT GBUFFMCOD2BWP20P90LVT GBUFFMCOD2BWP20P90 GBUFFMCOD4BWP16P90 GBUFFMCOD4BWP16P90LVT GBUFFMCOD4BWP20P90LVT GBUFFMCOD4BWP20P90 GBUFFMCOD8BWP16P90 GBUFFMCOD8BWP16P90LVT GBUFFMCOD8BWP20P90LVT GBUFFMCOD8BWP20P90
+Total number of unusable buffers: 16
+List of usable inverters: CKND12BWP16P90 CKND12BWP16P90LVT CKND12BWP20P90LVT CKND12BWP20P90 CKND16BWP16P90 CKND16BWP16P90LVT CKND16BWP20P90 CKND16BWP20P90LVT CKND1BWP16P90 CKND1BWP16P90LVT CKND1BWP20P90LVT CKND1BWP20P90 CKND2BWP16P90 CKND2BWP16P90LVT CKND2BWP20P90LVT CKND2BWP20P90 CKND4BWP16P90 CKND4BWP16P90LVT CKND4BWP20P90LVT CKND4BWP20P90 CKND8BWP16P90 CKND8BWP16P90LVT CKND8BWP20P90 CKND8BWP20P90LVT INVD12BWP16P90 INVD12BWP16P90LVT INVD12BWP20P90LVT INVD12BWP20P90 INVD16BWP16P90 INVD16BWP16P90LVT INVD16BWP20P90 INVD16BWP20P90LVT INVD1BWP16P90 INVD1BWP16P90LVT INVD1BWP20P90LVT INVD1BWP20P90 INVD2BWP16P90 INVD2BWP16P90LVT INVD2BWP20P90LVT INVD2BWP20P90 INVD4BWP16P90 INVD4BWP16P90LVT INVD4BWP20P90LVT INVD4BWP20P90 INVD8BWP16P90 INVD8BWP16P90LVT INVD8BWP20P90LVT INVD8BWP20P90
+Total number of usable inverters: 48
+List of unusable inverters: GINVMCOD1BWP16P90 GINVMCOD1BWP16P90LVT GINVMCOD1BWP20P90 GINVMCOD1BWP20P90LVT GINVMCOD2BWP16P90 GINVMCOD2BWP16P90LVT GINVMCOD2BWP20P90LVT GINVMCOD2BWP20P90 GINVMCOD4BWP16P90 GINVMCOD4BWP16P90LVT GINVMCOD4BWP20P90LVT GINVMCOD4BWP20P90 GINVMCOD8BWP16P90 GINVMCOD8BWP16P90LVT GINVMCOD8BWP20P90 GINVMCOD8BWP20P90LVT
+Total number of unusable inverters: 16
+List of identified usable delay cells: DEL025D1BWP16P90 DEL025D1BWP20P90 DEL050D1BWP16P90 DEL050D1BWP16P90LVT DEL050D1BWP20P90LVT DEL050D1BWP20P90 DEL075D1BWP16P90 DEL075D1BWP16P90LVT DEL075D1BWP20P90 DEL075D1BWP20P90LVT
+Total number of identified usable delay cells: 10
+List of identified unusable delay cells:
+Total number of identified unusable delay cells: 0
+#################################
+read_mmmc mmmc.view.stylus
+#################################
+**WARN: (TCLCMD-1306):	read_mmmc command should be called once before init_design.
+**ERROR: **ERROR: (IMPSYT-16031):	Failed to execute command 'read_mmmc mmmc.view.stylus'.For more details, refer to error message from console.
+
+#################################
+read_physical -lef {/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/LEF/lef/N16ADFP_StdCell.lef}
+#################################
+**ERROR: (IMPIMEX-7030):	LEF files are not allowed to be read in after the design is in memory. If you want to modify the current list of LEF files, please refer to read_physical -add_lefs**ERROR: **ERROR: (IMPSYT-16031):	Failed to execute command 'read_physical -lef {/cad/CBDK/ADFP/Executable_Package/Collaterals/Tech/APR/N16ADFP_APR_Innovus/N16ADFP_APR_Innovus_11M.10a.tlef /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/LEF/lef/N16ADFP_StdCell.lef}'.For more details, refer to error message from console.
+
+#################################
+read_netlist ../gate_level/SYN/FMA_pipe_syn.v -top FMA_pipe
+#################################
+**ERROR: **ERROR: (IMPSYT-16031):	Failed to execute command 'read_netlist ../gate_level/SYN/FMA_pipe_syn.v -top FMA_pipe'.For more details, refer to error message from console.
+
+**ERROR: (IMPIMEX-12):	'init_design' failed. You are missing one or more of the required commands before running init_design.
+The MMMC init sequence looks like this: 
+read_mmmc top.mmmc 
+read_physical -lef {tech.lef stdcell.lef}   #optional in Tempus, required for Innovus 
+read_netlist top.v 
+read_power_intent -1801 top.1801	    #only for MSV designs 
+init_design 
+
+Tempus also supports a single-mode timing init sequence with no MMMC file like this: 
+read_libs all.lib 
+read_netlist top.v 
+read_sdc top.sdc 
+init_design 
+
+See the 'Stylus Common UI Initialization' section in the 'Design Import and Export Capabilities' chapter of the Innovus Stylus 
+Common UI User Guide for more details.
+exit
+
+
+*** Memory Usage v#1 (Current mem = 2012.191M, initial mem = 486.035M) ***
+*** Message Summary: 565 warning(s), 6 error(s)
+
+--- Ending "Innovus" (totcpu=0:09:02, real=0:23:15, mem=2012.2M) ---

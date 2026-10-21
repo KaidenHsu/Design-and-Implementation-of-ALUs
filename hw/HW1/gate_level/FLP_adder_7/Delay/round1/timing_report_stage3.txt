@@ -1,0 +1,57 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:38:42 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: s2_mb_aligned_reg_9_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: s3_md_signed_reg_16_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s2_mb_aligned_reg_9_/CP (DFQD2BWP16P90LVT)          0.000000   0.000000 r
+  s2_mb_aligned_reg_9_/Q (DFQD2BWP16P90LVT) <-        0.039360   0.039360 f
+  add_92/B[9] (FLP_adder_DW01_add_5)                  0.000000   0.039360 f
+  add_92/U419/ZN (NR2D1BWP16P90LVT)                   0.012300   0.051660 r
+  add_92/U218/ZN (OAI21D1BWP16P90LVT)                 0.014194   0.065853 f
+  add_92/U368/ZN (AOI21D1BWP16P90LVT)                 0.017186   0.083039 r
+  add_92/U140/ZN (OAI21D1BWP16P90LVT)                 0.011810   0.094849 f
+  add_92/U349/ZN (AOI21D1BWP16P90LVT)                 0.041182   0.136031 r
+  add_92/U396/Z (XOR2D1BWP16P90)                      0.037483   0.173514 r
+  add_92/SUM[16] (FLP_adder_DW01_add_5)               0.000000   0.173514 r
+  U1608/Z (AN2D1BWP16P90LVT)                          0.012786   0.186300 r
+  s3_md_signed_reg_16_/D (DFQD2BWP16P90LVT)           0.000000   0.186300 r
+  data arrival time                                              0.186300
+
+  clock clk (rise edge)                               0.010000   0.010000
+  clock network delay (ideal)                         0.000000   0.010000
+  s3_md_signed_reg_16_/CP (DFQD2BWP16P90LVT)          0.000000   0.010000 r
+  library setup time                                  -0.013682  -0.003682
+  data required time                                             -0.003682
+  --------------------------------------------------------------------------
+  data required time                                             -0.003682
+  data arrival time                                              -0.186300
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.189982
+
+
+1

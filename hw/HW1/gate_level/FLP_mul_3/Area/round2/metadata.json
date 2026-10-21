@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "design": "FLP_mul_3",
+  "optimization": "Area",
+  "round": 2,
+  "path": "gate_level/FLP_mul_3/Area/round2",
+  "log": "log/FLP_mul_3/Area/synth2.log",
+  "status": "complete",
+  "synthesis_id": "9ab782ebdb84c2ad44d2847ed7bc7963ce9dba5f26868bc39508cb5552936c03",
+  "period_ns": "1.873",
+  "search_id": "1d2df4abb96f-Area",
+  "attempt": 2,
+  "timestamp": "2026-10-05T20:37:19+0800",
+  "metrics": {
+    "schema": "1",
+    "period_ns": 1.873,
+    "slack_ns": 0.0017879,
+    "delay_ns": 1.857187,
+    "delay_basis": "timing_report_data_arrival",
+    "time_unit_ns": "1.0",
+    "comb_um2": 640.327696,
+    "seq_um2": 93.312001,
+    "total_um2": 733.639697,
+    "dynamic_w": 0.0003131486,
+    "leakage_w": 2.917223e-07,
+    "power_w": 0.0003134403223,
+    "power_activity": "default_estimated",
+    "area_units": "TA_library_um2",
+    "sdf_corner": "min_typ_max",
+    "coverage_status": "clean",
+    "complete": "1"
+  },
+  "artifact_hashes": {
+    "netlist.v": "230b153461d87622f3403067ab5119d03b6d4fed22b23a9531c77042fe25a387",
+    "timing.sdf": "2ebc5e2ee2f7f81acd2cf336b67f6dc11b13a86cae5d39b4a1457dd5f60d022e",
+    "constraints.sdc": "54f954295cc6ce8542396ced26d20af1af91872193b896ffbe3fecb8b789f252",
+    "design.ddc": "d7e685691529c561dbc89d8c7e8a4cca55d97d3a718588af6105263276b83cbc"
+  }
+}

@@ -1,0 +1,62 @@
+
+
+
+
+DIEAREA ALL 108	 0
+
+M1     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 31       0
+M2     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 32       70
+M3     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 33       70
+M4     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 34       150
+M5     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 35       245
+M6     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 36       240
+M7     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 37       245
+M8     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 38       20
+M9     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 39       20
+M10     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 40       80
+M11     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 41       80
+AP     LEFPIN,LEFOBS,PIN,NET,SPNET,VIA 74       0 
+M1     VIAFILL,FILL            31    1
+M2     VIAFILL,FILL            32    71
+M3     VIAFILL,FILL            33    71
+M4     VIAFILL,FILL            34    151
+M5     VIAFILL,FILL            35    246
+M6     VIAFILL,FILL            36    241
+M7     VIAFILL,FILL            37    246
+M8     VIAFILL,FILL            38    21
+M9     VIAFILL,FILL            39    21
+M10     FILL            40    81
+M11     FILL            41    81 
+VIA1     LEFPIN,LEFOBS,VIA   51       70
+VIA2     LEFPIN,LEFOBS,VIA   52       70
+VIA3     LEFPIN,LEFOBS,VIA   53       150
+VIA4     LEFPIN,LEFOBS,VIA   54       240
+VIA5     LEFPIN,LEFOBS,VIA   55       240
+VIA6     LEFPIN,LEFOBS,VIA   56       240
+VIA7     LEFPIN,LEFOBS,VIA   57       20
+VIA8     LEFPIN,LEFOBS,VIA   58       20
+VIA9     LEFPIN,LEFOBS,VIA   59       80
+VIA10     LEFPIN,LEFOBS,VIA   60       80
+RV     LEFPIN,LEFOBS,VIA   85       0 
+VIA1     VIAFILL         51    71
+VIA2     VIAFILL         52    71
+VIA3     VIAFILL         53    151
+VIA4     VIAFILL         54    241
+VIA5     VIAFILL         55    241
+VIA6     VIAFILL         56    241
+VIA7     VIAFILL         57    21
+VIA8     VIAFILL         58    21 
+NAME     AP/PIN          126    0
+NAME     M1/PIN          131    0
+NAME     M2/PIN          132    0
+NAME     M3/PIN          133    0
+NAME     M4/PIN          134    0
+NAME     M5/PIN          135    0
+NAME     M6/PIN          136    0
+NAME     M7/PIN          137    0
+NAME     M8/PIN          138    0
+NAME     M9/PIN          139    0
+NAME     M10/PIN          140    0
+NAME     M11/PIN          141    0
+
+CUSTOM_CB CUSTOM 108 250

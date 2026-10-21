@@ -1,0 +1,64 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : FLP_adder
+Version: T-2022.03
+Date   : Mon Oct  5 20:41:37 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: s2_mb_aligned_reg_9_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: s3_md_signed_reg_27_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  FLP_adder          ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s2_mb_aligned_reg_9_/CP (DFQD2BWP16P90LVT)          0.000000   0.000000 r
+  s2_mb_aligned_reg_9_/Q (DFQD2BWP16P90LVT) <-        0.039360   0.039360 f
+  add_92/B[9] (FLP_adder_DW01_add_5)                  0.000000   0.039360 f
+  add_92/U335/ZN (NR2D1BWP16P90LVT)                   0.012707   0.052067 r
+  add_92/U154/ZN (OAI21D1BWP16P90LVT)                 0.012399   0.064466 f
+  add_92/U263/ZN (AOI21D1BWP16P90LVT)                 0.014334   0.078800 r
+  add_92/U95/ZN (OAI21D1BWP16P90LVT)                  0.011096   0.089896 f
+  add_92/U237/ZN (AOI21D1BWP16P90LVT)                 0.012514   0.102411 r
+  add_92/U255/ZN (OAI21D1BWP16P90LVT)                 0.014905   0.117316 f
+  add_92/U248/ZN (AOI21D1BWP16P90LVT)                 0.016613   0.133929 r
+  add_92/U254/ZN (OAI21D1BWP16P90LVT)                 0.015893   0.149822 f
+  add_92/U250/ZN (AOI21D1BWP16P90LVT)                 0.016581   0.166403 r
+  add_92/U258/ZN (OAI21D1BWP16P90LVT)                 0.015893   0.182296 f
+  add_92/U259/ZN (AOI21D1BWP16P90LVT)                 0.016581   0.198877 r
+  add_92/U331/ZN (OAI21D1BWP16P90LVT)                 0.013555   0.212432 f
+  add_92/U329/Z (XOR2D1BWP16P90LVT)                   0.017867   0.230299 r
+  add_92/SUM[27] (FLP_adder_DW01_add_5)               0.000000   0.230299 r
+  U1422/Z (AN2D1BWP16P90LVT)                          0.012040   0.242340 r
+  s3_md_signed_reg_27_/D (DFQD2BWP16P90LVT)           0.000000   0.242340 r
+  data arrival time                                              0.242340
+
+  clock clk (rise edge)                               0.260000   0.260000
+  clock network delay (ideal)                         0.000000   0.260000
+  s3_md_signed_reg_27_/CP (DFQD2BWP16P90LVT)          0.000000   0.260000 r
+  library setup time                                  -0.013855  0.246145
+  data required time                                             0.246145
+  --------------------------------------------------------------------------
+  data required time                                             0.246145
+  data arrival time                                              -0.242340
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.003805
+
+
+1
