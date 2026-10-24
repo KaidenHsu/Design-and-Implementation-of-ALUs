@@ -8,10 +8,10 @@
 
  Hw | Description
 --------|:-----
-[Hw1][1]| Single-precision Floating-point Addition and Multiplication
+[Hw1][1]| Single-precision Floating-point Adder and Multiplier
 [Hw2][2]| IEEE-754 Single-Precision Floating-Point Fused Multiply Adder
 
 [1]: hw/HW1/
 [2]: hw/HW2/
 
-<p align="center"><img src="images/banner.png" alt="ALU banner" /></p>
+<p align="center"><img src="images/ALU_banner.png" alt="ALU banner" /></p>
