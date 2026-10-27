@@ -1,4 +1,4 @@
-# Hw2. IEEE-754 Single-Precision Floating-Point Fused Multiply Adder
+# Hw 2. IEEE-754 Single-Precision Floating-Point Fused Multiply Adder
 
 ## 1. Introduction
 

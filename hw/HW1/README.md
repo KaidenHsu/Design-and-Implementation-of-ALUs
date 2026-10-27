@@ -1,10 +1,10 @@
-# Hw1. Single-precision Floating-point Adder and Multiplier
+# Hw 1. Single-precision Floating-point Adder and Multiplier
 
 ## 1. Introduction
 
 For ALU Hw1, we implemented signed fixed-point (FXP) and single-precision floating-point (FLP) adders and multipliers. The FLP designs include both combinational and pipelined versions, with a three-stage multiplier and four-stage and seven-stage adders. All FLP designs use round-to-nearest, with halfway cases rounded up. IEEE-754 special values handling (zeroes, infinities, NaNs, and subnormal operands) are outside the scope of this homework.
 
-The Area, Delay, and Between synthesis configurations were compared using PPA. The RTL was verified through pre-sim, and the synthesized netlists were verified through post-sim with SDF back-annotation. APR is not required for Hw1.
+The Area, Delay, and Between synthesis configurations were compared using PPA. The RTL was verified through pre-sim, and the synthesized netlists were verified through post-sim. APR is not required for Hw1.
 
 ## 2. Reproduction Flow
 
