@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
-For ALU Hw1, we implemented signed fixed-point (FXP) and single-precision floating-point (FLP) adders and multipliers. The FLP designs include both combinational and pipelined versions, with a three-stage multiplier and four-stage and seven-stage adders. All FLP designs use round-to-nearest, with halfway cases rounded toward the larger magnitude. IEEE-754 special values handling (zeroes, infinities, NaNs, and subnormal operands) are outside the scope of this homework.
+For ALU Hw1, we implemented signed fixed-point (FXP) and single-precision floating-point (FLP) adders and multipliers. The FLP designs include both combinational and pipelined versions, with a three-stage multiplier and four-stage and seven-stage adders. All FLP designs use round-to-nearest, with halfway cases rounded up. IEEE-754 special values handling (zeroes, infinities, NaNs, and subnormal operands) are outside the scope of this homework.
 
 The Area, Delay, and Between synthesis configurations were compared in terms of circuit area, delay, latency, and estimated power. The RTL was verified through pre-sim, and the synthesized netlists were verified through post-sim with SDF back-annotation. APR is not required for Hw1.
 
@@ -148,7 +148,7 @@ The [pre-sim testbench](pre_sim/testbench.v) and [post-sim testbench](post_sim/t
 </p>
 
 $$
-\frac{\left|\mathrm{output} - \mathrm{reference}\right|}{\mathrm{reference}}
+relative\ error = \frac{\left|\mathrm{output} - \mathrm{reference}\right|}{\mathrm{reference}}
 $$
 
 - **Numerical error:** Finite significand precision can require rounding even when both inputs are exactly representable. The checker measures output error relative to the higher-precision result for the already encoded inputs; it does not measure representation error introduced when original real-valued inputs were encoded. Both FLP checkers print an average of the error defined above. Because the denominator is not absolute-valued and zero references are not handled explicitly, this statistic can be negative or invalid. It is diagnostic only; pass/fail uses the encoding checks above.
@@ -202,7 +202,7 @@ Observations:
 
 From the results, it was observed that adding pipeline stages does not guarantee a proportional improvement in performance. In particular, similar delays were obtained for the four-stage and seven-stage adders under the Delay configuration, despite the greater register area and reported latency of the seven-stage design. The per-stage results also showed that the bottleneck can move as synthesis constraints are tightened: multiplication dominated the three-stage multiplier under Area, whereas normalization and rounding became the largest-delay stage under Delay. Therefore, pipeline effectiveness depends on the balance of measured stage delays as well as the stage count. Finally, the unresolved SDF diagnostic demonstrated that successful synthesis alone is insufficient to establish successful post-sim verification.
 
-Going forward, the best practice is to choose pipeline boundaries from measured stage timing rather than dividing the operation sequence into a fixed number of stages alone. Register overhead and the alignment of sign, exponent, and zero information should be considered alongside the delay reduction. A separate near/far adder architecture could also be evaluated to avoid placing both a full alignment shifter and a full normalization shifter on the same path.
+Going forward, choose pipeline boundaries from measured stage timing rather than dividing the operation sequence into a fixed number of stages alone. Register overhead and the alignment of sign, exponent, and zero information should be considered alongside the delay reduction. A separate near/far adder architecture could also be evaluated to avoid placing both a full alignment shifter and a full normalization shifter on the same path.
 
 [1]: images/summary_table.png
 [2]: images/pipeline_table.png
