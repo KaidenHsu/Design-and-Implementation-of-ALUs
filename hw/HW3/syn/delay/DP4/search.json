@@ -1,0 +1,103 @@
+{
+  "converged": true,
+  "attempts": [
+    {
+      "index": 1,
+      "trial": "tune/001_period_0.01ns",
+      "period_ns": 0.01,
+      "status": "timing_violated",
+      "delay_ns": 1.514681,
+      "slack_ns": -1.509681,
+      "comb_um2": 6797.520152,
+      "seq_um2": 0.0,
+      "total_um2": 6797.520152,
+      "dynamic_uw": 731251.3,
+      "leakage_uw": 5.2281,
+      "power_uw": 731256.5281
+    },
+    {
+      "index": 2,
+      "trial": "tune/002_period_1.52ns",
+      "period_ns": 1.52,
+      "status": "timing_violated",
+      "delay_ns": 1.466366,
+      "slack_ns": -0.706366,
+      "comb_um2": 7183.002395,
+      "seq_um2": 0.0,
+      "total_um2": 7183.002395,
+      "dynamic_uw": 5103.5,
+      "leakage_uw": 5.8622,
+      "power_uw": 5109.3622
+    },
+    {
+      "index": 3,
+      "trial": "tune/003_period_2.227ns",
+      "period_ns": 2.227,
+      "status": "timing_violated",
+      "delay_ns": 1.45077,
+      "slack_ns": -0.33727,
+      "comb_um2": 7472.476951,
+      "seq_um2": 0.0,
+      "total_um2": 7472.476951,
+      "dynamic_uw": 3589.2,
+      "leakage_uw": 6.4071,
+      "power_uw": 3595.6070999999997
+    },
+    {
+      "index": 4,
+      "trial": "tune/004_period_2.565ns",
+      "period_ns": 2.565,
+      "status": "timing_violated",
+      "delay_ns": 1.40356,
+      "slack_ns": -0.12106,
+      "comb_um2": 8078.382872,
+      "seq_um2": 0.0,
+      "total_um2": 8078.382872,
+      "dynamic_uw": 3294.5,
+      "leakage_uw": 7.4518,
+      "power_uw": 3301.9518
+    },
+    {
+      "index": 5,
+      "trial": "tune/005_period_2.687ns",
+      "period_ns": 2.687,
+      "status": "timing_violated",
+      "delay_ns": 1.415807,
+      "slack_ns": -0.072307,
+      "comb_um2": 8003.422238,
+      "seq_um2": 0.0,
+      "total_um2": 8003.422238,
+      "dynamic_uw": 3150.9,
+      "leakage_uw": 7.2024,
+      "power_uw": 3158.1024
+    },
+    {
+      "index": 6,
+      "trial": "tune/006_period_2.76ns",
+      "period_ns": 2.76,
+      "status": "timing_violated",
+      "delay_ns": 1.457059,
+      "slack_ns": -0.077059,
+      "comb_um2": 7621.983515,
+      "seq_um2": 0.0,
+      "total_um2": 7621.983515,
+      "dynamic_uw": 2967.8,
+      "leakage_uw": 6.7713,
+      "power_uw": 2974.5713
+    },
+    {
+      "index": 7,
+      "trial": "tune/007_period_2.838ns",
+      "period_ns": 2.838,
+      "status": "passed",
+      "delay_ns": 1.418998,
+      "slack_ns": 2e-06,
+      "comb_um2": 7999.067682,
+      "seq_um2": 0.0,
+      "total_um2": 7999.067682,
+      "dynamic_uw": 3066.3999999999996,
+      "leakage_uw": 7.1653,
+      "power_uw": 3073.5652999999998
+    }
+  ]
+}

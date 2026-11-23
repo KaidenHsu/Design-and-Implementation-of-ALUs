@@ -1,0 +1,732 @@
+$ /usr/cad/synopsys/vcs/2023.12/bin/vcs -full64 +v2k -debug_access+all -top testbench +define+DUT_MODULE=DP4 +define+DUT_LATENCY=0 +define+TB_PERIOD=2.838 -o /MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4/work/simv -Mdir=/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4/work/csrc +incdir+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4 +incdir+/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG +neg_tchk +define+HW3_GATE_SIM=1 '+define+HW3_SDF_FILE="/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf"' /MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/TB.v /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v
+*** Using c compiler gcc instead of cc ...
+                         Chronologic VCS (TM)
+         Version V-2023.12_Full64 -- Mon Nov 23 03:11:26 2026
+
+                    Copyright (c) 1991 - 2023 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+
+Parsing design file '/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/TB.v'
+Parsing design file '/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v'
+Parsing design file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v'
+Top Level Modules:
+       testbench
+TimeScale is 1 ns / 1 ps
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 3386
+DP4_DW_mult_uns_34, "FA1D4BWP16P90LVT U708( .A (n329),  .B (n257),  .CI (n340),  .CO (n243));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 11168
+DP4_DW_mult_uns_71, "FA1D2BWP16P90LVT U595( .A (n244),  .B (n251),  .CI (n242),  .CO (n239));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 14159
+DP4_DW_mult_uns_84, "FA1D1BWP16P90LVT U242( .A (n258),  .B (n342),  .CI (n400),  .CO (n246));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18550
+DP4, "DP4_DW01_add_17 add_207( .A ({n2864, n2863, n2166, n2280, n2881, n2482, n2268, n2855, n2347, n2884}),  .B ({N1460, N1460, N1460, N1460, n7937, N1458, N1457, N1456, n1850, N1454}),  .CI (net19632),  .SUM ({N1470, N1469, N1468, N1467, N1466, N1465, N1464, N1463, N1537, N1461}));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18573
+DP4, "DP4_DW01_add_41 add_0_root_sub_0_root_sub_83_G3( .A ({net19632, net19632, unpack_ex[23:21], n7952, n7950, unpack_ex[18], n7951, unpack_ex[16]}),  .B ({n7942, n7942, N484, N483, N482, N481, N480, N479, N478, n7899}),  .CI (net19632),  .SUM (unpack_ep[29:20]));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18609
+DP4, "DP4_DW01_sub_26 sub_193( .A ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632}),  .B ({n2445, sum[53:0]}),  .CI (net19632),  .DIFF ({N1144, N1143, N1142, N1141, N1140, N1139, N1138, N1137, N1136, N1135, N1134, N1133, N1132, N1131, N1130, N1129, N1128, N1127, N11 ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18624
+DP4, "DP4_DW01_sub_31 sub_107( .A ({n2864, n2863, n2856, n2893, n2881, n2886, n2853, n2855, n2888, n2405}),  .B ({n1959, n2100, n2548, n2040, n2538, n2562, unpack_ep[3:0]}),  .CI (net19632),  .DIFF ({N642, N641, N640, N639, N638, N637, N636, N635, N634, N633}));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18628
+DP4, "DP4_DW01_add_33 add_248( .A ({net19632, N1909, N1908, N1907, N1906, N1905, N1904, N1903, N1902, N1901, N1900, N1899, N1898, N1897, N1896, N1895, N1894, N1893, N1892, N1891, N1890, N1889, N1888, N1887, n7938}),  .B ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, pack_increment}),  .CI (net19632),  .SUM ({N1936, N1935, N1934, N1933, N1932, N1931, N1930, N1929, N1928, N1927, N1926, N1925, N1924, N1923, N1922, N1921, N1920, N1919, N1918, N1917, N1916, N1915, N1914, N1913, N1912}));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18638
+DP4, "DP4_DW01_add_59 add_0_root_add_0_root_add_141_2_G2( .A ({multiply_lanes_1__p_hh, multiply_lanes_1__p_ll}),  .B ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, N816, N815, N814, N813, N812, N811, N810, N809, N808, N807, N806, N805, N804, N803, N802, N801, N800, N799, N798, N797, N796, N795, N794, N793, N792, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632}),  .CI (net19632),  .SUM (multiply_lanes_1__p_full));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18646
+DP4, "DP4_DW01_add_63 add_1_root_add_0_root_add_141_2_G2( .A ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, multiply_lanes_1__p_lh_23_, multiply_lanes_1__p_lh_22_, multiply_lanes_1__p_lh_21_, multiply_lanes_1__p_lh_20_, multiply_lanes_1__p_lh_19_, multiply_lanes_1__p_lh_18_, multiply_lanes_1__p_lh_17_, multiply_lanes_1__p_lh_16_, multiply_lanes_1__p_lh_15_, multiply_lanes_1__p_lh_14_, multiply_lanes_1__p_lh_13_, multiply_lanes_1__p_lh_12_, multiply_lanes_1__p_lh_11_, multiply_lanes_1__p_lh_10_, multiply_lanes_1__p_lh_9_, multiply_lanes_1__p_lh_8_, multiply_lanes_1__p_lh_7_, multiply_lanes_1__p_lh_6_, multiply_lanes_1__p_lh_5_, multiply_lanes_1__p_lh_4_, multiply_lanes_1__p_lh_3_, multi ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18710
+DP4, "DP4_DW01_sub_53 sub_107_I3( .A ({n2864, n2863, n2856, n2893, n2881, n2886, n2853, n2855, n2888, n2887}),  .B (unpack_ep[29:20]),  .CI (net19632),  .DIFF ({N664, N663, N662, N661, N660, N659, N658, N657, N656, N655}));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18713
+DP4, "DP4_DW01_add_79 add_0_root_add_0_root_add_141_2_G3( .A ({multiply_lanes_2__p_hh, multiply_lanes_2__p_ll}),  .B ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, N919, N918, N917, N916, N915, N914, N913, N912, N911, N910, N909, N908, N907, N906, N905, N904, N903, N902, N901, N900, N899, N898, N897, N896, N895, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632}),  .CI (net19632),  .SUM (multiply_lanes_2__p_full));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18721
+DP4, "DP4_DW01_add_78 add_0_root_add_0_root_add_141_2( .A ({multiply_lanes_0__p_hh, multiply_lanes_0__p_ll}),  .B ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, N712, N711, N710, N709, N708, N707, N706, N705, N704, N703, N702, N701, N700, N699, N698, N697, N696, N695, N694, N693, N692, N691, N690, N689, N688, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632}),  .CI (net19632),  .SUM (multiply_lanes_0__p_full));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18729
+DP4, "DP4_DW01_sub_49 sub_107_I4( .A ({n2864, n2863, n2856, n2893, n2881, n2886, n2853, n2855, n2888, n2884}),  .B (unpack_ep[39:30]),  .CI (net19632),  .DIFF ({N675, N674, N673, N672, N671, N670, N669, N668, N667, N666}));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18732
+DP4, "DP4_DW01_sub_51 sub_107_I2( .A ({n2864, n2863, n2856, n2893, n2881, n2886, n2853, n2855, n2888, n2405}),  .B ({unpack_ep[19:18], n2386, n1595, unpack_ep[15], n2239, unpack_ep[13:10]}),  .CI (net19632),  .DIFF ({N653, N652, N651, N650, N649, N648, N647, N646, N645, N644}));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18736
+DP4, "DP4_DW01_add_84 add_1_root_add_0_root_add_141_2_G4( .A ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, multiply_lanes_3__p_lh_23_, multiply_lanes_3__p_lh_22_, multiply_lanes_3__p_lh_21_, multiply_lanes_3__p_lh_20_, multiply_lanes_3__p_lh_19_, multiply_lanes_3__p_lh_18_, multiply_lanes_3__p_lh_17_, multiply_lanes_3__p_lh_16_, multiply_lanes_3__p_lh_15_, multiply_lanes_3__p_lh_14_, multiply_lanes_3__p_lh_13_, multiply_lanes_3__p_lh_12_, multiply_lanes_3__p_lh_11_, multiply_lanes_3__p_lh_10_, multiply_lanes_3__p_lh_9_, multiply_lanes_3__p_lh_8_, multiply_lanes_3__p_lh_7_, multiply_lanes_3__p_lh_6_, multiply_lanes_3__p_lh_5_, multiply_lanes_3__p_lh_4_, multiply_lanes_3__p_lh_3_, multi ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18782
+DP4, "DP4_DW01_add_90 add_1_root_add_0_root_add_158( .A ({n2964, n2964, multiply_p_signed[162:110]}),  .B ({n2963, n2963, multiply_p_signed[217:165]}),  .CI (net19632),  .SUM ({pair23_54_, pair23_53_, pair23_52_, pair23_51_, pair23_50_, pair23_49_, pair23_48_, pair23_47_, pair23_46_, pair23_45_, pair23_44_, pair23_43_, pair23_42_, pair23_41_, pair23_40_, pair23_39_, pair23_38_, pair23_37_, pair23_36_, pair23_35_, pair23_34_, pair23_33_, pair23_32_, pair23_31_, pair23_30_, pair23_29_, pair23_28_, pair23_27_, pair23_26_, pair23_25_, pair23_24_, pair23_23_, pair23_22_, pair23_21_, pair23_20_, pair23_19_, pair23_18_, pair23_17_, pair23_16_, pair23_15_, pair23_14_, pair23_13_, pair23_12_, pair23_11_, pair23_10_, pair23_9_, pair23_8_, pair23_7_, pair23_6_, pair23_5 ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18794
+DP4, "DP4_DW01_sub_65 sub_148_G3( .A ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632}),  .B ({net19632, net19632, multiply_lanes_2__p_aligned[51:49], n2962, n2877, n2872, n2869, n2870, multiply_lanes_2__p_aligned[43:42], n2920, n2952, n2918, n2919, n2916, n2067, multiply_lane ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18833
+DP4, "DP4_DW01_add_97 add_0_root_add_0_root_add_158( .A ({pair01_54_, pair01_53_, pair01_52_, pair01_51_, pair01_50_, pair01_49_, pair01_48_, pair01_47_, pair01_46_, pair01_45_, pair01_44_, pair01_43_, pair01_42_, pair01_41_, pair01_40_, pair01_39_, pair01_38_, pair01_37_, pair01_36_, pair01_35_, pair01_34_, pair01_33_, pair01_32_, pair01_31_, pair01_30_, pair01_29_, pair01_28_, pair01_27_, pair01_26_, pair01_25_, pair01_24_, pair01_23_, pair01_22_, pair01_21_, pair01_20_, pair01_19_, pair01_18_, pair01_17_, pair01_16_, pair01_15_, pair01_14_, pair01_13_, pair01_12_, pair01_11_, pair01_10_, pair01_9_, pair01_8_, pair01_7_, pair01_6_, pair01_5_, pair01_4_, pair01_3_, pair01_2_, pair01_1_, pair01_0_}),  .B ({pair23_54_, pair23_53_, pair23_52_, pair23_51_, pair2 ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18869
+DP4, "DP4_DW01_add_104 add_0_root_sub_0_root_sub_83( .A ({net19632, net19632, unpack_ex[7:5], n7944, n7945, unpack_ex[2], n7946, unpack_ex[0]}),  .B ({n7941, n7941, N276, N275, N274, N273, n7939, N271, N270, N269}),  .CI (net19632),  .SUM (unpack_ep[9:0]));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18873
+DP4, "DP4_DW01_sub_73 sub_148_G2( .A ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632}),  .B ({net19632, net19632, n2928, multiply_lanes_1__p_aligned[50], n2879, n2852, n2849, n2848, n2922, n2847, multiply_lanes_1__p_aligned[43:42], n2917, n2915, n2912, n2914, n2911, n2908, mu ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18891
+DP4, "DP4_DW01_sub_79 sub_148_G4( .A ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632}),  .B ({net19632, net19632, multiply_lanes_3__p_aligned[51:50], n2851, n2850, n2925, n2871, n2924, n2846, multiply_lanes_3__p_aligned[43:42], n2868, n2866, n2913, n2867, n2907, n2865, multip ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18910
+DP4, "DP4_DW01_sub_78 sub_148( .A ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632}),  .B ({net19632, net19632, n2966, multiply_lanes_0__p_aligned[50], n2927, n2878, n2876, n2875, n2873, n2874, multiply_lanes_0__p_aligned[43:42], n2958, n2956, n2957, n2954, n2955, n2953, multi ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18929
+DP4, "DP4_DW01_add_110 add_0_root_sub_0_root_sub_83_G2( .A ({net19632, net19632, unpack_ex[15:13], n7947, n7948, unpack_ex[10], n7949, unpack_ex[8]}),  .B ({n3022, n3022, N380, N379, N378, N377, n7940, N375, N374, N373}),  .CI (net19632),  .SUM (unpack_ep[19:10]));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 18973
+DP4, "DP4_DW01_add_119 add_1_root_add_0_root_add_141_2( .A ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, multiply_lanes_0__p_lh_23_, multiply_lanes_0__p_lh_22_, multiply_lanes_0__p_lh_21_, multiply_lanes_0__p_lh_20_, multiply_lanes_0__p_lh_19_, multiply_lanes_0__p_lh_18_, multiply_lanes_0__p_lh_17_, multiply_lanes_0__p_lh_16_, multiply_lanes_0__p_lh_15_, multiply_lanes_0__p_lh_14_, multiply_lanes_0__p_lh_13_, multiply_lanes_0__p_lh_12_, multiply_lanes_0__p_lh_11_, multiply_lanes_0__p_lh_10_, multiply_lanes_0__p_lh_9_, multiply_lanes_0__p_lh_8_, multiply_lanes_0__p_lh_7_, multiply_lanes_0__p_lh_6_, multiply_lanes_0__p_lh_5_, multiply_lanes_0__p_lh_4_, multiply_lanes_0__p_lh_3_, multipl ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 19019
+DP4, "DP4_DW01_add_116 add_0_root_add_0_root_add_141_2_G4( .A ({multiply_lanes_3__p_hh, multiply_lanes_3__p_ll}),  .B ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, N1022, N1021, N1020, N1019, N1018, N1017, N1016, N1015, N1014, N1013, N1012, N1011, N1010, N1009, N1008, N1007, N1006, N1005, N1004, N1003, N1002, N1001, N1000, N999, N998, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632}),  .CI (net19632),  .SUM (multiply_lanes_3__p_full));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 19028
+DP4, "DP4_DW01_add_113 add_2_root_add_0_root_add_158( .A ({n2965, n2965, n2965, multiply_p_signed[51:0]}),  .B ({multiply_p_signed[107], multiply_p_signed[107], multiply_p_signed[107:55]}),  .CI (net19632),  .SUM ({pair01_54_, pair01_53_, pair01_52_, pair01_51_, pair01_50_, pair01_49_, pair01_48_, pair01_47_, pair01_46_, pair01_45_, pair01_44_, pair01_43_, pair01_42_, pair01_41_, pair01_40_, pair01_39_, pair01_38_, pair01_37_, pair01_36_, pair01_35_, pair01_34_, pair01_33_, pair01_32_, pair01_31_, pair01_30_, pair01_29_, pair01_28_, pair01_27_, pair01_26_, pair01_25_, pair01_24_, pair01_23_, pair01_22_, pair01_21_, pair01_20_, pair01_19_, pair01_18_, pair01_17_, pair01_16_, pair01_15_, pair01_14_, pair01_13_, pair01_12_, pair01_11_, pair01_10_, pair01_9_, pai ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 19057
+DP4, "DP4_DW01_add_115 add_1_root_add_0_root_add_141_2_G3( .A ({net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, net19632, multiply_lanes_2__p_lh_23_, multiply_lanes_2__p_lh_22_, multiply_lanes_2__p_lh_21_, multiply_lanes_2__p_lh_20_, multiply_lanes_2__p_lh_19_, multiply_lanes_2__p_lh_18_, multiply_lanes_2__p_lh_17_, multiply_lanes_2__p_lh_16_, multiply_lanes_2__p_lh_15_, multiply_lanes_2__p_lh_14_, multiply_lanes_2__p_lh_13_, multiply_lanes_2__p_lh_12_, multiply_lanes_2__p_lh_11_, multiply_lanes_2__p_lh_10_, multiply_lanes_2__p_lh_9_, multiply_lanes_2__p_lh_8_, multiply_lanes_2__p_lh_7_, multiply_lanes_2__p_lh_6_, multiply_lanes_2__p_lh_5_, multiply_lanes_2__p_lh_4_, multiply_lanes_2__p_lh_3_, mult ... "
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+Warning-[TFIPC] Too few instance port connections
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.v, 19103
+DP4, "DP4_DW01_add_123 add_0_root_sub_0_root_sub_83_G4( .A ({net19632, net19632, unpack_ey[31:29], n3027, n3025, n3023, n3026, unpack_ey[24]}),  .B ({n7943, n7943, N588, N587, N586, N585, N584, N583, N582, N581}),  .CI (net19632),  .SUM (unpack_ep[39:30]));"
+  The above instance has fewer port connections than the module definition.
+  Please use '+lint=TFIPC-L' to print out detailed information of unconnected 
+  ports.
+
+
+   ***   $sdf_annotate() version 1.2R
+   ***    SDF file: "/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf"
+   ***    Annotation scope: testbench.dut
+   ***    SDF Annotator log file: "sdf_annotation.rpt"
+   ***    MTM selection: "MAXIMUM"
+   ***    No SCALE FACTORS argument specified
+   ***    No SCALE TYPE argument specified
+   ***    SCALE FACTORS defaulted to "1.0:1.0:1.0":
+   ***    SCALE TYPE defaulted to: "FROM_MTM"
+   ***    Turnoff delay: "FROM_FILE"
+   ***    Approximation (mipd) policy: "MAXIMUM"
+
+   ***    SDF annotation begin: Mon Nov 23 03:11:28 2026
+
+
+SDF Info: +pulse_r/100, +pulse_e/100 in effect
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1529
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_137_G4.U756"
+  SDF Warning: The path from mult_137_G4.U756.ZN to U8478.I doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1557
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_137_G4.U756"
+  SDF Warning: The path from mult_137_G4.U756.ZN to U8469.A1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1568
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_137_G4.U756"
+  SDF Warning: The path from mult_137_G4.U756.ZN to U8466.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1569
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_137_G4.U589"
+  SDF Warning: The path from mult_137_G4.U589.ZN to U8466.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1607
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_137_G4.U589"
+  SDF Warning: The path from mult_137_G4.U589.ZN to U8455.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1608
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_137_G4.U834"
+  SDF Warning: The path from mult_137_G4.U834.ZN to U8455.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1612
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_137_G4.U834"
+  SDF Warning: The path from mult_137_G4.U834.ZN to U8453.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1613
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_137_G4.U833"
+  SDF Warning: The path from mult_137_G4.U833.Z to U8453.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1621
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_137_G4.U833"
+  SDF Warning: The path from mult_137_G4.U833.Z to U8450.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+All future warnings not reported; use +sdfverbose to report them.
+See also the log file: sdf_annotation.rpt
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/DP4_syn.sdf, 1622
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_137_G4.U831"
+  SDF Warning: The path from mult_137_G4.U831.Z to U8450.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+          Total errors: 0
+          Total warnings: 103
+   ***    SDF annotation completed: Mon Nov 23 03:11:28 2026
+
+
+Starting vcs inline pass...
+360 modules and 1 UDP read.
+recompiling module testbench
+recompiling module DP4_DW01_add_17
+recompiling module DP4_DW_mult_uns_30
+recompiling module DP4_DW_mult_uns_29
+recompiling module DP4_DW_mult_uns_31
+recompiling module DP4_DW_mult_uns_28
+recompiling module DP4_DW01_inc_1
+recompiling module DP4_DW01_add_41
+recompiling module DP4_DW_mult_uns_34
+recompiling module DP4_DW_mult_uns_35
+recompiling module DP4_DW01_sub_26
+recompiling module DP4_DW01_sub_31
+recompiling module DP4_DW01_add_33
+recompiling module DP4_DW01_add_59
+recompiling module DP4_DW01_add_63
+recompiling module DP4_DW_mult_uns_57
+recompiling module DP4_DW_mult_uns_56
+recompiling module DP4_DW01_sub_53
+recompiling module DP4_DW01_add_79
+recompiling module DP4_DW01_add_78
+recompiling module DP4_DW01_sub_49
+recompiling module DP4_DW01_sub_51
+recompiling module DP4_DW01_add_84
+recompiling module DP4_DW01_add_90
+recompiling module DP4_DW01_sub_65
+recompiling module DP4_DW_mult_uns_70
+recompiling module DP4_DW_mult_uns_68
+recompiling module DP4_DW01_add_97
+recompiling module DP4_DW_mult_uns_71
+recompiling module DP4_DW01_add_104
+recompiling module DP4_DW01_sub_73
+recompiling module DP4_DW01_sub_79
+recompiling module DP4_DW01_sub_78
+recompiling module DP4_DW01_add_110
+recompiling module DP4_DW_mult_uns_81
+recompiling module DP4_DW_mult_uns_88
+recompiling module DP4_DW_mult_uns_84
+recompiling module DP4_DW_mult_uns_83
+recompiling module DP4_DW01_add_119
+recompiling module DP4_DW01_add_116
+recompiling module DP4_DW01_add_113
+recompiling module DP4_DW_mult_uns_80
+recompiling module DP4_DW01_add_115
+recompiling module DP4_DW01_add_123
+recompiling module DP4
+recompiling module AN2D12BWP16P90LVT
+recompiling module AN2D1BWP16P90
+recompiling module AN2D1BWP16P90LVT
+recompiling module AN2D1BWP20P90
+recompiling module AN2D2BWP16P90
+50 of 360 modules done
+recompiling module AN2D2BWP16P90LVT
+recompiling module AN2D4BWP16P90LVT
+recompiling module AN2D8BWP16P90LVT
+recompiling module AN3D1BWP16P90
+recompiling module AN3D1BWP16P90LVT
+recompiling module AN3D2BWP16P90
+recompiling module AN3D2BWP16P90LVT
+recompiling module AN3D4BWP16P90LVT
+recompiling module AN3D8BWP16P90LVT
+recompiling module AN4D1BWP16P90LVT
+recompiling module AN4D2BWP16P90LVT
+recompiling module AN4D4BWP16P90LVT
+recompiling module AO21D1BWP16P90
+recompiling module AO21D1BWP16P90LVT
+recompiling module AO21D2BWP16P90
+recompiling module AO21D2BWP16P90LVT
+recompiling module AO21D2BWP20P90
+recompiling module AO21D4BWP16P90
+recompiling module AO21D4BWP16P90LVT
+recompiling module AO21D4BWP20P90LVT
+recompiling module AO22D1BWP16P90LVT
+recompiling module AO22D2BWP16P90LVT
+recompiling module AO22D4BWP16P90LVT
+recompiling module AOAI211D1BWP16P90LVT
+recompiling module AOAI211D2BWP16P90LVT
+recompiling module AOAI211D4BWP16P90LVT
+recompiling module AOI211D1BWP16P90
+recompiling module AOI211D1BWP16P90LVT
+recompiling module AOI211D2BWP16P90LVT
+recompiling module AOI211D4BWP16P90LVT
+recompiling module AOI211D8BWP16P90LVT
+recompiling module AOI21D1BWP16P90
+recompiling module AOI21D1BWP16P90LVT
+recompiling module AOI21D2BWP16P90LVT
+recompiling module AOI21D4BWP16P90LVT
+recompiling module AOI221D1BWP16P90LVT
+recompiling module AOI221D2BWP16P90LVT
+recompiling module AOI222D1BWP16P90
+recompiling module AOI222D1BWP16P90LVT
+recompiling module AOI222D2BWP16P90LVT
+recompiling module AOI222D4BWP16P90LVT
+recompiling module AOI22D1BWP16P90
+recompiling module AOI22D1BWP16P90LVT
+recompiling module AOI22D2BWP16P90LVT
+recompiling module AOI22D4BWP16P90LVT
+recompiling module AOI22D8BWP16P90LVT
+recompiling module AOI31D1BWP16P90
+recompiling module AOI31D1BWP16P90LVT
+recompiling module AOI31D2BWP16P90LVT
+recompiling module AOI32D1BWP16P90
+100 of 360 modules done
+recompiling module AOI32D1BWP16P90LVT
+recompiling module AOI32D2BWP16P90LVT
+recompiling module AOI33D1BWP16P90
+recompiling module AOI33D1BWP16P90LVT
+recompiling module AOI33D2BWP16P90LVT
+recompiling module BUFFD12BWP16P90LVT
+recompiling module BUFFD16BWP16P90LVT
+recompiling module BUFFD1BWP16P90
+recompiling module BUFFD1BWP16P90LVT
+recompiling module BUFFD2BWP16P90
+recompiling module BUFFD2BWP16P90LVT
+recompiling module BUFFD2BWP20P90
+recompiling module BUFFD4BWP16P90LVT
+recompiling module BUFFD8BWP16P90LVT
+recompiling module CKBD1BWP16P90
+recompiling module CKBD1BWP16P90LVT
+recompiling module CKBD1BWP20P90
+recompiling module CKBD2BWP16P90
+recompiling module CKBD4BWP16P90LVT
+recompiling module CKMUX2D1BWP16P90
+recompiling module CKMUX2D1BWP16P90LVT
+recompiling module CKMUX2D1BWP20P90
+recompiling module CKMUX2D2BWP16P90
+recompiling module CKMUX2D2BWP16P90LVT
+recompiling module CKND12BWP16P90LVT
+recompiling module CKND16BWP16P90LVT
+recompiling module CKND1BWP16P90
+recompiling module CKND1BWP16P90LVT
+recompiling module CKND1BWP20P90
+recompiling module CKND2BWP16P90LVT
+recompiling module CKND2BWP20P90
+recompiling module CKND2D1BWP16P90
+recompiling module CKND2D1BWP16P90LVT
+recompiling module CKND2D1BWP20P90
+recompiling module CKND2D2BWP16P90
+recompiling module CKND2D2BWP16P90LVT
+recompiling module CKND2D4BWP16P90LVT
+recompiling module CKND2D4BWP20P90LVT
+recompiling module CKND2D8BWP16P90LVT
+recompiling module CKND4BWP16P90
+recompiling module CKND4BWP16P90LVT
+recompiling module CKND8BWP16P90LVT
+recompiling module CKNR2D1BWP16P90
+recompiling module CKNR2D1BWP16P90LVT
+recompiling module CKNR2D2BWP16P90LVT
+recompiling module CKNR2D4BWP16P90LVT
+recompiling module CKNR2D8BWP16P90LVT
+recompiling module CKOR2D1BWP16P90LVT
+recompiling module CKOR2D2BWP16P90
+recompiling module CKOR2D2BWP16P90LVT
+150 of 360 modules done
+recompiling module CKOR2D4BWP16P90LVT
+recompiling module DEL025D1BWP16P90
+recompiling module DEL025D1BWP16P90LVT
+recompiling module FA1D1BWP16P90LVT
+recompiling module FA1D2BWP16P90LVT
+recompiling module FA1D4BWP16P90LVT
+recompiling module HA1D1BWP16P90LVT
+recompiling module HA1D2BWP16P90LVT
+recompiling module HA1D4BWP16P90LVT
+recompiling module IAO21D1BWP16P90
+recompiling module IAO21D1BWP16P90LVT
+recompiling module IAO21D2BWP16P90
+recompiling module IAO21D2BWP16P90LVT
+recompiling module IAOI21D1BWP16P90LVT
+recompiling module IAOI21D2BWP16P90
+recompiling module IAOI21D2BWP16P90LVT
+recompiling module IIND3D1BWP16P90LVT
+recompiling module IIND3D2BWP16P90LVT
+recompiling module IIND3D4BWP16P90LVT
+recompiling module IIND4D1BWP16P90LVT
+recompiling module IIND4D2BWP16P90LVT
+recompiling module IIND4D4BWP16P90LVT
+recompiling module IINR3D1BWP16P90
+recompiling module IINR3D1BWP16P90LVT
+recompiling module IINR3D2BWP16P90LVT
+recompiling module IINR3D4BWP16P90LVT
+recompiling module IINR4D1BWP16P90LVT
+recompiling module IINR4D2BWP16P90LVT
+recompiling module IND2D1BWP16P90
+recompiling module IND2D1BWP16P90LVT
+recompiling module IND2D2BWP16P90
+recompiling module IND2D2BWP16P90LVT
+recompiling module IND2D4BWP16P90LVT
+recompiling module IND2D8BWP16P90LVT
+recompiling module IND3D1BWP16P90LVT
+recompiling module IND3D2BWP16P90LVT
+recompiling module IND3D4BWP16P90LVT
+recompiling module IND4D1BWP16P90
+recompiling module IND4D1BWP16P90LVT
+recompiling module IND4D2BWP16P90LVT
+recompiling module IND4D4BWP16P90LVT
+recompiling module INR2D1BWP16P90
+recompiling module INR2D1BWP16P90LVT
+recompiling module INR2D1BWP20P90
+recompiling module INR2D2BWP16P90
+recompiling module INR2D2BWP16P90LVT
+recompiling module INR2D4BWP16P90LVT
+recompiling module INR2D8BWP16P90LVT
+recompiling module INR3D1BWP16P90
+recompiling module INR3D1BWP16P90LVT
+200 of 360 modules done
+recompiling module INR4D1BWP16P90LVT
+recompiling module INR4D2BWP16P90LVT
+recompiling module INR4D4BWP16P90LVT
+recompiling module INVD16BWP16P90LVT
+recompiling module INVD1BWP16P90
+recompiling module INVD1BWP16P90LVT
+recompiling module INVD1BWP20P90LVT
+recompiling module INVD2BWP16P90
+recompiling module INVD2BWP16P90LVT
+recompiling module INVD4BWP16P90LVT
+recompiling module INVD4BWP20P90LVT
+recompiling module INVD8BWP16P90LVT
+recompiling module IOA21D1BWP16P90
+recompiling module IOA21D1BWP16P90LVT
+recompiling module IOA21D2BWP16P90LVT
+recompiling module IOA21D4BWP16P90LVT
+recompiling module IOA22D1BWP16P90LVT
+recompiling module IOA22D2BWP16P90LVT
+recompiling module IOA22D4BWP16P90LVT
+recompiling module IOAI21D1BWP16P90
+recompiling module IOAI21D1BWP16P90LVT
+recompiling module IOAI21D2BWP16P90
+recompiling module IOAI21D2BWP16P90LVT
+recompiling module IOAI21D4BWP16P90LVT
+recompiling module MAOI222D1BWP16P90
+recompiling module MAOI222D1BWP16P90LVT
+recompiling module MAOI222D2BWP16P90LVT
+recompiling module MAOI222D4BWP16P90LVT
+recompiling module MAOI22D1BWP16P90
+recompiling module MAOI22D1BWP16P90LVT
+recompiling module MAOI22D2BWP16P90LVT
+recompiling module MOAI22D1BWP16P90LVT
+recompiling module MOAI22D2BWP16P90LVT
+recompiling module MOAI22D4BWP16P90LVT
+recompiling module MUX2D1BWP16P90
+recompiling module MUX2D1BWP16P90LVT
+recompiling module MUX2D2BWP16P90
+recompiling module MUX2D2BWP16P90LVT
+recompiling module MUX2D4BWP16P90LVT
+recompiling module MUX2D8BWP16P90LVT
+recompiling module MUX2ND1BWP16P90
+recompiling module MUX2ND1BWP16P90LVT
+recompiling module MUX2ND1BWP20P90
+recompiling module MUX2ND2BWP16P90LVT
+recompiling module MUX2ND4BWP16P90
+recompiling module MUX2ND4BWP16P90LVT
+recompiling module MUX2ND8BWP16P90LVT
+recompiling module MUX3D1BWP16P90LVT
+recompiling module MUX3D2BWP16P90LVT
+recompiling module ND2D12BWP16P90LVT
+250 of 360 modules done
+recompiling module ND2D16BWP16P90LVT
+recompiling module ND2D1BWP16P90
+recompiling module ND2D1BWP16P90LVT
+recompiling module ND2D1BWP20P90
+recompiling module ND2D2BWP16P90LVT
+recompiling module ND2D4BWP16P90LVT
+recompiling module ND2D8BWP16P90LVT
+recompiling module ND3D12BWP16P90LVT
+recompiling module ND3D1BWP16P90
+recompiling module ND3D1BWP16P90LVT
+recompiling module ND3D2BWP16P90LVT
+recompiling module ND3D4BWP16P90LVT
+recompiling module ND3D8BWP16P90LVT
+recompiling module ND4D1BWP16P90
+recompiling module ND4D1BWP16P90LVT
+recompiling module ND4D2BWP16P90LVT
+recompiling module ND4D4BWP16P90LVT
+recompiling module ND4D8BWP16P90LVT
+recompiling module NR2D1BWP16P90
+recompiling module NR2D1BWP16P90LVT
+recompiling module NR2D1BWP20P90LVT
+recompiling module NR2D2BWP16P90LVT
+recompiling module NR2D4BWP16P90LVT
+recompiling module NR2D8BWP16P90LVT
+recompiling module NR3D1BWP16P90
+recompiling module NR3D1BWP16P90LVT
+recompiling module NR3D2BWP16P90LVT
+recompiling module NR3D4BWP16P90LVT
+recompiling module NR3D8BWP16P90LVT
+recompiling module NR4D1BWP16P90
+recompiling module NR4D1BWP16P90LVT
+recompiling module NR4D2BWP16P90LVT
+recompiling module NR4D4BWP16P90LVT
+recompiling module NR4D8BWP16P90LVT
+recompiling module OA21D1BWP16P90
+recompiling module OA21D1BWP16P90LVT
+recompiling module OA21D2BWP16P90LVT
+recompiling module OA21D4BWP16P90
+recompiling module OA21D4BWP16P90LVT
+recompiling module OA22D2BWP16P90
+recompiling module OA22D2BWP16P90LVT
+recompiling module OA22D4BWP16P90LVT
+recompiling module OAI211D1BWP16P90
+recompiling module OAI211D1BWP16P90LVT
+recompiling module OAI211D2BWP16P90LVT
+recompiling module OAI211D4BWP16P90LVT
+recompiling module OAI211D8BWP16P90LVT
+recompiling module OAI21D1BWP16P90
+recompiling module OAI21D1BWP16P90LVT
+recompiling module OAI21D2BWP16P90LVT
+300 of 360 modules done
+recompiling module OAI21D4BWP16P90LVT
+recompiling module OAI21D8BWP16P90LVT
+recompiling module OAI221D1BWP16P90
+recompiling module OAI221D1BWP16P90LVT
+recompiling module OAI221D2BWP16P90LVT
+recompiling module OAI221D4BWP16P90LVT
+recompiling module OAI222D1BWP16P90
+recompiling module OAI222D1BWP16P90LVT
+recompiling module OAI222D2BWP16P90LVT
+recompiling module OAI222D4BWP16P90LVT
+recompiling module OAI22D1BWP16P90
+recompiling module OAI22D1BWP16P90LVT
+recompiling module OAI22D2BWP16P90LVT
+recompiling module OAI22D2BWP20P90LVT
+recompiling module OAI22D4BWP16P90LVT
+recompiling module OAI31D1BWP16P90
+recompiling module OAI31D1BWP16P90LVT
+recompiling module OAI31D2BWP16P90LVT
+recompiling module OAI31D4BWP16P90LVT
+recompiling module OAI32D1BWP16P90
+recompiling module OAI32D1BWP16P90LVT
+recompiling module OAI32D2BWP16P90LVT
+recompiling module OAI32D4BWP16P90LVT
+recompiling module OAI33D1BWP16P90
+recompiling module OAI33D1BWP16P90LVT
+recompiling module OAI33D2BWP16P90LVT
+recompiling module OAOI211D1BWP16P90LVT
+recompiling module OAOI211D2BWP16P90LVT
+recompiling module OR2D1BWP16P90
+recompiling module OR2D1BWP16P90LVT
+recompiling module OR2D2BWP16P90LVT
+recompiling module OR2D4BWP16P90LVT
+recompiling module OR3D1BWP16P90
+recompiling module OR3D1BWP16P90LVT
+recompiling module OR3D2BWP16P90
+recompiling module OR3D2BWP16P90LVT
+recompiling module OR3D4BWP16P90LVT
+recompiling module OR4D1BWP16P90
+recompiling module OR4D2BWP16P90
+recompiling module TIELBWP20P90LVT
+recompiling module XNR2D1BWP16P90
+recompiling module XNR2D1BWP16P90LVT
+recompiling module XNR2D1BWP20P90
+recompiling module XNR2D2BWP16P90
+recompiling module XNR2D2BWP16P90LVT
+recompiling module XNR2D2BWP20P90
+recompiling module XNR2D4BWP16P90LVT
+recompiling module XNR2D8BWP16P90LVT
+recompiling module XNR3D2BWP16P90LVT
+recompiling module XNR3D4BWP16P90LVT
+350 of 360 modules done
+recompiling module XOR2D1BWP16P90
+recompiling module XOR2D1BWP16P90LVT
+recompiling module XOR2D2BWP16P90
+recompiling module XOR2D2BWP16P90LVT
+recompiling module XOR2D4BWP16P90LVT
+recompiling module XOR2D8BWP16P90LVT
+recompiling module XOR3D1BWP16P90LVT
+recompiling module XOR3D2BWP16P90
+recompiling module XOR3D2BWP16P90LVT
+recompiling module XOR3D4BWP16P90LVT
+All of 360 modules done
+rm -f _cuarc*.so _csrc*.so pre_vcsobj_*.so share_vcsobj_*.so
+if [ -x /MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4/work/simv ]; then chmod a-x /MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4/work/simv; fi
+g++  -o /MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4/work/simv      -rdynamic  -Wl,-rpath='$ORIGIN'/simv.daidir -Wl,-rpath=./simv.daidir -Wl,-rpath=/usr/cad/synopsys/vcs/2023.12/linux64/lib -L/usr/cad/synopsys/vcs/2023.12/linux64/lib  -Wl,-rpath-link=./  /usr/lib64/libnuma.so.1   objs/amcQw_d.o   _25439_archive_1.so objs/udps/JvR1L.o   SIM_l.o      rmapats_mop.o rmapats.o rmar.o rmar_nd.o  rmar_llvm_0_1.o rmar_llvm_0_0.o            -lvirsim -lerrorinf -lsnpsmalloc -lvfs    -lvcsnew -lsimprofile -luclinative /usr/cad/synopsys/vcs/2023.12/linux64/lib/vcs_tls.o   -Wl,-whole-archive  -lvcsucli    -Wl,-no-whole-archive        _vcs_pli_stub_.o   /usr/cad/synopsys/vcs/2023.12/linux64/lib/vcs_save_restore_new.o /usr/cad/synopsys/verdi/2023.12/share/PLI/VCS/LINUX64/pli.a -ldl  -lc -lm -lpthread -ldl 
+/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4/work/simv up to date
+CPU time: 5.145 seconds to compile + .638 seconds to elab + .767 seconds to link
+
+
+

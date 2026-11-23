@@ -1,0 +1,35 @@
+{
+  "top": "DP4_CG",
+  "strategy": "delay",
+  "index": 12,
+  "trial": "tune/012_period_1.009ns",
+  "period_ns": 1.009,
+  "status": "selected",
+  "source_hash": "efa65c4321f5b9cef9a001b203f1e40c29ba943941766fe90473939a410a4cbb",
+  "metrics": {
+    "period_ns": 1.009,
+    "delay_ns": 0.995199,
+    "slack_ns": 0.0,
+    "comb_um2": 5852.684299,
+    "seq_um2": 779.829131,
+    "total_um2": 6632.513429,
+    "dynamic_uw": 6086.0,
+    "leakage_uw": 4.6253,
+    "power_uw": 6090.6253
+  },
+  "converged": true,
+  "artifact_hashes": {
+    "DP4_CG_units_report.txt": "04704bc106b3ea57bbe52efd89330ecc4319dc5a818ee9c7962c3dddd80d491d",
+    "DP4_CG_check_design.txt": "193f062416796be251beaac53508cb42554501211f56ac2a20b789efd3ed77be",
+    "DP4_CG_check_timing.txt": "140c69dff6cec1ed459bdf788d0ed445769e732d5923e7835b8a26db42dc158d",
+    "DP4_CG_timing_report.txt": "07f92e26bfbb21239a53c06982442abd3257c9709f9c9b411423c69e61a15f62",
+    "DP4_CG_area_report.txt": "72a230e9c9a3d4fd770677dc81a120926dcd858c89c9ef8b0c2d84a75103e991",
+    "DP4_CG_power_report.txt": "e7dc45cbcf85ecdaa9f31cebc5cc5b9349fcaf9f50ae62db2954a04a5350416e",
+    "DP4_CG_report.txt": "a76b77b3872ca2ddae71bbb2b38b9d9fb263f660e329311d143d9f5e41ee82d9",
+    "DP4_CG_clock_gating_report.txt": "b368af771a4789b0dbf10f62ef1c07fbd5b587adffd58a0a24ccc2df66f685e4",
+    "DP4_CG_syn.ddc": "75a2bd70f5e6b6409afad4c18bbb737666c429fd08a358c875d7a6e6d59de208",
+    "DP4_CG_syn.v": "d7214aa549162bc98da2811156f665a85f738492b23c1fd0398af16e39c9d12d",
+    "DP4_CG_syn.sdf": "1e31dcccd5dc3042faf26485d2925da7cb313ef9f68198bff7160911176361ed",
+    "DP4_CG_syn.sdc": "3a4b14aea17be82d52e095ef3a785910d9286c377e0e6638a352b0bbcfda5272"
+  }
+}

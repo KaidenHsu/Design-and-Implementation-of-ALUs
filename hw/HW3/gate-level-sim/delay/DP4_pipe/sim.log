@@ -1,0 +1,18 @@
+$ /MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4_pipe/work/simv +VECTORS=/MasterClass/M143010027_ALU/Hws/HW3/testdata/vectors.txt +RESULT=/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4_pipe/completion.json +VCD=/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4_pipe/wave.vcd +GATE +SDF=/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid re-execution or '-suppress=ASLR_DETECTED_INFO' to suppress this message.
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version V-2023.12_Full64; Runtime version V-2023.12_Full64;  Nov 23 01:54 2026
+HW3_SDF_ANNOTATION_REQUESTED
+Doing SDF annotation ...... Done
+PASS: 2048 vectors, 2050 checks
+$finish called from file "/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/TB.v", line 277.
+$finish at simulation time              2049628
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 2049628 ps
+CPU Time:     12.500 seconds;       Data structure size:  12.6Mb
+Mon Nov 23 01:55:02 2026
+
+
+

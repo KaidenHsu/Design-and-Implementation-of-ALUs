@@ -1,0 +1,2158 @@
+$ env HW3_OUT=/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/tune/007_period_2.838ns HW3_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/tune/007_period_2.838ns/rtl_files.txt PERIOD_NS=2.838 SYN_CONFIG=delay TOP=DP4 /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f /MasterClass/M143010027_ALU/Hws/HW3/syn/dc.tcl
+
+                            Design Compiler (R) NXT 
+
+                 Version T-2022.03 for linux64 - Feb 22, 2022 
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+Initializing...
+# Adapted from the user's HW1 dc.tcl; one top/configuration per DC process.
+# $ TOP=DP4_pipe SYN_CONFIG=delay PERIOD_NS=20 dcnxt_shell -f HW3/syn/dc.tcl
+# Resolve the authoritative project scripts independently of the tool working directory.
+set sh_command_log_file /dev/null
+/dev/null
+set script_dir [file dirname [file normalize [info script]]]
+/MasterClass/M143010027_ALU/Hws/HW3/syn
+set project_root [file dirname $script_dir]
+/MasterClass/M143010027_ALU/Hws/HW3
+source [file join $script_dir .synopsys_dc.setup]
+Information: Variable 'hdlin_translate_off_skip_text' is obsolete and is being ignored. (INFO-100)
+Information: Variable 'hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+Information: Variable 'hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+TRUE
+set Company NSYSU2026ALU
+NSYSU2026ALU
+set Designer {Kaiden Hsu}
+Kaiden Hsu
+# Launcher settings must be explicit for reproducible manual and automated runs.
+proc required_env {name} {
+    if {![info exists ::env($name)] || $::env($name) eq ""} {
+        error "Required environment variable missing: $name"
+    }
+    return $::env($name)
+}
+# DC report units are converted once; all launcher periods are in ns.
+proc time_unit_ns {text} {
+    set pattern {^\s*Time(?:_|\s+)units?\s*:\s*([0-9.eE+-]+)\s*(Seconds?|[munpf]?s)(?:\([^)]*\))?\s*$}
+    if {![regexp -nocase -line $pattern $text all number suffix]} {
+        error "Cannot determine library time unit; inspect units report"
+    }
+    set suffix [string tolower $suffix]
+    if {$suffix in {second seconds}} {set suffix s}
+    set scales [dict create s 1e9 ms 1e6 us 1e3 ns 1 ps 1e-3 fs 1e-6]
+    set result [expr {double($number)*[dict get $scales $suffix]}]
+    if {$result <= 0} {error "Library time unit must be positive"}
+    return $result
+}
+proc validate_output_path {project_root config Top out} {
+    # Only direct, numbered trials of this design/strategy may receive DC files.
+    set root [file normalize [file join $project_root syn $config $Top tune]]
+    set output [file normalize $out]
+    set name [file tail $output]
+    if {[file dirname $output] ne $root ||
+        ![regexp {^([0-9]{3,})_period_([0-9]+(?:\.[0-9]+)?)ns$} $name all index period]} {
+        error "HW3_OUT must be a numbered trial under syn/$config/$Top/tune"
+    }
+    scan $index %d sequence
+    if {$sequence <= 0 || $period <= 0} {error "Invalid trial index or period"}
+    return $output
+}
+# One DC process handles one top/strategy/period; Python schedules independent runs.
+proc main {} {
+    global project_root script_dir library_root target_library
+    # 1. Select the top, strategy, and target clock period.
+    set Top [required_env TOP]
+    set config [required_env SYN_CONFIG]
+    set period_ns [required_env PERIOD_NS]
+    if {$Top ni {DP4 DP4_pipe DP4_CG}} {error "Invalid TOP: $Top"}
+    if {$config ni {area mid delay}} {error "SYN_CONFIG must be area, mid, or delay"}
+    if {![string is double -strict $period_ns] || $period_ns <= 0 ||
+        [string match -nocase *inf* $period_ns]} {
+        error "PERIOD_NS must be finite and positive"
+    }
+
+
+
+    # 2. Check the HW1 technology libraries and implemented top source.
+    foreach db $target_library {
+        if {![file isfile [file join $library_root $db]]} {error "Missing library: $db in $library_root"}
+    }
+    set source [file join $project_root rtl ${Top}.v]
+    if {![file isfile $source]} {error "Missing RTL: $source"}
+    # Skeletons are intentionally unfinished; do not produce misleading results.
+    set fd [open $source r]; set rtl [read $fd]; close $fd
+    if {[string first {Output intentionally undriven} $rtl] >= 0} {
+        error "RTL skeleton is not implemented: $source"
+    }
+
+
+
+    # 3. Publish by design for manual runs, or retain the launcher's numbered trial.
+    set out [file join $script_dir $config $Top]
+    if {[info exists ::env(HW3_OUT)]} {
+        set out [validate_output_path $project_root $config $Top $::env(HW3_OUT)]
+    }
+    file mkdir $out
+    define_design_lib WORK -path [file join $out ${Top}_work]
+
+    # 4. Analyze an ordered Verilog source list, then elaborate and link the top.
+    set sources [list $source]
+    if {[info exists ::env(HW3_RTL_LIST)]} {
+        set fd [open $::env(HW3_RTL_LIST) r]
+        set sources [split [string trim [read $fd]] \n]
+        close $fd
+    }
+    foreach source $sources {
+        if {![file isfile $source]} {error "Missing RTL: $source"}
+        set ::search_path [concat [list [file dirname $source]] $::search_path]
+        if {![analyze -format verilog -library WORK $source]} {error "analyze failed: $source"}
+    }
+    if {[elaborate $Top -library WORK] eq "0"} {error "elaborate failed: $Top"}
+    current_design $Top
+    if {![link]} {error "link failed"}
+    if {![check_design]} {error "check_design failed"}
+
+
+
+    # 5. Read native time units before applying timing constraints.
+    redirect -variable units {report_units}
+    set fd [open [file join $out ${Top}_units_report.txt] w]
+    puts $fd $units; close $fd
+    set period [expr {double($period_ns)/[time_unit_ns $units]}]
+
+    # DP4 uses a virtual clock; pipelines use the physical clk port.
+    if {$Top eq "DP4"} {
+        create_clock -name clk -period $period
+    } else {
+        set clock_port [get_ports clk]
+        create_clock -name clk -period $period $clock_port
+        set_fix_hold [get_clocks clk]
+        set_dont_touch_network [get_clocks clk]
+        set_ideal_network $clock_port
+    }
+
+    set data_inputs [remove_from_collection [all_inputs] [get_ports {clk rst}]]
+    # Match the testbench's input launch timing before rising-edge capture.
+    if {$Top eq "DP4"} {
+        set_input_delay 0 -clock clk $data_inputs
+    } else {
+        set_input_delay 0 -clock clk -clock_fall $data_inputs
+    }
+
+    # DP4's virtual clock leaves half a period for input-to-output computation.
+    # Do not also apply set_max_delay: output delay would consume that budget.
+    # Pipelines have half a period for input-to-S1 and S4-to-output paths,
+    # and a full period between rising-edge pipeline registers.
+    set_output_delay [expr {$period/2.0}] -clock clk [all_outputs]
+
+    # Reset is inactive in functional timing analysis; reset is tested in TB.
+    set_case_analysis 0 [get_ports rst]
+
+
+
+    # 6. Preserve HW1 min/max corners and the ZeroWireload model.
+    set_operating_conditions \
+        -min_library N16ADFP_StdCellff0p88v125c_ccs -min ff0p88v125c \
+        -max_library N16ADFP_StdCellss0p72vm40c_ccs -max ss0p72vm40c
+    set_wire_load_model -name ZeroWireload -library N16ADFP_StdCellss0p72vm40c_ccs
+    set_wire_load_mode top
+
+
+
+    # 7. Area adds an area target; mid/delay use their searched timing targets.
+    if {$config eq "area"} {set_max_area 0}
+    if {$Top eq "DP4_CG"} {
+        # Course manual clock-gating flow: convert RTL gates into safe ICG cells.
+        if {[replace_clock_gates] eq "0"} {error "clock-gate replacement failed"}
+    }
+    if {[compile] eq "0"} {error "compile failed"}
+
+
+
+    # 8. Produce legal Verilog names without altering the announced top ports.
+    set ::bus_inference_style {%s[%d]}
+    set ::bus_naming_style {%s[%d]}
+    set ::hdlout_internal_busses true
+    change_names -hierarchy -rule verilog
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _" -max_length 255 -type cell
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _\[\]" -max_length 255 -type net
+    define_name_rules name_rule -map {{"\*cell\*" "cell"}} -case_insensitive
+    change_names -hierarchy -rules name_rule
+
+
+
+    # 9. Keep timing coverage, area, power, and clock-gating evidence.
+    # Preserve the fixed top-level clk/rst interface, including unused DP4 ports.
+    redirect -file [file join $out ${Top}_check_design.txt] {check_design}
+    redirect -file [file join $out ${Top}_check_timing.txt] {check_timing}
+    redirect -file [file join $out ${Top}_timing_report.txt] {
+        report_timing -path full -delay max -max_paths 10 -significant_digits 6 -sort_by group
+    }
+    redirect -file [file join $out ${Top}_area_report.txt] {report_area -hier -nosplit}
+    redirect -file [file join $out ${Top}_power_report.txt] {report_power -analysis_effort low}
+    redirect -file [file join $out ${Top}_report.txt] {
+        report_qor
+        report_area -hier -nosplit
+        report_timing -path full -delay max -significant_digits 6 -sort_by group
+        report_power -analysis_effort low
+    }
+    if {$Top eq "DP4_CG"} {
+        redirect -file [file join $out ${Top}_clock_gating_report.txt] {
+            report_clock_gating -gating_elements
+        }
+    }
+
+
+
+    # 10. Export the same candidate for gate simulation and manual PrimeTime.
+    write -hierarchy -format ddc -output [file join $out ${Top}_syn.ddc]
+    write -format verilog -hierarchy -output [file join $out ${Top}_syn.v]
+    write_sdf -version 2.1 -context verilog [file join $out ${Top}_syn.sdf]
+    write_sdc [file join $out ${Top}_syn.sdc]
+
+    # Export presence and parseable reports are independently checked by Python.
+    puts "HW3_DC_COMPLETE: $Top $config period=$period_ns ns"
+}
+# Convert Tcl exceptions to a failing tool exit, retaining the original traceback.
+if {[catch {main} failure options]} {
+    puts stderr "HW3_DC_ERROR: $failure"
+    if {[dict exists $options -errorinfo]} {puts stderr [dict get $options -errorinfo]}
+    exit 1
+}
+Running PRESTO HDLC
+Compiling source file /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4.v
+Presto compilation completed successfully.
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db'
+Information: Using CCS timing libraries. (TIM-024)
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/gtech.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/standard.sldb'
+  Loading link library 'N16ADFP_StdCellss0p72vm40c_ccs'
+  Loading link library 'N16ADFP_StdCellff0p88v125c_ccs'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4.v:83: signed to unsigned assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4.v:107: signed to unsigned assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4.v:148: signed to unsigned assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4.v:193: signed to unsigned assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4.v:285: signed to unsigned part selection occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4.v:288: signed to unsigned part selection occurs. (VER-318)
+Presto compilation completed successfully. (DP4)
+Elaborated 1 design.
+Current design is now 'DP4'.
+Current design is 'DP4'.
+
+  Linking design 'DP4'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  DP4                         /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/tune/007_period_2.838ns/DP4.db
+  N16ADFP_StdCellss0p72vm40c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db
+  N16ADFP_StdCellff0p88v125c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db
+  dw_foundation.sldb (library) /usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb
+
+ 
+****************************************
+check_design summary:
+Version:     T-2022.03
+Date:        Mon Nov 23 02:53:44 2026
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Inputs/Outputs                                                      2
+    Unconnected ports (LINT-28)                                     2
+
+Cells                                                              13
+    Cells do not drive (LINT-1)                                    13
+--------------------------------------------------------------------------------
+
+Warning: In design 'DP4', cell 'B_175' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_176' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_177' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_178' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_179' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_180' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_181' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_182' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_183' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'C4685' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_185' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_186' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', cell 'B_187' does not drive any nets. (LINT-1)
+Warning: In design 'DP4', port 'clk' is not connected to any nets. (LINT-28)
+Warning: In design 'DP4', port 'rst' is not connected to any nets. (LINT-28)
+Warning: Creating virtual clock named 'clk' with no sources. (UID-348)
+Using operating conditions 'ss0p72vm40c' found in library 'N16ADFP_StdCellss0p72vm40c_ccs'.
+Using operating conditions 'ff0p88v125c' found in library 'N16ADFP_StdCellff0p88v125c_ccs'.
+Information: Checking out the license 'DesignWare'. (SEC-104)
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | S-2021.06-DWBB_202106.0 |     *     |
+| Licensed DW Building Blocks        | S-2021.06-DWBB_202106.0 |     *     |
+============================================================================
+
+====================================================================================================
+| Flow Information                                                                                 |
+----------------------------------------------------------------------------------------------------
+| Flow         | Design Compiler NXT                                                               |
+====================================================================================================
+| Design Information                                      | Value                                  |
+====================================================================================================
+| Number of Scenarios                                     | 0                                      |
+| Leaf Cell Count                                         | 1361                                   |
+| Number of User Hierarchies                              | 0                                      |
+| Sequential Cell Count                                   | 0                                      |
+| Macro Count                                             | 0                                      |
+| Number of Power Domains                                 | 0                                      |
+| Number of Path Groups                                   | 2                                      |
+| Number of VT class                                      | 0                                      |
+| Number of Clocks                                        | 1                                      |
+| Number of Dont Touch cells                              | 322                                    |
+| Number of Dont Touch nets                               | 0                                      |
+| Number of size only cells                               | 0                                      |
+| Design with UPF Data                                    | false                                  |
+====================================================================================================
+
+Information: There are 15 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+Warning: Operating condition ss0p72vm40c set on design DP4 has different process,
+voltage and temperatures parameters than the parameters at which target library 
+N16ADFP_StdCellff0p88v125c_ccs is characterized. Delays may be inaccurate as a result. (OPT-998)
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'DP4'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Implementation Selection
+  ----------------------------------
+  Mapping 'DP4_DW_cmp_0'
+  Mapping 'DP4_DW_cmp_1'
+  Processing 'DP4_DW01_inc_0'
+  Processing 'DP4_DW01_add_0'
+  Mapping 'DP4_DW_cmp_2'
+  Mapping 'DP4_DW_cmp_3'
+  Mapping 'DP4_DW_cmp_4'
+  Mapping 'DP4_DW_cmp_5'
+  Mapping 'DP4_DW_cmp_6'
+  Mapping 'DP4_DW_cmp_7'
+  Mapping 'DP4_DW_cmp_8'
+  Mapping 'DP4_DW_cmp_9'
+  Mapping 'DP4_DW_cmp_10'
+  Mapping 'DP4_DW_cmp_11'
+  Mapping 'DP4_DW_cmp_12'
+  Mapping 'DP4_DW_cmp_13'
+  Mapping 'DP4_DW_cmp_14'
+  Mapping 'DP4_DW_cmp_15'
+  Mapping 'DP4_DW_cmp_16'
+  Mapping 'DP4_DW_cmp_17'
+  Mapping 'DP4_DW_cmp_18'
+  Mapping 'DP4_DW_cmp_19'
+  Mapping 'DP4_DW_cmp_20'
+  Mapping 'DP4_DW_cmp_21'
+  Mapping 'DP4_DW_cmp_22'
+  Mapping 'DP4_DW_cmp_23'
+  Mapping 'DP4_DW_cmp_24'
+  Mapping 'DP4_DW_cmp_25'
+  Mapping 'DP4_DW_cmp_26'
+  Mapping 'DP4_DW_cmp_27'
+  Mapping 'DP4_DW_cmp_28'
+  Mapping 'DP4_DW_cmp_29'
+  Mapping 'DP4_DW_cmp_30'
+  Mapping 'DP4_DW_cmp_31'
+  Mapping 'DP4_DW_cmp_32'
+  Mapping 'DP4_DW_cmp_33'
+  Mapping 'DP4_DW_cmp_34'
+  Mapping 'DP4_DW_cmp_35'
+  Mapping 'DP4_DW_cmp_36'
+  Mapping 'DP4_DW_cmp_37'
+  Mapping 'DP4_DW_cmp_38'
+  Mapping 'DP4_DW_cmp_39'
+  Mapping 'DP4_DW_cmp_40'
+  Mapping 'DP4_DW_cmp_41'
+  Mapping 'DP4_DW_cmp_42'
+  Mapping 'DP4_DW_cmp_43'
+  Mapping 'DP4_DW_cmp_44'
+  Mapping 'DP4_DW_cmp_45'
+  Mapping 'DP4_DW_cmp_46'
+  Mapping 'DP4_DW_cmp_47'
+  Mapping 'DP4_DW_cmp_48'
+  Mapping 'DP4_DW_cmp_49'
+  Mapping 'DP4_DW_cmp_50'
+  Mapping 'DP4_DW_cmp_51'
+  Mapping 'DP4_DW_cmp_52'
+  Mapping 'DP4_DW_cmp_53'
+  Mapping 'DP4_DW_cmp_54'
+  Mapping 'DP4_DW_cmp_55'
+  Mapping 'DP4_DW_cmp_56'
+  Mapping 'DW_rightsh'
+Information: Added key list 'DesignWare' to design 'DP4'. (DDB-72)
+  Processing 'DP4_DW01_sub_0'
+  Mapping 'DP4_DW_cmp_57'
+  Mapping 'DW_leftsh'
+  Processing 'DP4_DW01_sub_1'
+  Processing 'DP4_DW01_add_1'
+  Processing 'DP4_DW01_sub_2'
+  Processing 'DP4_DW01_sub_3'
+  Processing 'DP4_DW01_sub_4'
+  Mapping 'DW_rightsh'
+  Processing 'DP4_DW01_sub_5'
+  Mapping 'DW_rightsh'
+  Processing 'DP4_DW01_sub_6'
+  Mapping 'DW_rightsh'
+  Processing 'DP4_DW01_sub_7'
+  Mapping 'DW_rightsh'
+  Processing 'DP4_DW01_sub_8'
+  Processing 'DP4_DW01_sub_9'
+  Processing 'DP4_DW01_sub_10'
+  Processing 'DP4_DW01_sub_11'
+  Mapping 'DP4_DW_cmp_58'
+  Mapping 'DP4_DW_cmp_59'
+  Mapping 'DP4_DW_cmp_60'
+  Building model 'DW01_NAND2'
+  Processing 'DW01_NAND2'
+  Building model 'DW01_add_width10' (rpl)
+  Processing 'DW01_add_width10'
+  Building model 'DW01_sub_width10' (rpl)
+  Processing 'DW01_sub_width10'
+  Building model 'DW01_add_width48' (rpl)
+  Processing 'DW01_add_width48'
+  Building model 'DW01_add_width55' (rpl)
+  Processing 'DW01_add_width55'
+  Processing 'DP4_DW01_add_2'
+  Processing 'DP4_DW01_sub_12'
+  Processing 'DP4_DW01_add_3'
+  Processing 'DP4_DW01_sub_13'
+  Processing 'DP4_DW01_add_4'
+  Processing 'DP4_DW01_sub_14'
+  Processing 'DP4_DW01_add_5'
+  Processing 'DP4_DW01_sub_15'
+  Mapping 'DP4_DW_mult_uns_0'
+  Mapping 'DP4_DW_mult_uns_1'
+  Mapping 'DP4_DW_mult_uns_2'
+  Mapping 'DP4_DW_mult_uns_3'
+  Processing 'DP4_DW01_add_6'
+  Processing 'DP4_DW01_add_7'
+  Mapping 'DP4_DW_mult_uns_4'
+  Mapping 'DP4_DW_mult_uns_5'
+  Mapping 'DP4_DW_mult_uns_6'
+  Processing 'DP4_DW01_add_8'
+  Processing 'DP4_DW01_add_9'
+  Mapping 'DP4_DW_mult_uns_7'
+  Mapping 'DP4_DW_mult_uns_8'
+  Mapping 'DP4_DW_mult_uns_9'
+  Processing 'DP4_DW01_add_10'
+  Processing 'DP4_DW01_add_11'
+  Mapping 'DP4_DW_mult_uns_10'
+  Mapping 'DP4_DW_mult_uns_11'
+  Mapping 'DP4_DW_mult_uns_12'
+  Processing 'DP4_DW01_add_12'
+  Processing 'DP4_DW01_add_13'
+  Mapping 'DP4_DW_mult_uns_13'
+  Mapping 'DP4_DW_mult_uns_14'
+  Mapping 'DP4_DW_mult_uns_15'
+  Processing 'DP4_DW01_add_14'
+  Processing 'DP4_DW01_add_15'
+  Processing 'DP4_DW01_add_16'
+
+  Beginning Mapping Optimizations  (Medium effort)
+  -------------------------------
+  Mapping Optimization (Phase 1)
+  Mapping Optimization (Phase 2)
+  Mapping Optimization (Phase 3)
+  Mapping Optimization (Phase 4)
+  Mapping Optimization (Phase 5)
+  Mapping Optimization (Phase 6)
+  Mapping Optimization (Phase 7)
+  Mapping Optimization (Phase 8)
+  Mapping Optimization (Phase 9)
+  Mapping Optimization (Phase 10)
+  Mapping Optimization (Phase 11)
+  Mapping Optimization (Phase 12)
+  Mapping Optimization (Phase 13)
+  Mapping Optimization (Phase 14)
+  Mapping Optimization (Phase 15)
+  Mapping Optimization (Phase 16)
+  Mapping Optimization (Phase 17)
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:03:58    9855.8      0.39      12.2      17.5 *cell*99738/U2/Z         
+    0:03:58    9855.8      0.39      12.2      17.5 *cell*99738/U2/Z         
+    0:03:59    9847.3      0.39      12.2      17.5 *cell*99738/*cell*99800/ZN
+    0:04:00    9876.2      0.39      12.2      17.5                          
+    0:04:00    9876.2      0.39      12.2      17.5                          
+    0:04:00    9876.2      0.39      12.2      17.5                          
+    0:04:00    9876.2      0.39      12.2      17.5                          
+    0:04:00    9876.2      0.39      12.2      17.5                          
+    0:04:08    6145.2      0.85      26.5      17.5                          
+    0:04:13    6190.1      0.80      24.8      17.5                          
+    0:04:15    6183.7      0.72      22.6      17.5                          
+    0:04:16    6185.4      0.66      20.7      17.5                          
+    0:04:17    6187.0      0.66      20.6      17.5                          
+    0:04:18    6187.7      0.67      20.9      17.5                          
+    0:04:19    6187.4      0.62      19.5      17.5                          
+    0:04:19    6189.3      0.63      19.5      17.5                          
+    0:04:20    6188.2      0.61      19.0      17.5                          
+    0:04:21    6191.5      0.58      18.1      17.5                          
+    0:04:22    6192.5      0.57      17.7      17.5                          
+    0:04:22    6192.5      0.57      17.7      17.5                          
+    0:04:22    6192.5      0.57      17.7      17.5                          
+    0:04:22    6192.5      0.57      17.7      17.5                          
+    0:04:22    6192.5      0.57      17.7      17.5                          
+    0:04:22    6192.5      0.57      17.7      17.5                          
+    0:04:22    6192.5      0.57      17.7      17.5                          
+    0:04:25    6210.2      0.54      16.7      17.5 z[20]                    
+    0:04:26    6222.1      0.52      16.0      17.5 z[20]                    
+    0:04:28    6232.9      0.50      15.5      17.5 z[20]                    
+    0:04:29    6244.8      0.49      15.1      17.5 z[20]                    
+    0:04:31    6257.3      0.48      14.8      17.5 z[20]                    
+    0:04:32    6267.0      0.47      14.5      17.5 z[20]                    
+    0:04:34    6277.8      0.45      13.9      17.5 z[20]                    
+    0:04:36    6287.1      0.44      13.7      17.5 z[20]                    
+    0:04:37    6295.8      0.43      13.4      17.5 z[20]                    
+    0:04:42    6353.7      0.39      12.0      17.5 z[20]                    
+    0:04:48    6395.1      0.35      10.8      17.5                          
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:04:48    6395.1      0.35      10.8      17.5                          
+    0:04:55    6441.6      0.31       9.7      17.5 z[20]                    
+    0:04:59    6462.3      0.30       9.4      17.5 z[20]                    
+    0:05:01    6469.8      0.30       9.3      17.5 z[20]                    
+    0:05:03    6481.1      0.30       9.2      17.5 z[20]                    
+    0:05:05    6495.2      0.29       9.0      17.5 z[20]                    
+    0:05:06    6497.5      0.29       9.0      17.5 z[20]                    
+    0:05:07    6506.9      0.29       8.9      17.5 z[20]                    
+    0:05:08    6511.6      0.29       8.9      17.5 z[20]                    
+    0:05:09    6513.9      0.29       8.9      17.5 z[20]                    
+    0:05:10    6522.9      0.28       8.8      17.5 z[20]                    
+    0:05:11    6529.3      0.28       8.7      17.5 z[20]                    
+    0:05:12    6529.9      0.28       8.7      17.5 z[20]                    
+    0:05:13    6537.5      0.28       8.6      17.5 z[20]                    
+    0:05:14    6540.0      0.28       8.6      17.5 z[20]                    
+    0:05:15    6547.7      0.28       8.5      17.5 z[20]                    
+    0:05:17    6564.1      0.27       8.4      17.5 z[20]                    
+    0:05:18    6570.2      0.27       8.3      17.5 z[20]                    
+    0:05:19    6576.5      0.27       8.3      17.5 z[20]                    
+    0:05:19    6581.0      0.27       8.3      17.5 z[20]                    
+    0:05:20    6584.4      0.27       8.3      17.5 z[20]                    
+    0:05:21    6594.9      0.27       8.2      17.5 z[20]                    
+    0:05:22    6595.9      0.27       8.2      17.5 z[20]                    
+    0:05:22    6600.4      0.26       8.2      17.5 z[20]                    
+    0:05:23    6603.2      0.26       8.2      17.5 z[20]                    
+    0:05:24    6605.7      0.26       8.1      17.5 z[20]                    
+    0:05:24    6606.6      0.26       8.1      17.5 z[20]                    
+    0:05:29    6623.8      0.25       7.6      17.5 z[20]                    
+    0:05:31    6642.5      0.24       7.4      17.5 z[20]                    
+    0:05:33    6655.5      0.24       7.3      17.5 z[20]                    
+    0:05:35    6666.3      0.24       7.3      17.5 z[20]                    
+    0:05:37    6678.4      0.23       7.2      17.5 z[20]                    
+    0:05:38    6689.5      0.23       7.2      17.5 z[20]                    
+    0:05:39    6700.8      0.23       7.1      17.5 z[20]                    
+    0:05:40    6705.6      0.23       7.1      17.5 z[20]                    
+    0:05:41    6708.9      0.23       7.1      17.5 z[20]                    
+    0:05:41    6713.1      0.23       7.1      17.5 z[20]                    
+    0:05:42    6714.9      0.23       7.1      17.5 z[20]                    
+    0:05:42    6720.8      0.23       7.1      17.5 z[20]                    
+    0:05:43    6722.6      0.23       7.1      17.5 z[20]                    
+    0:05:43    6723.9      0.23       7.1      17.5 z[20]                    
+    0:05:44    6727.6      0.23       7.0      17.5 z[20]                    
+    0:05:44    6732.3      0.23       7.0      17.5 z[20]                    
+    0:05:46    6739.7      0.23       7.0      17.5 z[20]                    
+    0:05:48    6746.7      0.23       6.9      17.5 z[20]                    
+    0:05:50    6758.4      0.22       6.9      17.5 z[20]                    
+    0:05:52    6767.3      0.22       6.8      17.5 z[20]                    
+    0:05:52    6767.4      0.22       6.8      17.5 z[20]                    
+    0:05:53    6769.1      0.22       6.8      17.5 z[20]                    
+    0:05:54    6774.8      0.22       6.8      17.5 z[20]                    
+    0:05:55    6782.4      0.22       6.7      17.5 z[20]                    
+    0:05:55    6784.5      0.22       6.7      17.5 z[20]                    
+    0:05:57    6790.4      0.22       6.7      17.5 z[20]                    
+    0:05:58    6799.3      0.22       6.7      17.5 z[20]                    
+    0:05:59    6801.9      0.22       6.7      17.5 z[20]                    
+    0:05:59    6803.4      0.22       6.6      17.5 z[20]                    
+    0:06:00    6805.7      0.22       6.6      17.5 z[20]                    
+    0:06:01    6813.0      0.22       6.6      17.5 z[20]                    
+    0:06:02    6816.0      0.22       6.6      17.5 z[20]                    
+    0:06:03    6817.8      0.22       6.6      17.5 z[20]                    
+    0:06:03    6820.2      0.22       6.6      17.5 z[20]                    
+    0:06:04    6822.9      0.21       6.6      17.5 z[20]                    
+    0:06:04    6825.9      0.21       6.6      17.5 z[20]                    
+    0:06:05    6828.0      0.21       6.5      17.5 z[20]                    
+    0:06:05    6832.0      0.21       6.5      17.5 z[20]                    
+    0:06:06    6833.3      0.21       6.5      17.5 z[20]                    
+    0:06:09    6840.4      0.21       6.3      17.5 z[20]                    
+    0:06:11    6843.0      0.20       6.2      17.5 z[20]                    
+    0:06:12    6847.8      0.20       6.2      17.5 z[20]                    
+    0:06:14    6852.4      0.20       6.1      17.5 z[20]                    
+    0:06:14    6855.2      0.20       6.1      17.5 z[20]                    
+    0:06:15    6859.0      0.20       6.1      17.5 z[20]                    
+    0:06:17    6864.2      0.20       6.1      17.5 z[20]                    
+    0:06:17    6870.1      0.20       6.1      17.5 z[20]                    
+    0:06:18    6872.3      0.20       6.1      17.5 z[20]                    
+    0:06:18    6872.3      0.20       6.1      17.5 z[20]                    
+    0:06:19    6872.6      0.20       6.1      17.5 z[20]                    
+    0:06:21    6876.7      0.20       6.1      17.5 z[20]                    
+    0:06:21    6878.8      0.20       6.0      17.5 z[20]                    
+    0:06:23    6884.4      0.20       6.0      17.5 z[20]                    
+    0:06:24    6889.1      0.20       6.0      17.5 z[20]                    
+    0:06:25    6889.8      0.20       6.0      17.5 z[20]                    
+    0:06:26    6897.9      0.19       5.9      17.5 z[20]                    
+    0:06:26    6904.4      0.19       5.9      17.5 z[20]                    
+    0:06:27    6911.2      0.19       5.9      17.5 z[20]                    
+    0:06:28    6913.1      0.19       5.9      17.5 z[20]                    
+    0:06:29    6917.0      0.19       5.9      17.5 z[20]                    
+    0:06:30    6923.3      0.19       5.8      17.5 z[20]                    
+    0:06:31    6927.7      0.19       5.8      17.5 z[20]                    
+    0:06:34    6935.4      0.19       5.7      17.5 z[20]                    
+    0:06:36    6940.6      0.19       5.7      17.5 z[20]                    
+    0:06:36    6943.0      0.19       5.7      17.5 z[20]                    
+    0:06:37    6944.2      0.19       5.6      17.5 z[20]                    
+    0:06:37    6945.2      0.19       5.6      17.5 z[20]                    
+    0:06:39    6951.5      0.18       5.6      17.5 z[20]                    
+    0:06:40    6954.6      0.18       5.6      17.5 z[20]                    
+    0:06:41    6955.4      0.18       5.6      17.5 z[20]                    
+    0:06:41    6957.0      0.18       5.5      17.5 z[20]                    
+    0:06:42    6962.6      0.18       5.5      17.5 z[20]                    
+    0:06:44    6966.3      0.18       5.5      17.5 z[20]                    
+    0:06:45    6969.1      0.18       5.4      17.5 z[20]                    
+    0:06:47    6972.6      0.18       5.4      17.5 z[20]                    
+    0:06:48    6976.4      0.18       5.4      17.5 z[20]                    
+    0:06:49    6979.9      0.18       5.4      17.5 z[20]                    
+    0:06:50    6991.0      0.18       5.4      17.5 z[20]                    
+    0:06:51    6997.1      0.18       5.3      17.5 z[20]                    
+    0:06:52    7000.0      0.18       5.3      17.5 z[20]                    
+    0:06:53    7004.9      0.18       5.3      17.5 z[20]                    
+    0:06:53    7011.0      0.17       5.3      17.5 z[20]                    
+    0:06:54    7013.5      0.17       5.3      17.5 z[20]                    
+    0:06:55    7014.5      0.17       5.3      17.5 z[20]                    
+    0:06:55    7016.1      0.17       5.3      17.5 z[20]                    
+    0:06:56    7016.8      0.17       5.3      17.5 z[20]                    
+    0:06:57    7017.1      0.17       5.3      17.5 z[20]                    
+    0:06:57    7021.1      0.17       5.3      17.5 z[20]                    
+    0:06:58    7027.0      0.17       5.2      17.5 z[20]                    
+    0:06:59    7033.1      0.17       5.2      17.5 z[20]                    
+    0:07:00    7037.6      0.17       5.2      17.5 z[20]                    
+    0:07:01    7037.6      0.17       5.2      17.5 z[20]                    
+    0:07:02    7041.6      0.17       5.2      17.5 z[20]                    
+    0:07:03    7049.0      0.17       5.1      17.5 z[20]                    
+    0:07:03    7055.1      0.17       5.1      17.5 z[20]                    
+    0:07:04    7066.2      0.17       5.1      17.5 z[20]                    
+    0:07:05    7068.7      0.17       5.1      17.5 z[20]                    
+    0:07:06    7074.5      0.17       5.1      17.5 z[20]                    
+    0:07:07    7085.5      0.16       5.0      17.5 z[20]                    
+    0:07:09    7087.1      0.16       4.9      17.5 z[20]                    
+    0:07:11    7092.5      0.16       4.8      17.5 z[20]                    
+    0:07:13    7093.8      0.16       4.8      17.5 z[20]                    
+    0:07:13    7095.5      0.16       4.8      17.5 z[20]                    
+    0:07:14    7096.3      0.15       4.7      17.5 z[20]                    
+    0:07:16    7100.6      0.15       4.7      17.5 z[20]                    
+    0:07:18    7107.2      0.15       4.6      17.5 z[20]                    
+    0:07:19    7109.6      0.15       4.6      17.5 z[20]                    
+    0:07:19    7111.7      0.15       4.6      17.5 z[20]                    
+    0:07:19    7117.3      0.15       4.6      17.5 z[20]                    
+    0:07:20    7117.7      0.15       4.6      17.5 z[20]                    
+    0:07:20    7119.7      0.15       4.6      17.5 z[20]                    
+    0:07:20    7123.5      0.15       4.6      17.5 z[20]                    
+    0:07:21    7124.2      0.15       4.6      17.5 z[20]                    
+    0:07:21    7127.6      0.15       4.6      17.5 z[20]                    
+    0:07:22    7131.4      0.15       4.6      17.5 z[20]                    
+    0:07:22    7135.7      0.15       4.6      17.5 z[20]                    
+    0:07:22    7138.2      0.15       4.6      17.5 z[20]                    
+    0:07:23    7144.6      0.15       4.6      17.5 z[20]                    
+    0:07:24    7147.5      0.15       4.5      17.5 z[20]                    
+    0:07:25    7151.1      0.15       4.5      17.5 z[20]                    
+    0:07:26    7152.6      0.15       4.5      17.5 z[20]                    
+    0:07:29    7158.0      0.15       4.5      17.5 z[20]                    
+    0:07:29    7160.1      0.15       4.4      17.5 z[20]                    
+    0:07:30    7165.6      0.15       4.4      17.5 z[20]                    
+    0:07:30    7166.6      0.15       4.4      17.5 z[20]                    
+    0:07:32    7167.7      0.14       4.4      17.5 z[20]                    
+    0:07:33    7169.7      0.14       4.4      17.5 z[20]                    
+    0:07:34    7171.1      0.14       4.4      17.5 z[20]                    
+    0:07:35    7174.5      0.14       4.3      17.5 z[20]                    
+    0:07:36    7179.3      0.14       4.3      17.5 z[20]                    
+    0:07:37    7181.1      0.14       4.3      17.5 z[20]                    
+    0:07:38    7183.9      0.14       4.3      17.5 z[20]                    
+    0:07:38    7183.7      0.14       4.3      17.5 z[20]                    
+    0:07:39    7188.2      0.14       4.3      17.5 z[20]                    
+    0:07:39    7188.8      0.14       4.3      17.5 z[20]                    
+    0:07:40    7193.4      0.14       4.2      17.5 z[20]                    
+    0:07:40    7198.4      0.14       4.2      17.5 z[20]                    
+    0:07:41    7201.8      0.14       4.2      17.5 z[20]                    
+    0:07:42    7201.7      0.14       4.2      17.5 z[20]                    
+    0:07:42    7206.4      0.14       4.2      17.5 z[20]                    
+    0:07:43    7209.3      0.14       4.2      17.5 z[20]                    
+    0:07:44    7212.0      0.14       4.2      17.5 z[20]                    
+    0:07:44    7213.5      0.14       4.2      17.5 z[20]                    
+    0:07:46    7215.4      0.14       4.1      17.5 z[20]                    
+    0:07:46    7215.5      0.14       4.1      17.5 z[20]                    
+    0:07:46    7215.7      0.14       4.1      17.5 z[20]                    
+    0:07:47    7217.7      0.13       4.1      17.5 z[20]                    
+    0:07:47    7217.8      0.13       4.1      17.5 z[18]                    
+    0:07:49    7219.8      0.13       4.1      17.5 z[18]                    
+    0:07:51    7220.6      0.13       4.1      17.5 z[18]                    
+    0:07:52    7222.5      0.13       4.0      17.5 z[18]                    
+    0:07:54    7226.4      0.13       4.0      17.5 z[18]                    
+    0:07:54    7226.5      0.13       4.0      17.5 z[18]                    
+    0:07:54    7227.0      0.13       4.0      17.5 z[18]                    
+    0:07:55    7226.4      0.13       4.0      17.5 z[18]                    
+    0:07:56    7227.8      0.13       4.0      17.5 z[18]                    
+    0:07:56    7227.8      0.13       4.0      17.5 z[18]                    
+    0:07:57    7228.2      0.13       4.0      17.5 z[18]                    
+    0:07:57    7228.4      0.13       4.0      17.5 z[18]                    
+    0:07:58    7230.0      0.13       4.0      17.5 z[20]                    
+    0:07:59    7232.1      0.13       4.0      17.5 z[20]                    
+    0:07:59    7231.9      0.13       4.0      17.5 z[20]                    
+    0:07:59    7233.0      0.13       4.0      17.5 z[20]                    
+    0:07:59    7232.3      0.13       4.0      17.5 z[20]                    
+    0:08:00    7232.4      0.13       4.0      17.5 z[20]                    
+    0:08:01    7232.0      0.13       3.9      17.5 z[18]                    
+    0:08:01    7233.2      0.13       3.9      17.5 z[18]                    
+    0:08:02    7234.2      0.13       3.9      17.5 z[18]                    
+    0:08:03    7234.5      0.13       3.9      17.5 z[18]                    
+    0:08:03    7235.2      0.13       3.9      17.5 z[18]                    
+    0:08:04    7238.5      0.13       3.9      17.5 z[18]                    
+    0:08:04    7240.5      0.13       3.9      17.5 z[18]                    
+    0:08:05    7240.7      0.13       3.9      17.5 z[18]                    
+    0:08:06    7243.5      0.13       3.8      17.5 z[18]                    
+    0:08:06    7244.6      0.13       3.8      17.5 z[18]                    
+    0:08:07    7250.7      0.13       3.8      17.5 z[18]                    
+    0:08:07    7251.3      0.13       3.8      17.5 z[18]                    
+    0:08:08    7252.8      0.13       3.8      17.5 z[18]                    
+    0:08:09    7259.5      0.13       3.8      17.5 z[18]                    
+    0:08:09    7260.8      0.13       3.8      17.5 z[18]                    
+    0:08:10    7262.3      0.12       3.8      17.5 z[18]                    
+    0:08:10    7264.7      0.12       3.8      17.5 z[18]                    
+    0:08:11    7269.1      0.12       3.8      17.5 z[18]                    
+    0:08:11    7269.1      0.12       3.8      17.5 z[18]                    
+    0:08:12    7271.1      0.12       3.8      17.5 z[18]                    
+    0:08:12    7270.2      0.12       3.8      17.5 z[18]                    
+    0:08:13    7271.1      0.12       3.7      17.5 z[18]                    
+    0:08:14    7271.2      0.12       3.7      17.5 z[18]                    
+    0:08:14    7276.1      0.12       3.7      17.5 z[18]                    
+    0:08:15    7277.4      0.12       3.7      17.5 z[18]                    
+    0:08:16    7279.7      0.12       3.7      17.5 z[18]                    
+    0:08:17    7282.2      0.12       3.7      17.5 z[18]                    
+    0:08:17    7281.9      0.12       3.7      17.5 z[18]                    
+    0:08:18    7283.3      0.12       3.7      17.5 z[18]                    
+    0:08:19    7284.5      0.12       3.7      17.5 z[20]                    
+    0:08:20    7285.7      0.12       3.7      17.5 z[20]                    
+    0:08:21    7288.6      0.12       3.7      17.5 z[20]                    
+    0:08:22    7290.7      0.12       3.6      17.5 z[21]                    
+    0:08:22    7291.3      0.12       3.6      17.5 z[21]                    
+    0:08:23    7291.5      0.12       3.6      17.5 z[21]                    
+    0:08:23    7292.8      0.12       3.6      17.5 z[21]                    
+    0:08:24    7293.1      0.12       3.6      17.5 z[21]                    
+    0:08:25    7294.0      0.12       3.6      17.5 z[21]                    
+    0:08:25    7294.7      0.12       3.6      17.5 z[21]                    
+    0:08:26    7297.2      0.12       3.6      17.5 z[21]                    
+    0:08:26    7299.6      0.12       3.6      17.5 z[21]                    
+    0:08:27    7301.7      0.12       3.6      17.5 z[21]                    
+    0:08:27    7302.2      0.12       3.6      17.5 z[21]                    
+    0:08:28    7304.3      0.12       3.6      17.5 z[21]                    
+    0:08:28    7305.3      0.12       3.5      17.5 z[17]                    
+    0:08:29    7309.1      0.12       3.5      17.5 z[21]                    
+    0:08:29    7309.3      0.12       3.5      17.5 z[17]                    
+    0:08:30    7309.8      0.11       3.5      17.5 z[21]                    
+    0:08:30    7310.6      0.11       3.5      17.5 z[21]                    
+    0:08:31    7311.2      0.11       3.5      17.5 z[17]                    
+    0:08:32    7313.5      0.11       3.5      17.5 z[21]                    
+    0:08:32    7314.6      0.11       3.5      17.5 z[17]                    
+    0:08:33    7315.8      0.11       3.5      17.5 z[21]                    
+    0:08:34    7316.4      0.11       3.5      17.5 z[17]                    
+    0:08:35    7318.7      0.11       3.4      17.5 z[21]                    
+    0:08:35    7319.4      0.11       3.4      17.5 z[21]                    
+    0:08:36    7319.6      0.11       3.4      17.5 z[21]                    
+    0:08:36    7319.7      0.11       3.4      17.5 z[21]                    
+    0:08:36    7319.4      0.11       3.4      17.5 z[21]                    
+    0:08:36    7319.8      0.11       3.4      17.5 z[21]                    
+    0:08:37    7320.1      0.11       3.4      17.5 z[17]                    
+    0:08:37    7320.7      0.11       3.4      17.5 z[16]                    
+    0:08:38    7321.2      0.11       3.4      17.5 z[16]                    
+    0:08:38    7321.5      0.11       3.4      17.5 z[16]                    
+    0:08:39    7323.4      0.11       3.3      17.5 z[17]                    
+    0:08:40    7324.4      0.11       3.3      17.5 z[17]                    
+    0:08:40    7325.4      0.11       3.3      17.5 z[17]                    
+    0:08:41    7325.3      0.11       3.3      17.5 z[17]                    
+    0:08:42    7328.1      0.11       3.3      17.5 z[17]                    
+    0:08:42    7329.6      0.11       3.3      17.5 z[17]                    
+    0:08:43    7330.9      0.11       3.3      17.5 z[17]                    
+    0:08:43    7332.2      0.11       3.2      17.5 z[17]                    
+    0:08:44    7334.3      0.10       3.2      17.5 z[17]                    
+    0:08:44    7335.8      0.10       3.2      17.5 z[17]                    
+    0:08:45    7337.7      0.10       3.2      17.5 z[17]                    
+    0:08:45    7337.4      0.10       3.2      17.5 z[20]                    
+    0:08:45    7337.9      0.10       3.2      17.5 z[20]                    
+    0:08:46    7339.1      0.10       3.2      17.5 z[20]                    
+    0:08:46    7341.0      0.10       3.2      17.5 z[20]                    
+    0:08:47    7342.0      0.10       3.2      17.5 z[20]                    
+    0:08:47    7343.1      0.10       3.2      17.5 z[20]                    
+    0:08:48    7343.8      0.10       3.2      17.5 z[20]                    
+    0:08:48    7343.9      0.10       3.1      17.5 z[20]                    
+    0:08:48    7345.9      0.10       3.1      17.5 z[20]                    
+    0:08:49    7348.2      0.10       3.1      17.5 z[20]                    
+    0:08:49    7349.7      0.10       3.1      17.5 z[20]                    
+    0:08:49    7350.4      0.10       3.1      17.5 z[20]                    
+    0:08:50    7351.0      0.10       3.1      17.5 z[16]                    
+    0:08:50    7353.0      0.10       3.1      17.5 z[20]                    
+    0:08:50    7354.3      0.10       3.1      17.5 z[20]                    
+    0:08:51    7354.5      0.10       3.1      17.5 z[20]                    
+    0:08:51    7355.7      0.10       3.1      17.5 z[20]                    
+    0:08:51    7356.4      0.10       3.1      17.5 z[20]                    
+    0:08:52    7357.0      0.10       3.1      17.5 z[20]                    
+    0:08:52    7359.3      0.10       3.1      17.5 z[20]                    
+    0:08:53    7359.9      0.10       3.1      17.5 z[20]                    
+    0:08:53    7360.2      0.10       3.1      17.5 z[20]                    
+    0:08:53    7360.8      0.10       3.0      17.5 z[20]                    
+    0:08:54    7361.7      0.10       3.0      17.5 z[16]                    
+    0:08:54    7362.0      0.10       3.0      17.5 z[20]                    
+    0:08:54    7364.3      0.10       3.0      17.5 z[20]                    
+    0:08:55    7365.5      0.10       3.0      17.5 z[20]                    
+    0:08:55    7366.2      0.10       3.0      17.5 z[20]                    
+    0:08:55    7366.7      0.10       3.0      17.5 z[20]                    
+    0:08:56    7368.2      0.10       3.0      17.5 z[20]                    
+    0:08:56    7368.7      0.10       3.0      17.5 z[20]                    
+    0:08:56    7368.9      0.10       3.0      17.5 z[16]                    
+    0:08:57    7370.1      0.10       3.0      17.5 z[20]                    
+    0:08:57    7370.2      0.10       3.0      17.5 z[20]                    
+    0:08:58    7372.6      0.10       3.0      17.5 z[20]                    
+    0:08:58    7374.2      0.10       3.0      17.5 z[20]                    
+    0:08:59    7373.4      0.10       3.0      17.5 z[20]                    
+    0:08:59    7373.8      0.10       3.0      17.5 z[20]                    
+    0:08:59    7373.6      0.10       2.9      17.5 z[20]                    
+    0:09:00    7374.9      0.10       2.9      17.5 z[20]                    
+    0:09:00    7374.1      0.10       2.9      17.5 z[20]                    
+    0:09:00    7374.6      0.10       2.9      17.5 z[20]                    
+    0:09:01    7374.4      0.10       2.9      17.5 z[20]                    
+    0:09:01    7376.7      0.09       2.9      17.5 z[20]                    
+    0:09:01    7377.9      0.09       2.9      17.5 z[20]                    
+    0:09:02    7378.5      0.09       2.9      17.5 z[20]                    
+    0:09:02    7379.7      0.09       2.9      17.5 z[20]                    
+    0:09:03    7383.4      0.09       2.9      17.5 z[20]                    
+    0:09:03    7384.6      0.09       2.9      17.5 z[20]                    
+    0:09:03    7387.7      0.09       2.9      17.5 z[20]                    
+    0:09:04    7389.4      0.09       2.9      17.5 z[16]                    
+    0:09:04    7392.0      0.09       2.9      17.5 z[16]                    
+    0:09:04    7391.5      0.09       2.9      17.5 z[16]                    
+    0:09:05    7392.0      0.09       2.9      17.5 z[16]                    
+    0:09:05    7392.1      0.09       2.9      17.5 z[16]                    
+    0:09:05    7393.1      0.09       2.9      17.5 z[16]                    
+    0:09:05    7394.0      0.09       2.9      17.5 z[16]                    
+    0:09:06    7394.5      0.09       2.9      17.5 z[16]                    
+    0:09:06    7395.1      0.09       2.9      17.5 z[16]                    
+    0:09:07    7397.9      0.09       2.9      17.5 z[16]                    
+    0:09:07    7400.5      0.09       2.8      17.5 z[16]                    
+    0:09:07    7401.8      0.09       2.8      17.5 z[16]                    
+    0:09:08    7404.0      0.09       2.8      17.5 z[16]                    
+    0:09:08    7404.6      0.09       2.8      17.5 z[16]                    
+    0:09:08    7406.2      0.09       2.8      17.5 z[16]                    
+    0:09:09    7407.2      0.09       2.8      17.5 z[16]                    
+    0:09:09    7406.9      0.09       2.8      17.5 z[16]                    
+    0:09:10    7407.4      0.09       2.8      17.5 z[16]                    
+    0:09:10    7408.8      0.09       2.8      17.5 z[16]                    
+    0:09:10    7410.4      0.09       2.8      17.5 z[16]                    
+    0:09:11    7411.6      0.09       2.8      17.5 z[16]                    
+    0:09:11    7411.9      0.09       2.8      17.5 z[16]                    
+    0:09:11    7412.8      0.09       2.8      17.5 z[16]                    
+    0:09:12    7413.9      0.09       2.7      17.5 z[16]                    
+    0:09:12    7415.3      0.09       2.7      17.5 z[16]                    
+    0:09:12    7415.4      0.09       2.7      17.5 z[16]                    
+    0:09:13    7416.0      0.09       2.8      17.5 z[21]                    
+    0:09:13    7418.1      0.09       2.8      17.5 z[20]                    
+    0:09:13    7418.9      0.09       2.8      17.5 z[20]                    
+    0:09:14    7419.8      0.09       2.7      17.5 z[20]                    
+    0:09:14    7420.7      0.09       2.7      17.5 z[20]                    
+    0:09:14    7421.9      0.09       2.7      17.5 z[20]                    
+    0:09:15    7424.4      0.09       2.7      17.5 z[20]                    
+    0:09:15    7426.4      0.09       2.7      17.5 z[20]                    
+    0:09:16    7425.9      0.09       2.7      17.5 z[20]                    
+    0:09:16    7427.5      0.09       2.7      17.5 z[20]                    
+    0:09:16    7429.2      0.09       2.7      17.5 z[20]                    
+    0:09:17    7432.0      0.09       2.7      17.5 z[16]                    
+    0:09:18    7433.4      0.09       2.7      17.5 z[20]                    
+    0:09:18    7434.1      0.09       2.7      17.5 z[20]                    
+    0:09:18    7434.1      0.09       2.7      17.5 z[20]                    
+    0:09:19    7434.6      0.09       2.7      17.5 z[20]                    
+    0:09:19    7435.2      0.09       2.7      17.5 z[16]                    
+    0:09:19    7437.7      0.09       2.7      17.5 z[20]                    
+    0:09:20    7438.2      0.09       2.7      17.5 z[16]                    
+    0:09:20    7439.6      0.09       2.7      17.5 z[16]                    
+    0:09:20    7440.3      0.09       2.7      17.5 z[16]                    
+    0:09:21    7441.5      0.09       2.6      17.5 z[16]                    
+    0:09:21    7441.6      0.09       2.6      17.5 z[20]                    
+    0:09:21    7442.5      0.09       2.6      17.5 z[20]                    
+    0:09:22    7444.1      0.08       2.6      17.5 z[16]                    
+    0:09:22    7444.6      0.08       2.6      17.5 z[20]                    
+    0:09:22    7446.4      0.08       2.6      17.5 z[20]                    
+    0:09:23    7447.5      0.08       2.6      17.5 z[20]                    
+    0:09:23    7448.0      0.08       2.6      17.5 z[20]                    
+    0:09:23    7449.7      0.08       2.6      17.5 z[20]                    
+    0:09:24    7451.3      0.08       2.6      17.5 z[20]                    
+    0:09:24    7451.8      0.08       2.6      17.5 z[16]                    
+    0:09:25    7451.9      0.08       2.6      17.5 z[16]                    
+    0:09:25    7452.6      0.08       2.6      17.5 z[20]                    
+    0:09:25    7453.6      0.08       2.6      17.5 z[16]                    
+    0:09:26    7455.5      0.08       2.6      17.5 z[16]                    
+    0:09:27    7456.1      0.08       2.6      17.5 z[16]                    
+    0:09:27    7457.2      0.08       2.6      17.5 z[16]                    
+    0:09:27    7457.3      0.08       2.6      17.5 z[20]                    
+    0:09:28    7457.3      0.08       2.6      17.5 z[16]                    
+    0:09:28    7458.2      0.08       2.5      17.5 z[16]                    
+    0:09:29    7458.8      0.08       2.5      17.5 z[20]                    
+    0:09:29    7458.3      0.08       2.5      17.5 z[20]                    
+    0:09:29    7459.2      0.08       2.5      17.5 z[16]                    
+    0:09:30    7460.6      0.08       2.5      17.5 z[20]                    
+    0:09:30    7462.5      0.08       2.5      17.5 z[20]                    
+    0:09:30    7464.1      0.08       2.5      17.5 z[20]                    
+    0:09:31    7463.8      0.08       2.5      17.5 z[16]                    
+    0:09:31    7463.2      0.08       2.5      17.5 z[16]                    
+    0:09:32    7463.3      0.08       2.5      17.5 z[16]                    
+    0:09:32    7464.1      0.08       2.5      17.5 z[16]                    
+    0:09:33    7464.9      0.08       2.5      17.5 z[16]                    
+    0:09:34    7465.2      0.08       2.5      17.5 z[16]                    
+    0:09:34    7466.8      0.08       2.5      17.5 z[16]                    
+    0:09:35    7468.0      0.08       2.5      17.5 z[20]                    
+    0:09:35    7468.9      0.08       2.5      17.5 z[20]                    
+    0:09:35    7469.4      0.08       2.4      17.5 z[20]                    
+    0:09:36    7469.6      0.08       2.4      17.5 z[20]                    
+    0:09:36    7470.8      0.08       2.4      17.5 z[16]                    
+    0:09:37    7470.8      0.08       2.4      17.5 z[16]                    
+    0:09:37    7472.2      0.08       2.4      17.5 z[16]                    
+    0:09:38    7473.1      0.08       2.4      17.5 z[20]                    
+    0:09:38    7473.2      0.08       2.4      17.5 z[20]                    
+    0:09:38    7474.3      0.08       2.4      17.5 z[20]                    
+    0:09:38    7475.0      0.08       2.4      17.5 z[20]                    
+    0:09:39    7476.6      0.08       2.4      17.5 z[20]                    
+    0:09:39    7477.4      0.08       2.4      17.5 z[20]                    
+    0:09:39    7478.8      0.08       2.4      17.5 z[20]                    
+    0:09:40    7479.1      0.08       2.4      17.5 z[20]                    
+    0:09:40    7482.2      0.08       2.4      17.5 z[20]                    
+    0:09:40    7484.8      0.08       2.4      17.5 z[20]                    
+    0:09:41    7485.2      0.08       2.4      17.5 z[20]                    
+    0:09:41    7487.0      0.08       2.4      17.5 z[20]                    
+    0:09:41    7487.9      0.08       2.4      17.5 z[20]                    
+    0:09:42    7488.6      0.08       2.4      17.5 z[20]                    
+    0:09:42    7488.7      0.08       2.3      17.5 z[20]                    
+    0:09:42    7489.3      0.08       2.3      17.5 z[20]                    
+    0:09:42    7489.9      0.08       2.3      17.5 z[20]                    
+    0:09:43    7490.5      0.08       2.3      17.5 z[20]                    
+    0:09:43    7491.6      0.08       2.3      17.5 z[16]                    
+    0:09:44    7492.7      0.08       2.3      17.5 z[16]                    
+    0:09:44    7493.7      0.08       2.3      17.5 z[16]                    
+    0:09:44    7495.8      0.08       2.3      17.5 z[16]                    
+    0:09:45    7495.9      0.08       2.3      17.5 z[20]                    
+    0:09:45    7498.6      0.08       2.3      17.5 z[20]                    
+    0:09:45    7499.3      0.08       2.3      17.5 z[20]                    
+    0:09:46    7501.8      0.08       2.3      17.5 z[20]                    
+    0:09:46    7503.1      0.08       2.3      17.5 z[20]                    
+    0:09:46    7504.2      0.07       2.3      17.5 z[20]                    
+    0:09:46    7505.4      0.07       2.3      17.5 z[20]                    
+    0:09:47    7506.4      0.07       2.3      17.5 z[20]                    
+    0:09:47    7507.4      0.07       2.3      17.5 z[20]                    
+    0:09:48    7508.4      0.07       2.3      17.5 z[20]                    
+    0:09:48    7509.1      0.07       2.3      17.5 z[20]                    
+    0:09:49    7509.3      0.07       2.3      17.5 z[20]                    
+    0:09:49    7510.1      0.07       2.3      17.5 z[20]                    
+    0:09:49    7511.3      0.07       2.3      17.5 z[20]                    
+    0:09:50    7512.3      0.07       2.3      17.5 z[20]                    
+    0:09:50    7513.9      0.07       2.3      17.5 z[20]                    
+    0:09:50    7515.3      0.07       2.3      17.5 z[16]                    
+    0:09:51    7516.9      0.07       2.3      17.5 z[20]                    
+    0:09:51    7516.6      0.07       2.3      17.5 z[16]                    
+    0:09:52    7518.1      0.07       2.3      17.5 z[16]                    
+    0:09:52    7518.0      0.07       2.3      17.5 z[20]                    
+    0:09:52    7518.5      0.07       2.3      17.5 z[20]                    
+    0:09:53    7519.6      0.07       2.3      17.5 z[20]                    
+    0:09:53    7520.0      0.07       2.2      17.5 z[20]                    
+    0:09:53    7521.6      0.07       2.2      17.5 z[16]                    
+    0:09:53    7522.3      0.07       2.2      17.5 z[16]                    
+    0:09:54    7522.9      0.07       2.2      17.5 z[20]                    
+    0:09:54    7523.4      0.07       2.2      17.5 z[16]                    
+    0:09:54    7525.0      0.07       2.2      17.5 z[16]                    
+    0:09:55    7526.4      0.07       2.2      17.5 z[20]                    
+    0:09:55    7526.5      0.07       2.2      17.5 z[16]                    
+    0:09:55    7527.3      0.07       2.2      17.5 z[20]                    
+    0:09:56    7527.6      0.07       2.2      17.5 z[16]                    
+    0:09:56    7528.3      0.07       2.2      17.5 z[20]                    
+    0:09:56    7528.8      0.07       2.2      17.5 z[16]                    
+    0:09:57    7529.9      0.07       2.2      17.5 z[20]                    
+    0:09:57    7532.4      0.07       2.2      17.5 z[16]                    
+    0:09:58    7533.7      0.07       2.2      17.5 z[20]                    
+    0:09:58    7534.3      0.07       2.2      17.5 z[16]                    
+    0:09:58    7534.8      0.07       2.2      17.5 z[20]                    
+    0:09:59    7535.4      0.07       2.2      17.5 z[20]                    
+    0:09:59    7537.2      0.07       2.2      17.5 z[16]                    
+    0:09:59    7539.0      0.07       2.2      17.5 z[20]                    
+    0:09:59    7539.5      0.07       2.2      17.5 z[16]                    
+    0:10:00    7539.7      0.07       2.2      17.5 z[16]                    
+    0:10:00    7539.7      0.07       2.2      17.5 z[20]                    
+    0:10:00    7540.9      0.07       2.2      17.5 z[16]                    
+    0:10:01    7542.2      0.07       2.2      17.5 z[20]                    
+    0:10:01    7544.4      0.07       2.2      17.5 z[16]                    
+    0:10:01    7544.5      0.07       2.2      17.5 z[16]                    
+    0:10:02    7545.6      0.07       2.1      17.5 z[16]                    
+    0:10:02    7545.4      0.07       2.1      17.5 z[20]                    
+    0:10:03    7546.6      0.07       2.1      17.5 z[16]                    
+    0:10:03    7546.9      0.07       2.1      17.5 z[16]                    
+    0:10:03    7547.9      0.07       2.1      17.5 z[16]                    
+    0:10:04    7549.0      0.07       2.1      17.5 z[16]                    
+    0:10:04    7548.7      0.07       2.1      17.5 z[20]                    
+    0:10:05    7549.7      0.07       2.1      17.5 z[22]                    
+    0:10:05    7551.4      0.07       2.1      17.5 z[16]                    
+    0:10:05    7552.2      0.07       2.1      17.5 z[16]                    
+    0:10:07    7552.9      0.07       2.0      17.5 z[20]                    
+    0:10:07    7554.6      0.07       2.0      17.5 z[20]                    
+    0:10:08    7554.7      0.06       2.0      17.5 z[16]                    
+    0:10:09    7556.2      0.06       2.0      17.5 z[16]                    
+    0:10:09    7556.6      0.06       2.0      17.5 z[16]                    
+    0:10:09    7557.8      0.06       2.0      17.5 z[16]                    
+    0:10:10    7558.7      0.06       2.0      17.5 z[16]                    
+    0:10:10    7559.6      0.06       2.0      17.5 z[16]                    
+    0:10:11    7560.4      0.06       1.9      17.5 z[16]                    
+    0:10:11    7561.5      0.06       1.9      17.5 z[16]                    
+    0:10:12    7563.9      0.06       2.0      17.5 z[20]                    
+    0:10:12    7564.5      0.06       2.0      17.5 z[16]                    
+    0:10:12    7564.3      0.06       1.9      17.5 z[16]                    
+    0:10:13    7565.8      0.06       1.9      17.5 z[16]                    
+    0:10:13    7566.0      0.06       1.9      17.5 z[16]                    
+    0:10:14    7566.5      0.06       1.9      17.5 z[21]                    
+    0:10:14    7566.8      0.06       1.9      17.5 z[21]                    
+    0:10:15    7567.2      0.06       1.9      17.5 z[21]                    
+    0:10:15    7568.2      0.06       1.9      17.5 z[19]                    
+    0:10:16    7568.1      0.06       1.9      17.5 z[19]                    
+    0:10:16    7568.5      0.06       1.9      17.5 z[19]                    
+    0:10:17    7567.9      0.06       1.9      17.5 z[19]                    
+    0:10:17    7569.0      0.06       1.9      17.5 z[19]                    
+    0:10:17    7569.6      0.06       1.9      17.5 z[19]                    
+    0:10:18    7570.4      0.06       1.8      17.5 z[8]                     
+    0:10:18    7569.8      0.06       1.8      17.5 z[21]                    
+    0:10:18    7570.6      0.06       1.8      17.5 z[21]                    
+    0:10:19    7571.6      0.06       1.8      17.5 z[21]                    
+    0:10:19    7572.5      0.06       1.8      17.5 z[21]                    
+    0:10:20    7572.3      0.06       1.8      17.5 z[21]                    
+    0:10:20    7573.4      0.06       1.8      17.5 z[21]                    
+    0:10:20    7573.6      0.06       1.8      17.5 z[21]                    
+    0:10:21    7573.4      0.06       1.8      17.5 z[21]                    
+    0:10:21    7574.1      0.06       1.8      17.5 z[21]                    
+    0:10:21    7574.6      0.06       1.8      17.5 z[21]                    
+    0:10:22    7574.2      0.06       1.8      17.5 z[21]                    
+    0:10:22    7574.2      0.06       1.8      17.5 z[21]                    
+    0:10:22    7574.5      0.06       1.8      17.5 z[21]                    
+    0:10:23    7575.1      0.06       1.8      17.5 z[21]                    
+    0:10:23    7575.9      0.06       1.8      17.5 z[21]                    
+    0:10:23    7576.6      0.06       1.8      17.5 z[21]                    
+    0:10:24    7576.4      0.06       1.8      17.5 z[21]                    
+    0:10:24    7576.5      0.06       1.8      17.5 z[21]                    
+    0:10:24    7577.5      0.06       1.8      17.5 z[21]                    
+    0:10:25    7577.4      0.06       1.8      17.5 z[21]                    
+    0:10:25    7579.1      0.06       1.8      17.5 z[21]                    
+    0:10:25    7579.3      0.06       1.8      17.5 z[21]                    
+    0:10:26    7581.0      0.06       1.8      17.5 z[21]                    
+    0:10:26    7581.5      0.06       1.7      17.5 z[21]                    
+    0:10:26    7581.9      0.06       1.7      17.5 z[21]                    
+    0:10:26    7582.6      0.06       1.7      17.5 z[21]                    
+    0:10:27    7582.8      0.06       1.7      17.5 z[21]                    
+    0:10:27    7582.9      0.06       1.7      17.5 z[21]                    
+    0:10:28    7584.2      0.06       1.7      17.5 z[21]                    
+    0:10:28    7584.9      0.06       1.7      17.5 z[21]                    
+    0:10:28    7585.0      0.06       1.7      17.5 z[21]                    
+    0:10:29    7585.5      0.06       1.7      17.5 z[21]                    
+    0:10:29    7586.1      0.06       1.7      17.5 z[21]                    
+    0:10:29    7586.8      0.06       1.7      17.5 z[21]                    
+    0:10:30    7588.1      0.06       1.7      17.5 z[21]                    
+    0:10:30    7588.9      0.06       1.7      17.5 z[21]                    
+    0:10:31    7589.8      0.06       1.7      17.5 z[21]                    
+    0:10:31    7591.0      0.06       1.7      17.5 z[21]                    
+    0:10:32    7591.8      0.06       1.7      17.5 z[21]                    
+    0:10:32    7591.6      0.06       1.7      17.5 z[21]                    
+    0:10:32    7593.5      0.06       1.7      17.5 z[21]                    
+    0:10:33    7593.5      0.06       1.7      17.5 z[21]                    
+    0:10:33    7594.1      0.06       1.7      17.5 z[21]                    
+    0:10:34    7596.1      0.06       1.7      17.5 z[21]                    
+    0:10:34    7597.0      0.06       1.7      17.5 z[21]                    
+    0:10:35    7597.5      0.06       1.7      17.5 z[21]                    
+    0:10:35    7598.2      0.06       1.7      17.5 z[21]                    
+    0:10:35    7597.9      0.06       1.7      17.5 z[21]                    
+    0:10:35    7600.1      0.06       1.7      17.5 z[21]                    
+    0:10:36    7601.7      0.06       1.7      17.5 z[21]                    
+    0:10:36    7603.3      0.06       1.7      17.5 z[21]                    
+    0:10:36    7603.4      0.06       1.7      17.5 z[21]                    
+    0:10:36    7603.6      0.06       1.7      17.5 z[21]                    
+    0:10:37    7604.2      0.06       1.7      17.5 z[21]                    
+    0:10:37    7604.9      0.06       1.7      17.5 z[21]                    
+    0:10:38    7604.8      0.06       1.7      17.5 z[21]                    
+    0:10:38    7605.1      0.06       1.7      17.5 z[21]                    
+    0:10:38    7605.3      0.06       1.7      17.5 z[21]                    
+    0:10:38    7606.7      0.06       1.7      17.5 z[21]                    
+    0:10:38    7607.1      0.06       1.7      17.5 z[21]                    
+    0:10:39    7607.4      0.06       1.7      17.5 z[21]                    
+    0:10:39    7607.9      0.06       1.7      17.5 z[21]                    
+    0:10:39    7608.3      0.06       1.7      17.5 z[21]                    
+    0:10:40    7609.2      0.06       1.7      17.5 z[21]                    
+    0:10:40    7609.3      0.06       1.7      17.5 z[21]                    
+    0:10:40    7608.9      0.06       1.7      17.5 z[21]                    
+    0:10:40    7610.5      0.06       1.7      17.5 z[21]                    
+    0:10:41    7611.2      0.06       1.7      17.5 z[21]                    
+    0:10:42    7610.8      0.06       1.7      17.5 z[21]                    
+    0:10:42    7612.3      0.06       1.7      17.5 z[21]                    
+    0:10:42    7612.8      0.06       1.7      17.5 z[21]                    
+    0:10:43    7617.3      0.06       1.7      17.5 z[21]                    
+    0:10:43    7617.8      0.06       1.7      17.5 z[21]                    
+    0:10:43    7619.3      0.06       1.7      17.5 z[21]                    
+    0:10:44    7618.8      0.06       1.7      17.5 z[21]                    
+    0:10:44    7618.9      0.06       1.7      17.5 z[21]                    
+    0:10:44    7619.9      0.06       1.6      17.5 z[21]                    
+    0:10:44    7620.2      0.06       1.6      17.5 z[21]                    
+    0:10:45    7620.5      0.06       1.6      17.5 z[21]                    
+    0:10:45    7622.8      0.05       1.6      17.5 z[21]                    
+    0:10:45    7623.0      0.05       1.6      17.5 z[21]                    
+    0:10:45    7624.1      0.05       1.6      17.5 z[21]                    
+    0:10:46    7624.0      0.05       1.6      17.5 z[21]                    
+    0:10:46    7624.2      0.05       1.6      17.5 z[21]                    
+    0:10:46    7624.9      0.05       1.6      17.5 z[21]                    
+    0:10:46    7626.1      0.05       1.6      17.5 z[21]                    
+    0:10:47    7626.4      0.05       1.6      17.5 z[21]                    
+    0:10:47    7627.3      0.05       1.6      17.5 z[21]                    
+    0:10:47    7627.6      0.05       1.6      17.5 z[21]                    
+    0:10:48    7627.1      0.05       1.6      17.5 z[21]                    
+    0:10:48    7628.4      0.05       1.6      17.5 z[21]                    
+    0:10:48    7629.0      0.05       1.6      17.5 z[21]                    
+    0:10:49    7630.7      0.05       1.6      17.5 z[21]                    
+    0:10:49    7630.7      0.05       1.6      17.5 z[21]                    
+    0:10:49    7631.1      0.05       1.6      17.5 z[21]                    
+    0:10:49    7634.0      0.05       1.6      17.5 z[21]                    
+    0:10:50    7635.4      0.05       1.6      17.5 z[21]                    
+    0:10:50    7637.0      0.05       1.6      17.5 z[21]                    
+    0:10:51    7637.7      0.05       1.6      17.5 z[21]                    
+    0:10:51    7637.7      0.05       1.6      17.5 z[21]                    
+    0:10:51    7638.8      0.05       1.6      17.5 z[21]                    
+    0:10:51    7641.0      0.05       1.6      17.5 z[21]                    
+    0:10:52    7642.0      0.05       1.6      17.5 z[21]                    
+    0:10:52    7642.3      0.05       1.6      17.5 z[21]                    
+    0:10:52    7645.1      0.05       1.6      17.5 z[21]                    
+    0:10:52    7646.0      0.05       1.6      17.5 z[21]                    
+    0:10:53    7646.8      0.05       1.6      17.5 z[21]                    
+    0:10:53    7647.0      0.05       1.6      17.5 z[21]                    
+    0:10:53    7647.1      0.05       1.6      17.5 z[21]                    
+    0:10:54    7649.0      0.05       1.6      17.5 z[21]                    
+    0:10:54    7650.8      0.05       1.6      17.5 z[21]                    
+    0:10:54    7653.5      0.05       1.6      17.5 z[21]                    
+    0:10:54    7654.0      0.05       1.6      17.5 z[21]                    
+    0:10:55    7656.1      0.05       1.6      17.5 z[21]                    
+    0:10:55    7658.3      0.05       1.6      17.5 z[21]                    
+    0:10:55    7660.2      0.05       1.6      17.5 z[21]                    
+    0:10:56    7661.0      0.05       1.5      17.5 z[21]                    
+    0:10:56    7661.4      0.05       1.5      17.5 z[21]                    
+    0:10:57    7662.5      0.05       1.5      17.5 z[21]                    
+    0:10:57    7663.2      0.05       1.5      17.5 z[21]                    
+    0:10:57    7663.6      0.05       1.5      17.5 z[21]                    
+    0:10:58    7664.9      0.05       1.5      17.5 z[21]                    
+    0:10:58    7666.9      0.05       1.5      17.5 z[21]                    
+    0:10:59    7667.3      0.05       1.5      17.5 z[21]                    
+    0:10:59    7667.7      0.05       1.5      17.5 z[21]                    
+    0:10:59    7668.2      0.05       1.5      17.5 z[21]                    
+    0:11:00    7669.5      0.05       1.5      17.5 z[21]                    
+    0:11:00    7671.4      0.05       1.5      17.5 z[21]                    
+    0:11:00    7672.1      0.05       1.5      17.5 z[21]                    
+    0:11:01    7672.2      0.05       1.5      17.5 z[21]                    
+    0:11:01    7674.5      0.05       1.5      17.5 z[21]                    
+    0:11:01    7674.9      0.05       1.5      17.5 z[21]                    
+    0:11:01    7675.1      0.05       1.5      17.5 z[21]                    
+    0:11:02    7675.6      0.05       1.5      17.5 z[21]                    
+    0:11:02    7678.2      0.05       1.5      17.5 z[21]                    
+    0:11:03    7679.2      0.05       1.5      17.5 z[21]                    
+    0:11:03    7679.9      0.05       1.5      17.5 z[21]                    
+    0:11:03    7681.3      0.05       1.5      17.5 z[21]                    
+    0:11:04    7682.3      0.05       1.5      17.5 z[21]                    
+    0:11:04    7682.5      0.05       1.5      17.5 z[21]                    
+    0:11:04    7683.3      0.05       1.5      17.5 z[21]                    
+    0:11:05    7685.7      0.05       1.5      17.5 z[21]                    
+    0:11:06    7685.6      0.05       1.5      17.5 z[21]                    
+    0:11:06    7686.1      0.05       1.5      17.5 z[21]                    
+    0:11:06    7687.9      0.05       1.5      17.5 z[21]                    
+    0:11:07    7687.8      0.05       1.5      17.5 z[21]                    
+    0:11:07    7687.8      0.05       1.5      17.5 z[21]                    
+    0:11:08    7687.8      0.05       1.5      17.5 z[21]                    
+    0:11:08    7689.0      0.05       1.5      17.5 z[21]                    
+    0:11:08    7689.0      0.05       1.5      17.5 z[21]                    
+    0:11:09    7689.1      0.05       1.5      17.5 z[21]                    
+    0:11:09    7689.6      0.05       1.5      17.5 z[21]                    
+    0:11:09    7690.1      0.05       1.5      17.5 z[21]                    
+    0:11:09    7690.6      0.05       1.5      17.5 z[21]                    
+    0:11:10    7691.4      0.05       1.4      17.5 z[21]                    
+    0:11:10    7691.2      0.05       1.4      17.5 z[21]                    
+    0:11:10    7691.9      0.05       1.4      17.5 z[21]                    
+    0:11:10    7693.4      0.05       1.4      17.5 z[21]                    
+    0:11:11    7693.4      0.05       1.4      17.5 z[21]                    
+    0:11:11    7694.6      0.05       1.4      17.5 z[21]                    
+    0:11:11    7694.6      0.05       1.4      17.5 z[21]                    
+    0:11:12    7696.3      0.05       1.4      17.5 z[21]                    
+    0:11:12    7697.3      0.05       1.4      17.5 z[21]                    
+    0:11:12    7699.8      0.05       1.4      17.5 z[21]                    
+    0:11:13    7700.2      0.05       1.4      17.5 z[21]                    
+    0:11:13    7701.2      0.05       1.4      17.5 z[21]                    
+    0:11:13    7701.2      0.05       1.4      17.5 z[21]                    
+    0:11:14    7702.7      0.05       1.4      17.5 z[21]                    
+    0:11:14    7703.0      0.05       1.4      17.5 z[21]                    
+    0:11:14    7704.1      0.05       1.4      17.5 z[21]                    
+    0:11:15    7704.1      0.05       1.4      17.5 z[21]                    
+    0:11:15    7705.4      0.05       1.4      17.5 z[21]                    
+    0:11:15    7705.2      0.05       1.4      17.5 z[21]                    
+    0:11:15    7705.4      0.05       1.4      17.5 z[21]                    
+    0:11:16    7706.0      0.05       1.4      17.5 z[21]                    
+    0:11:16    7706.3      0.05       1.4      17.5 z[21]                    
+    0:11:16    7706.9      0.05       1.4      17.5 z[21]                    
+    0:11:17    7707.1      0.05       1.4      17.5 z[21]                    
+    0:11:17    7709.1      0.05       1.4      17.5 z[21]                    
+    0:11:17    7709.8      0.05       1.4      17.5 z[21]                    
+    0:11:17    7710.1      0.05       1.4      17.5 z[21]                    
+    0:11:18    7710.1      0.05       1.4      17.5 z[21]                    
+    0:11:18    7711.6      0.05       1.4      17.5 z[21]                    
+    0:11:18    7712.2      0.05       1.4      17.5 z[21]                    
+    0:11:19    7712.5      0.05       1.4      17.5 z[21]                    
+    0:11:19    7713.9      0.05       1.4      17.5 z[21]                    
+    0:11:19    7714.8      0.05       1.4      17.5 z[21]                    
+    0:11:20    7715.7      0.05       1.4      17.5 z[21]                    
+    0:11:20    7716.1      0.05       1.4      17.5 z[21]                    
+    0:11:20    7717.2      0.05       1.4      17.5 z[21]                    
+    0:11:20    7717.4      0.05       1.4      17.5 z[21]                    
+    0:11:21    7718.1      0.05       1.4      17.5 z[21]                    
+    0:11:21    7718.1      0.05       1.4      17.5 z[21]                    
+    0:11:21    7718.5      0.05       1.4      17.5 z[21]                    
+    0:11:22    7719.9      0.05       1.4      17.5 z[21]                    
+    0:11:22    7722.1      0.05       1.4      17.5 z[21]                    
+    0:11:22    7722.1      0.05       1.4      17.5 z[21]                    
+    0:11:23    7722.9      0.05       1.4      17.5 z[21]                    
+    0:11:23    7724.3      0.05       1.4      17.5 z[21]                    
+    0:11:23    7724.3      0.05       1.4      17.5 z[21]                    
+    0:11:23    7725.8      0.04       1.4      17.5 z[21]                    
+    0:11:24    7726.4      0.04       1.4      17.5 z[21]                    
+    0:11:24    7727.5      0.04       1.4      17.5 z[21]                    
+    0:11:24    7727.7      0.04       1.4      17.5 z[21]                    
+    0:11:25    7728.1      0.04       1.4      17.5 z[21]                    
+    0:11:25    7728.3      0.04       1.4      17.5 z[21]                    
+    0:11:26    7728.5      0.04       1.4      17.5 z[21]                    
+    0:11:26    7728.3      0.04       1.4      17.5 z[21]                    
+    0:11:26    7728.6      0.04       1.4      17.5 z[21]                    
+    0:11:26    7729.4      0.04       1.4      17.5 z[21]                    
+    0:11:27    7730.6      0.04       1.4      17.5 z[21]                    
+    0:11:27    7731.8      0.04       1.3      17.5 z[21]                    
+    0:11:27    7732.4      0.04       1.3      17.5 z[21]                    
+    0:11:28    7732.1      0.04       1.3      17.5 z[21]                    
+    0:11:28    7732.5      0.04       1.3      17.5 z[21]                    
+    0:11:28    7732.2      0.04       1.3      17.5 z[21]                    
+    0:11:29    7732.4      0.04       1.3      17.5 z[21]                    
+    0:11:29    7733.5      0.04       1.3      17.5 z[21]                    
+    0:11:29    7733.9      0.04       1.3      17.5 z[21]                    
+    0:11:30    7736.1      0.04       1.3      17.5 z[21]                    
+    0:11:30    7736.2      0.04       1.3      17.5 z[21]                    
+    0:11:31    7736.2      0.04       1.3      17.5 z[21]                    
+    0:11:31    7736.7      0.04       1.3      17.5 z[21]                    
+    0:11:32    7737.1      0.04       1.3      17.5 z[21]                    
+    0:11:32    7737.1      0.04       1.3      17.5 z[21]                    
+    0:11:32    7737.1      0.04       1.3      17.5 z[21]                    
+    0:11:33    7739.9      0.04       1.3      17.5 z[21]                    
+    0:11:34    7739.9      0.04       1.3      17.5 z[21]                    
+    0:11:34    7739.8      0.04       1.3      17.5 z[21]                    
+    0:11:34    7741.9      0.04       1.3      17.5 z[21]                    
+    0:11:35    7742.5      0.04       1.3      17.5 z[21]                    
+    0:11:35    7743.0      0.04       1.3      17.5 z[21]                    
+    0:11:35    7743.0      0.04       1.3      17.5 z[21]                    
+    0:11:35    7743.4      0.04       1.3      17.5 z[21]                    
+    0:11:35    7743.8      0.04       1.3      17.5 z[21]                    
+    0:11:36    7743.8      0.04       1.3      17.5 z[21]                    
+    0:11:36    7744.2      0.04       1.3      17.5 z[21]                    
+    0:11:36    7744.5      0.04       1.3      17.5 z[21]                    
+    0:11:37    7745.4      0.04       1.3      17.5 z[21]                    
+    0:11:37    7745.5      0.04       1.3      17.5 z[21]                    
+    0:11:38    7745.5      0.04       1.3      17.5 z[21]                    
+    0:11:38    7746.9      0.04       1.3      17.5 z[21]                    
+    0:11:38    7748.7      0.04       1.3      17.5 z[21]                    
+    0:11:38    7749.4      0.04       1.3      17.5 z[21]                    
+    0:11:39    7749.1      0.04       1.3      17.5 z[21]                    
+    0:11:39    7749.7      0.04       1.3      17.5 z[21]                    
+    0:11:39    7751.4      0.04       1.3      17.5 z[21]                    
+    0:11:40    7752.3      0.04       1.3      17.5 z[21]                    
+    0:11:40    7752.7      0.04       1.3      17.5 z[21]                    
+    0:11:40    7753.4      0.04       1.3      17.5 z[21]                    
+    0:11:41    7754.4      0.04       1.3      17.5 z[21]                    
+    0:11:41    7755.2      0.04       1.3      17.5 z[21]                    
+    0:11:41    7755.4      0.04       1.3      17.5 z[21]                    
+    0:11:41    7755.7      0.04       1.3      17.5 z[21]                    
+    0:11:42    7756.6      0.04       1.3      17.5 z[21]                    
+    0:11:42    7759.1      0.04       1.3      17.5 z[21]                    
+    0:11:42    7758.7      0.04       1.3      17.5 z[21]                    
+    0:11:43    7759.2      0.04       1.3      17.5 z[21]                    
+    0:11:43    7759.9      0.04       1.3      17.5 z[21]                    
+    0:11:43    7760.1      0.04       1.3      17.5 z[21]                    
+    0:11:44    7760.8      0.04       1.3      17.5 z[21]                    
+    0:11:44    7761.2      0.04       1.3      17.5 z[21]                    
+    0:11:44    7762.5      0.04       1.3      17.5 z[21]                    
+    0:11:45    7763.2      0.04       1.3      17.5 z[21]                    
+    0:11:45    7764.3      0.04       1.3      17.5 z[21]                    
+    0:11:45    7764.8      0.04       1.3      17.5 z[21]                    
+    0:11:46    7765.0      0.04       1.3      17.5 z[21]                    
+    0:11:46    7765.5      0.04       1.3      17.5 z[21]                    
+    0:11:46    7766.5      0.04       1.3      17.5 z[21]                    
+    0:11:46    7766.8      0.04       1.3      17.5 z[21]                    
+    0:11:47    7767.1      0.04       1.3      17.5 z[21]                    
+    0:11:48    7768.1      0.04       1.3      17.5 z[21]                    
+    0:11:49    7768.9      0.04       1.3      17.5 z[21]                    
+    0:11:49    7769.1      0.04       1.3      17.5 z[21]                    
+    0:11:49    7770.1      0.04       1.3      17.5 z[21]                    
+    0:11:49    7771.3      0.04       1.3      17.5 z[21]                    
+    0:11:50    7771.1      0.04       1.3      17.5 z[21]                    
+    0:11:51    7772.2      0.04       1.3      17.5 z[21]                    
+    0:11:55    7772.1      0.04       1.3      17.5 z[21]                    
+    0:11:56    7771.7      0.04       1.3      17.5 z[21]                    
+    0:11:57    7771.2      0.04       1.3      17.5 z[21]                    
+    0:11:58    7770.9      0.04       1.3      17.5 z[21]                    
+    0:11:59    7771.1      0.04       1.2      17.5 z[21]                    
+    0:12:01    7772.6      0.04       1.2      17.5 z[19]                    
+    0:12:02    7773.4      0.04       1.2      17.5 z[21]                    
+    0:12:03    7775.0      0.04       1.2      17.5 z[21]                    
+    0:12:04    7774.5      0.04       1.2      17.5 z[21]                    
+    0:12:05    7775.7      0.04       1.2      17.5 z[21]                    
+    0:12:06    7777.2      0.04       1.2      17.5 z[19]                    
+    0:12:07    7778.1      0.04       1.2      17.5 z[19]                    
+    0:12:08    7779.0      0.04       1.2      17.5 z[19]                    
+    0:12:09    7782.1      0.04       1.2      17.5 z[21]                    
+    0:12:10    7783.4      0.04       1.2      17.5 z[19]                    
+    0:12:11    7784.7      0.04       1.2      17.5 z[19]                    
+    0:12:12    7785.2      0.04       1.2      17.5 z[21]                    
+    0:12:13    7785.8      0.04       1.2      17.5 z[19]                    
+    0:12:14    7788.3      0.04       1.2      17.5 z[21]                    
+    0:12:15    7788.1      0.04       1.2      17.5 z[21]                    
+    0:12:16    7789.0      0.04       1.2      17.5 z[21]                    
+    0:12:18    7788.1      0.04       1.2      17.5 z[21]                    
+    0:12:19    7788.7      0.04       1.2      17.5 z[21]                    
+    0:12:20    7791.7      0.04       1.2      17.5 z[21]                    
+    0:12:21    7791.0      0.04       1.2      17.5 z[21]                    
+    0:12:23    7791.1      0.04       1.2      17.5 z[21]                    
+    0:12:24    7791.1      0.04       1.2      17.5 z[21]                    
+    0:12:25    7792.3      0.04       1.2      17.5 z[21]                    
+    0:12:26    7793.2      0.04       1.2      17.5 z[21]                    
+    0:12:28    7794.2      0.04       1.1      17.5 z[16]                    
+    0:12:29    7794.5      0.04       1.1      17.5 z[16]                    
+    0:12:30    7795.1      0.04       1.1      17.5 z[16]                    
+    0:12:32    7796.0      0.04       1.1      17.5 z[21]                    
+    0:12:33    7797.0      0.04       1.1      17.5 z[16]                    
+    0:12:35    7798.0      0.04       1.1      17.5 z[21]                    
+    0:12:39    7798.0      0.04       1.1      17.5                          
+    0:12:40    7798.0      0.04       1.1      17.5                          
+
+
+  Beginning Design Rule Fixing  (min_capacitance)
+  ----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:12:40    7798.0      0.04       1.1      17.5                          
+    0:12:40    7798.4      0.04       1.1      17.5                          
+    0:12:41    7800.0      0.04       1.1      17.5                          
+    0:12:41    7800.1      0.04       1.1      17.5                          
+    0:12:42    7800.7      0.04       1.1      17.5                          
+    0:12:42    7801.3      0.04       1.1      17.5                          
+    0:12:43    7801.5      0.04       1.0      17.5                          
+    0:12:43    7801.6      0.04       1.0      17.5                          
+    0:12:44    7802.2      0.04       1.0      17.5                          
+    0:12:45    7803.3      0.04       1.1      17.5                          
+    0:12:46    7803.7      0.04       1.1      17.5                          
+    0:12:46    7803.2      0.04       1.1      17.5                          
+    0:12:47    7804.0      0.04       1.0      17.5                          
+    0:12:47    7804.5      0.04       1.0      17.5                          
+    0:12:48    7805.0      0.04       1.0      17.5                          
+    0:12:49    7805.2      0.04       1.0      17.5                          
+    0:12:50    7805.3      0.03       1.0      17.5                          
+    0:12:50    7805.3      0.03       1.0      17.5                          
+    0:12:51    7805.9      0.03       1.0      17.5                          
+    0:12:52    7807.5      0.03       1.0      17.5                          
+    0:12:53    7808.6      0.03       1.0      17.5                          
+    0:12:53    7807.0      0.03       1.0      17.5                          
+    0:12:54    7807.4      0.03       1.0      17.5                          
+    0:12:54    7807.1      0.03       1.0      17.5                          
+    0:12:55    7807.7      0.03       1.0      17.5                          
+    0:12:55    7808.2      0.03       1.0      17.5                          
+    0:12:56    7807.6      0.03       1.0      17.5                          
+    0:12:56    7808.5      0.03       0.9      17.5                          
+    0:12:56    7808.7      0.03       0.9      17.5                          
+    0:12:56    7808.7      0.03       0.9      17.5                          
+
+
+  Beginning Area-Recovery Phase  (cleanup)
+  -----------------------------
+
+                                  TOTAL                                      
+   ELAPSED            WORST NEG   SETUP    DESIGN                            
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT         
+  --------- --------- --------- --------- --------- -------------------------
+    0:12:56    7808.7      0.03       0.9      17.5                          
+    0:12:56    7808.7      0.03       0.9      17.5                          
+    0:12:58    7756.0      0.04       1.2      17.5                          
+    0:12:58    7744.7      0.04       1.2      17.5                          
+    0:12:59    7742.4      0.04       1.2      17.5                          
+    0:12:59    7741.2      0.05       1.2      17.5                          
+    0:12:59    7740.9      0.05       1.2      17.5                          
+    0:12:59    7740.9      0.05       1.2      17.5                          
+    0:13:00    7740.8      0.04       1.1      17.5 z[18]                    
+    0:13:01    7741.6      0.04       1.1      17.5 z[17]                    
+    0:13:02    7743.5      0.04       1.1      17.5 z[20]                    
+    0:13:03    7744.1      0.04       1.1      17.5 z[17]                    
+    0:13:04    7744.4      0.04       1.1      17.5 z[17]                    
+    0:13:04    7743.5      0.04       1.1      17.5 z[17]                    
+    0:13:05    7746.3      0.04       1.0      17.5 z[20]                    
+    0:13:06    7746.7      0.04       1.0      17.5 z[20]                    
+    0:13:07    7747.1      0.04       1.0      17.5 z[21]                    
+    0:13:08    7748.3      0.04       1.0      17.5 z[21]                    
+    0:13:08    7749.9      0.04       1.0      17.5 z[21]                    
+    0:13:09    7751.7      0.04       1.0      17.5 z[21]                    
+    0:13:10    7753.5      0.03       1.0      17.5 z[21]                    
+    0:13:10    7753.8      0.03       1.0      17.5                          
+    0:13:11    7753.8      0.03       1.0      17.5                          
+    0:13:11    7754.4      0.03       1.0      17.5                          
+    0:13:12    7754.8      0.03       1.0      17.5                          
+    0:13:12    7755.1      0.03       1.0      17.5                          
+    0:13:13    7755.4      0.03       1.0      17.5                          
+    0:13:14    7756.0      0.03       1.0      17.5                          
+    0:13:14    7756.2      0.03       1.0      17.5                          
+    0:13:15    7756.9      0.03       1.0      17.5                          
+    0:13:15    7757.8      0.03       1.0      17.5                          
+    0:13:16    7758.2      0.03       0.9      17.5                          
+    0:13:16    7758.3      0.03       0.9      17.5                          
+    0:13:17    7759.0      0.03       0.9      17.5                          
+    0:13:18    7760.2      0.03       0.9      17.5                          
+    0:13:18    7760.4      0.03       0.9      17.5                          
+    0:13:18    7760.3      0.03       0.9      17.5                          
+    0:13:19    7759.8      0.03       0.9      17.5                          
+    0:13:19    7760.3      0.03       0.9      17.5                          
+    0:13:20    7760.7      0.03       0.9      17.5                          
+    0:13:20    7761.7      0.03       0.9      17.5                          
+    0:13:21    7762.7      0.03       0.9      17.5                          
+    0:13:21    7763.4      0.03       0.9      17.5                          
+    0:13:22    7763.1      0.03       0.9      17.5                          
+    0:13:22    7763.3      0.03       0.9      17.5                          
+    0:13:23    7764.8      0.03       0.9      17.5                          
+    0:13:23    7765.5      0.03       0.9      17.5                          
+    0:13:24    7767.3      0.03       0.9      17.5                          
+    0:13:24    7767.0      0.03       0.9      17.5                          
+    0:13:25    7767.7      0.03       0.9      17.5                          
+    0:13:25    7769.0      0.03       0.9      17.5                          
+    0:13:26    7770.0      0.03       0.9      17.5                          
+    0:13:26    7769.9      0.03       0.9      17.5                          
+    0:13:26    7770.7      0.03       0.9      17.5                          
+    0:13:26    7770.8      0.03       0.9      17.5                          
+    0:13:27    7770.5      0.03       0.9      17.5                          
+    0:13:29    7673.3      0.08       2.4      17.5                          
+    0:13:30    7625.5      0.08       2.5      17.5                          
+    0:13:30    7613.1      0.08       2.5      17.5                          
+    0:13:30    7612.9      0.08       2.5      17.5                          
+    0:13:30    7612.9      0.08       2.5      17.5                          
+    0:13:30    7612.9      0.08       2.5      17.5                          
+    0:13:30    7612.9      0.08       2.5      17.5                          
+    0:13:30    7612.9      0.08       2.5      17.5                          
+    0:13:32    7617.4      0.05       1.4      17.5 z[19]                    
+    0:13:33    7622.1      0.05       1.3      17.5 z[17]                    
+    0:13:34    7628.0      0.04       1.2      17.5 z[24]                    
+    0:13:36    7631.3      0.04       1.2      17.5 z[17]                    
+    0:13:37    7632.0      0.04       1.2      17.5 z[20]                    
+    0:13:38    7633.4      0.04       1.1      17.5 z[20]                    
+    0:13:39    7635.8      0.04       1.1      17.5 z[20]                    
+    0:13:39    7638.0      0.04       1.1      17.5 z[17]                    
+    0:13:40    7638.5      0.04       1.1      17.5 z[17]                    
+    0:13:41    7642.3      0.04       1.1      17.5 z[17]                    
+    0:13:42    7644.4      0.04       1.1      17.5 z[17]                    
+    0:13:43    7646.5      0.04       1.0      17.5 z[17]                    
+    0:13:44    7647.5      0.04       1.0      17.5 z[17]                    
+    0:13:46    7654.9      0.03       1.0      17.5 z[20]                    
+    0:13:50    7698.7      0.03       1.0      17.5 z[20]                    
+    0:13:50    7699.2      0.03       1.0      17.5 z[20]                    
+    0:13:51    7699.4      0.03       0.9      17.5 z[20]                    
+    0:13:51    7701.9      0.03       0.9      17.5 z[20]                    
+    0:13:51    7702.3      0.03       0.9      17.5 z[20]                    
+    0:13:52    7703.9      0.03       0.9      17.5 z[20]                    
+    0:13:52    7703.4      0.03       0.9      17.5 z[20]                    
+    0:13:53    7704.2      0.03       0.9      17.5 z[20]                    
+    0:13:54    7703.4      0.03       0.9      17.5 z[20]                    
+    0:13:55    7703.7      0.03       0.9      17.5                          
+    0:13:55    7705.0      0.03       0.9      17.5                          
+    0:13:56    7705.7      0.03       0.9      17.5                          
+    0:13:56    7706.0      0.03       0.9      17.5                          
+    0:13:57    7706.7      0.03       0.9      17.5                          
+    0:13:58    7706.8      0.03       0.9      17.5                          
+    0:13:58    7706.8      0.03       0.9      17.5                          
+    0:13:59    7708.2      0.03       0.9      17.5                          
+    0:13:59    7708.5      0.03       0.9      17.5                          
+    0:14:00    7709.4      0.03       0.9      17.5                          
+    0:14:00    7711.3      0.03       0.9      17.5                          
+    0:14:01    7713.5      0.03       0.9      17.5                          
+    0:14:01    7713.8      0.03       0.9      17.5                          
+    0:14:02    7714.2      0.03       0.9      17.5                          
+    0:14:02    7713.5      0.03       0.8      17.5                          
+    0:14:03    7713.8      0.03       0.8      17.5                          
+    0:14:03    7714.9      0.03       0.8      17.5                          
+    0:14:04    7715.9      0.03       0.8      17.5                          
+    0:14:04    7718.4      0.03       0.8      17.5                          
+    0:14:05    7720.6      0.03       0.8      17.5                          
+    0:14:06    7720.5      0.03       0.8      17.5                          
+    0:14:07    7722.4      0.03       0.8      17.5                          
+    0:14:07    7723.4      0.03       0.8      17.5                          
+    0:14:08    7724.5      0.03       0.8      17.5                          
+    0:14:08    7725.3      0.03       0.8      17.5                          
+    0:14:09    7726.6      0.03       0.8      17.5                          
+    0:14:10    7727.6      0.03       0.8      17.5                          
+    0:14:11    7728.9      0.03       0.8      17.5                          
+    0:14:11    7729.9      0.03       0.8      17.5                          
+    0:14:12    7732.0      0.03       0.8      17.5                          
+    0:14:12    7732.4      0.03       0.8      17.5                          
+    0:14:13    7733.2      0.03       0.8      17.5                          
+    0:14:13    7732.7      0.03       0.8      17.5                          
+    0:14:14    7733.5      0.03       0.8      17.5                          
+    0:14:14    7733.9      0.03       0.8      17.5                          
+    0:14:14    7734.6      0.03       0.8      17.5                          
+    0:14:15    7736.2      0.03       0.7      17.5                          
+    0:14:15    7737.7      0.03       0.7      17.5                          
+    0:14:16    7738.6      0.03       0.7      17.5                          
+    0:14:16    7741.4      0.03       0.7      17.5                          
+    0:14:17    7742.8      0.03       0.7      17.5                          
+    0:14:18    7743.9      0.03       0.7      17.5                          
+    0:14:18    7744.5      0.03       0.7      17.5                          
+    0:14:18    7744.9      0.02       0.7      17.5                          
+    0:14:19    7745.3      0.02       0.7      17.5                          
+    0:14:19    7747.9      0.02       0.7      17.5                          
+    0:14:20    7751.4      0.02       0.7      17.5                          
+    0:14:21    7754.7      0.02       0.7      17.5                          
+    0:14:21    7757.0      0.02       0.7      17.5                          
+    0:14:22    7758.1      0.02       0.7      17.5                          
+    0:14:22    7759.1      0.02       0.7      17.5                          
+    0:14:23    7760.1      0.02       0.7      17.5                          
+    0:14:23    7761.6      0.02       0.7      17.5                          
+    0:14:24    7763.6      0.02       0.7      17.5                          
+    0:14:25    7765.4      0.02       0.7      17.5                          
+    0:14:25    7766.8      0.02       0.7      17.5                          
+    0:14:25    7768.0      0.02       0.7      17.5                          
+    0:14:26    7767.2      0.02       0.7      17.5                          
+    0:14:26    7767.6      0.02       0.7      17.5                          
+    0:14:27    7767.3      0.02       0.7      17.5                          
+    0:14:27    7767.1      0.02       0.7      17.5 z[19]                    
+    0:14:28    7767.3      0.02       0.7      17.5 z[19]                    
+    0:14:28    7769.2      0.02       0.7      17.5 z[19]                    
+    0:14:29    7769.4      0.02       0.7      17.5 z[19]                    
+    0:14:29    7769.8      0.02       0.7      17.5 z[19]                    
+    0:14:29    7774.8      0.02       0.7      17.5 z[19]                    
+    0:14:30    7774.9      0.02       0.7      17.5 z[19]                    
+    0:14:30    7778.7      0.02       0.7      17.5 z[19]                    
+    0:14:31    7781.2      0.02       0.6      17.5 z[19]                    
+    0:14:31    7783.9      0.02       0.6      17.5 z[19]                    
+    0:14:32    7788.1      0.02       0.6      17.5 z[19]                    
+    0:14:32    7788.3      0.02       0.6      17.5 z[19]                    
+    0:14:33    7789.4      0.02       0.6      17.5 z[19]                    
+    0:14:33    7791.1      0.02       0.6      17.5 z[19]                    
+    0:14:34    7794.5      0.02       0.6      17.5 z[19]                    
+    0:14:34    7796.2      0.02       0.6      17.5 z[19]                    
+    0:14:34    7797.9      0.02       0.6      17.5 z[19]                    
+    0:14:35    7798.2      0.02       0.6      17.5 z[19]                    
+    0:14:36    7798.3      0.02       0.6      17.5 z[19]                    
+    0:14:37    7798.4      0.02       0.6      17.5 z[19]                    
+    0:14:37    7798.7      0.02       0.6      17.5 z[19]                    
+    0:14:37    7799.5      0.02       0.6      17.5 z[19]                    
+    0:14:38    7799.8      0.02       0.6      17.5 z[19]                    
+    0:14:38    7801.4      0.02       0.6      17.5 z[19]                    
+    0:14:39    7803.0      0.02       0.6      17.5 z[19]                    
+    0:14:39    7804.7      0.02       0.6      17.5 z[19]                    
+    0:14:40    7805.8      0.02       0.6      17.5 z[19]                    
+    0:14:40    7806.1      0.02       0.6      17.5 z[19]                    
+    0:14:40    7806.3      0.02       0.6      17.5 z[19]                    
+    0:14:41    7808.9      0.02       0.6      17.5 z[19]                    
+    0:14:41    7811.6      0.02       0.6      17.5 z[19]                    
+    0:14:42    7811.4      0.02       0.6      17.5 z[19]                    
+    0:14:42    7815.9      0.02       0.6      17.5 z[19]                    
+    0:14:42    7815.8      0.02       0.6      17.5 z[19]                    
+    0:14:43    7816.6      0.02       0.6      17.5 z[19]                    
+    0:14:43    7817.0      0.02       0.6      17.5 z[19]                    
+    0:14:43    7817.5      0.02       0.6      17.5 z[19]                    
+    0:14:44    7817.8      0.02       0.6      17.5 z[19]                    
+    0:14:44    7819.3      0.02       0.6      17.5 z[19]                    
+    0:14:45    7820.1      0.02       0.6      17.5 z[19]                    
+    0:14:45    7820.0      0.02       0.6      17.5 z[19]                    
+    0:14:45    7820.0      0.02       0.6      17.5 z[19]                    
+    0:14:46    7820.0      0.02       0.6      17.5 z[19]                    
+    0:14:46    7820.3      0.02       0.6      17.5 z[19]                    
+    0:14:47    7822.4      0.02       0.6      17.5 z[19]                    
+    0:14:47    7822.4      0.02       0.6      17.5 z[19]                    
+    0:14:48    7822.9      0.02       0.6      17.5 z[19]                    
+    0:14:48    7824.6      0.02       0.6      17.5 z[19]                    
+    0:14:49    7824.6      0.02       0.6      17.5                          
+    0:14:49    7821.4      0.02       0.6      17.5                          
+    0:14:49    7819.4      0.02       0.6      17.5                          
+    0:14:50    7817.2      0.02       0.6      17.5                          
+    0:14:50    7815.7      0.02       0.6      17.5                          
+    0:14:50    7814.2      0.02       0.6      17.5                          
+    0:14:50    7811.4      0.02       0.6      17.5                          
+    0:14:50    7809.7      0.02       0.6      17.5                          
+    0:14:50    7808.6      0.02       0.6      17.5                          
+    0:14:51    7806.4      0.02       0.6      17.5                          
+    0:14:51    7804.3      0.02       0.6      17.5                          
+    0:14:51    7801.6      0.02       0.6      17.5                          
+    0:14:52    7801.5      0.02       0.6      17.5                          
+    0:14:52    7800.6      0.02       0.6      17.5                          
+    0:14:52    7797.5      0.02       0.6      17.5                          
+    0:14:52    7796.0      0.02       0.6      17.5                          
+    0:14:53    7795.0      0.02       0.6      17.5                          
+    0:14:53    7793.3      0.02       0.6      17.5                          
+    0:14:53    7791.4      0.02       0.6      17.5                          
+    0:14:53    7791.1      0.02       0.6      17.5                          
+    0:14:53    7788.0      0.02       0.6      17.5                          
+    0:14:54    7786.3      0.02       0.6      17.5                          
+    0:14:54    7785.8      0.02       0.6      17.5                          
+    0:14:54    7786.0      0.02       0.6      17.5                          
+    0:14:55    7786.1      0.02       0.6      17.5                          
+    0:14:55    7786.2      0.02       0.6      17.5                          
+    0:14:56    7785.6      0.02       0.6      17.5                          
+    0:14:56    7785.8      0.02       0.6      17.5                          
+    0:14:56    7787.5      0.02       0.6      17.5                          
+    0:14:57    7787.5      0.02       0.6      17.5                          
+    0:14:57    7787.5      0.02       0.6      17.5                          
+    0:14:58    7787.7      0.02       0.6      17.5                          
+    0:14:58    7789.1      0.02       0.6      17.5                          
+    0:14:58    7789.2      0.02       0.6      17.5                          
+    0:14:59    7789.3      0.02       0.6      17.5                          
+    0:14:59    7789.7      0.02       0.6      17.5                          
+    0:14:59    7790.8      0.02       0.6      17.5                          
+    0:15:00    7791.2      0.02       0.5      17.5                          
+    0:15:00    7791.7      0.02       0.5      17.5                          
+    0:15:00    7791.5      0.02       0.5      17.5                          
+    0:15:01    7791.5      0.02       0.5      17.5                          
+    0:15:01    7791.4      0.02       0.5      17.5                          
+    0:15:01    7791.8      0.02       0.5      17.5                          
+    0:15:02    7794.6      0.02       0.5      17.5                          
+    0:15:02    7794.6      0.02       0.5      17.5                          
+    0:15:02    7794.7      0.02       0.5      17.5                          
+    0:15:03    7794.9      0.02       0.5      17.5                          
+    0:15:03    7795.7      0.02       0.5      17.5                          
+    0:15:04    7796.7      0.02       0.5      17.5                          
+    0:15:04    7797.4      0.02       0.5      17.5                          
+    0:15:05    7797.7      0.02       0.5      17.5                          
+    0:15:05    7797.8      0.02       0.5      17.5                          
+    0:15:05    7798.1      0.02       0.5      17.5                          
+    0:15:05    7797.7      0.02       0.5      17.5                          
+    0:15:06    7798.1      0.02       0.5      17.5                          
+    0:15:06    7798.4      0.02       0.5      17.5                          
+    0:15:07    7798.5      0.02       0.5      17.5                          
+    0:15:07    7798.8      0.02       0.5      17.5                          
+    0:15:08    7798.8      0.02       0.5      17.5                          
+    0:15:08    7798.4      0.02       0.5      17.5                          
+    0:15:09    7800.0      0.02       0.5      17.5                          
+    0:15:09    7801.3      0.02       0.5      17.5                          
+    0:15:10    7801.8      0.02       0.5      17.5                          
+    0:15:10    7803.8      0.02       0.5      17.5                          
+    0:15:10    7804.9      0.02       0.5      17.5                          
+    0:15:10    7804.9      0.02       0.5      17.5                          
+    0:15:11    7805.3      0.02       0.5      17.5                          
+    0:15:11    7805.2      0.02       0.5      17.5                          
+    0:15:11    7806.9      0.02       0.5      17.5                          
+    0:15:12    7807.7      0.02       0.5      17.5                          
+    0:15:12    7810.0      0.02       0.5      17.5                          
+    0:15:13    7810.2      0.02       0.5      17.5                          
+    0:15:13    7810.2      0.02       0.5      17.5                          
+    0:15:13    7811.0      0.02       0.5      17.5                          
+    0:15:14    7811.2      0.02       0.5      17.5                          
+    0:15:14    7811.9      0.02       0.5      17.5                          
+    0:15:14    7812.8      0.02       0.4      17.5                          
+    0:15:14    7812.8      0.02       0.4      17.5 z[20]                    
+    0:15:15    7812.7      0.02       0.4      17.5 z[20]                    
+    0:15:15    7813.2      0.02       0.4      17.5 z[20]                    
+    0:15:16    7813.7      0.02       0.4      17.5 z[20]                    
+    0:15:16    7813.9      0.02       0.4      17.5 z[20]                    
+    0:15:17    7814.9      0.02       0.4      17.5 z[20]                    
+    0:15:17    7816.0      0.02       0.4      17.5 z[22]                    
+    0:15:18    7816.1      0.02       0.4      17.5 z[20]                    
+    0:15:18    7816.9      0.02       0.4      17.5 z[20]                    
+    0:15:18    7820.9      0.02       0.4      17.5 z[20]                    
+    0:15:19    7821.0      0.02       0.4      17.5 z[20]                    
+    0:15:19    7822.3      0.02       0.4      17.5 z[20]                    
+    0:15:20    7825.8      0.02       0.4      17.5 z[20]                    
+    0:15:20    7826.1      0.02       0.4      17.5 z[20]                    
+    0:15:21    7827.7      0.02       0.4      17.5 z[20]                    
+    0:15:21    7831.0      0.02       0.4      17.5 z[20]                    
+    0:15:21    7831.1      0.02       0.4      17.5 z[20]                    
+    0:15:22    7831.9      0.02       0.4      17.5 z[22]                    
+    0:15:22    7832.1      0.02       0.4      17.5 z[22]                    
+    0:15:23    7833.9      0.02       0.4      17.5 z[22]                    
+    0:15:23    7834.1      0.02       0.4      17.5 z[22]                    
+    0:15:23    7834.1      0.02       0.4      17.5 z[22]                    
+    0:15:24    7834.1      0.02       0.4      17.5 z[22]                    
+    0:15:24    7834.2      0.02       0.4      17.5 z[22]                    
+    0:15:24    7834.4      0.02       0.4      17.5 z[22]                    
+    0:15:25    7835.3      0.02       0.4      17.5 z[22]                    
+    0:15:25    7837.8      0.02       0.4      17.5 z[19]                    
+    0:15:26    7837.8      0.02       0.4      17.5 z[20]                    
+    0:15:26    7837.7      0.02       0.4      17.5 z[19]                    
+    0:15:26    7837.8      0.02       0.4      17.5 z[19]                    
+    0:15:27    7837.8      0.02       0.4      17.5 z[19]                    
+    0:15:27    7838.1      0.02       0.4      17.5 z[19]                    
+    0:15:27    7839.3      0.02       0.4      17.5 z[20]                    
+    0:15:28    7840.0      0.02       0.4      17.5 z[19]                    
+    0:15:28    7840.5      0.02       0.4      17.5 z[19]                    
+    0:15:28    7841.0      0.02       0.4      17.5 z[19]                    
+    0:15:29    7841.9      0.02       0.4      17.5 z[19]                    
+    0:15:29    7844.6      0.02       0.4      17.5 z[19]                    
+    0:15:29    7845.2      0.02       0.4      17.5 z[20]                    
+    0:15:30    7846.2      0.02       0.4      17.5 z[19]                    
+    0:15:30    7846.7      0.02       0.4      17.5 z[19]                    
+    0:15:31    7847.5      0.02       0.4      17.5 z[20]                    
+    0:15:31    7847.5      0.02       0.4      17.5 z[20]                    
+    0:15:31    7848.9      0.02       0.4      17.5 z[20]                    
+    0:15:32    7849.4      0.02       0.4      17.5 z[20]                    
+    0:15:32    7849.6      0.02       0.4      17.5 z[19]                    
+    0:15:32    7851.1      0.02       0.4      17.5 z[19]                    
+    0:15:33    7851.2      0.02       0.4      17.5 z[20]                    
+    0:15:33    7851.7      0.02       0.4      17.5 z[19]                    
+    0:15:33    7852.5      0.02       0.4      17.5 z[20]                    
+    0:15:34    7853.0      0.02       0.4      17.5 z[19]                    
+    0:15:34    7853.7      0.02       0.4      17.5 z[19]                    
+    0:15:35    7853.9      0.02       0.4      17.5 z[20]                    
+    0:15:35    7855.8      0.01       0.4      17.5 z[20]                    
+    0:15:35    7856.5      0.01       0.4      17.5 z[19]                    
+    0:15:36    7857.8      0.01       0.4      17.5 z[19]                    
+    0:15:36    7858.5      0.01       0.3      17.5 z[20]                    
+    0:15:36    7859.7      0.01       0.3      17.5 z[19]                    
+    0:15:37    7860.4      0.01       0.3      17.5 z[19]                    
+    0:15:37    7861.7      0.01       0.3      17.5 z[19]                    
+    0:15:37    7862.0      0.01       0.3      17.5 z[19]                    
+    0:15:37    7862.9      0.01       0.3      17.5 z[19]                    
+    0:15:38    7863.9      0.01       0.3      17.5 z[19]                    
+    0:15:38    7864.1      0.01       0.3      17.5 z[19]                    
+    0:15:38    7865.3      0.01       0.3      17.5 z[20]                    
+    0:15:39    7866.7      0.01       0.3      17.5 z[19]                    
+    0:15:39    7867.5      0.01       0.3      17.5 z[19]                    
+    0:15:39    7868.0      0.01       0.3      17.5 z[19]                    
+    0:15:39    7868.6      0.01       0.3      17.5 z[19]                    
+    0:15:40    7868.5      0.01       0.3      17.5 z[19]                    
+    0:15:40    7869.3      0.01       0.3      17.5 z[19]                    
+    0:15:40    7869.7      0.01       0.3      17.5 z[19]                    
+    0:15:41    7870.1      0.01       0.3      17.5 z[19]                    
+    0:15:41    7872.3      0.01       0.3      17.5 z[19]                    
+    0:15:41    7872.8      0.01       0.3      17.5 z[19]                    
+    0:15:42    7873.2      0.01       0.3      17.5 z[19]                    
+    0:15:42    7874.8      0.01       0.3      17.5 z[19]                    
+    0:15:42    7873.7      0.01       0.3      17.5 z[19]                    
+    0:15:43    7876.0      0.01       0.3      17.5 z[19]                    
+    0:15:43    7876.9      0.01       0.3      17.5 z[19]                    
+    0:15:43    7877.5      0.01       0.3      17.5 z[19]                    
+    0:15:45    7877.8      0.01       0.3      17.5 z[19]                    
+    0:15:45    7878.6      0.01       0.3      17.5 z[19]                    
+    0:15:46    7879.2      0.01       0.3      17.5 z[19]                    
+    0:15:46    7879.5      0.01       0.3      17.5 z[19]                    
+    0:15:46    7880.1      0.01       0.3      17.5 z[19]                    
+    0:15:47    7880.8      0.01       0.3      17.5 z[19]                    
+    0:15:47    7881.0      0.01       0.3      17.5 z[19]                    
+    0:15:47    7882.0      0.01       0.3      17.5 z[19]                    
+    0:15:48    7883.6      0.01       0.3      17.5 z[19]                    
+    0:15:48    7883.9      0.01       0.3      17.5 z[19]                    
+    0:15:48    7884.6      0.01       0.3      17.5 z[19]                    
+    0:15:49    7885.2      0.01       0.3      17.5 z[19]                    
+    0:15:49    7885.6      0.01       0.3      17.5 z[19]                    
+    0:15:50    7887.0      0.01       0.3      17.5 z[20]                    
+    0:15:50    7887.4      0.01       0.3      17.5 z[19]                    
+    0:15:51    7887.7      0.01       0.3      17.5 z[20]                    
+    0:15:51    7888.2      0.01       0.3      17.5 z[19]                    
+    0:15:51    7888.2      0.01       0.3      17.5 z[20]                    
+    0:15:52    7888.8      0.01       0.3      17.5 z[19]                    
+    0:15:52    7889.6      0.01       0.3      17.5 z[19]                    
+    0:15:52    7890.5      0.01       0.3      17.5 z[19]                    
+    0:15:53    7893.6      0.01       0.3      17.5 z[19]                    
+    0:15:53    7894.5      0.01       0.3      17.5 z[19]                    
+    0:15:53    7894.8      0.01       0.3      17.5 z[19]                    
+    0:15:54    7895.6      0.01       0.3      17.5 z[19]                    
+    0:15:54    7896.9      0.01       0.3      17.5 z[19]                    
+    0:15:54    7897.8      0.01       0.3      17.5 z[19]                    
+    0:15:54    7897.8      0.01       0.3      17.5 z[19]                    
+    0:15:55    7899.4      0.01       0.3      17.5 z[19]                    
+    0:15:55    7899.2      0.01       0.3      17.5 z[19]                    
+    0:15:55    7900.4      0.01       0.3      17.5 z[19]                    
+    0:15:55    7900.6      0.01       0.3      17.5 z[19]                    
+    0:15:56    7901.3      0.01       0.3      17.5 z[19]                    
+    0:15:56    7901.9      0.01       0.3      17.5 z[19]                    
+    0:15:57    7901.8      0.01       0.3      17.5 z[19]                    
+    0:15:57    7901.9      0.01       0.2      17.5 z[19]                    
+    0:15:58    7902.6      0.01       0.2      17.5 z[20]                    
+    0:15:58    7903.7      0.01       0.2      17.5 z[22]                    
+    0:15:59    7904.1      0.01       0.2      17.5 z[22]                    
+    0:16:00    7904.9      0.01       0.2      17.5 z[22]                    
+    0:16:00    7905.4      0.01       0.2      17.5 z[22]                    
+    0:16:00    7905.8      0.01       0.2      17.5 z[22]                    
+    0:16:01    7906.3      0.01       0.2      17.5 z[22]                    
+    0:16:01    7906.7      0.01       0.2      17.5 z[22]                    
+    0:16:01    7906.7      0.01       0.2      17.5 z[22]                    
+    0:16:02    7907.6      0.01       0.2      17.5 z[22]                    
+    0:16:02    7908.1      0.01       0.2      17.5 z[22]                    
+    0:16:03    7908.6      0.01       0.2      17.5 z[22]                    
+    0:16:03    7908.2      0.01       0.2      17.5 z[22]                    
+    0:16:03    7909.2      0.01       0.2      17.5 z[22]                    
+    0:16:04    7909.4      0.01       0.2      17.5 z[22]                    
+    0:16:04    7910.0      0.01       0.2      17.5 z[22]                    
+    0:16:05    7910.4      0.01       0.2      17.5 z[22]                    
+    0:16:05    7910.6      0.01       0.2      17.5 z[22]                    
+    0:16:05    7911.2      0.01       0.2      17.5 z[22]                    
+    0:16:06    7911.7      0.01       0.2      17.5 z[22]                    
+    0:16:06    7911.9      0.01       0.2      17.5 z[22]                    
+    0:16:06    7912.4      0.01       0.2      17.5 z[22]                    
+    0:16:07    7913.2      0.01       0.2      17.5 z[22]                    
+    0:16:07    7913.6      0.01       0.2      17.5 z[22]                    
+    0:16:08    7913.4      0.01       0.2      17.5 z[22]                    
+    0:16:08    7913.9      0.01       0.2      17.5 z[22]                    
+    0:16:08    7914.1      0.01       0.2      17.5 z[22]                    
+    0:16:09    7915.1      0.01       0.2      17.5 z[22]                    
+    0:16:10    7917.8      0.01       0.2      17.5 z[22]                    
+    0:16:10    7917.8      0.01       0.2      17.5 z[22]                    
+    0:16:10    7919.1      0.01       0.2      17.5 z[22]                    
+    0:16:10    7919.6      0.01       0.2      17.5 z[22]                    
+    0:16:11    7920.4      0.01       0.2      17.5 z[22]                    
+    0:16:11    7922.5      0.01       0.2      17.5 z[22]                    
+    0:16:12    7923.1      0.01       0.2      17.5 z[13]                    
+    0:16:13    7924.0      0.01       0.2      17.5 z[13]                    
+    0:16:13    7924.7      0.01       0.2      17.5 z[13]                    
+    0:16:13    7924.8      0.01       0.2      17.5 z[13]                    
+    0:16:14    7925.2      0.01       0.2      17.5 z[13]                    
+    0:16:15    7926.2      0.01       0.2      17.5 z[13]                    
+    0:16:15    7926.3      0.01       0.2      17.5 z[13]                    
+    0:16:15    7928.5      0.01       0.2      17.5 z[13]                    
+    0:16:16    7929.3      0.01       0.2      17.5 z[13]                    
+    0:16:16    7930.6      0.01       0.2      17.5 z[20]                    
+    0:16:17    7931.8      0.01       0.2      17.5 z[13]                    
+    0:16:17    7932.0      0.01       0.2      17.5 z[13]                    
+    0:16:18    7933.3      0.01       0.1      17.5 z[13]                    
+    0:16:19    7933.5      0.01       0.1      17.5 z[20]                    
+    0:16:19    7934.2      0.01       0.1      17.5 z[13]                    
+    0:16:20    7934.3      0.01       0.1      17.5 z[20]                    
+    0:16:20    7934.6      0.01       0.1      17.5 z[20]                    
+    0:16:21    7935.4      0.01       0.1      17.5 z[20]                    
+    0:16:21    7935.3      0.01       0.1      17.5 z[20]                    
+    0:16:21    7936.3      0.01       0.1      17.5 z[20]                    
+    0:16:22    7936.3      0.01       0.1      17.5 z[20]                    
+    0:16:22    7936.6      0.01       0.1      17.5 z[20]                    
+    0:16:22    7937.1      0.01       0.1      17.5 z[20]                    
+    0:16:23    7937.2      0.01       0.1      17.5 z[20]                    
+    0:16:23    7938.7      0.01       0.1      17.5 z[20]                    
+    0:16:24    7938.5      0.01       0.1      17.5 z[20]                    
+    0:16:24    7939.0      0.01       0.1      17.5 z[20]                    
+    0:16:25    7939.8      0.01       0.1      17.5 z[20]                    
+    0:16:25    7940.6      0.01       0.1      17.5 z[20]                    
+    0:16:25    7941.3      0.01       0.1      17.5 z[20]                    
+    0:16:25    7942.5      0.01       0.1      17.5 z[20]                    
+    0:16:26    7943.5      0.01       0.1      17.5 z[20]                    
+    0:16:26    7943.7      0.01       0.1      17.5 z[20]                    
+    0:16:26    7944.4      0.01       0.1      17.5 z[20]                    
+    0:16:27    7944.3      0.01       0.1      17.5 z[20]                    
+    0:16:27    7944.7      0.01       0.1      17.5 z[20]                    
+    0:16:27    7945.6      0.01       0.1      17.5 z[20]                    
+    0:16:28    7944.9      0.01       0.1      17.5 z[20]                    
+    0:16:28    7944.8      0.01       0.1      17.5 z[20]                    
+    0:16:28    7945.1      0.01       0.1      17.5 z[20]                    
+    0:16:28    7947.0      0.01       0.1      17.5 z[20]                    
+    0:16:29    7947.3      0.01       0.1      17.5 z[20]                    
+    0:16:29    7947.3      0.01       0.1      17.5 z[20]                    
+    0:16:30    7947.1      0.01       0.1      17.5 z[20]                    
+    0:16:30    7947.5      0.01       0.1      17.5 z[20]                    
+    0:16:30    7947.7      0.01       0.1      17.5 z[20]                    
+    0:16:31    7948.2      0.01       0.1      17.5 z[20]                    
+    0:16:31    7948.3      0.00       0.1      17.5 z[20]                    
+    0:16:31    7949.0      0.00       0.1      17.5 z[20]                    
+    0:16:31    7949.4      0.00       0.1      17.5 z[20]                    
+    0:16:32    7949.4      0.00       0.1      17.5 z[20]                    
+    0:16:32    7949.1      0.00       0.1      17.5 z[20]                    
+    0:16:32    7949.7      0.00       0.1      17.5 z[20]                    
+    0:16:32    7950.8      0.00       0.1      17.5 z[20]                    
+    0:16:33    7951.7      0.00       0.1      17.5 z[20]                    
+    0:16:33    7952.2      0.00       0.1      17.5 z[20]                    
+    0:16:33    7952.7      0.00       0.1      17.5 z[20]                    
+    0:16:33    7953.9      0.00       0.1      17.5 z[20]                    
+    0:16:34    7955.0      0.00       0.1      17.5 z[20]                    
+    0:16:34    7954.9      0.00       0.1      17.5 z[20]                    
+    0:16:34    7956.2      0.00       0.1      17.5 z[20]                    
+    0:16:35    7957.2      0.00       0.1      17.5 z[20]                    
+    0:16:35    7957.3      0.00       0.1      17.5 z[20]                    
+    0:16:35    7957.5      0.00       0.1      17.5 z[20]                    
+    0:16:36    7957.5      0.00       0.1      17.5 z[20]                    
+    0:16:36    7957.6      0.00       0.1      17.5 z[20]                    
+    0:16:36    7958.1      0.00       0.1      17.5 z[20]                    
+    0:16:37    7958.9      0.00       0.1      17.5 z[20]                    
+    0:16:37    7959.2      0.00       0.1      17.5 z[20]                    
+    0:16:37    7959.2      0.00       0.1      17.5 z[20]                    
+    0:16:38    7959.9      0.00       0.1      17.5 z[20]                    
+    0:16:38    7960.3      0.00       0.1      17.5 z[20]                    
+    0:16:39    7960.8      0.00       0.1      17.5 z[20]                    
+    0:16:39    7961.0      0.00       0.1      17.5 z[19]                    
+    0:16:40    7962.7      0.00       0.1      17.5 z[20]                    
+    0:16:40    7963.3      0.00       0.1      17.5 z[20]                    
+    0:16:41    7963.3      0.00       0.1      17.5 z[20]                    
+    0:16:41    7963.3      0.00       0.1      17.5 z[20]                    
+    0:16:41    7963.7      0.00       0.1      17.5 z[20]                    
+    0:16:42    7965.4      0.00       0.1      17.5 z[19]                    
+    0:16:42    7965.7      0.00       0.1      17.5 z[19]                    
+    0:16:42    7966.7      0.00       0.1      17.5 z[19]                    
+    0:16:43    7966.7      0.00       0.1      17.5 z[19]                    
+    0:16:43    7967.2      0.00       0.1      17.5 z[19]                    
+    0:16:44    7967.8      0.00       0.1      17.5 z[10]                    
+    0:16:44    7969.7      0.00       0.1      17.5 z[10]                    
+    0:16:44    7969.8      0.00       0.1      17.5 z[10]                    
+    0:16:45    7970.6      0.00       0.1      17.5 z[10]                    
+    0:16:45    7971.4      0.00       0.1      17.5 z[20]                    
+    0:16:46    7971.1      0.00       0.1      17.5 z[20]                    
+    0:16:46    7972.6      0.00       0.1      17.5 z[10]                    
+    0:16:46    7973.2      0.00       0.1      17.5 z[10]                    
+    0:16:47    7973.5      0.00       0.1      17.5 z[20]                    
+    0:16:47    7973.6      0.00       0.1      17.5 z[10]                    
+    0:16:47    7975.1      0.00       0.1      17.5 z[10]                    
+    0:16:48    7976.0      0.00       0.1      17.5 z[10]                    
+    0:16:48    7978.5      0.00       0.1      17.5 z[10]                    
+    0:16:48    7978.5      0.00       0.1      17.5 z[10]                    
+    0:16:49    7979.6      0.00       0.1      17.5 z[10]                    
+    0:16:49    7979.5      0.00       0.1      17.5 z[10]                    
+    0:16:49    7979.9      0.00       0.1      17.5 z[10]                    
+    0:16:50    7982.1      0.00       0.1      17.5 z[10]                    
+    0:16:50    7984.0      0.00       0.0      17.5 z[10]                    
+    0:16:50    7984.2      0.00       0.0      17.5 z[10]                    
+    0:16:51    7985.2      0.00       0.0      17.5 z[10]                    
+    0:16:51    7985.7      0.00       0.0      17.5 z[16]                    
+    0:16:51    7988.2      0.00       0.0      17.5 z[10]                    
+    0:16:52    7988.2      0.00       0.0      17.5 z[10]                    
+    0:16:52    7988.8      0.00       0.0      17.5 z[10]                    
+    0:16:52    7990.6      0.00       0.0      17.5 z[10]                    
+    0:16:53    7992.6      0.00       0.0      17.5 z[10]                    
+    0:16:53    7992.7      0.00       0.0      17.5 z[10]                    
+    0:16:53    7993.4      0.00       0.0      17.5 z[10]                    
+    0:16:54    7993.3      0.00       0.0      17.5 z[10]                    
+    0:16:54    7995.2      0.00       0.0      17.5 z[16]                    
+    0:16:54    7995.1      0.00       0.0      17.5 z[10]                    
+    0:16:55    7995.5      0.00       0.0      17.5 z[16]                    
+    0:16:55    7998.1      0.00       0.0      17.5 z[10]                    
+    0:16:55    7997.9      0.00       0.0      17.5 z[16]                    
+    0:16:56    7998.3      0.00       0.0      17.5 z[10]                    
+    0:16:56    8000.4      0.00       0.0      17.5 z[10]                    
+    0:16:57    8001.4      0.00       0.0      17.5 z[10]                    
+    0:16:57    8002.4      0.00       0.0      17.5 z[10]                    
+    0:16:57    8003.4      0.00       0.0      17.5 z[10]                    
+    0:16:58    8004.0      0.00       0.0      17.5 z[10]                    
+    0:16:58    8004.8      0.00       0.0      17.5 z[10]                    
+    0:16:58    8006.3      0.00       0.0      17.5 z[10]                    
+    0:16:59    8006.8      0.00       0.0      17.5 z[10]                    
+    0:16:59    8007.8      0.00       0.0      17.5 z[10]                    
+    0:16:59    8008.7      0.00       0.0      17.5 z[10]                    
+    0:17:00    8008.9      0.00       0.0      17.5 z[10]                    
+    0:17:00    8009.9      0.00       0.0      17.5 z[10]                    
+    0:17:00    8010.4      0.00       0.0      17.5 z[10]                    
+    0:17:01    8011.1      0.00       0.0      17.5 z[16]                    
+    0:17:01    8011.8      0.00       0.0      17.5 z[10]                    
+    0:17:02    8011.9      0.00       0.0      17.5 z[10]                    
+    0:17:02    8012.6      0.00       0.0      17.5 z[16]                    
+    0:17:02    8012.6      0.00       0.0      17.5 z[16]                    
+    0:17:03    8013.5      0.00       0.0      17.5 z[10]                    
+    0:17:03    8013.5      0.00       0.0      17.5 z[16]                    
+    0:17:03    8014.0      0.00       0.0      17.5 z[10]                    
+    0:17:04    8016.3      0.00       0.0      17.5 z[10]                    
+    0:17:04    8017.5      0.00       0.0      17.5 z[16]                    
+    0:17:04    8017.5      0.00       0.0      17.5 z[10]                    
+    0:17:05    8017.6      0.00       0.0      17.5 z[16]                    
+    0:17:05    8018.2      0.00       0.0      17.5 z[10]                    
+    0:17:05    8018.2      0.00       0.0      17.5 z[10]                    
+    0:17:06    8018.7      0.00       0.0      17.5 z[10]                    
+    0:17:06    8019.2      0.00       0.0      17.5 z[10]                    
+    0:17:06    8019.3      0.00       0.0      17.5 z[16]                    
+    0:17:07    8021.5      0.00       0.0      17.5 z[10]                    
+    0:17:07    8022.3      0.00       0.0      17.5 z[10]                    
+    0:17:07    8024.0      0.00       0.0      17.5 z[10]                    
+    0:17:08    8023.6      0.00       0.0      17.5 z[10]                    
+    0:17:08    8024.1      0.00       0.0      17.5 z[10]                    
+    0:17:09    8024.5      0.00       0.0      17.5 z[10]                    
+    0:17:09    8024.9      0.00       0.0      17.5 z[16]                    
+    0:17:09    8025.5      0.00       0.0      17.5 z[10]                    
+    0:17:09    8026.0      0.00       0.0      17.5 z[10]                    
+    0:17:10    8026.8      0.00       0.0      17.5 z[10]                    
+    0:17:10    8027.1      0.00       0.0      17.5 z[10]                    
+    0:17:10    8029.3      0.00       0.0      17.5 z[10]                    
+    0:17:11    8029.2      0.00       0.0      17.5 z[10]                    
+    0:17:11    8029.1      0.00       0.0      17.5 z[10]                    
+    0:17:11    8029.1      0.00       0.0      17.5 z[10]                    
+    0:17:11    8029.4      0.00       0.0      17.5 z[10]                    
+    0:17:12    8029.5      0.00       0.0      17.5 z[10]                    
+    0:17:12    8029.8      0.00       0.0      17.5 z[10]                    
+    0:17:12    8030.1      0.00       0.0      17.5 z[16]                    
+    0:17:13    8030.7      0.00       0.0      17.5 z[10]                    
+    0:17:13    8031.3      0.00       0.0      17.5 z[10]                    
+    0:17:14    8031.5      0.00       0.0      17.5 z[10]                    
+    0:17:15    8031.6      0.00       0.0      17.5 z[10]                    
+    0:17:15    8031.6      0.00       0.0      17.5 z[16]                    
+    0:17:15    8031.6      0.00       0.0      17.5 z[10]                    
+    0:17:16    8031.6      0.00       0.0      17.5 z[16]                    
+    0:17:16    8031.6      0.00       0.0      17.5 z[16]                    
+    0:17:16    8031.6      0.00       0.0      17.5 z[16]                    
+    0:17:16    8031.8      0.00       0.0      17.5 z[10]                    
+    0:17:16    8032.1      0.00       0.0      17.5 z[10]                    
+    0:17:17    8032.1      0.00       0.0      17.5 z[10]                    
+    0:17:17    8032.6      0.00       0.0      17.5 z[10]                    
+    0:17:17    8032.6      0.00       0.0      17.5 z[10]                    
+    0:17:18    8032.2      0.00       0.0      17.5 z[10]                    
+    0:17:18    8032.2      0.00       0.0      17.5 z[10]                    
+    0:17:19    8032.2      0.00       0.0      17.5 z[10]                    
+    0:17:19    7999.1      0.00       0.0      17.5                          
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Warning: In the design DP4_DW01_sub_26, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_sub_65, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_sub_79, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_sub_26, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_59, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_78, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_79, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_sub_65, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_sub_79, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_DW01_add_116, net 'A[0]' is connecting multiple ports. (UCN-1)
+Writing ddc file '/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/tune/007_period_2.838ns/DP4_syn.ddc'.
+Writing verilog file '/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/tune/007_period_2.838ns/DP4_syn.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+Information: Annotated 'cell' delays are assumed to include load delay. (UID-282)
+Information: Writing timing information to file '/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4/tune/007_period_2.838ns/DP4_syn.sdf'. (WT-3)
+HW3_DC_COMPLETE: DP4 delay period=2.838 ns
+exit 0
+
+Memory usage for this session 1667 Mbytes.
+Memory usage for this session including child processes 1667 Mbytes.
+CPU usage for this session 1097 seconds ( 0.30 hours ).
+Elapsed time for this session 1106 seconds ( 0.31 hours ).
+
+Thank you...
+
+
+

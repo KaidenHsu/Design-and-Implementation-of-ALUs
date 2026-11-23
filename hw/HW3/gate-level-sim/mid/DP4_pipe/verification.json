@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "vectors": 2048,
+  "checked": 2050,
+  "errors": 0,
+  "latency": 4,
+  "reset_checks": 2,
+  "period_ns": 1.85,
+  "source_hash": "3fe672b42ffa77e804d26475726debe85b429c558d9a83d39f4fe7eb4785b356",
+  "input_hash": "eecd7e75314cb8f416aa7e9729c02940cb5926104bcf826101fbc3f2a55ccf9d",
+  "waveform_hash": "96ec7bca6a9b88318f620223eb98b4849d1ffeea4b3d4718d29db22b830f3af8",
+  "waveform": "gate-level-sim/mid/DP4_pipe/wave.vcd",
+  "artifact_hashes": {
+    "DP4_pipe_units_report.txt": "f4b0d070e0d9ce085386f4e6460b576204fb2061e6c25831b9cbf2f97a62ea33",
+    "DP4_pipe_check_design.txt": "1f79a2065a36cf002293abc3beee755d88b91bdaf618ca0b44eff74b667dd1b1",
+    "DP4_pipe_check_timing.txt": "140c69dff6cec1ed459bdf788d0ed445769e732d5923e7835b8a26db42dc158d",
+    "DP4_pipe_timing_report.txt": "f661eaba1d87ad7da383f2e2bb1f32fb0f1ac6c9fffdd00a9ee92eccd9810ca6",
+    "DP4_pipe_area_report.txt": "58cc66bc28f0bba6a16b488ccaa3edb6d514938f950b51335a07b5d04ba7b567",
+    "DP4_pipe_power_report.txt": "d550b0bded876f910a0cd8f31dc8ec7ecdb05f03c2a50d8bfd8b8aa7263f7290",
+    "DP4_pipe_report.txt": "f3cb89e0352682317cc58c81961c84777fd3ed08952dc862d951cd2e237c4d9d",
+    "DP4_pipe_syn.ddc": "34faedbb623aa0fc8a5c21fab7cbf98a7ea9d4221d53d63c33938267d21d3d29",
+    "DP4_pipe_syn.v": "ac968bf7502a59ef49a59ec947e4a2dc9948d5ffed921cef89eeb69a3c12b9a3",
+    "DP4_pipe_syn.sdf": "25b5443a2101ff32caa9d736ab8f825b9bde856d4b6ca92c31066a9f148da691",
+    "DP4_pipe_syn.sdc": "df5d2e8903a5c29222bf00b17e8b557b33145329e6e0bb56e5784640864adeea"
+  },
+  "cell_model": "/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v",
+  "cell_model_hash": "32daf020267b4e1114b0d3a6d421283ff18cfcab98440eeb71ded4c891efea31",
+  "at_selected_period": true
+}

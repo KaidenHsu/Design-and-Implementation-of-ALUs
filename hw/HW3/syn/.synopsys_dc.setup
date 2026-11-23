@@ -1,0 +1,19 @@
+# Shared HW3 library setup, adapted from the supplied HW1 dc.tcl.
+if {[info exists ::env(CELL_LIB_DIR)]} {
+    set library_root $::env(CELL_LIB_DIR)
+} else {
+    set library_root /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS
+}
+
+if {![info exists search_path]} {set search_path {}}
+set search_path [concat [list $library_root] $search_path]
+
+set target_library {N16ADFP_StdCellss0p72vm40c_ccs.db N16ADFP_StdCellff0p88v125c_ccs.db}
+set link_library [concat [list *] $target_library [list dw_foundation.sldb]]
+set symbol_library {tsmc040.sdb generic.sdb}
+set synthetic_library dw_foundation.sldb
+
+set hdlin_translate_off_skip_text TRUE
+set edifout_netlist_only TRUE
+set verilogout_no_tri true
+set hdlin_enable_presto_for_vhdl TRUE

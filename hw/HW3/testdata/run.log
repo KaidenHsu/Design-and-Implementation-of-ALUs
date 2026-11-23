@@ -1,0 +1,18 @@
+$ bash run.sh all all --jobs 3
+PENDING reference
+START reference
+$ /usr/bin/python3 -B /MasterClass/M143010027_ALU/Hws/HW3/testdata/test_reference.py
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.540s
+
+OK
+
+
+
+$ /usr/bin/python3 -B /MasterClass/M143010027_ALU/Hws/HW3/testdata/generate_vectors.py
+2048 cases; 1024 FP16; schedule=alternating
+
+
+
+DONE reference

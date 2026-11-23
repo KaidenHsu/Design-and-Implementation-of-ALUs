@@ -1,0 +1,117 @@
+$ /MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4_CG/work/simv +VECTORS=/MasterClass/M143010027_ALU/Hws/HW3/testdata/vectors.txt +RESULT=/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4_CG/completion.json +VCD=/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4_CG/wave.vcd +GATE +SDF=/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/DP4_CG_syn.sdf
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid re-execution or '-suppress=ASLR_DETECTED_INFO' to suppress this message.
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version V-2023.12_Full64; Runtime version V-2023.12_Full64;  Nov 23 02:15 2026
+HW3_SDF_ANNOTATION_REQUESTED
+Doing SDF annotation ...... Done
+FAIL id=52 cycle=62 FP16=0 operands=bfee372bc0c0edb9c09328a9c10845373fd3f198bfcf1d58c0c2d4c940838b2c expected=beace705 actual=bead0705
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13521: Timing violation in testbench.dut.s2_reg_reg_93_
+    $setuphold( posedge CP &&& D_DEFCHK:80295, negedge D:80295, limits: (3,8) );
+
+FAIL id=72 cycle=82 FP16=0 operands=40cc2028410a0e3440f4cdba407e7d30bf24c8f8bffe400140ff6d123eebf546 expected=42269ad6 actual=4226XXd6
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_102_
+    $setuphold( posedge CP &&& D_DEFCHK:310575, posedge D:310566, limits: (14,-7) );
+
+FAIL id=300 cycle=310 FP16=0 operands=c11a4c4ec1159450c10dc2a0401868db3e2c4d5341167432404153ba40c2cfb1 expected=c2cb98aa actual=c2Xb98aa
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_93_
+    $setuphold( posedge CP &&& D_DEFCHK:324715, posedge D:324704, limits: (14,-7) );
+
+FAIL id=314 cycle=324 FP16=0 operands=40c48729410212afc09367d8411ee65e41026c47c0e760b94064d15a40feac97 expected=42576662 actual=4257xX62
+FAIL id=386 cycle=396 FP16=0 operands=4089c2c4c0927ccb401ef0314098032dc0e82b8040cb3c0f4086900abfe9979f expected=c26a22e5 actual=c2b51172
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_37_
+    $setuphold( posedge CP &&& D_DEFCHK:421675, posedge D:421662, limits: (14,-7) );
+
+FAIL id=410 cycle=420 FP16=0 operands=40a0a534411ef30f4063c2bac0e83697c0d635994040f2b6c0ec16bfc11190ba expected=42106fc8 actual=42106Xc8
+FAIL id=420 cycle=430 FP16=0 operands=c0f65979c0a99abdc0b7276540f2cb714104fb2bc0c58437404984d53f31c936 expected=c23016cb actual=c2d80b66
+FAIL id=422 cycle=432 FP16=0 operands=40df5daec0b8eb084113da80c013b9e9c0b4d112c0035f8cc10a5b6cc08cc780 expected=c2c2aacc actual=c2d2aacc
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_150_
+    $setuphold( posedge CP &&& D_DEFCHK:557015, posedge D:557005, limits: (14,-7) );
+
+FAIL id=544 cycle=554 FP16=0 operands=bfa25bdfbebac9154089bca7403ede17bf1a6977c119e02f410ceee0402e3b59 expected=42493958 actual=4249X958
+FAIL id=576 cycle=586 FP16=0 operands=40119ecd4105dffd40be16abc0fe7d174008f1f9c0f58783402672d53fce53c0 expected=c262cdf4 actual=40e9905f
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13521: Timing violation in testbench.dut.s2_reg_reg_50_
+    $setuphold( posedge CP &&& D_DEFCHK:649935, negedge D:649934, limits: (3,8) );
+
+FAIL id=636 cycle=646 FP16=0 operands=408ac0b2c07b72a741043fa0410ca7d6c0ed0764c1126d4140643bf140933530 expected=42938290 actual=xxxxxxxx
+FAIL id=656 cycle=666 FP16=0 operands=3f857dbf40eda674c0f72a6b40af0ab8c07013c1c10b72513fac4e95c0395e8f expected=c2bdc1e9 actual=c2ddc1e9
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13521: Timing violation in testbench.dut.s2_reg_reg_205_
+    $setuphold( posedge CP &&& D_DEFCHK:819615, negedge D:819619, limits: (3,8) );
+
+FAIL id=804 cycle=814 FP16=0 operands=c0f62755407e5513c11a6c05c093ed60c0ac38a640f37b52411ba1fc405158af expected=c21574f1 actual=c215X4f1
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13521: Timing violation in testbench.dut.s2_reg_reg_42_
+    $setuphold( posedge CP &&& D_DEFCHK:914555, negedge D:914555, limits: (3,8) );
+
+FAIL id=898 cycle=908 FP16=0 operands=409b78dbbdd5a67bc110b4ab400ed1abc0c3f1afc063fad2c0e8ed96c0b30176 expected=41bfc415 actual=41bXc415
+FAIL id=952 cycle=962 FP16=0 operands=405b91be3ff6256440d20a29c087aeb03f1535f4c01eeba0c0b1c6f8bf34ce8c expected=c210fbcf actual=c20efbcf
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_44_
+    $setuphold( posedge CP &&& D_DEFCHK:981215, posedge D:981205, limits: (14,-7) );
+
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13521: Timing violation in testbench.dut.s2_reg_reg_43_
+    $setuphold( posedge CP &&& D_DEFCHK:981215, negedge D:981220, limits: (3,8) );
+
+FAIL id=964 cycle=974 FP16=0 operands=c10771adc1112003c1069040c0e2c7934106201b3e9b431ac11f7d79c096498a expected=422d9dc3 actual=42XX9dc3
+FAIL id=1034 cycle=1049 FP16=0 operands=c08d4d09c108b0f3c0d4ecaebf8c31a73fea874ac1089cc4bfef756cc06489bc expected=42a26cd7 actual=42a26ed7
+FAIL id=1054 cycle=1069 FP16=0 operands=40e59008c104fb23c09cf10740f30de740bd0431c008bb7fc023f013c115706f expected=3fe0519a actual=3fd8519a
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13521: Timing violation in testbench.dut.s2_reg_reg_37_
+    $setuphold( posedge CP &&& D_DEFCHK:1091305, negedge D:1091310, limits: (3,8) );
+
+FAIL id=1068 cycle=1083 FP16=0 operands=c01aed62408df71cc098d1d94096a66f40da179540d719934034e5e04101fae6 expected=42184726 actual=42184X26
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13521: Timing violation in testbench.dut.s2_reg_reg_204_
+    $setuphold( posedge CP &&& D_DEFCHK:1133725, negedge D:1133731, limits: (3,8) );
+
+FAIL id=1110 cycle=1125 FP16=0 operands=c0a788513f149349c119a87bbfa215794013caf7c043545dbfa761534000b930 expected=c0766356 actual=c07XX356
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_47_
+    $setuphold( posedge CP &&& D_DEFCHK:1535705, posedge D:1535695, limits: (14,-7) );
+
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_102_
+    $setuphold( posedge CP &&& D_DEFCHK:1570045, posedge D:1570035, limits: (14,-7) );
+
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_41_
+    $setuphold( posedge CP &&& D_DEFCHK:1624585, posedge D:1624573, limits: (14,-7) );
+
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_32_
+    $setuphold( posedge CP &&& D_DEFCHK:1669025, posedge D:1669014, limits: (14,-7) );
+
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_211_
+    $setuphold( posedge CP &&& D_DEFCHK:1685185, posedge D:1685172, limits: (14,-7) );
+
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_101_
+    $setuphold( posedge CP &&& D_DEFCHK:2040705, posedge D:2040696, limits: (14,-7) );
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_212_
+    $setuphold( posedge CP &&& D_DEFCHK:2040705, posedge D:2040695, limits: (14,-7) );
+
+
+"/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/VERILOG/N16ADFP_StdCell.v", 13520: Timing violation in testbench.dut.s2_reg_reg_50_
+    $setuphold( posedge CP &&& D_DEFCHK:2068985, posedge D:2068974, limits: (14,-7) );
+
+FAIL: 36 mismatches in 2050 checks
+$finish called from file "/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/TB.v", line 277.
+$finish at simulation time              2082620
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 2082620 ps
+CPU Time:     10.800 seconds;       Data structure size:  12.6Mb
+Mon Nov 23 02:15:34 2026
+
+
+

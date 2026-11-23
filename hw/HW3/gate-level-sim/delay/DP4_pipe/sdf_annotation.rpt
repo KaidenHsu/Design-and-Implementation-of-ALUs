@@ -1,0 +1,843 @@
+
+   ***   $sdf_annotate() version 1.2R
+   ***    SDF file: "/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf"
+   ***    Annotation scope: testbench.dut
+   ***    SDF Annotator log file: "sdf_annotation.rpt"
+   ***    MTM selection: "MAXIMUM"
+   ***    No SCALE FACTORS argument specified
+   ***    No SCALE TYPE argument specified
+   ***    SCALE FACTORS defaulted to "1.0:1.0:1.0":
+   ***    SCALE TYPE defaulted to: "FROM_MTM"
+   ***    Turnoff delay: "FROM_FILE"
+   ***    Approximation (mipd) policy: "MAXIMUM"
+
+   ***    SDF annotation begin: Mon Nov 23 01:54:45 2026
+
+
+SDF Info: +pulse_r/100, +pulse_e/100 in effect
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 2929
+module: DFQD2BWP16P90LVT, "instance: testbench.dut.s3_reg_reg_0_"
+  SDF Warning: INTERCONNECT from s3_reg_reg_0_.Q to U6975.I1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.v:15605,
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3414
+module: OAI31D1BWP16P90LVT, "instance: testbench.dut.U6740"
+  SDF Warning: INTERCONNECT from U6740.ZN to U6794.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.v:15569,
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3649
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U552"
+  SDF Warning: The path from mult_138_G3.U552.ZN to U6734.A1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3678
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U552"
+  SDF Warning: The path from mult_138_G3.U552.ZN to U6726.A1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3696
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U552"
+  SDF Warning: The path from mult_138_G3.U552.ZN to U6721.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3697
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_138_G3.U537"
+  SDF Warning: The path from mult_138_G3.U537.ZN to U6721.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3718
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_138_G3.U537"
+  SDF Warning: The path from mult_138_G3.U537.ZN to U6715.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3719
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U697"
+  SDF Warning: The path from mult_138_G3.U697.ZN to U6715.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3737
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U697"
+  SDF Warning: The path from mult_138_G3.U697.ZN to U6709.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3738
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U696"
+  SDF Warning: The path from mult_138_G3.U696.ZN to U6709.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3762
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U696"
+  SDF Warning: The path from mult_138_G3.U696.ZN to U6701.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3763
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U695"
+  SDF Warning: The path from mult_138_G3.U695.Z to U6701.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3785
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U695"
+  SDF Warning: The path from mult_138_G3.U695.Z to U6695.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3786
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U694"
+  SDF Warning: The path from mult_138_G3.U694.ZN to U6695.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3813
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U694"
+  SDF Warning: The path from mult_138_G3.U694.ZN to U6688.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3814
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U693"
+  SDF Warning: The path from mult_138_G3.U693.Z to U6688.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3834
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U693"
+  SDF Warning: The path from mult_138_G3.U693.Z to U6682.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3835
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U692"
+  SDF Warning: The path from mult_138_G3.U692.ZN to U6682.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3849
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U692"
+  SDF Warning: The path from mult_138_G3.U692.ZN to U6678.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3850
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U568"
+  SDF Warning: The path from mult_138_G3.U568.Z to U6678.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3875
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U568"
+  SDF Warning: The path from mult_138_G3.U568.Z to U6671.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3876
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U659"
+  SDF Warning: The path from mult_138_G3.U659.ZN to U6671.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3897
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G3.U659"
+  SDF Warning: The path from mult_138_G3.U659.ZN to U6665.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3898
+module: XNR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G3.U658"
+  SDF Warning: The path from mult_138_G3.U658.ZN to U6665.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3919
+module: XNR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G3.U658"
+  SDF Warning: The path from mult_138_G3.U658.ZN to U6659.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3920
+module: XOR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G3.U656"
+  SDF Warning: The path from mult_138_G3.U656.Z to U6659.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 3945
+module: XOR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G3.U656"
+  SDF Warning: The path from mult_138_G3.U656.Z to U6652.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5068
+module: OAI31D1BWP16P90LVT, "instance: testbench.dut.U6224"
+  SDF Warning: INTERCONNECT from U6224.ZN to U6277.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.v:15593,
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5299
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_138.U601"
+  SDF Warning: The path from mult_138.U601.ZN to U6218.A1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5328
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_138.U601"
+  SDF Warning: The path from mult_138.U601.ZN to U6210.A1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5346
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_138.U601"
+  SDF Warning: The path from mult_138.U601.ZN to U6205.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5347
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_138.U550"
+  SDF Warning: The path from mult_138.U550.ZN to U6205.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5372
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_138.U550"
+  SDF Warning: The path from mult_138.U550.ZN to U6198.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5373
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U622"
+  SDF Warning: The path from mult_138.U622.ZN to U6198.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5391
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U622"
+  SDF Warning: The path from mult_138.U622.ZN to U6192.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5392
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U621"
+  SDF Warning: The path from mult_138.U621.ZN to U6192.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5416
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U621"
+  SDF Warning: The path from mult_138.U621.ZN to U6184.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5417
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138.U620"
+  SDF Warning: The path from mult_138.U620.Z to U6184.I1 doesn't have a simple
+  wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5439
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138.U620"
+  SDF Warning: The path from mult_138.U620.Z to U6178.I0 doesn't have a simple
+  wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5440
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U618"
+  SDF Warning: The path from mult_138.U618.ZN to U6178.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5466
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U618"
+  SDF Warning: The path from mult_138.U618.ZN to U6171.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5467
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138.U617"
+  SDF Warning: The path from mult_138.U617.Z to U6171.I1 doesn't have a simple
+  wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5495
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138.U617"
+  SDF Warning: The path from mult_138.U617.Z to U6163.I0 doesn't have a simple
+  wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5496
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U719"
+  SDF Warning: The path from mult_138.U719.ZN to U6163.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5510
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U719"
+  SDF Warning: The path from mult_138.U719.ZN to U6159.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5511
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138.U612"
+  SDF Warning: The path from mult_138.U612.Z to U6159.I1 doesn't have a simple
+  wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5536
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138.U612"
+  SDF Warning: The path from mult_138.U612.Z to U6152.I0 doesn't have a simple
+  wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5537
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U688"
+  SDF Warning: The path from mult_138.U688.ZN to U6152.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5554
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138.U688"
+  SDF Warning: The path from mult_138.U688.ZN to U6147.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5555
+module: XNR2D1BWP16P90LVT, "instance: testbench.dut.mult_138.U687"
+  SDF Warning: The path from mult_138.U687.ZN to U6147.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5576
+module: XNR2D1BWP16P90LVT, "instance: testbench.dut.mult_138.U687"
+  SDF Warning: The path from mult_138.U687.ZN to U6141.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5577
+module: XOR2D1BWP16P90LVT, "instance: testbench.dut.mult_138.U685"
+  SDF Warning: The path from mult_138.U685.Z to U6141.I1 doesn't have a simple
+  wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 5602
+module: XOR2D1BWP16P90LVT, "instance: testbench.dut.mult_138.U685"
+  SDF Warning: The path from mult_138.U685.Z to U6134.I0 doesn't have a simple
+  wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 6691
+module: OAI31D1BWP16P90LVT, "instance: testbench.dut.U5733"
+  SDF Warning: INTERCONNECT from U5733.ZN to U5787.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.v:15556,
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 6926
+module: INR2D2BWP16P90, "instance: testbench.dut.mult_138_G4.U531"
+  SDF Warning: The path from mult_138_G4.U531.ZN to U5727.A1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 6965
+module: INR2D2BWP16P90, "instance: testbench.dut.mult_138_G4.U531"
+  SDF Warning: The path from mult_138_G4.U531.ZN to U5717.A1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 6983
+module: INR2D2BWP16P90, "instance: testbench.dut.mult_138_G4.U531"
+  SDF Warning: The path from mult_138_G4.U531.ZN to U5712.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 6984
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_138_G4.U555"
+  SDF Warning: The path from mult_138_G4.U555.ZN to U5712.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7005
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_138_G4.U555"
+  SDF Warning: The path from mult_138_G4.U555.ZN to U5706.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7006
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U714"
+  SDF Warning: The path from mult_138_G4.U714.ZN to U5706.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7024
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U714"
+  SDF Warning: The path from mult_138_G4.U714.ZN to U5700.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7025
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U713"
+  SDF Warning: The path from mult_138_G4.U713.ZN to U5700.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7049
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U713"
+  SDF Warning: The path from mult_138_G4.U713.ZN to U5692.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7050
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U712"
+  SDF Warning: The path from mult_138_G4.U712.Z to U5692.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7072
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U712"
+  SDF Warning: The path from mult_138_G4.U712.Z to U5686.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7073
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U711"
+  SDF Warning: The path from mult_138_G4.U711.ZN to U5686.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7099
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U711"
+  SDF Warning: The path from mult_138_G4.U711.ZN to U5679.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7100
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U710"
+  SDF Warning: The path from mult_138_G4.U710.Z to U5679.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7122
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U710"
+  SDF Warning: The path from mult_138_G4.U710.Z to U5672.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7123
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U709"
+  SDF Warning: The path from mult_138_G4.U709.ZN to U5672.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7139
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U709"
+  SDF Warning: The path from mult_138_G4.U709.ZN to U5668.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7140
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U600"
+  SDF Warning: The path from mult_138_G4.U600.Z to U5668.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7162
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U600"
+  SDF Warning: The path from mult_138_G4.U600.Z to U5662.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7163
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U677"
+  SDF Warning: The path from mult_138_G4.U677.ZN to U5662.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7183
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G4.U677"
+  SDF Warning: The path from mult_138_G4.U677.ZN to U5656.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7184
+module: XNR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G4.U676"
+  SDF Warning: The path from mult_138_G4.U676.ZN to U5656.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7209
+module: XNR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G4.U676"
+  SDF Warning: The path from mult_138_G4.U676.ZN to U5649.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7210
+module: XOR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G4.U674"
+  SDF Warning: The path from mult_138_G4.U674.Z to U5649.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 7235
+module: XOR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G4.U674"
+  SDF Warning: The path from mult_138_G4.U674.Z to U5642.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8337
+module: OAI31D1BWP16P90LVT, "instance: testbench.dut.U5244"
+  SDF Warning: INTERCONNECT from U5244.ZN to U5298.B1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.v:15581,
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8572
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U540"
+  SDF Warning: The path from mult_138_G2.U540.ZN to U5238.A1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8601
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U540"
+  SDF Warning: The path from mult_138_G2.U540.ZN to U5230.A1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8619
+module: INR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U540"
+  SDF Warning: The path from mult_138_G2.U540.ZN to U5225.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8620
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_138_G2.U533"
+  SDF Warning: The path from mult_138_G2.U533.ZN to U5225.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8645
+module: CKND1BWP16P90LVT, "instance: testbench.dut.mult_138_G2.U533"
+  SDF Warning: The path from mult_138_G2.U533.ZN to U5218.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8646
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U704"
+  SDF Warning: The path from mult_138_G2.U704.ZN to U5218.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8664
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U704"
+  SDF Warning: The path from mult_138_G2.U704.ZN to U5212.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8665
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U703"
+  SDF Warning: The path from mult_138_G2.U703.ZN to U5212.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8689
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U703"
+  SDF Warning: The path from mult_138_G2.U703.ZN to U5204.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8690
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U702"
+  SDF Warning: The path from mult_138_G2.U702.Z to U5204.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8712
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U702"
+  SDF Warning: The path from mult_138_G2.U702.Z to U5198.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8713
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U701"
+  SDF Warning: The path from mult_138_G2.U701.ZN to U5198.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8743
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U701"
+  SDF Warning: The path from mult_138_G2.U701.ZN to U5190.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8744
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U699"
+  SDF Warning: The path from mult_138_G2.U699.Z to U5190.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8769
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U699"
+  SDF Warning: The path from mult_138_G2.U699.Z to U5183.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8770
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U700"
+  SDF Warning: The path from mult_138_G2.U700.ZN to U5183.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8784
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U700"
+  SDF Warning: The path from mult_138_G2.U700.ZN to U5179.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8785
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U586"
+  SDF Warning: The path from mult_138_G2.U586.Z to U5179.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8810
+module: XOR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U586"
+  SDF Warning: The path from mult_138_G2.U586.Z to U5172.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8811
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U667"
+  SDF Warning: The path from mult_138_G2.U667.ZN to U5172.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8832
+module: XNR2D1BWP16P90, "instance: testbench.dut.mult_138_G2.U667"
+  SDF Warning: The path from mult_138_G2.U667.ZN to U5166.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8833
+module: XNR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G2.U666"
+  SDF Warning: The path from mult_138_G2.U666.ZN to U5166.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8858
+module: XNR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G2.U666"
+  SDF Warning: The path from mult_138_G2.U666.ZN to U5159.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8859
+module: XOR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G2.U664"
+  SDF Warning: The path from mult_138_G2.U664.Z to U5159.I1 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_SWC] Simple Wire Connection
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 8884
+module: XOR2D1BWP16P90LVT, "instance: testbench.dut.mult_138_G2.U664"
+  SDF Warning: The path from mult_138_G2.U664.Z to U5152.I0 doesn't have a 
+  simple wire connection, delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 12639
+module: ND2D1BWP16P90LVT, "instance: testbench.dut.sub_149.U8"
+  SDF Warning: INTERCONNECT from sub_149.U8.ZN to U3184.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.v:15593,
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 12646
+module: ND2D1BWP16P90LVT, "instance: testbench.dut.sub_149_G4.U8"
+  SDF Warning: INTERCONNECT from sub_149_G4.U8.ZN to U3178.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.v:15556,
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 12648
+module: ND2D1BWP16P90LVT, "instance: testbench.dut.sub_149_G3.U8"
+  SDF Warning: INTERCONNECT from sub_149_G3.U8.ZN to U3177.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.v:15569,
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_IWSBA] INTERCONNECT will still be annotated
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 12652
+module: ND2D1BWP16P90LVT, "instance: testbench.dut.sub_149_G2.U8"
+  SDF Warning: INTERCONNECT from sub_149_G2.U8.ZN to U3175.A1 has Instance at 
+  /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.v:15581,
+  delay will still be annotated.
+
+
+Warning-[SDFCOM_NL] Negative Limit Not Allowed
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 126327
+module: DFCNQD2BWP16P90LVT, "instance: testbench.dut.s1_reg_reg_200_"
+  SDF Warning: $recovery/$removal timing checks does not support negative 
+  values.
+  Please use $recrem timing check instead.
+
+
+Warning-[SDFCOM_NL] Negative Limit Not Allowed
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 126393
+module: DFCNQD2BWP16P90LVT, "instance: testbench.dut.s1_reg_reg_211_"
+  SDF Warning: $recovery/$removal timing checks does not support negative 
+  values.
+  Please use $recrem timing check instead.
+
+
+Warning-[SDFCOM_NL] Negative Limit Not Allowed
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 126414
+module: DFCNQD2BWP16P90LVT, "instance: testbench.dut.s1_reg_reg_198_"
+  SDF Warning: $recovery/$removal timing checks does not support negative 
+  values.
+  Please use $recrem timing check instead.
+
+
+Warning-[SDFCOM_NL] Negative Limit Not Allowed
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 126435
+module: DFCNQD2BWP16P90LVT, "instance: testbench.dut.s1_reg_reg_199_"
+  SDF Warning: $recovery/$removal timing checks does not support negative 
+  values.
+  Please use $recrem timing check instead.
+
+
+Warning-[SDFCOM_NL] Negative Limit Not Allowed
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 126456
+module: DFCNQD2BWP16P90LVT, "instance: testbench.dut.s1_reg_reg_208_"
+  SDF Warning: $recovery/$removal timing checks does not support negative 
+  values.
+  Please use $recrem timing check instead.
+
+
+Warning-[SDFCOM_NL] Negative Limit Not Allowed
+/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_pipe/DP4_pipe_syn.sdf, 126477
+module: DFCNQD2BWP16P90LVT, "instance: testbench.dut.s1_reg_reg_209_"
+  SDF Warning: $recovery/$removal timing checks does not support negative 
+  values.
+  Please use $recrem timing check instead.
+
+
+          Total errors: 0
+          Total warnings: 115
+   ***    SDF annotation completed: Mon Nov 23 01:54:45 2026
+
+

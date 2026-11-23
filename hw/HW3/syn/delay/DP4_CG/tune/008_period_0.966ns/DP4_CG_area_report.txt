@@ -1,0 +1,87 @@
+ 
+****************************************
+Report : area
+Design : DP4_CG
+Version: T-2022.03
+Date   : Mon Nov 23 01:59:52 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                         3940
+Number of nets:                         21696
+Number of cells:                        17362
+Number of combinational cells:          16485
+Number of sequential cells:               833
+Number of macros/black boxes:               0
+Number of buf/inv:                       3622
+Number of references:                     202
+
+Combinational area:               5904.679820
+Buf/Inv area:                      649.918102
+Noncombinational area:             782.110091
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  6686.789911
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  ---------------------------
+DP4_CG                            6686.7899    100.0  1725.3389   781.2807  0.0000  DP4_CG
+add_0_root_add_0_root_add_168_2     57.3869      0.9    57.3869     0.0000  0.0000  DP4_CG_DW01_add_50
+add_0_root_add_0_root_add_168_2_G2   58.3200     0.9    58.3200     0.0000  0.0000  DP4_CG_DW01_add_49
+add_0_root_add_0_root_add_168_2_G3   57.6461     0.9    57.6461     0.0000  0.0000  DP4_CG_DW01_add_48
+add_0_root_add_0_root_add_168_2_G4   57.9053     0.9    57.9053     0.0000  0.0000  DP4_CG_DW01_add_47
+add_0_root_add_0_root_add_186       84.0845      1.3    84.0845     0.0000  0.0000  DP4_CG_DW01_add_61
+add_0_root_sub_0_root_sub_82        23.1725      0.3    23.1725     0.0000  0.0000  DP4_CG_DW01_add_51
+add_0_root_sub_0_root_sub_82_G2     23.5872      0.4    23.5872     0.0000  0.0000  DP4_CG_DW01_add_52
+add_0_root_sub_0_root_sub_82_G3     14.8262      0.2    14.8262     0.0000  0.0000  DP4_CG_DW01_add_58
+add_0_root_sub_0_root_sub_82_G4     13.1674      0.2    13.1674     0.0000  0.0000  DP4_CG_DW01_add_57
+add_1_root_add_0_root_add_168_2     38.7763      0.6    38.7763     0.0000  0.0000  DP4_CG_DW01_add_53
+add_1_root_add_0_root_add_168_2_G2   38.2579     0.6    38.2579     0.0000  0.0000  DP4_CG_DW01_add_54
+add_1_root_add_0_root_add_168_2_G3   39.7613     0.6    39.7613     0.0000  0.0000  DP4_CG_DW01_add_55
+add_1_root_add_0_root_add_168_2_G4   38.4134     0.6    38.4134     0.0000  0.0000  DP4_CG_DW01_add_56
+add_1_root_add_0_root_add_186       88.8019      1.3    88.8019     0.0000  0.0000  DP4_CG_DW01_add_59
+add_237                             16.0704      0.2    16.0704     0.0000  0.0000  DP4_CG_DW01_add_21
+add_2_root_add_0_root_add_186       90.8237      1.4    90.8237     0.0000  0.0000  DP4_CG_DW01_add_60
+add_308                             23.7946      0.4    23.7946     0.0000  0.0000  DP4_CG_DW01_add_24
+add_314                              7.7242      0.1     7.7242     0.0000  0.0000  DP4_CG_DW01_inc_0
+clk_gate_C5502                       0.8294      0.0     0.0000     0.8294  0.0000  SNPS_CLOCK_GATE_HIGH_DP4_CG
+mult_164                           195.3331      2.9   195.3331     0.0000  0.0000  DP4_CG_DW_mult_uns_31
+mult_164_G2                        192.4301      2.9   192.4301     0.0000  0.0000  DP4_CG_DW_mult_uns_30
+mult_164_G3                        194.4000      2.9   194.4000     0.0000  0.0000  DP4_CG_DW_mult_uns_29
+mult_164_G4                        194.4518      2.9   194.4518     0.0000  0.0000  DP4_CG_DW_mult_uns_28
+mult_165                           191.9117      2.9   191.9117     0.0000  0.0000  DP4_CG_DW_mult_uns_32
+mult_165_G2                        192.0672      2.9   192.0672     0.0000  0.0000  DP4_CG_DW_mult_uns_34
+mult_165_G3                        191.2896      2.9   191.2896     0.0000  0.0000  DP4_CG_DW_mult_uns_36
+mult_165_G4                        191.9117      2.9   191.9117     0.0000  0.0000  DP4_CG_DW_mult_uns_38
+mult_166                           192.2746      2.9   192.2746     0.0000  0.0000  DP4_CG_DW_mult_uns_33
+mult_166_G2                        193.7779      2.9   193.7779     0.0000  0.0000  DP4_CG_DW_mult_uns_35
+mult_166_G3                        192.0154      2.9   192.0154     0.0000  0.0000  DP4_CG_DW_mult_uns_37
+mult_166_G4                        194.7629      2.9   194.7629     0.0000  0.0000  DP4_CG_DW_mult_uns_39
+mult_167                           171.1757      2.6   171.1757     0.0000  0.0000  DP4_CG_DW_mult_uns_5
+mult_167_G2                        168.3763      2.5   168.3763     0.0000  0.0000  DP4_CG_DW_mult_uns_8
+mult_167_G3                        170.8128      2.6   170.8128     0.0000  0.0000  DP4_CG_DW_mult_uns_11
+mult_167_G4                        168.9984      2.5   168.9984     0.0000  0.0000  DP4_CG_DW_mult_uns_14
+sub_105                             20.6323      0.3    20.6323     0.0000  0.0000  DP4_CG_DW01_sub_35
+sub_105_I2                          20.4768      0.3    20.4768     0.0000  0.0000  DP4_CG_DW01_sub_36
+sub_105_I3                          20.7878      0.3    20.7878     0.0000  0.0000  DP4_CG_DW01_sub_33
+sub_105_I4                          20.8397      0.3    20.8397     0.0000  0.0000  DP4_CG_DW01_sub_34
+sub_175                             68.6362      1.0    68.6362     0.0000  0.0000  DP4_CG_DW01_sub_32
+sub_175_G2                          67.7549      1.0    67.7549     0.0000  0.0000  DP4_CG_DW01_sub_31
+sub_175_G3                          66.9254      1.0    66.9254     0.0000  0.0000  DP4_CG_DW01_sub_30
+sub_175_G4                          67.1846      1.0    67.1846     0.0000  0.0000  DP4_CG_DW01_sub_29
+sub_223                             57.5942      0.9    57.5942     0.0000  0.0000  DP4_CG_DW01_sub_20
+--------------------------------  ---------  -------  ---------  ---------  ------  ---------------------------
+Total                                                 5904.6798   782.1101  0.0000
+
+1

@@ -1,0 +1,16 @@
+$ /MasterClass/M143010027_ALU/Hws/HW3/rtl-sim/DP4_CG/work/simv +VECTORS=/MasterClass/M143010027_ALU/Hws/HW3/testdata/vectors.txt +RESULT=/MasterClass/M143010027_ALU/Hws/HW3/rtl-sim/DP4_CG/completion.json +VCD=/MasterClass/M143010027_ALU/Hws/HW3/rtl-sim/DP4_CG/wave.vcd
+Info: [VCS_SAVE_RESTORE_INFO] ASLR (Address Space Layout Randomization) is detected on the machine. To enable $save functionality, ASLR will be switched off and simv re-executed.
+Please use '-no_save' simv switch to avoid re-execution or '-suppress=ASLR_DETECTED_INFO' to suppress this message.
+Chronologic VCS simulator copyright 1991-2023
+Contains Synopsys proprietary information.
+Compiler version V-2023.12_Full64; Runtime version V-2023.12_Full64;  Nov 23 01:05 2026
+PASS: 2048 vectors, 2050 checks
+$finish called from file "/MasterClass/M143010027_ALU/Hws/HW3/rtl-sim/TB.v", line 277.
+$finish at simulation time             41240000
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 41240000 ps
+CPU Time:      0.450 seconds;       Data structure size:   0.2Mb
+Mon Nov 23 01:05:16 2026
+
+
+

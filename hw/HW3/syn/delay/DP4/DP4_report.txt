@@ -1,0 +1,443 @@
+ 
+****************************************
+Report : qor
+Design : DP4
+Version: T-2022.03
+Date   : Mon Nov 23 03:11:22 2026
+****************************************
+
+
+  Timing Path Group 'clk'
+  -----------------------------------
+  Levels of Logic:             127.00
+  Critical Path Length:          1.42
+  Critical Path Slack:           0.00
+  Critical Path Clk Period:      2.84
+  Total Negative Slack:          0.00
+  No. of Violating Paths:        0.00
+  Worst Hold Violation:          0.00
+  Total Hold Violation:          0.00
+  No. of Hold Violations:        0.00
+  -----------------------------------
+
+
+  Cell Count
+  -----------------------------------
+  Hierarchical Cell Count:         43
+  Hierarchical Port Count:       3645
+  Leaf Cell Count:              20931
+  Buf/Inv Cell Count:            5014
+  Buf Cell Count:                 634
+  Inv Cell Count:                4380
+  CT Buf/Inv Cell Count:            0
+  Combinational Cell Count:     20931
+  Sequential Cell Count:            0
+  Macro Count:                      0
+  -----------------------------------
+
+
+  Area
+  -----------------------------------
+  Combinational Area:     7999.067682
+  Noncombinational Area:     0.000000
+  Buf/Inv Area:           1162.045469
+  Total Buffer Area:           270.45
+  Total Inverter Area:         891.60
+  Macro/Black Box Area:      0.000000
+  Net Area:                  0.000000
+  -----------------------------------
+  Cell Area:              7999.067682
+  Design Area:            7999.067682
+
+
+  Design Rules
+  -----------------------------------
+  Total Number of Nets:         22107
+  Nets With Violations:             0
+  Max Trans Violations:             0
+  Max Cap Violations:               0
+  -----------------------------------
+
+
+  Hostname: DTrump
+
+  Compile CPU Statistics
+  -----------------------------------------
+  Resource Sharing:                    9.13
+  Logic Optimization:                225.27
+  Mapping Optimization:              798.02
+  -----------------------------------------
+  Overall Compile Time:             1036.06
+  Overall Compile Wall Clock Time:  1039.56
+
+  --------------------------------------------------------------------
+
+  Design  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0
+
+
+  Design (Hold)  WNS: 0.00  TNS: 0.00  Number of Violating Paths: 0
+
+  --------------------------------------------------------------------
+
+
+ 
+****************************************
+Report : area
+Design : DP4
+Version: T-2022.03
+Date   : Mon Nov 23 03:11:22 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                         3936
+Number of nets:                         24998
+Number of cells:                        20974
+Number of combinational cells:          20931
+Number of sequential cells:                 0
+Number of macros/black boxes:               0
+Number of buf/inv:                       5014
+Number of references:                     314
+
+Combinational area:               7999.067682
+Buf/Inv area:                     1162.045469
+Noncombinational area:               0.000000
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  7999.067682
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  ------------------
+DP4                               7999.0677    100.0  2529.2737     0.0000  0.0000  DP4
+add_0_root_add_0_root_add_141_2     80.1446      1.0    80.1446     0.0000  0.0000  DP4_DW01_add_78
+add_0_root_add_0_root_add_141_2_G2   82.7885     1.0    82.7885     0.0000  0.0000  DP4_DW01_add_59
+add_0_root_add_0_root_add_141_2_G3   86.1581     1.1    86.1581     0.0000  0.0000  DP4_DW01_add_79
+add_0_root_add_0_root_add_141_2_G4   80.0410     1.0    80.0410     0.0000  0.0000  DP4_DW01_add_116
+add_0_root_add_0_root_add_158      164.2291      2.1   164.2291     0.0000  0.0000  DP4_DW01_add_97
+add_0_root_sub_0_root_sub_83        21.4099      0.3    21.4099     0.0000  0.0000  DP4_DW01_add_104
+add_0_root_sub_0_root_sub_83_G2     22.9651      0.3    22.9651     0.0000  0.0000  DP4_DW01_add_110
+add_0_root_sub_0_root_sub_83_G3     17.5738      0.2    17.5738     0.0000  0.0000  DP4_DW01_add_41
+add_0_root_sub_0_root_sub_83_G4     13.2192      0.2    13.2192     0.0000  0.0000  DP4_DW01_add_123
+add_1_root_add_0_root_add_141_2     53.0323      0.7    53.0323     0.0000  0.0000  DP4_DW01_add_119
+add_1_root_add_0_root_add_141_2_G2   55.7280     0.7    55.7280     0.0000  0.0000  DP4_DW01_add_63
+add_1_root_add_0_root_add_141_2_G3   54.6912     0.7    54.6912     0.0000  0.0000  DP4_DW01_add_115
+add_1_root_add_0_root_add_141_2_G4   51.5808     0.6    51.5808     0.0000  0.0000  DP4_DW01_add_84
+add_1_root_add_0_root_add_158      166.4582      2.1   166.4582     0.0000  0.0000  DP4_DW01_add_90
+add_207                             30.7930      0.4    30.7930     0.0000  0.0000  DP4_DW01_add_17
+add_248                             38.6726      0.5    38.6726     0.0000  0.0000  DP4_DW01_add_33
+add_254                              8.0870      0.1     8.0870     0.0000  0.0000  DP4_DW01_inc_1
+add_2_root_add_0_root_add_158      164.1773      2.1   164.1773     0.0000  0.0000  DP4_DW01_add_113
+mult_137                           217.8317      2.7   217.8317     0.0000  0.0000  DP4_DW_mult_uns_88
+mult_137_G2                        245.8253      3.1   245.8253     0.0000  0.0000  DP4_DW_mult_uns_81
+mult_137_G3                        242.8186      3.0   242.8186     0.0000  0.0000  DP4_DW_mult_uns_70
+mult_137_G4                        224.0525      2.8   224.0525     0.0000  0.0000  DP4_DW_mult_uns_57
+mult_138                           245.8253      3.1   245.8253     0.0000  0.0000  DP4_DW_mult_uns_35
+mult_138_G2                        258.0077      3.2   258.0077     0.0000  0.0000  DP4_DW_mult_uns_56
+mult_138_G3                        272.3674      3.4   272.3674     0.0000  0.0000  DP4_DW_mult_uns_80
+mult_138_G4                        250.0762      3.1   250.0762     0.0000  0.0000  DP4_DW_mult_uns_34
+mult_139                           259.7184      3.2   259.7184     0.0000  0.0000  DP4_DW_mult_uns_68
+mult_139_G2                        255.5194      3.2   255.5194     0.0000  0.0000  DP4_DW_mult_uns_71
+mult_139_G3                        257.7485      3.2   257.7485     0.0000  0.0000  DP4_DW_mult_uns_83
+mult_139_G4                        248.7802      3.1   248.7802     0.0000  0.0000  DP4_DW_mult_uns_84
+mult_140                           197.4067      2.5   197.4067     0.0000  0.0000  DP4_DW_mult_uns_31
+mult_140_G2                        195.4886      2.4   195.4886     0.0000  0.0000  DP4_DW_mult_uns_30
+mult_140_G3                        200.0506      2.5   200.0506     0.0000  0.0000  DP4_DW_mult_uns_29
+mult_140_G4                        197.6659      2.5   197.6659     0.0000  0.0000  DP4_DW_mult_uns_28
+sub_107                             26.0237      0.3    26.0237     0.0000  0.0000  DP4_DW01_sub_31
+sub_107_I2                          25.1942      0.3    25.1942     0.0000  0.0000  DP4_DW01_sub_51
+sub_107_I3                          28.5638      0.4    28.5638     0.0000  0.0000  DP4_DW01_sub_53
+sub_107_I4                          28.4602      0.4    28.4602     0.0000  0.0000  DP4_DW01_sub_49
+sub_148                             81.6998      1.0    81.6998     0.0000  0.0000  DP4_DW01_sub_78
+sub_148_G2                          81.8554      1.0    81.8554     0.0000  0.0000  DP4_DW01_sub_73
+sub_148_G3                          80.8186      1.0    80.8186     0.0000  0.0000  DP4_DW01_sub_65
+sub_148_G4                          80.0928      1.0    80.0928     0.0000  0.0000  DP4_DW01_sub_79
+sub_193                             76.1530      1.0    76.1530     0.0000  0.0000  DP4_DW01_sub_26
+--------------------------------  ---------  -------  ---------  ---------  ------  ------------------
+Total                                                 7999.0677     0.0000  0.0000
+
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+        -sort_by group
+Design : DP4
+Version: T-2022.03
+Date   : Mon Nov 23 03:11:22 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: precision (input port clocked by clk)
+  Endpoint: z[10] (output port clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4                ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  input external delay                                0.000000   0.000000 r
+  precision (in)                                      0.000000   0.000000 r
+  U5538/ZN (CKND16BWP16P90LVT)                        0.002565   0.002565 f
+  U1990/ZN (AOI211D8BWP16P90LVT)                      0.009735   0.012300 r
+  U2227/ZN (OAI211D2BWP16P90LVT)                      0.011569   0.023869 f
+  U5752/ZN (ND2D2BWP16P90LVT)                         0.006733   0.030602 r
+  U5460/ZN (CKND2BWP16P90LVT)                         0.004590   0.035192 f
+  U5459/ZN (ND2D2BWP16P90LVT)                         0.006122   0.041314 r
+  U3291/ZN (ND2D4BWP16P90LVT)                         0.007883   0.049197 f
+  add_0_root_sub_0_root_sub_83/B[1] (DP4_DW01_add_104)
+                                                      0.000000   0.049197 f
+  add_0_root_sub_0_root_sub_83/U80/ZN (CKNR2D4BWP16P90LVT)
+                                                      0.008239   0.057436 r
+  add_0_root_sub_0_root_sub_83/U105/ZN (OAI21D4BWP16P90LVT)
+                                                      0.009307   0.066742 f
+  add_0_root_sub_0_root_sub_83/U102/ZN (AOI21D4BWP16P90LVT)
+                                                      0.010055   0.076798 r
+  add_0_root_sub_0_root_sub_83/U82/ZN (IOAI21D4BWP16P90LVT)
+                                                      0.009017   0.085815 f
+  add_0_root_sub_0_root_sub_83/U81/ZN (CKND2BWP16P90LVT)
+                                                      0.006517   0.092332 r
+  add_0_root_sub_0_root_sub_83/U114/Z (XOR2D2BWP16P90LVT)
+                                                      0.026191   0.118523 f
+  add_0_root_sub_0_root_sub_83/SUM[4] (DP4_DW01_add_104)
+                                                      0.000000   0.118523 f
+  U5610/ZN (CKND2BWP16P90LVT)                         0.007003   0.125526 r
+  U7414/ZN (OAI31D1BWP16P90LVT)                       0.009916   0.135441 f
+  U4190/ZN (INR2D2BWP16P90LVT)                        0.014348   0.149790 f
+  U5211/ZN (ND2D2BWP16P90LVT)                         0.005531   0.155321 r
+  U5609/ZN (CKND2BWP16P90LVT)                         0.004567   0.159888 f
+  U6393/ZN (OAI21D2BWP16P90LVT)                       0.009540   0.169428 r
+  U2848/Z (AN2D2BWP16P90LVT)                          0.014921   0.184349 r
+  U3750/ZN (ND2D2BWP16P90LVT)                         0.009975   0.194324 f
+  U6394/Z (AN2D2BWP16P90LVT)                          0.015746   0.210070 f
+  U5998/ZN (NR3D4BWP16P90LVT)                         0.009856   0.219926 r
+  U3874/ZN (OAI21D2BWP16P90LVT)                       0.007053   0.226978 f
+  U3873/ZN (OAI211D2BWP16P90LVT)                      0.007593   0.234572 r
+  U2823/ZN (AOAI211D1BWP16P90LVT)                     0.014845   0.249417 f
+  U6351/ZN (IND2D2BWP16P90LVT)                        0.009792   0.259208 r
+  U6098/Z (AN3D8BWP16P90LVT)                          0.024810   0.284019 r
+  U5588/Z (MUX2D4BWP16P90LVT)                         0.021789   0.305808 f
+  U5587/ZN (INVD4BWP16P90LVT)                         0.006828   0.312636 r
+  U4277/ZN (OAI31D2BWP16P90LVT)                       0.008441   0.321077 f
+  U4443/ZN (CKND2BWP16P90LVT)                         0.009755   0.330832 r
+  U4109/Z (AN4D4BWP16P90LVT)                          0.022004   0.352836 r
+  U4373/ZN (ND2D4BWP16P90LVT)                         0.009515   0.362350 f
+  U5038/ZN (CKND2BWP16P90LVT)                         0.010076   0.372426 r
+  U6318/ZN (MUX2ND8BWP16P90LVT)                       0.029271   0.401697 r
+  sub_107_I4/A[3] (DP4_DW01_sub_49)                   0.000000   0.401697 r
+  sub_107_I4/U62/ZN (ND2D1BWP16P90LVT)                0.011120   0.412817 f
+  sub_107_I4/U151/ZN (OAI21D2BWP16P90LVT)             0.007683   0.420500 r
+  sub_107_I4/U145/ZN (AOI21D2BWP16P90LVT)             0.008446   0.428946 f
+  sub_107_I4/U137/ZN (OAI21D1BWP16P90LVT)             0.017488   0.446434 r
+  sub_107_I4/U138/ZN (AOI21D2BWP16P90LVT)             0.014440   0.460874 f
+  sub_107_I4/U133/ZN (ND2D1BWP16P90LVT)               0.009283   0.470157 r
+  sub_107_I4/U135/ZN (ND2D2BWP16P90LVT)               0.009678   0.479834 f
+  sub_107_I4/DIFF[9] (DP4_DW01_sub_49)                0.000000   0.479834 f
+  U8354/ZN (NR4D1BWP16P90LVT)                         0.014571   0.494405 r
+  U2763/ZN (ND4D2BWP16P90LVT)                         0.015734   0.510139 f
+  U6212/Z (BUFFD2BWP16P90LVT)                         0.018838   0.528977 f
+  U6403/ZN (INVD4BWP16P90LVT)                         0.006869   0.535846 r
+  U2591/ZN (OAI221D4BWP16P90LVT)                      0.009936   0.545782 f
+  U6227/ZN (OAI21D2BWP16P90LVT)                       0.007118   0.552900 r
+  U6253/ZN (AOI211D2BWP16P90LVT)                      0.010232   0.563132 f
+  U3583/ZN (OAI31D4BWP16P90LVT)                       0.007722   0.570854 r
+  sub_148_G4/B[1] (DP4_DW01_sub_79)                   0.000000   0.570854 r
+  sub_148_G4/U324/Z (BUFFD2BWP16P90LVT)               0.013711   0.584565 r
+  sub_148_G4/U313/ZN (XNR2D1BWP16P90LVT)              0.016312   0.600877 f
+  sub_148_G4/DIFF[1] (DP4_DW01_sub_79)                0.000000   0.600877 f
+  U5720/Z (CKMUX2D1BWP16P90LVT)                       0.017005   0.617882 f
+  add_1_root_add_0_root_add_158/B[1] (DP4_DW01_add_90)
+                                                      0.000000   0.617882 f
+  add_1_root_add_0_root_add_158/U787/ZN (ND2D1BWP16P90LVT)
+                                                      0.008381   0.626263 r
+  add_1_root_add_0_root_add_158/U893/Z (OA21D2BWP16P90LVT)
+                                                      0.020068   0.646330 r
+  add_1_root_add_0_root_add_158/U746/ZN (OAI21D4BWP16P90LVT)
+                                                      0.009528   0.655858 f
+  add_1_root_add_0_root_add_158/U697/ZN (AOI21D4BWP16P90LVT)
+                                                      0.010460   0.666318 r
+  add_1_root_add_0_root_add_158/U808/ZN (OAI21D4BWP16P90LVT)
+                                                      0.009284   0.675602 f
+  add_1_root_add_0_root_add_158/U998/ZN (AOI21D2BWP16P90LVT)
+                                                      0.010084   0.685686 r
+  add_1_root_add_0_root_add_158/U913/ZN (OAI21D2BWP16P90LVT)
+                                                      0.009644   0.695330 f
+  add_1_root_add_0_root_add_158/U982/ZN (INVD1BWP16P90LVT)
+                                                      0.012734   0.708064 r
+  add_1_root_add_0_root_add_158/U919/ZN (NR2D2BWP16P90LVT)
+                                                      0.007021   0.715086 f
+  add_1_root_add_0_root_add_158/U840/ZN (IND2D4BWP16P90LVT)
+                                                      0.013212   0.728298 f
+  add_1_root_add_0_root_add_158/U693/ZN (XNR2D4BWP16P90LVT)
+                                                      0.018294   0.746591 r
+  add_1_root_add_0_root_add_158/SUM[12] (DP4_DW01_add_90)
+                                                      0.000000   0.746591 r
+  add_0_root_add_0_root_add_158/B[12] (DP4_DW01_add_97)
+                                                      0.000000   0.746591 r
+  add_0_root_add_0_root_add_158/U820/ZN (NR2D2BWP16P90LVT)
+                                                      0.007110   0.753702 f
+  add_0_root_add_0_root_add_158/U753/ZN (OAI21D2BWP16P90LVT)
+                                                      0.013506   0.767208 r
+  add_0_root_add_0_root_add_158/U867/ZN (AOI21D4BWP16P90LVT)
+                                                      0.007549   0.774757 f
+  add_0_root_add_0_root_add_158/U877/ZN (OAI21D4BWP16P90LVT)
+                                                      0.008935   0.783692 r
+  add_0_root_add_0_root_add_158/U901/ZN (AOI21D2BWP16P90LVT)
+                                                      0.012668   0.796360 f
+  add_0_root_add_0_root_add_158/U900/ZN (OAI21D2BWP16P90LVT)
+                                                      0.018301   0.814660 r
+  add_0_root_add_0_root_add_158/U902/ZN (CKND2BWP16P90LVT)
+                                                      0.012803   0.827463 f
+  add_0_root_add_0_root_add_158/U857/ZN (OAI21D1BWP16P90LVT)
+                                                      0.013333   0.840796 r
+  add_0_root_add_0_root_add_158/U960/ZN (XNR2D2BWP16P90LVT)
+                                                      0.024384   0.865180 f
+  add_0_root_add_0_root_add_158/SUM[29] (DP4_DW01_add_97)
+                                                      0.000000   0.865180 f
+  sub_193/B[29] (DP4_DW01_sub_26)                     0.000000   0.865180 f
+  sub_193/U291/ZN (CKNR2D4BWP16P90LVT)                0.009758   0.874937 r
+  sub_193/U258/ZN (ND2D4BWP16P90LVT)                  0.007694   0.882632 f
+  sub_193/U316/ZN (CKNR2D4BWP16P90LVT)                0.007062   0.889693 r
+  sub_193/U353/ZN (CKND2D4BWP16P90LVT)                0.008313   0.898006 f
+  sub_193/U355/ZN (CKNR2D4BWP16P90LVT)                0.009512   0.907518 r
+  sub_193/U240/ZN (CKND2D1BWP16P90LVT)                0.012974   0.920492 f
+  sub_193/U313/ZN (CKNR2D4BWP16P90LVT)                0.010913   0.931405 r
+  sub_193/U311/ZN (XNR2D2BWP16P90LVT)                 0.020712   0.952117 f
+  sub_193/DIFF[51] (DP4_DW01_sub_26)                  0.000000   0.952117 f
+  U5133/ZN (INVD1BWP16P90LVT)                         0.009838   0.961955 r
+  U5169/ZN (OAI22D1BWP16P90LVT)                       0.010157   0.972112 f
+  U4809/ZN (AOI211D2BWP16P90LVT)                      0.012748   0.984860 r
+  U4808/ZN (ND2D2BWP16P90LVT)                         0.008838   0.993698 f
+  U5000/ZN (IND2D2BWP16P90LVT)                        0.015915   1.009613 f
+  U5295/ZN (ND2D2BWP16P90LVT)                         0.008377   1.017990 r
+  U3179/Z (AN2D2BWP16P90LVT)                          0.015043   1.033033 r
+  U5194/ZN (CKND2D2BWP16P90LVT)                       0.008504   1.041537 f
+  U5849/Z (BUFFD4BWP16P90LVT)                         0.013066   1.054603 f
+  U2356/Z (BUFFD4BWP16P90LVT)                         0.012206   1.066810 f
+  U2910/Z (OA22D2BWP16P90LVT)                         0.018160   1.084970 f
+  U5176/ZN (ND2D2BWP16P90LVT)                         0.005281   1.090252 r
+  U5179/ZN (MUX2ND2BWP16P90LVT)                       0.020481   1.110733 f
+  U5678/ZN (AOI33D2BWP16P90LVT)                       0.013669   1.124401 r
+  U3258/ZN (CKND2D4BWP16P90LVT)                       0.008250   1.132652 f
+  U5381/ZN (CKND2BWP16P90LVT)                         0.005020   1.137672 r
+  U3259/ZN (ND3D2BWP16P90LVT)                         0.009011   1.146683 f
+  U2278/ZN (ND2D2BWP16P90LVT)                         0.006328   1.153011 r
+  U3919/ZN (AOI31D2BWP16P90LVT)                       0.006088   1.159099 f
+  U5850/ZN (ND2D2BWP16P90LVT)                         0.008156   1.167255 r
+  U5476/ZN (CKND2BWP16P90LVT)                         0.004411   1.171666 f
+  U6114/ZN (OAI211D2BWP16P90LVT)                      0.009381   1.181047 r
+  U4071/ZN (ND2D2BWP16P90LVT)                         0.007979   1.189026 f
+  U4072/ZN (CKND2BWP16P90LVT)                         0.005057   1.194083 r
+  U5854/ZN (OAI31D2BWP16P90LVT)                       0.006441   1.200524 f
+  U5553/ZN (NR3D2BWP16P90LVT)                         0.010423   1.210947 r
+  U5552/ZN (OAI21D2BWP16P90LVT)                       0.008269   1.219216 f
+  U6262/ZN (AOI211D2BWP16P90LVT)                      0.009709   1.228925 r
+  U6365/ZN (ND3D1BWP16P90LVT)                         0.009594   1.238519 f
+  U6366/ZN (NR4D1BWP16P90LVT)                         0.014283   1.252802 r
+  U6416/ZN (AOI211D2BWP16P90LVT)                      0.013831   1.266633 f
+  add_248/B[0] (DP4_DW01_add_33)                      0.000000   1.266633 f
+  add_248/U208/ZN (ND2D2BWP16P90LVT)                  0.009866   1.276499 r
+  add_248/U195/ZN (CKNR2D4BWP16P90LVT)                0.007551   1.284050 f
+  add_248/U143/ZN (CKND2BWP16P90LVT)                  0.006316   1.290366 r
+  add_248/U201/ZN (CKNR2D4BWP16P90LVT)                0.006359   1.296724 f
+  add_248/U196/ZN (XNR2D4BWP16P90LVT)                 0.021015   1.317740 r
+  add_248/SUM[11] (DP4_DW01_add_33)                   0.000000   1.317740 r
+  U5177/ZN (CKND2BWP16P90LVT)                         0.008354   1.326094 f
+  U4639/Z (MUX2D4BWP16P90LVT)                         0.016920   1.343014 f
+  U3106/ZN (CKND2BWP16P90LVT)                         0.004983   1.347997 r
+  U3107/ZN (OAI22D1BWP16P90LVT)                       0.007930   1.355927 f
+  U2438/Z (AN2D2BWP16P90LVT)                          0.015833   1.371761 f
+  U2171/ZN (NR2D2BWP16P90LVT)                         0.011844   1.383605 r
+  U2328/Z (AN2D2BWP16P90LVT)                          0.018692   1.402297 r
+  U2436/ZN (INVD1BWP16P90)                            0.008407   1.410704 f
+  U2844/ZN (OAI22D1BWP16P90LVT)                       0.008294   1.418998 r
+  z[10] (out)                                         0.000000   1.418998 r
+  data arrival time                                              1.418998
+
+  clock clk (rise edge)                               2.838000   2.838000
+  clock network delay (ideal)                         0.000000   2.838000
+  output external delay                               -1.419000  1.419000
+  data required time                                             1.419000
+  --------------------------------------------------------------------------
+  data required time                                             1.419000
+  data arrival time                                              -1.418998
+  --------------------------------------------------------------------------
+  slack (MET)                                                    0.000002
+
+
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : DP4
+Version: T-2022.03
+Date   : Mon Nov 23 03:11:22 2026
+****************************************
+
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+DP4                    ZeroWireload      N16ADFP_StdCellss0p72vm40c_ccs
+
+
+Global Operating Voltage = 0.72 
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000pf
+    Time Units = 1ns
+    Dynamic Power Units = 1mW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+Attributes
+----------
+i - Including register clock pin internal power
+
+
+  Cell Internal Power  =   1.5257 mW   (50%)
+  Net Switching Power  =   1.5408 mW   (50%)
+                         ---------
+Total Dynamic Power    =   3.0664 mW  (100%)
+
+Cell Leakage Power     =   7.1653 uW
+
+Information: report_power power group summary does not include estimated clock tree power. (PWR-789)
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)  i
+register           0.0000            0.0000            0.0000            0.0000  (   0.00%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational      1.5257            1.5408        7.1653e+03            3.0736  ( 100.00%)
+--------------------------------------------------------------------------------------------------
+Total              1.5257 mW         1.5408 mW     7.1653e+03 nW         3.0736 mW
+1

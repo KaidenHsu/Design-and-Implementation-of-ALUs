@@ -1,0 +1,1058 @@
+$ env HW3_OUT=/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/tune/012_period_1.009ns HW3_RTL_LIST=/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/tune/012_period_1.009ns/rtl_files.txt PERIOD_NS=1.009 SYN_CONFIG=delay TOP=DP4_CG /usr/cad/synopsys/synthesis/2022.03/amd64/syn/bin/dcnxt_shell -f /MasterClass/M143010027_ALU/Hws/HW3/syn/dc.tcl
+
+                            Design Compiler (R) NXT 
+
+                 Version T-2022.03 for linux64 - Feb 22, 2022 
+
+                    Copyright (c) 1988 - 2022 Synopsys, Inc.
+   This software and the associated documentation are proprietary to Synopsys,
+ Inc. This software may only be used in accordance with the terms and conditions
+ of a written license agreement with Synopsys, Inc. All other use, reproduction,
+   or distribution of this software is strictly prohibited.  Licensed Products
+     communicate with Synopsys servers for the purpose of providing software
+    updates, detecting software piracy and verifying that customers are using
+    Licensed Products in conformity with the applicable License Key for such
+  Licensed Products. Synopsys will use information gathered in connection with
+    this process to deliver software updates and pursue software pirates and
+                                   infringers.
+
+ Inclusivity & Diversity - Visit SolvNetPlus to read the "Synopsys Statement on
+            Inclusivity and Diversity" (Refer to article 000036315 at
+                        https://solvnetplus.synopsys.com)
+Initializing...
+# Adapted from the user's HW1 dc.tcl; one top/configuration per DC process.
+# $ TOP=DP4_pipe SYN_CONFIG=delay PERIOD_NS=20 dcnxt_shell -f HW3/syn/dc.tcl
+# Resolve the authoritative project scripts independently of the tool working directory.
+set sh_command_log_file /dev/null
+/dev/null
+set script_dir [file dirname [file normalize [info script]]]
+/MasterClass/M143010027_ALU/Hws/HW3/syn
+set project_root [file dirname $script_dir]
+/MasterClass/M143010027_ALU/Hws/HW3
+source [file join $script_dir .synopsys_dc.setup]
+Information: Variable 'hdlin_translate_off_skip_text' is obsolete and is being ignored. (INFO-100)
+Information: Variable 'hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+Information: Variable 'hdlin_enable_presto_for_vhdl' is obsolete and is being ignored. (INFO-100)
+TRUE
+set Company NSYSU2026ALU
+NSYSU2026ALU
+set Designer {Kaiden Hsu}
+Kaiden Hsu
+# Launcher settings must be explicit for reproducible manual and automated runs.
+proc required_env {name} {
+    if {![info exists ::env($name)] || $::env($name) eq ""} {
+        error "Required environment variable missing: $name"
+    }
+    return $::env($name)
+}
+# DC report units are converted once; all launcher periods are in ns.
+proc time_unit_ns {text} {
+    set pattern {^\s*Time(?:_|\s+)units?\s*:\s*([0-9.eE+-]+)\s*(Seconds?|[munpf]?s)(?:\([^)]*\))?\s*$}
+    if {![regexp -nocase -line $pattern $text all number suffix]} {
+        error "Cannot determine library time unit; inspect units report"
+    }
+    set suffix [string tolower $suffix]
+    if {$suffix in {second seconds}} {set suffix s}
+    set scales [dict create s 1e9 ms 1e6 us 1e3 ns 1 ps 1e-3 fs 1e-6]
+    set result [expr {double($number)*[dict get $scales $suffix]}]
+    if {$result <= 0} {error "Library time unit must be positive"}
+    return $result
+}
+proc validate_output_path {project_root config Top out} {
+    # Only direct, numbered trials of this design/strategy may receive DC files.
+    set root [file normalize [file join $project_root syn $config $Top tune]]
+    set output [file normalize $out]
+    set name [file tail $output]
+    if {[file dirname $output] ne $root ||
+        ![regexp {^([0-9]{3,})_period_([0-9]+(?:\.[0-9]+)?)ns$} $name all index period]} {
+        error "HW3_OUT must be a numbered trial under syn/$config/$Top/tune"
+    }
+    scan $index %d sequence
+    if {$sequence <= 0 || $period <= 0} {error "Invalid trial index or period"}
+    return $output
+}
+# One DC process handles one top/strategy/period; Python schedules independent runs.
+proc main {} {
+    global project_root script_dir library_root target_library
+    # 1. Select the top, strategy, and target clock period.
+    set Top [required_env TOP]
+    set config [required_env SYN_CONFIG]
+    set period_ns [required_env PERIOD_NS]
+    if {$Top ni {DP4 DP4_pipe DP4_CG}} {error "Invalid TOP: $Top"}
+    if {$config ni {area mid delay}} {error "SYN_CONFIG must be area, mid, or delay"}
+    if {![string is double -strict $period_ns] || $period_ns <= 0 ||
+        [string match -nocase *inf* $period_ns]} {
+        error "PERIOD_NS must be finite and positive"
+    }
+
+
+
+    # 2. Check the HW1 technology libraries and implemented top source.
+    foreach db $target_library {
+        if {![file isfile [file join $library_root $db]]} {error "Missing library: $db in $library_root"}
+    }
+    set source [file join $project_root rtl ${Top}.v]
+    if {![file isfile $source]} {error "Missing RTL: $source"}
+    # Skeletons are intentionally unfinished; do not produce misleading results.
+    set fd [open $source r]; set rtl [read $fd]; close $fd
+    if {[string first {Output intentionally undriven} $rtl] >= 0} {
+        error "RTL skeleton is not implemented: $source"
+    }
+
+
+
+    # 3. Publish by design for manual runs, or retain the launcher's numbered trial.
+    set out [file join $script_dir $config $Top]
+    if {[info exists ::env(HW3_OUT)]} {
+        set out [validate_output_path $project_root $config $Top $::env(HW3_OUT)]
+    }
+    file mkdir $out
+    define_design_lib WORK -path [file join $out ${Top}_work]
+
+    # 4. Analyze an ordered Verilog source list, then elaborate and link the top.
+    set sources [list $source]
+    if {[info exists ::env(HW3_RTL_LIST)]} {
+        set fd [open $::env(HW3_RTL_LIST) r]
+        set sources [split [string trim [read $fd]] \n]
+        close $fd
+    }
+    foreach source $sources {
+        if {![file isfile $source]} {error "Missing RTL: $source"}
+        set ::search_path [concat [list [file dirname $source]] $::search_path]
+        if {![analyze -format verilog -library WORK $source]} {error "analyze failed: $source"}
+    }
+    if {[elaborate $Top -library WORK] eq "0"} {error "elaborate failed: $Top"}
+    current_design $Top
+    if {![link]} {error "link failed"}
+    if {![check_design]} {error "check_design failed"}
+
+
+
+    # 5. Read native time units before applying timing constraints.
+    redirect -variable units {report_units}
+    set fd [open [file join $out ${Top}_units_report.txt] w]
+    puts $fd $units; close $fd
+    set period [expr {double($period_ns)/[time_unit_ns $units]}]
+
+    # DP4 uses a virtual clock; pipelines use the physical clk port.
+    if {$Top eq "DP4"} {
+        create_clock -name clk -period $period
+    } else {
+        set clock_port [get_ports clk]
+        create_clock -name clk -period $period $clock_port
+        set_fix_hold [get_clocks clk]
+        set_dont_touch_network [get_clocks clk]
+        set_ideal_network $clock_port
+    }
+
+    set data_inputs [remove_from_collection [all_inputs] [get_ports {clk rst}]]
+    # Match the testbench's input launch timing before rising-edge capture.
+    if {$Top eq "DP4"} {
+        set_input_delay 0 -clock clk $data_inputs
+    } else {
+        set_input_delay 0 -clock clk -clock_fall $data_inputs
+    }
+
+    # DP4's virtual clock leaves half a period for input-to-output computation.
+    # Do not also apply set_max_delay: output delay would consume that budget.
+    # Pipelines have half a period for input-to-S1 and S4-to-output paths,
+    # and a full period between rising-edge pipeline registers.
+    set_output_delay [expr {$period/2.0}] -clock clk [all_outputs]
+
+    # Reset is inactive in functional timing analysis; reset is tested in TB.
+    set_case_analysis 0 [get_ports rst]
+
+
+
+    # 6. Preserve HW1 min/max corners and the ZeroWireload model.
+    set_operating_conditions \
+        -min_library N16ADFP_StdCellff0p88v125c_ccs -min ff0p88v125c \
+        -max_library N16ADFP_StdCellss0p72vm40c_ccs -max ss0p72vm40c
+    set_wire_load_model -name ZeroWireload -library N16ADFP_StdCellss0p72vm40c_ccs
+    set_wire_load_mode top
+
+
+
+    # 7. Area adds an area target; mid/delay use their searched timing targets.
+    if {$config eq "area"} {set_max_area 0}
+    if {$Top eq "DP4_CG"} {
+        # Course manual clock-gating flow: convert RTL gates into safe ICG cells.
+        if {[replace_clock_gates] eq "0"} {error "clock-gate replacement failed"}
+    }
+    if {[compile] eq "0"} {error "compile failed"}
+
+
+
+    # 8. Produce legal Verilog names without altering the announced top ports.
+    set ::bus_inference_style {%s[%d]}
+    set ::bus_naming_style {%s[%d]}
+    set ::hdlout_internal_busses true
+    change_names -hierarchy -rule verilog
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _" -max_length 255 -type cell
+    define_name_rules name_rule -allowed "A-Z a-z 0-9 _\[\]" -max_length 255 -type net
+    define_name_rules name_rule -map {{"\*cell\*" "cell"}} -case_insensitive
+    change_names -hierarchy -rules name_rule
+
+
+
+    # 9. Keep timing coverage, area, power, and clock-gating evidence.
+    # Preserve the fixed top-level clk/rst interface, including unused DP4 ports.
+    redirect -file [file join $out ${Top}_check_design.txt] {check_design}
+    redirect -file [file join $out ${Top}_check_timing.txt] {check_timing}
+    redirect -file [file join $out ${Top}_timing_report.txt] {
+        report_timing -path full -delay max -max_paths 10 -significant_digits 6 -sort_by group
+    }
+    redirect -file [file join $out ${Top}_area_report.txt] {report_area -hier -nosplit}
+    redirect -file [file join $out ${Top}_power_report.txt] {report_power -analysis_effort low}
+    redirect -file [file join $out ${Top}_report.txt] {
+        report_qor
+        report_area -hier -nosplit
+        report_timing -path full -delay max -significant_digits 6 -sort_by group
+        report_power -analysis_effort low
+    }
+    if {$Top eq "DP4_CG"} {
+        redirect -file [file join $out ${Top}_clock_gating_report.txt] {
+            report_clock_gating -gating_elements
+        }
+    }
+
+
+
+    # 10. Export the same candidate for gate simulation and manual PrimeTime.
+    write -hierarchy -format ddc -output [file join $out ${Top}_syn.ddc]
+    write -format verilog -hierarchy -output [file join $out ${Top}_syn.v]
+    write_sdf -version 2.1 -context verilog [file join $out ${Top}_syn.sdf]
+    write_sdc [file join $out ${Top}_syn.sdc]
+
+    # Export presence and parseable reports are independently checked by Python.
+    puts "HW3_DC_COMPLETE: $Top $config period=$period_ns ns"
+}
+# Convert Tcl exceptions to a failing tool exit, retaining the original traceback.
+if {[catch {main} failure options]} {
+    puts stderr "HW3_DC_ERROR: $failure"
+    if {[dict exists $options -errorinfo]} {puts stderr [dict get $options -errorinfo]}
+    exit 1
+}
+Running PRESTO HDLC
+Compiling source file /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v
+Presto compilation completed successfully.
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db'
+Information: Using CCS timing libraries. (TIM-024)
+Loading db file '/cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/gtech.db'
+Loading db file '/usr/cad/synopsys/synthesis/2022.03/libraries/syn/standard.sldb'
+  Loading link library 'N16ADFP_StdCellss0p72vm40c_ccs'
+  Loading link library 'N16ADFP_StdCellff0p88v125c_ccs'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v:82: signed to unsigned assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v:105: signed to unsigned assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v:175: signed to unsigned assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v:223: signed to unsigned assignment occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v:345: signed to unsigned part selection occurs. (VER-318)
+Warning:  /MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v:348: signed to unsigned part selection occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine DP4_CG line 120 in file
+		'/MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v'.
+===============================================================================
+|      Register Name      | Type  | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+| fp32_enable_latched_reg | Latch |   1   |  N  | N  | N  | N  | -  | -  | -  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine DP4_CG line 126 in file
+		'/MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     fp32_my_reg     | Flip-flop |  96   |  Y  | N  | N  | N  | N  | N  | N  |
+|     fp32_mx_reg     | Flip-flop |  96   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine DP4_CG line 258 in file
+		'/MasterClass/M143010027_ALU/Hws/HW3/rtl/DP4_CG.v'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|     s3_reg_reg      | Flip-flop |  98   |  Y  | N  | N  | N  | N  | N  | N  |
+|     s4_reg_reg      | Flip-flop |  99   |  Y  | N  | N  | N  | N  | N  | N  |
+|     s1_reg_reg      | Flip-flop |  179  |  Y  | N  | N  | N  | N  | N  | N  |
+|     s2_reg_reg      | Flip-flop |  263  |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully. (DP4_CG)
+Elaborated 1 design.
+Current design is now 'DP4_CG'.
+Current design is 'DP4_CG'.
+
+  Linking design 'DP4_CG'
+  Using the following designs and libraries:
+  --------------------------------------------------------------------------
+  DP4_CG                      /MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/tune/012_period_1.009ns/DP4_CG.db
+  N16ADFP_StdCellss0p72vm40c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db
+  N16ADFP_StdCellff0p88v125c_ccs (library) /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellff0p88v125c_ccs.db
+  dw_foundation.sldb (library) /usr/cad/synopsys/synthesis/2022.03/libraries/syn/dw_foundation.sldb
+
+ 
+****************************************
+check_design summary:
+Version:     T-2022.03
+Date:        Mon Nov 23 02:12:10 2026
+****************************************
+
+                   Name                                            Total
+--------------------------------------------------------------------------------
+Cells                                                              13
+    Cells do not drive (LINT-1)                                    13
+--------------------------------------------------------------------------------
+
+Warning: In design 'DP4_CG', cell 'B_179' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_180' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_181' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_182' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_183' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_184' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_185' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_186' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_187' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'C5659' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_189' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_190' does not drive any nets. (LINT-1)
+Warning: In design 'DP4_CG', cell 'B_191' does not drive any nets. (LINT-1)
+Using operating conditions 'ss0p72vm40c' found in library 'N16ADFP_StdCellss0p72vm40c_ccs'.
+Using operating conditions 'ff0p88v125c' found in library 'N16ADFP_StdCellff0p88v125c_ccs'.
+Information: Performing clock-gating with positive edge logic: 'integrated' and negative edge logic: 'or'. (PWR-1047)
+Information: Performing clock-gating with positive edge logic: 'integrated' and negative edge logic: 'or'. (PWR-1047)
+Information: Performing clock-gate replacement on design DP4_CG
+
+
+Clock Gate Replacement Report
+===============================================================================
+| Clock |                    | Include | Clock | Edge |       | Setup | Gate  |
+| Root  |     Cell Name      | Exclude | Fanin | Type | Func. | Cond. | Repl. |
+===============================================================================
+| clk   |                    |         |       |      |       |       |       |
+|       |       C5502        |    -    |   1   | rise |  and  |  yes  |  yes  |
+===============================================================================
+
+Summary:
+                                                   number  percentage
+Replaced cells (total):                               1          100
+Cell not replaced because
+   Cell was excluded:                                 0            0
+   Multiple clock inputs:                             0            0
+   Mixed or unknown clock edge type:                  0            0
+   No compatible clock gate available:                0            0
+   Setup condition violated:                          0            0
+Total:                                                1          100
+
+
+Information: Checking out the license 'DesignWare'. (SEC-104)
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | S-2021.06-DWBB_202106.0 |     *     |
+| Licensed DW Building Blocks        | S-2021.06-DWBB_202106.0 |     *     |
+============================================================================
+
+====================================================================================================
+| Flow Information                                                                                 |
+----------------------------------------------------------------------------------------------------
+| Flow         | Design Compiler NXT                                                               |
+====================================================================================================
+| Design Information                                      | Value                                  |
+====================================================================================================
+| Number of Scenarios                                     | 0                                      |
+| Leaf Cell Count                                         | 2212                                   |
+| Number of User Hierarchies                              | 1                                      |
+| Sequential Cell Count                                   | 833                                    |
+| Macro Count                                             | 0                                      |
+| Number of Power Domains                                 | 0                                      |
+| Number of Path Groups                                   | 2                                      |
+| Number of VT class                                      | 0                                      |
+| Number of Clocks                                        | 1                                      |
+| Number of Dont Touch cells                              | 326                                    |
+| Number of Dont Touch nets                               | 6                                      |
+| Number of size only cells                               | 2                                      |
+| Design with UPF Data                                    | false                                  |
+====================================================================================================
+
+Information: There are 14 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+Warning: Operating condition ss0p72vm40c set on design DP4_CG has different process,
+voltage and temperatures parameters than the parameters at which target library 
+N16ADFP_StdCellff0p88v125c_ccs is characterized. Delays may be inaccurate as a result. (OPT-998)
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'SNPS_CLOCK_GATE_HIGH_DP4_CG'
+  Mapping integrated clock gating circuitry
+  Processing 'DP4_CG'
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+
+  Beginning Implementation Selection
+  ----------------------------------
+  Mapping 'DP4_CG_DW_cmp_0'
+  Mapping 'DP4_CG_DW_cmp_1'
+  Processing 'DP4_CG_DW01_inc_0'
+  Processing 'DP4_CG_DW01_add_0'
+  Mapping 'DP4_CG_DW_cmp_2'
+  Mapping 'DP4_CG_DW_cmp_3'
+  Mapping 'DP4_CG_DW_cmp_4'
+  Mapping 'DP4_CG_DW_cmp_5'
+  Mapping 'DP4_CG_DW_cmp_6'
+  Mapping 'DP4_CG_DW_cmp_7'
+  Mapping 'DP4_CG_DW_cmp_8'
+  Mapping 'DP4_CG_DW_cmp_9'
+  Mapping 'DP4_CG_DW_cmp_10'
+  Mapping 'DP4_CG_DW_cmp_11'
+  Mapping 'DP4_CG_DW_cmp_12'
+  Mapping 'DP4_CG_DW_cmp_13'
+  Mapping 'DP4_CG_DW_cmp_14'
+  Mapping 'DP4_CG_DW_cmp_15'
+  Mapping 'DP4_CG_DW_cmp_16'
+  Mapping 'DP4_CG_DW_cmp_17'
+  Mapping 'DP4_CG_DW_cmp_18'
+  Mapping 'DP4_CG_DW_cmp_19'
+  Mapping 'DP4_CG_DW_cmp_20'
+  Mapping 'DP4_CG_DW_cmp_21'
+  Mapping 'DP4_CG_DW_cmp_22'
+  Mapping 'DP4_CG_DW_cmp_23'
+  Mapping 'DP4_CG_DW_cmp_24'
+  Mapping 'DP4_CG_DW_cmp_25'
+  Mapping 'DP4_CG_DW_cmp_26'
+  Mapping 'DP4_CG_DW_cmp_27'
+  Mapping 'DP4_CG_DW_cmp_28'
+  Mapping 'DP4_CG_DW_cmp_29'
+  Mapping 'DP4_CG_DW_cmp_30'
+  Mapping 'DP4_CG_DW_cmp_31'
+  Mapping 'DP4_CG_DW_cmp_32'
+  Mapping 'DP4_CG_DW_cmp_33'
+  Mapping 'DP4_CG_DW_cmp_34'
+  Mapping 'DP4_CG_DW_cmp_35'
+  Mapping 'DP4_CG_DW_cmp_36'
+  Mapping 'DP4_CG_DW_cmp_37'
+  Mapping 'DP4_CG_DW_cmp_38'
+  Mapping 'DP4_CG_DW_cmp_39'
+  Mapping 'DP4_CG_DW_cmp_40'
+  Mapping 'DP4_CG_DW_cmp_41'
+  Mapping 'DP4_CG_DW_cmp_42'
+  Mapping 'DP4_CG_DW_cmp_43'
+  Mapping 'DP4_CG_DW_cmp_44'
+  Mapping 'DP4_CG_DW_cmp_45'
+  Mapping 'DP4_CG_DW_cmp_46'
+  Mapping 'DP4_CG_DW_cmp_47'
+  Mapping 'DP4_CG_DW_cmp_48'
+  Mapping 'DP4_CG_DW_cmp_49'
+  Mapping 'DP4_CG_DW_cmp_50'
+  Mapping 'DP4_CG_DW_cmp_51'
+  Mapping 'DP4_CG_DW_cmp_52'
+  Mapping 'DP4_CG_DW_cmp_53'
+  Mapping 'DP4_CG_DW_cmp_54'
+  Mapping 'DP4_CG_DW_cmp_55'
+  Mapping 'DP4_CG_DW_cmp_56'
+  Mapping 'DW_rightsh'
+Information: Added key list 'DesignWare' to design 'DP4_CG'. (DDB-72)
+  Processing 'DP4_CG_DW01_sub_0'
+  Mapping 'DP4_CG_DW_cmp_57'
+  Mapping 'DW_leftsh'
+  Processing 'DP4_CG_DW01_sub_1'
+  Processing 'DP4_CG_DW01_add_1'
+  Processing 'DP4_CG_DW01_sub_2'
+  Processing 'DP4_CG_DW01_sub_3'
+  Processing 'DP4_CG_DW01_sub_4'
+  Mapping 'DW_rightsh'
+  Processing 'DP4_CG_DW01_sub_5'
+  Mapping 'DW_rightsh'
+  Processing 'DP4_CG_DW01_sub_6'
+  Mapping 'DW_rightsh'
+  Processing 'DP4_CG_DW01_sub_7'
+  Mapping 'DW_rightsh'
+  Processing 'DP4_CG_DW01_sub_8'
+  Processing 'DP4_CG_DW01_sub_9'
+  Processing 'DP4_CG_DW01_sub_10'
+  Processing 'DP4_CG_DW01_sub_11'
+  Mapping 'DP4_CG_DW_cmp_58'
+  Mapping 'DP4_CG_DW_cmp_59'
+  Mapping 'DP4_CG_DW_cmp_60'
+  Building model 'DW01_NAND2'
+  Processing 'DW01_NAND2'
+  Building model 'DW01_add_width55' (rpl)
+  Processing 'DW01_add_width55'
+  Building model 'DW01_add_width48' (rpl)
+  Processing 'DW01_add_width48'
+  Building model 'DW01_add_width10' (rpl)
+  Processing 'DW01_add_width10'
+  Building model 'DW01_sub_width10' (rpl)
+  Processing 'DW01_sub_width10'
+  Processing 'DP4_CG_DW01_add_2'
+  Processing 'DP4_CG_DW01_add_3'
+  Processing 'DP4_CG_DW01_add_4'
+  Mapping 'DP4_CG_DW_mult_uns_0'
+  Mapping 'DP4_CG_DW_mult_uns_1'
+  Mapping 'DP4_CG_DW_mult_uns_2'
+  Mapping 'DP4_CG_DW_mult_uns_3'
+  Processing 'DP4_CG_DW01_add_5'
+  Processing 'DP4_CG_DW01_add_6'
+  Mapping 'DP4_CG_DW_mult_uns_4'
+  Mapping 'DP4_CG_DW_mult_uns_5'
+  Mapping 'DP4_CG_DW_mult_uns_6'
+  Processing 'DP4_CG_DW01_add_7'
+  Processing 'DP4_CG_DW01_add_8'
+  Mapping 'DP4_CG_DW_mult_uns_7'
+  Mapping 'DP4_CG_DW_mult_uns_8'
+  Mapping 'DP4_CG_DW_mult_uns_9'
+  Processing 'DP4_CG_DW01_add_9'
+  Processing 'DP4_CG_DW01_add_10'
+  Mapping 'DP4_CG_DW_mult_uns_10'
+  Mapping 'DP4_CG_DW_mult_uns_11'
+  Mapping 'DP4_CG_DW_mult_uns_12'
+  Processing 'DP4_CG_DW01_add_11'
+  Processing 'DP4_CG_DW01_add_12'
+  Mapping 'DP4_CG_DW_mult_uns_13'
+  Mapping 'DP4_CG_DW_mult_uns_14'
+  Mapping 'DP4_CG_DW_mult_uns_15'
+  Processing 'DP4_CG_DW01_add_13'
+  Processing 'DP4_CG_DW01_sub_12'
+  Processing 'DP4_CG_DW01_add_14'
+  Processing 'DP4_CG_DW01_sub_13'
+  Processing 'DP4_CG_DW01_add_15'
+  Processing 'DP4_CG_DW01_sub_14'
+  Processing 'DP4_CG_DW01_add_16'
+  Processing 'DP4_CG_DW01_sub_15'
+
+  Beginning Mapping Optimizations  (Medium effort)
+  -------------------------------
+  Mapping Optimization (Phase 1)
+  Mapping Optimization (Phase 2)
+  Mapping Optimization (Phase 3)
+  Mapping Optimization (Phase 4)
+  Mapping Optimization (Phase 5)
+
+                                  TOTAL                                                  
+   ELAPSED            WORST NEG   SETUP    DESIGN                              MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT             COST    
+  --------- --------- --------- --------- --------- ------------------------- -----------
+    0:01:01   10351.5      0.22      16.3      17.5 *cell*59106/U6/S               0.00  
+    0:01:01   10351.5      0.22      16.3      17.5 *cell*59106/U6/S               0.00  
+    0:01:02   10311.2      0.04       6.4      17.5 *cell*59106/*cell*59185/S      0.00  
+    0:01:02   10274.5      0.04       6.4      17.5 *cell*59106/U425/Z             0.00  
+    0:01:02   10271.2      0.04       6.4      17.5 *cell*59106/U452/Z             0.00  
+    0:01:02   10266.0      0.04       6.4      17.5 *cell*59106/U108/ZN            0.00  
+    0:01:02   10262.7      0.04       6.4      17.5 *cell*59106/*cell*59299/ZN      0.00  
+    0:01:03   10256.1      0.04       6.4      17.5 *cell*59106/U470/ZN            0.00  
+    0:01:03   10250.1      0.04       6.4      17.5 *cell*59106/*cell*59257/Z      0.00  
+    0:01:03   10248.0      0.04       6.4      17.5 *cell*59106/U425/Z             0.00  
+    0:01:03   10245.4      0.04       6.4      17.5 *cell*59106/U436/Z             0.00  
+    0:01:04   10242.8      0.04       6.4      17.5 *cell*59106/*cell*59557/ZN      0.00  
+    0:01:04   10238.9      0.04       6.4      17.5 *cell*59106/U145/ZN            0.00  
+    0:01:04   10235.6      0.04       6.4      17.5 *cell*59106/U70/ZN             0.00  
+    0:01:04   10234.9      0.04       6.4      17.5 *cell*59106/U243/ZN            0.00  
+    0:01:05   10232.3      0.04       6.4      17.5 *cell*59106/U30/ZN             0.00  
+    0:01:05   10231.0      0.04       6.4      17.5 *cell*59106/U21/ZN             0.00  
+    0:01:05   10228.4      0.04       6.4      17.5 *cell*59106/U4/Z               0.00  
+    0:01:05   10194.7      0.08       8.8      17.5 *cell*60016/U443/Z             0.00  
+    0:01:06   10174.9      0.04       6.5      17.5 *cell*60016/*cell*60083/Z      0.00  
+    0:01:06   10161.6      0.04       6.5      17.5 *cell*60016/U56/ZN             0.00  
+    0:01:06   10145.5      0.04       6.5      17.5 *cell*60016/U129/ZN            0.00  
+    0:01:06   10142.1      0.04       6.5      17.5 *cell*60016/*cell*60120/Z      0.00  
+    0:01:07   10137.3      0.04       6.5      17.5 *cell*60016/*cell*60304/Z      0.00  
+    0:01:07   10135.1      0.04       6.5      17.5 *cell*60016/*cell*60257/ZN      0.00  
+    0:01:07   10133.3      0.04       6.5      17.5 *cell*60016/*cell*60328/ZN      0.00  
+    0:01:07   10128.2      0.04       6.3      17.5 *cell*60016/U465/ZN            0.00  
+    0:01:08   10124.6      0.04       6.3      17.5 *cell*60016/*cell*60496/Z      0.00  
+    0:01:08   10122.1      0.04       6.2      17.5 *cell*60016/*cell*60077/ZN      0.00  
+    0:01:08   10111.7      0.04       6.2      17.5 *cell*60016/*cell*60373/ZN      0.00  
+    0:01:08   10108.6      0.04       6.2      17.5 *cell*60016/*cell*60410/ZN      0.00  
+    0:01:08   10105.1      0.04       6.2      17.5 *cell*60016/*cell*60106/ZN      0.00  
+    0:01:09   10099.4      0.04       6.2      17.5 *cell*60016/*cell*60715/Z      0.00  
+    0:01:09   10094.4      0.04       6.2      17.5 *cell*60016/U422/Z             0.00  
+    0:01:09   10092.2      0.04       6.2      17.5 *cell*60016/U35/ZN             0.00  
+    0:01:09   10090.6      0.04       6.2      17.5 *cell*60016/U249/ZN            0.00  
+    0:01:10   10087.8      0.04       6.2      17.5 *cell*60016/U4/Z               0.00  
+    0:01:10   10038.9      0.04       6.2      17.5 *cell*60934/U71/ZN             0.00  
+    0:01:10   10032.4      0.04       6.2      17.5 *cell*60934/U15/ZN             0.00  
+    0:01:10   10030.0      0.04       6.2      17.5 *cell*60934/U14/ZN             0.00  
+    0:01:11   10027.7      0.04       6.2      17.5 *cell*60934/*cell*61113/ZN      0.00  
+    0:01:11    9975.2      0.05       6.9      17.5 *cell*61123/U459/Z             0.00  
+    0:01:11    9914.8      0.04       6.0      17.5 *cell*61123/U451/Z             0.00  
+    0:01:11    9911.3      0.04       6.0      17.5 *cell*61123/U87/ZN             0.00  
+    0:01:12    9909.4      0.04       6.0      17.5 *cell*61123/U112/ZN            0.00  
+    0:01:12    9904.6      0.04       6.0      17.5 *cell*61123/U430/Z             0.00  
+    0:01:12    9899.8      0.04       6.0      17.5 *cell*61123/*cell*61317/ZN      0.00  
+    0:01:12    9896.6      0.04       6.0      17.5 *cell*61123/U430/Z             0.00  
+    0:01:13    9892.4      0.04       6.0      17.5 *cell*61123/*cell*61624/Z      0.00  
+    0:01:13    9891.0      0.04       6.0      17.5 *cell*61123/U445/Z             0.00  
+    0:01:13    9889.2      0.04       6.0      17.5 *cell*61123/*cell*61229/ZN      0.00  
+    0:01:13    9887.2      0.04       6.0      17.5 *cell*61123/U468/Z             0.00  
+    0:01:14    9885.7      0.04       6.0      17.5 *cell*61123/U42/ZN             0.00  
+    0:01:14    9885.1      0.04       6.0      17.5 *cell*61123/U34/ZN             0.00  
+    0:01:14    9883.1      0.04       6.0      17.5 *cell*61123/U15/ZN             0.00  
+    0:01:14    9880.1      0.04       6.0      17.5 *cell*61123/U4/Z               0.00  
+    0:01:15    9825.8      0.07       8.0      17.5 *cell*61918/U445/Z             0.00  
+    0:01:15    9803.7      0.04       6.1      17.5 *cell*61918/U103/ZN            0.00  
+    0:01:15    9798.5      0.04       6.1      17.5 *cell*61918/U147/ZN            0.00  
+    0:01:15    9787.5      0.04       6.1      17.5 *cell*61918/U86/ZN             0.00  
+    0:01:15    9785.9      0.04       6.1      17.5 *cell*61918/U61/ZN             0.00  
+    0:01:16    9782.9      0.04       6.1      17.5 *cell*61918/U52/ZN             0.00  
+    0:01:16    9781.6      0.04       5.9      17.5 *cell*61918/*cell*62074/ZN      0.00  
+    0:01:16    9779.1      0.04       5.9      17.5 *cell*61918/U75/ZN             0.00  
+    0:01:16    9770.3      0.04       5.8      17.5 *cell*61918/*cell*62012/Z      0.00  
+    0:01:17    9756.8      0.04       5.8      17.5 *cell*61918/U434/Z             0.00  
+    0:01:17    9751.0      0.04       5.8      17.5 *cell*61918/*cell*61991/Z      0.00  
+    0:01:17    9744.8      0.04       5.8      17.5 *cell*61918/*cell*62204/ZN      0.00  
+    0:01:18    9739.5      0.04       5.8      17.5 *cell*61918/U428/Z             0.00  
+    0:01:18    9736.4      0.04       5.8      17.5 *cell*61918/U425/Z             0.00  
+    0:01:18    9734.5      0.04       5.8      17.5 *cell*61918/U50/ZN             0.00  
+    0:01:18    9731.0      0.04       5.8      17.5 *cell*61918/U151/ZN            0.00  
+    0:01:18    9729.2      0.04       5.8      17.5 *cell*61918/U251/ZN            0.00  
+    0:01:19    9726.4      0.04       5.8      17.5 *cell*61918/U4/Z               0.00  
+    0:01:19    9681.0      0.04       5.8      17.5 *cell*62800/*cell*62809/ZN      0.00  
+    0:01:19    9675.6      0.04       5.8      17.5 *cell*62800/*cell*62875/ZN      0.00  
+    0:01:20    9672.3      0.04       5.8      17.5 *cell*62800/U116/ZN            0.00  
+    0:01:20    9667.9      0.04       5.8      17.5 *cell*62800/*cell*62946/ZN      0.00  
+    0:01:20    9624.3      0.06       6.7      17.5 *cell*62974/U449/Z             0.00  
+    0:01:20    9576.8      0.04       5.8      17.5 *cell*62974/U441/Z             0.00  
+    0:01:21    9573.6      0.04       5.8      17.5 *cell*62974/U87/ZN             0.00  
+    0:01:21    9565.8      0.04       5.8      17.5 *cell*62974/U93/ZN             0.00  
+    0:01:21    9561.5      0.04       5.8      17.5 *cell*62974/U53/ZN             0.00  
+    0:01:21    9557.6      0.04       5.8      17.5 *cell*62974/*cell*63195/Z      0.00  
+    0:01:21    9555.1      0.04       5.8      17.5 *cell*62974/*cell*63038/ZN      0.00  
+    0:01:22    9551.7      0.04       5.8      17.5 *cell*62974/*cell*63203/Z      0.00  
+    0:01:22    9548.4      0.04       5.8      17.5 *cell*62974/*cell*63492/ZN      0.00  
+    0:01:22    9546.2      0.04       5.8      17.5 *cell*62974/*cell*63156/Z      0.00  
+    0:01:22    9542.8      0.04       5.8      17.5 *cell*62974/U109/ZN            0.00  
+    0:01:22    9540.1      0.04       5.8      17.5 *cell*62974/*cell*63215/Z      0.00  
+    0:01:23    9538.8      0.04       5.8      17.5 *cell*62974/*cell*63577/ZN      0.00  
+    0:01:23    9537.7      0.04       5.8      17.5 *cell*62974/U480/ZN            0.00  
+    0:01:23    9535.6      0.04       5.8      17.5 *cell*62974/U138/ZN            0.00  
+    0:01:23    9533.0      0.04       5.8      17.5 *cell*62974/U34/ZN             0.00  
+    0:01:23    9531.3      0.04       5.8      17.5 *cell*62974/U20/ZN             0.00  
+    0:01:23    9528.8      0.04       5.8      17.5 *cell*62974/U4/Z               0.00  
+    0:01:24    9479.2      0.07       7.7      17.5 *cell*63901/*cell*63902/ZN      0.00  
+    0:01:24    9469.7      0.04       5.8      17.5 *cell*63901/*cell*63975/Z      0.00  
+    0:01:24    9464.5      0.04       5.8      17.5 *cell*63901/U233/S             0.00  
+    0:01:25    9460.3      0.04       5.8      17.5 *cell*63901/U89/ZN             0.00  
+    0:01:25    9457.6      0.04       5.8      17.5 *cell*63901/*cell*64032/ZN      0.00  
+    0:01:25    9448.2      0.04       5.8      17.5 *cell*63901/*cell*64084/ZN      0.00  
+    0:01:25    9433.9      0.04       5.7      17.5 *cell*63901/U454/Z             0.00  
+    0:01:25    9432.5      0.04       5.7      17.5 *cell*63901/*cell*63972/Z      0.00  
+    0:01:26    9425.2      0.04       5.7      17.5 *cell*63901/*cell*64331/Z      0.00  
+    0:01:26    9421.7      0.04       5.6      17.5 *cell*63901/*cell*63978/ZN      0.00  
+    0:01:26    9412.0      0.04       5.6      17.5 *cell*63901/*cell*64426/ZN      0.00  
+    0:01:26    9403.8      0.04       5.6      17.5 *cell*63901/U430/Z             0.00  
+    0:01:27    9397.2      0.04       5.6      17.5 *cell*63901/*cell*64560/Z      0.00  
+    0:01:27    9394.5      0.04       5.6      17.5 *cell*63901/U429/Z             0.00  
+    0:01:27    9390.0      0.04       5.6      17.5 *cell*63901/U1/Z               0.00  
+    0:01:27    9386.4      0.04       5.6      17.5 *cell*63901/U426/Z             0.00  
+    0:01:27    9384.8      0.04       5.6      17.5 *cell*63901/*cell*64747/ZN      0.00  
+    0:01:28    9383.0      0.04       5.6      17.5 *cell*63901/U254/ZN            0.00  
+    0:01:28    9381.2      0.04       5.6      17.5 *cell*63901/U252/ZN            0.00  
+    0:01:28    9328.0      0.04       5.6      17.5 *cell*64866/*cell*64877/ZN      0.00  
+    0:01:29    9322.1      0.04       5.6      17.5 *cell*64866/U110/ZN            0.00  
+    0:01:29    9318.2      0.04       5.6      17.5 *cell*64866/U144/ZN            0.00  
+    0:01:29    9315.9      0.04       5.6      17.5 *cell*64866/U37/ZN             0.00  
+    0:01:29    9314.5      0.04       5.6      17.5 *cell*64866/U149/ZN            0.00  
+    0:01:29    9243.1      0.04       5.6      17.5 *cell*65087/U443/Z             0.00  
+    0:01:30    9204.9      0.04       5.6      17.5 *cell*65087/*cell*65125/ZN      0.00  
+    0:01:30    9203.2      0.04       5.6      17.5 *cell*65087/U86/ZN             0.00  
+    0:01:30    9198.4      0.04       5.6      17.5 *cell*65087/U464/ZN            0.00  
+    0:01:30    9197.1      0.04       5.6      17.5 *cell*65087/*cell*65395/ZN      0.00  
+    0:01:30    9192.4      0.04       5.6      17.5 *cell*65087/U147/ZN            0.00  
+    0:01:30    9189.7      0.04       5.6      17.5 *cell*65087/*cell*65247/ZN      0.00  
+    0:01:31    9185.2      0.04       5.6      17.5 *cell*65087/U432/Z             0.00  
+    0:01:31    9183.4      0.04       5.6      17.5 *cell*65087/U439/Z             0.00  
+    0:01:31    9182.1      0.04       5.6      17.5 *cell*65087/*cell*65489/ZN      0.00  
+    0:01:31    9178.4      0.04       5.6      17.5 *cell*65087/*cell*65501/ZN      0.00  
+    0:01:31    9175.6      0.04       5.6      17.5 *cell*65087/U53/ZN             0.00  
+    0:01:32    9172.8      0.04       5.6      17.5 *cell*65087/U457/Z             0.00  
+    0:01:32    9170.4      0.04       5.6      17.5 *cell*65087/U48/ZN             0.00  
+    0:01:32    9168.0      0.04       5.6      17.5 *cell*65087/U60/ZN             0.00  
+    0:01:32    9166.3      0.04       5.6      17.5 *cell*65087/U33/ZN             0.00  
+    0:01:32    9165.5      0.04       5.6      17.5 *cell*65087/U20/ZN             0.00  
+    0:01:33    9163.1      0.04       5.6      17.5 *cell*65087/U4/Z               0.00  
+    0:01:33    9114.1      0.07       7.0      17.5 *cell*65766/U461/Z             0.00  
+    0:01:33    9095.8      0.04       5.6      17.5 *cell*65766/*cell*65831/ZN      0.00  
+    0:01:34    9092.1      0.04       5.6      17.5 *cell*65766/*cell*65834/ZN      0.00  
+    0:01:34    9089.7      0.04       5.6      17.5 *cell*65766/U89/ZN             0.00  
+    0:01:34    9086.3      0.04       5.6      17.5 *cell*65766/U390/ZN            0.00  
+    0:01:34    9061.8      0.04       5.6      17.5 *cell*65766/U52/ZN             0.00  
+    0:01:34    9060.7      0.04       5.6      17.5 *cell*65766/U75/ZN             0.00  
+    0:01:35    9058.1      0.04       5.6      17.5 *cell*65766/U109/ZN            0.00  
+    0:01:35    9055.2      0.04       5.4      17.5 *cell*65766/*cell*65910/ZN      0.00  
+    0:01:35    9047.4      0.04       5.3      17.5 *cell*65766/*cell*66291/Z      0.00  
+    0:01:35    9041.0      0.04       5.3      17.5 *cell*65766/U395/ZN            0.00  
+    0:01:36    9036.4      0.04       5.3      17.5 *cell*65766/U464/Z             0.00  
+    0:01:36    9027.6      0.04       5.3      17.5 *cell*65766/*cell*66332/Z      0.00  
+    0:01:36    9020.1      0.04       5.3      17.5 *cell*65766/U435/Z             0.00  
+    0:01:36    9018.4      0.04       5.3      17.5 *cell*65766/U1/Z               0.00  
+    0:01:36    9015.7      0.04       5.3      17.5 *cell*65766/*cell*66575/Z      0.00  
+    0:01:37    9013.8      0.04       5.3      17.5 *cell*65766/U29/ZN             0.00  
+    0:01:37    9012.0      0.04       5.3      17.5 *cell*65766/U15/ZN             0.00  
+    0:01:37    9010.8      0.04       5.3      17.5 *cell*65766/U250/ZN            0.00  
+    0:01:37    8968.8      0.12      10.2      17.5 *cell*66687/U48/Z              0.00  
+    0:01:38    8954.9      0.04       5.3      17.5 *cell*66687/U75/ZN             0.00  
+    0:01:38    8951.3      0.04       5.3      17.5 *cell*66687/U138/ZN            0.00  
+    0:01:38    8947.8      0.04       5.3      17.5 *cell*66687/*cell*66746/ZN      0.00  
+    0:01:38    8822.5      0.49      11.7      17.5 *cell*66861/U42/ZN             0.00  
+    0:01:39    8786.7      0.04       5.3      17.5 *cell*66861/*cell*66956/ZN      0.00  
+    0:01:39    8781.4      0.04       5.3      17.5 *cell*66861/U283/ZN            0.00  
+    0:01:39    8776.5      0.04       5.3      17.5 *cell*66861/U236/ZN            0.00  
+    0:01:39    8772.0      0.04       5.3      17.5 *cell*66861/*cell*67088/ZN      0.00  
+    0:01:39    8767.4      0.04       5.3      17.5 *cell*66861/U132/ZN            0.00  
+    0:01:39    8762.3      0.04       5.3      17.5 *cell*66861/U82/ZN             0.00  
+    0:01:39    8758.2      0.04       5.3      17.5 *cell*66861/U34/ZN             0.00  
+    0:01:40    8755.6      0.04       5.3      17.5 *cell*66861/U151/ZN            0.00  
+    0:01:40    8628.1      0.62      12.9      17.5 *cell*67247/U4/S               0.00  
+    0:01:40    8596.5      0.04       5.3      17.5 *cell*67247/*cell*67355/ZN      0.00  
+    0:01:40    8591.4      0.04       5.3      17.5 *cell*67247/U15/ZN             0.00  
+    0:01:41    8586.6      0.04       5.3      17.5 *cell*67247/*cell*67416/ZN      0.00  
+    0:01:41    8582.2      0.04       5.3      17.5 *cell*67247/U222/ZN            0.00  
+    0:01:41    8577.0      0.04       5.3      17.5 *cell*67247/U175/ZN            0.00  
+    0:01:41    8572.4      0.04       5.3      17.5 *cell*67247/U124/ZN            0.00  
+    0:01:41    8567.5      0.04       5.3      17.5 *cell*67247/U76/ZN             0.00  
+    0:01:41    8563.3      0.04       5.3      17.5 *cell*67247/U34/ZN             0.00  
+    0:01:41    8560.1      0.04       5.3      17.5 *cell*67247/U2/Z               0.00  
+    0:01:42    8395.4      0.04       5.3      17.5 *cell*67559/*cell*67668/ZN      0.00  
+    0:01:42    8389.3      0.04       5.3      17.5 *cell*67559/*cell*67690/ZN      0.00  
+    0:01:42    8380.7      0.04       5.3      17.5 *cell*67559/U174/ZN            0.00  
+    0:01:42    8372.1      0.04       5.3      17.5 *cell*67559/U152/ZN            0.00  
+    0:01:42    8368.2      0.04       5.3      17.5 *cell*67559/*cell*67639/ZN      0.00  
+    0:01:43    8365.1      0.04       5.3      17.5 *cell*67559/U245/ZN            0.00  
+    0:01:43    8360.9      0.04       5.3      17.5 *cell*67559/*cell*67653/ZN      0.00  
+    0:01:43    8358.1      0.04       5.3      17.5 *cell*67559/U322/ZN            0.00  
+    0:01:43    8356.8      0.04       5.3      17.5 *cell*67559/U350/ZN            0.00  
+    0:01:44    8389.9      0.04       5.3      17.5                                0.00  
+    0:01:44    8401.6      0.04       5.5      17.5                                0.00  
+    0:01:44    8401.6      0.04       5.5      17.5                                0.00  
+    0:01:44    8401.6      0.04       5.5      17.5                                0.00  
+    0:01:44    8401.6      0.04       5.5      17.5                                0.00  
+    0:01:50    6442.8      0.22      44.8      17.5                                0.00  
+    0:01:53    6460.1      0.14      31.3      17.5                                0.00  
+    0:01:55    6458.6      0.14      30.4      17.5                                0.00  
+    0:01:55    6460.2      0.12      27.1      17.5                                0.00  
+    0:01:56    6460.4      0.12      27.1      17.5                                0.00  
+    0:01:57    6462.2      0.12      26.3      17.5                                0.00  
+    0:01:57    6463.3      0.12      26.0      17.5                                0.00  
+    0:01:58    6463.9      0.11      25.5      17.5                                0.00  
+    0:01:58    6465.4      0.12      24.7      17.5                                0.00  
+    0:01:59    6466.1      0.11      24.1      17.5                                0.00  
+    0:01:59    6469.1      0.11      23.6      17.5                                0.00  
+    0:01:59    6469.3      0.11      23.5      17.5                                0.00  
+    0:02:00    6469.3      0.11      23.5      17.5                                0.00  
+    0:02:00    6469.3      0.11      23.5      17.5                                0.00  
+    0:02:00    6469.3      0.11      23.5      17.5                                0.00  
+    0:02:00    6469.3      0.11      23.5      17.5                                0.00  
+    0:02:00    6469.3      0.11      23.5      17.5                                0.00  
+    0:02:00    6469.3      0.11      23.5      17.5                                0.00  
+    0:02:00    6481.1      0.09      21.1      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:01    6498.4      0.09      19.2      17.5 s2_reg_reg[209]/D              0.00  
+    0:02:01    6505.7      0.08      18.3      17.5 s2_reg_reg[137]/D              0.00  
+    0:02:02    6511.3      0.08      17.6      17.5 s2_reg_reg[137]/D              0.00  
+    0:02:02    6517.1      0.08      16.7      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:03    6529.8      0.07      16.0      17.5 s1_reg_reg[207]/D              0.00  
+    0:02:03    6537.2      0.07      14.9      17.5 s1_reg_reg[221]/D              0.00  
+    0:02:04    6543.9      0.06      14.4      17.5 s1_reg_reg[221]/D              0.00  
+    0:02:04    6555.8      0.06      13.6      17.5 s2_reg_reg[175]/D              0.00  
+    0:02:05    6587.3      0.06      12.4      17.5 s3_reg_reg[54]/D               0.00  
+    0:02:06    6594.4      0.06      12.2      17.5 s1_reg_reg[217]/D              0.00  
+    0:02:06    6610.4      0.05      10.3      17.5 s1_reg_reg[217]/D              0.00  
+    0:02:06    6612.5      0.05      10.3      17.5 s1_reg_reg[209]/D              0.00  
+    0:02:06    6612.7      0.05      10.3      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:07    6618.9      0.05      10.0      17.5 s1_reg_reg[200]/D              0.00  
+    0:02:07    6619.2      0.05       9.9      17.5 s1_reg_reg[200]/D              0.00  
+    0:02:07    6630.2      0.05       9.2      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:08    6630.4      0.05       9.2      17.5 s1_reg_reg[208]/D              0.00  
+    0:02:08    6634.8      0.05       8.8      17.5 s1_reg_reg[230]/D              0.00  
+    0:02:08    6636.4      0.05       8.6      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:08    6636.9      0.05       8.6      17.5 s1_reg_reg[230]/D              0.00  
+    0:02:08    6637.3      0.04       8.5      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:09    6657.0      0.04       7.7      17.5                                0.00  
+    0:02:09    6661.5      0.04       6.8      17.5                                0.00  
+    0:02:09    6660.9      0.04       6.7      17.5                                0.00  
+    0:02:10    6664.7      0.03       6.1      17.5                                0.00  
+    0:02:10    6665.7      0.03       6.0      17.5                                0.00  
+    0:02:10    6665.9      0.03       5.9      17.5                                0.00  
+    0:02:10    6669.1      0.03       5.9      17.5                                0.00  
+    0:02:10    6672.1      0.03       5.8      17.5                                0.00  
+    0:02:11    6679.4      0.03       4.8      17.5                                0.00  
+    0:02:11    6680.4      0.03       4.8      17.5                                0.00  
+    0:02:11    6682.3      0.03       4.6      17.5                                0.00  
+    0:02:12    6686.4      0.03       4.4      17.5                                0.00  
+    0:02:12    6690.8      0.02       4.3      17.5                                0.00  
+    0:02:12    6692.3      0.02       4.2      17.5                                0.00  
+    0:02:12    6692.4      0.02       4.2      17.5                                0.00  
+    0:02:12    6692.7      0.02       4.2      17.5                                0.00  
+    0:02:12    6694.5      0.02       4.0      17.5                                0.00  
+    0:02:13    6696.3      0.02       3.9      17.5                                0.00  
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                                  
+   ELAPSED            WORST NEG   SETUP    DESIGN                              MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT             COST    
+  --------- --------- --------- --------- --------- ------------------------- -----------
+    0:02:13    6696.3      0.02       3.9      17.5                                0.00  
+    0:02:13    6696.6      0.02       3.9      17.5 s1_reg_reg[207]/D              0.00  
+    0:02:13    6700.8      0.02       3.8      17.5 s1_reg_reg[221]/D              0.00  
+    0:02:13    6700.9      0.02       3.8      17.5 s1_reg_reg[211]/D              0.00  
+    0:02:14    6704.5      0.02       3.1      17.5 s1_reg_reg[230]/D              0.00  
+    0:02:14    6704.4      0.02       3.1      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:14    6705.3      0.02       2.9      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:14    6709.4      0.02       2.3      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:14    6710.8      0.02       2.2      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:15    6711.5      0.02       2.2      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:15    6712.1      0.02       2.2      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:15    6717.2      0.02       2.1      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:15    6722.2      0.02       2.1      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:15    6729.5      0.02       1.4      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:15    6729.8      0.02       1.4      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:15    6731.5      0.01       1.4      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:16    6732.6      0.01       1.4      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:16    6741.4      0.01       1.3      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:16    6741.4      0.01       1.3      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:16    6742.7      0.01       1.2      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:16    6743.9      0.01       1.2      17.5 s1_reg_reg[211]/D              0.00  
+    0:02:17    6744.1      0.01       1.2      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:17    6744.3      0.01       1.2      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:17    6745.2      0.01       1.2      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:17    6745.7      0.01       1.2      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:17    6746.9      0.01       1.1      17.5 s1_reg_reg[229]/D              0.00  
+    0:02:17    6747.2      0.01       1.0      17.5 s1_reg_reg[229]/D              0.00  
+    0:02:17    6748.9      0.01       1.0      17.5 s1_reg_reg[229]/D              0.00  
+    0:02:18    6750.0      0.01       0.9      17.5 s1_reg_reg[229]/D              0.00  
+    0:02:18    6749.9      0.01       0.9      17.5 s1_reg_reg[217]/D              0.00  
+    0:02:18    6750.0      0.01       0.9      17.5 s1_reg_reg[211]/D              0.00  
+    0:02:18    6752.0      0.01       0.7      17.5 s1_reg_reg[228]/D              0.00  
+    0:02:18    6752.9      0.01       0.7      17.5 s1_reg_reg[229]/D              0.00  
+    0:02:18    6753.1      0.01       0.7      17.5 s1_reg_reg[229]/D              0.00  
+    0:02:18    6753.2      0.01       0.7      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:18    6754.7      0.01       0.7      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:19    6755.0      0.01       0.7      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:19    6755.1      0.01       0.7      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:19    6755.1      0.01       0.6      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:19    6755.1      0.01       0.6      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:19    6755.6      0.01       0.6      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:19    6758.0      0.01       0.6      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:20    6760.1      0.01       0.5      17.5                                0.00  
+    0:02:21    6756.5      0.00       0.4      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:21    6756.9      0.00       0.4      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:22    6758.1      0.00       0.3      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:22    6758.2      0.00       0.3      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:22    6757.5      0.00       0.3      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:22    6757.9      0.00       0.3      17.5 s1_reg_reg[198]/D              0.00  
+    0:02:22    6757.9      0.00       0.3      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:22    6757.6      0.00       0.2      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:22    6758.2      0.00       0.2      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:23    6759.3      0.00       0.2      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:24    6759.4      0.00       0.2      17.5 s1_reg_reg[201]/D              0.00  
+    0:02:25    6761.3      0.00       0.1      17.5 s1_reg_reg[200]/D              0.00  
+    0:02:25    6763.2      0.00       0.1      17.5 s1_reg_reg[229]/D              0.00  
+    0:02:26    6762.8      0.00       0.1      17.5                                0.00  
+    0:02:27    6762.3      0.00       0.1      17.5                                0.00  
+
+
+  Beginning Design Rule Fixing  (min_capacitance)
+  ----------------------------
+
+                                  TOTAL                                                  
+   ELAPSED            WORST NEG   SETUP    DESIGN                              MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT             COST    
+  --------- --------- --------- --------- --------- ------------------------- -----------
+    0:02:27    6762.3      0.00       0.1      17.5                                0.00  
+    0:02:27    6762.5      0.00       0.1      17.5 s1_reg_reg[229]/D              0.00  
+    0:02:28    6763.3      0.00       0.0      17.5 s1_reg_reg[229]/D              0.00  
+    0:02:28    6762.0      0.00       0.0      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:28    6763.4      0.00       0.0      17.5 s1_reg_reg[197]/D              0.00  
+    0:02:28    6762.7      0.00       0.0      17.5 s1_reg_reg[207]/D              0.00  
+    0:02:29    6763.3      0.00       0.0      17.5 s1_reg_reg[197]/D              0.00  
+
+
+  Beginning Area-Recovery Phase  (cleanup)
+  -----------------------------
+
+                                  TOTAL                                                  
+   ELAPSED            WORST NEG   SETUP    DESIGN                              MIN DELAY 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT             COST    
+  --------- --------- --------- --------- --------- ------------------------- -----------
+    0:02:29    6763.3      0.00       0.0      17.5                                0.00  
+    0:02:29    6763.3      0.00       0.0      17.5                                0.00  
+    0:02:31    6730.6      0.01       0.2      17.5                                0.00  
+    0:02:31    6720.6      0.01       0.2      17.5                                0.00  
+    0:02:31    6716.3      0.01       0.2      17.5                                0.00  
+    0:02:32    6713.1      0.01       0.2      17.5                                0.00  
+    0:02:32    6710.9      0.01       0.2      17.5                                0.00  
+    0:02:32    6710.9      0.01       0.2      17.5                                0.00  
+    0:02:34    6712.8      0.00       0.0      17.5                                0.00  
+    0:02:34    6712.6      0.00       0.0      17.5                                0.00  
+    0:02:35    6609.5      0.08      15.2      17.5                                0.00  
+    0:02:36    6575.9      0.08      15.8      17.5                                0.00  
+    0:02:36    6572.6      0.08      15.8      17.5                                0.00  
+    0:02:36    6572.6      0.08      15.8      17.5                                0.00  
+    0:02:36    6572.6      0.08      15.8      17.5                                0.00  
+    0:02:36    6572.6      0.08      15.8      17.5                                0.00  
+    0:02:36    6572.6      0.08      15.8      17.5                                0.00  
+    0:02:36    6572.6      0.08      15.8      17.5                                0.00  
+    0:02:37    6594.3      0.04       6.4      17.5 s2_reg_reg[40]/D               0.00  
+    0:02:37    6604.6      0.03       4.8      17.5 s2_reg_reg[40]/D               0.00  
+    0:02:38    6618.3      0.02       3.3      17.5 s2_reg_reg[95]/D               0.00  
+    0:02:39    6621.2      0.02       2.8      17.5                                0.00  
+    0:02:40    6627.5      0.01       1.9      17.5                                0.00  
+    0:02:41    6644.5      0.01       0.9      17.5                                0.00  
+    0:02:41    6647.2      0.01       0.6      17.5                                0.00  
+    0:02:41    6650.8      0.00       0.4      17.5                                0.00  
+    0:02:42    6652.6      0.00       0.4      17.5                                0.00  
+    0:02:42    6656.3      0.00       0.1      17.5                                0.00  
+    0:02:42    6657.7      0.00       0.1      17.5                                0.00  
+    0:02:43    6661.4      0.00       0.0      17.5 s1_reg_reg[209]/D              0.00  
+    0:02:43    6662.5      0.00       0.0      17.5 s1_reg_reg[209]/D              0.00  
+    0:02:44    6665.3      0.00       0.0      17.5 s1_reg_reg[209]/D              0.00  
+    0:02:44    6665.2      0.00       0.0      17.5 s1_reg_reg[209]/D              0.00  
+    0:02:45    6632.5      0.00       0.0      17.5                                0.00  
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Warning: In the design DP4_CG_DW01_sub_16, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_16, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_20, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_51, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_51, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_52, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_52, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_53, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_16, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_16, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_20, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_52, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_53, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_54, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[11]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[10]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[9]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[8]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[7]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[6]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[5]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[4]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[3]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[2]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[1]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_add_55, net 'A[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_51, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_51, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_52, net 'B[0]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_52, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Warning: In the design DP4_CG_DW01_sub_53, net 'DIFF[52]' is connecting multiple ports. (UCN-1)
+Writing ddc file '/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/tune/012_period_1.009ns/DP4_CG_syn.ddc'.
+Writing verilog file '/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/tune/012_period_1.009ns/DP4_CG_syn.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+Information: Annotated 'cell' delays are assumed to include load delay. (UID-282)
+Information: Writing timing information to file '/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/tune/012_period_1.009ns/DP4_CG_syn.sdf'. (WT-3)
+HW3_DC_COMPLETE: DP4_CG delay period=1.009 ns
+exit 0
+
+Memory usage for this session 1667 Mbytes.
+Memory usage for this session including child processes 1667 Mbytes.
+CPU usage for this session 226 seconds ( 0.06 hours ).
+Elapsed time for this session 232 seconds ( 0.06 hours ).
+
+Thank you...
+
+
+

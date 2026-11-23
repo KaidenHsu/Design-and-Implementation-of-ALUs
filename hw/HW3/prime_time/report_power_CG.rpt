@@ -1,0 +1,97 @@
+TOP=DP4_CG SYN_CONFIG=delay
+NETLIST=/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/DP4_CG_syn.v
+SDC=/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/DP4_CG_syn.sdc
+SDF=/MasterClass/M143010027_ALU/Hws/HW3/syn/delay/DP4_CG/DP4_CG_syn.sdf
+VCD=/MasterClass/M143010027_ALU/Hws/HW3/gate-level-sim/delay/DP4_CG/wave.vcd
+****************************************
+Report : units
+Design : DP4_CG
+Version: V-2023.12
+Date   : Mon Nov 23 20:48:20 2026
+****************************************
+
+Units
+---------------------------------------------
+Capacitive_load_unit        : 1e-12 Farad
+Current_unit                : 0.001 Amp
+Resistance_unit             : 1000 Ohm
+Time_unit                   : 1e-09 Second
+Voltage_unit                : 1 Volt
+Internal_power_unit         : 0.001 Watt
+Leakage_power_unit          : 1e-09 Watt
+1
+****************************************
+Report : Averaged Power
+	-hierarchy
+Design : DP4_CG
+Version: V-2023.12
+Date   : Mon Nov 23 20:48:20 2026
+****************************************
+
+
+
+                                      Int      Switch   Leak     Total
+Hierarchy                             Power    Power    Power    Power    %
+----------------------------------------------------------------------------------
+DP4_CG                                8.79e-03 6.40e-03 4.65e-06 1.52e-02 100.0
+  add_1_root_add_0_root_add_168_2_G2 (DP4_CG_DW01_add_60)
+                                      3.87e-05 3.81e-05 2.59e-08 7.68e-05   0.5
+  add_1_root_add_0_root_add_168_2_G3 (DP4_CG_DW01_add_61)
+                                      3.97e-05 3.80e-05 2.89e-08 7.78e-05   0.5
+  add_1_root_add_0_root_add_168_2_G4 (DP4_CG_DW01_add_62)
+                                      3.57e-05 3.37e-05 2.60e-08 6.94e-05   0.5
+  sub_105 (DP4_CG_DW01_sub_56)        4.67e-05 4.11e-05 1.79e-08 8.79e-05   0.6
+  mult_166_G2 (DP4_CG_DW_mult_uns_39) 1.38e-04 1.16e-04 1.33e-07 2.54e-04   1.7
+  mult_166_G3 (DP4_CG_DW_mult_uns_41) 1.24e-04 1.08e-04 1.26e-07 2.31e-04   1.5
+  mult_166_G4 (DP4_CG_DW_mult_uns_43) 1.15e-04 1.02e-04 1.24e-07 2.17e-04   1.4
+  sub_175 (DP4_CG_DW01_sub_53)        1.63e-04 1.18e-04 4.67e-08 2.80e-04   1.8
+  add_0_root_sub_0_root_sub_82_G2 (DP4_CG_DW01_add_46)
+                                      1.41e-05 1.51e-05 2.29e-08 2.92e-05   0.2
+  add_0_root_sub_0_root_sub_82_G3 (DP4_CG_DW01_add_47)
+                                      1.17e-05 1.26e-05 1.03e-08 2.43e-05   0.2
+  add_0_root_sub_0_root_sub_82_G4 (DP4_CG_DW01_add_58)
+                                      9.59e-06 1.28e-05 9.10e-09 2.24e-05   0.1
+  mult_165_G2 (DP4_CG_DW_mult_uns_38) 1.06e-04 9.37e-05 1.27e-07 2.00e-04   1.3
+  mult_165_G3 (DP4_CG_DW_mult_uns_40) 9.79e-05 8.84e-05 1.22e-07 1.86e-04   1.2
+  mult_165_G4 (DP4_CG_DW_mult_uns_42) 9.50e-05 8.54e-05 1.24e-07 1.80e-04   1.2
+  add_1_root_add_0_root_add_186 (DP4_CG_DW01_add_63)
+                                      6.81e-05 6.49e-05 5.94e-08 1.33e-04   0.9
+  add_2_root_add_0_root_add_186 (DP4_CG_DW01_add_64)
+                                      7.06e-05 6.90e-05 6.75e-08 1.40e-04   0.9
+  sub_223 (DP4_CG_DW01_sub_20)        6.30e-05 4.62e-05 3.89e-08 1.09e-04   0.7
+  add_237 (DP4_CG_DW01_add_21)        1.08e-05 1.33e-05 1.11e-08 2.41e-05   0.2
+  mult_164_G2 (DP4_CG_DW_mult_uns_34) 2.26e-04 2.16e-04 1.25e-07 4.42e-04   2.9
+  mult_164_G3 (DP4_CG_DW_mult_uns_33) 2.23e-04 2.12e-04 1.33e-07 4.35e-04   2.9
+  mult_164_G4 (DP4_CG_DW_mult_uns_32) 2.24e-04 2.18e-04 1.14e-07 4.42e-04   2.9
+  mult_164 (DP4_CG_DW_mult_uns_35)    2.28e-04 2.17e-04 1.30e-07 4.45e-04   2.9
+  mult_165 (DP4_CG_DW_mult_uns_36)    1.05e-04 9.27e-05 1.35e-07 1.98e-04   1.3
+  mult_166 (DP4_CG_DW_mult_uns_37)    1.35e-04 1.12e-04 1.45e-07 2.47e-04   1.6
+  mult_167 (DP4_CG_DW_mult_uns_5)     1.35e-04 1.06e-04 6.59e-08 2.41e-04   1.6
+  sub_175_G2 (DP4_CG_DW01_sub_52)     1.58e-04 1.11e-04 4.54e-08 2.69e-04   1.8
+  sub_175_G3 (DP4_CG_DW01_sub_51)     1.49e-04 1.07e-04 4.21e-08 2.57e-04   1.7
+  sub_175_G4 (DP4_CG_DW01_sub_16)     1.55e-04 1.10e-04 4.49e-08 2.66e-04   1.7
+  add_0_root_add_0_root_add_186 (DP4_CG_DW01_add_65)
+                                      8.18e-05 6.82e-05 6.24e-08 1.50e-04   1.0
+  add_308 (DP4_CG_DW01_add_24)        2.20e-05 1.09e-05 1.09e-08 3.29e-05   0.2
+  add_314 (DP4_CG_DW01_inc_0)         3.37e-06 1.03e-06 6.51e-09 4.40e-06   0.0
+  sub_105_I2 (DP4_CG_DW01_sub_57)     4.49e-05 4.07e-05 1.75e-08 8.56e-05   0.6
+  sub_105_I3 (DP4_CG_DW01_sub_54)     4.36e-05 3.96e-05 1.74e-08 8.32e-05   0.5
+  sub_105_I4 (DP4_CG_DW01_sub_55)     3.93e-05 3.67e-05 1.91e-08 7.60e-05   0.5
+  add_0_root_sub_0_root_sub_82 (DP4_CG_DW01_add_57)
+                                      1.22e-05 1.30e-05 1.91e-08 2.52e-05   0.2
+  add_1_root_add_0_root_add_168_2 (DP4_CG_DW01_add_59)
+                                      3.51e-05 3.16e-05 2.38e-08 6.67e-05   0.4
+  add_0_root_add_0_root_add_168_2_G2 (DP4_CG_DW01_add_54)
+                                      9.83e-05 8.82e-05 5.01e-08 1.87e-04   1.2
+  add_0_root_add_0_root_add_168_2_G3 (DP4_CG_DW01_add_53)
+                                      9.20e-05 8.25e-05 4.81e-08 1.75e-04   1.1
+  add_0_root_add_0_root_add_168_2_G4 (DP4_CG_DW01_add_52)
+                                      9.88e-05 8.65e-05 5.45e-08 1.85e-04   1.2
+  add_0_root_add_0_root_add_168_2 (DP4_CG_DW01_add_55)
+                                      9.81e-05 8.48e-05 4.97e-08 1.83e-04   1.2
+  clk_gate_C5502 (SNPS_CLOCK_GATE_HIGH_DP4_CG)
+                                      2.05e-06 3.08e-05 7.52e-12 3.29e-05   0.2
+  mult_167_G2 (DP4_CG_DW_mult_uns_8)  1.31e-04 1.03e-04 7.11e-08 2.34e-04   1.5
+  mult_167_G3 (DP4_CG_DW_mult_uns_11) 1.27e-04 9.99e-05 6.97e-08 2.27e-04   1.5
+  mult_167_G4 (DP4_CG_DW_mult_uns_14) 1.26e-04 1.01e-04 7.03e-08 2.27e-04   1.5
+1

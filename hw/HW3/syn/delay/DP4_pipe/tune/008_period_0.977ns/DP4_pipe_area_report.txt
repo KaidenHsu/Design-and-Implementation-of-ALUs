@@ -1,0 +1,86 @@
+ 
+****************************************
+Report : area
+Design : DP4_pipe
+Version: T-2022.03
+Date   : Mon Nov 23 01:39:55 2026
+****************************************
+
+Library(s) Used:
+
+    N16ADFP_StdCellss0p72vm40c_ccs (File: /cad/CBDK/ADFP/Executable_Package/Collaterals/IP/stdcell/N16ADFP_StdCell/CCS/N16ADFP_StdCellss0p72vm40c_ccs.db)
+
+Number of ports:                         3936
+Number of nets:                         21554
+Number of cells:                        17227
+Number of combinational cells:          16449
+Number of sequential cells:               735
+Number of macros/black boxes:               0
+Number of buf/inv:                       3629
+Number of references:                     222
+
+Combinational area:               5967.509901
+Buf/Inv area:                      649.244182
+Noncombinational area:             694.344970
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                  6661.854871
+Total area:                 undefined
+
+Hierarchical area distribution
+------------------------------
+
+                                  Global cell area          Local cell area
+                                  ------------------  ---------------------------- 
+Hierarchical cell                 Absolute   Percent  Combi-     Noncombi-  Black-
+                                  Total      Total    national   national   boxes   Design
+--------------------------------  ---------  -------  ---------  ---------  ------  -----------------------
+DP4_pipe                          6661.8549    100.0  1766.9664   694.3450  0.0000  DP4_pipe
+add_0_root_add_0_root_add_142_2     62.3117      0.9    62.3117     0.0000  0.0000  DP4_pipe_DW01_add_48
+add_0_root_add_0_root_add_142_2_G2   57.3869     0.9    57.3869     0.0000  0.0000  DP4_pipe_DW01_add_47
+add_0_root_add_0_root_add_142_2_G3   58.3200     0.9    58.3200     0.0000  0.0000  DP4_pipe_DW01_add_46
+add_0_root_add_0_root_add_142_2_G4   59.4086     0.9    59.4086     0.0000  0.0000  DP4_pipe_DW01_add_45
+add_0_root_add_0_root_add_160       83.6179      1.3    83.6179     0.0000  0.0000  DP4_pipe_DW01_add_61
+add_0_root_sub_0_root_sub_82        22.7578      0.3    22.7578     0.0000  0.0000  DP4_pipe_DW01_add_44
+add_0_root_sub_0_root_sub_82_G2     24.8832      0.4    24.8832     0.0000  0.0000  DP4_pipe_DW01_add_51
+add_0_root_sub_0_root_sub_82_G3     17.2627      0.3    17.2627     0.0000  0.0000  DP4_pipe_DW01_add_49
+add_0_root_sub_0_root_sub_82_G4     13.1674      0.2    13.1674     0.0000  0.0000  DP4_pipe_DW01_add_58
+add_1_root_add_0_root_add_142_2     40.7462      0.6    40.7462     0.0000  0.0000  DP4_pipe_DW01_add_54
+add_1_root_add_0_root_add_142_2_G2   39.3984     0.6    39.3984     0.0000  0.0000  DP4_pipe_DW01_add_55
+add_1_root_add_0_root_add_142_2_G3   39.2947     0.6    39.2947     0.0000  0.0000  DP4_pipe_DW01_add_56
+add_1_root_add_0_root_add_142_2_G4   38.8800     0.6    38.8800     0.0000  0.0000  DP4_pipe_DW01_add_57
+add_1_root_add_0_root_add_160       90.2534      1.4    90.2534     0.0000  0.0000  DP4_pipe_DW01_add_59
+add_211                             15.9667      0.2    15.9667     0.0000  0.0000  DP4_pipe_DW01_add_21
+add_282                             23.7946      0.4    23.7946     0.0000  0.0000  DP4_pipe_DW01_add_24
+add_288                              7.7242      0.1     7.7242     0.0000  0.0000  DP4_pipe_DW01_inc_0
+add_2_root_add_0_root_add_160       89.9942      1.4    89.9942     0.0000  0.0000  DP4_pipe_DW01_add_60
+mult_138                           191.7562      2.9   191.7562     0.0000  0.0000  DP4_pipe_DW_mult_uns_31
+mult_138_G2                        195.9034      2.9   195.9034     0.0000  0.0000  DP4_pipe_DW_mult_uns_30
+mult_138_G3                        194.6592      2.9   194.6592     0.0000  0.0000  DP4_pipe_DW_mult_uns_29
+mult_138_G4                        194.6592      2.9   194.6592     0.0000  0.0000  DP4_pipe_DW_mult_uns_28
+mult_139                           189.2678      2.8   189.2678     0.0000  0.0000  DP4_pipe_DW_mult_uns_32
+mult_139_G2                        188.3866      2.8   188.3866     0.0000  0.0000  DP4_pipe_DW_mult_uns_34
+mult_139_G3                        189.8899      2.9   189.8899     0.0000  0.0000  DP4_pipe_DW_mult_uns_36
+mult_139_G4                        191.5488      2.9   191.5488     0.0000  0.0000  DP4_pipe_DW_mult_uns_38
+mult_140                           193.4669      2.9   193.4669     0.0000  0.0000  DP4_pipe_DW_mult_uns_33
+mult_140_G2                        190.9267      2.9   190.9267     0.0000  0.0000  DP4_pipe_DW_mult_uns_35
+mult_140_G3                        192.3264      2.9   192.3264     0.0000  0.0000  DP4_pipe_DW_mult_uns_37
+mult_140_G4                        191.6006      2.9   191.6006     0.0000  0.0000  DP4_pipe_DW_mult_uns_39
+mult_141                           170.9683      2.6   170.9683     0.0000  0.0000  DP4_pipe_DW_mult_uns_1
+mult_141_G2                        170.6054      2.6   170.6054     0.0000  0.0000  DP4_pipe_DW_mult_uns_5
+mult_141_G3                        170.9165      2.6   170.9165     0.0000  0.0000  DP4_pipe_DW_mult_uns_9
+mult_141_G4                        167.7024      2.5   167.7024     0.0000  0.0000  DP4_pipe_DW_mult_uns_13
+sub_105                             23.0170      0.3    23.0170     0.0000  0.0000  DP4_pipe_DW01_sub_35
+sub_105_I2                          20.7360      0.3    20.7360     0.0000  0.0000  DP4_pipe_DW01_sub_36
+sub_105_I3                          23.1206      0.3    23.1206     0.0000  0.0000  DP4_pipe_DW01_sub_33
+sub_105_I4                          22.0838      0.3    22.0838     0.0000  0.0000  DP4_pipe_DW01_sub_34
+sub_149                             72.8870      1.1    72.8870     0.0000  0.0000  DP4_pipe_DW01_sub_19
+sub_149_G2                          72.0058      1.1    72.0058     0.0000  0.0000  DP4_pipe_DW01_sub_18
+sub_149_G3                          69.2582      1.0    69.2582     0.0000  0.0000  DP4_pipe_DW01_sub_17
+sub_149_G4                          70.6579      1.1    70.6579     0.0000  0.0000  DP4_pipe_DW01_sub_16
+sub_197                             57.0240      0.9    57.0240     0.0000  0.0000  DP4_pipe_DW01_sub_20
+--------------------------------  ---------  -------  ---------  ---------  ------  -----------------------
+Total                                                 5967.5099   694.3450  0.0000
+
+1

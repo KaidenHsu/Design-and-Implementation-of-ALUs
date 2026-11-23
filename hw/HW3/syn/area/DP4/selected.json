@@ -1,0 +1,34 @@
+{
+  "top": "DP4",
+  "strategy": "area",
+  "index": 1,
+  "trial": "tune/001_period_10ns",
+  "period_ns": 10.0,
+  "status": "selected",
+  "source_hash": "5aa75188b2c4df9e41e3bf9c75de67c43348005a70e0e463747aac5d733dedab",
+  "metrics": {
+    "period_ns": 10.0,
+    "delay_ns": 4.998235,
+    "slack_ns": 0.001765,
+    "comb_um2": 4965.85741,
+    "seq_um2": 0.0,
+    "total_um2": 4965.85741,
+    "dynamic_uw": 630.0574,
+    "leakage_uw": 2.8132,
+    "power_uw": 632.8706000000001
+  },
+  "converged": true,
+  "artifact_hashes": {
+    "DP4_units_report.txt": "fa7e4956cc8aa35899e3b562d9aae7c698a141da23bd94711dac4e135fb41ca0",
+    "DP4_check_design.txt": "44d4ed6aaee46fcf1492c6a2d1e31367b43cab9812958330bb365a90d8d6032e",
+    "DP4_check_timing.txt": "140c69dff6cec1ed459bdf788d0ed445769e732d5923e7835b8a26db42dc158d",
+    "DP4_timing_report.txt": "9802904cf9844fb3153401238f34dedfd0a95432da23b3b91fe9e3650554d8ee",
+    "DP4_area_report.txt": "53b214564f34d76b8ccee727cded623face5795016f1be4f7dd3f00fe6789e30",
+    "DP4_power_report.txt": "fb8ba55bba8ff4820358c6ba6c042e0ca5ddcf7dd66c1a6c841c37a1a6742e38",
+    "DP4_report.txt": "77aca61921e6d85f91bb89bd5567648fdaf4acc513dfb506de09ded3c7696519",
+    "DP4_syn.ddc": "6a87e087d89721c95ba7adc8eda584bba387d8ffbd6d92b509452909d8dc6f7e",
+    "DP4_syn.v": "2094fbb91cda5003dd4ed15d9807490b7ada5aaac40b0fd51aaea00282eda204",
+    "DP4_syn.sdf": "c914b89b4e0d94e830944c802841ec4fa09f44c832a71d0fd4e25264c695136d",
+    "DP4_syn.sdc": "f861fe9987ef6cba7e7d6cb36470a942692c21c56e17369cf476ffae6a98a49e"
+  }
+}

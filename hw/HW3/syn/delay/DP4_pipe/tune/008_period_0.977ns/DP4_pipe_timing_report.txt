@@ -1,0 +1,932 @@
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 10
+        -sort_by group
+Design : DP4_pipe
+Version: T-2022.03
+Date   : Mon Nov 23 01:39:55 2026
+****************************************
+
+Operating Conditions: ss0p72vm40c   Library: N16ADFP_StdCellss0p72vm40c_ccs
+Wire Load Model Mode: top
+
+  Startpoint: y2[25] (input port clocked by clk)
+  Endpoint: s1_reg_reg_221_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (fall edge)                               0.488500   0.488500
+  clock network delay (ideal)                         0.000000   0.488500
+  input external delay                                0.000000   0.488500 r
+  y2[25] (in)                                         0.000000   0.488500 r
+  U2409/ZN (ND3D12BWP16P90LVT)                        0.008342   0.496842 f
+  U2403/ZN (INVD4BWP16P90LVT)                         0.004180   0.501022 r
+  U2419/ZN (IND2D2BWP16P90LVT)                        0.005408   0.506429 f
+  U2593/ZN (ND2D2BWP16P90LVT)                         0.006137   0.512566 r
+  U2349/ZN (CKND2BWP16P90LVT)                         0.005092   0.517658 f
+  U2348/ZN (ND2D2BWP16P90LVT)                         0.005269   0.522927 r
+  U2317/ZN (CKND2D2BWP16P90LVT)                       0.007199   0.530126 f
+  add_0_root_sub_0_root_sub_82_G2/B[3] (DP4_pipe_DW01_add_51)
+                                                      0.000000   0.530126 f
+  add_0_root_sub_0_root_sub_82_G2/U105/Z (OR2D1BWP16P90LVT)
+                                                      0.013707   0.543833 f
+  add_0_root_sub_0_root_sub_82_G2/U85/ZN (AOI21D2BWP16P90LVT)
+                                                      0.011114   0.554946 r
+  add_0_root_sub_0_root_sub_82_G2/U135/ZN (OAI21D4BWP16P90LVT)
+                                                      0.010259   0.565206 f
+  add_0_root_sub_0_root_sub_82_G2/U140/ZN (AOI21D4BWP16P90LVT)
+                                                      0.011178   0.576384 r
+  add_0_root_sub_0_root_sub_82_G2/U138/ZN (OAI21D2BWP16P90LVT)
+                                                      0.010551   0.586935 f
+  add_0_root_sub_0_root_sub_82_G2/U137/ZN (XNR2D4BWP16P90LVT)
+                                                      0.021649   0.608584 r
+  add_0_root_sub_0_root_sub_82_G2/SUM[7] (DP4_pipe_DW01_add_51)
+                                                      0.000000   0.608584 r
+  U2246/ZN (INVD1BWP16P90LVT)                         0.005912   0.614496 f
+  U2680/Z (AN2D2BWP16P90LVT)                          0.013582   0.628078 f
+  U2400/ZN (NR3D4BWP16P90LVT)                         0.009921   0.637999 r
+  U2399/ZN (OAI31D2BWP16P90LVT)                       0.009745   0.647743 f
+  U2522/ZN (OAI21D2BWP16P90LVT)                       0.008515   0.656258 r
+  U2755/Z (AN2D2BWP16P90LVT)                          0.019966   0.676224 r
+  U2707/ZN (ND2D1BWP16P90LVT)                         0.012097   0.688321 f
+  U2743/ZN (ND2D2BWP16P90LVT)                         0.008998   0.697319 r
+  U2331/Z (AN2D1BWP16P90LVT)                          0.013764   0.711083 r
+  U4413/ZN (ND3D2BWP16P90LVT)                         0.012908   0.723991 f
+  U2676/ZN (ND3D2BWP16P90LVT)                         0.007054   0.731045 r
+  U2675/ZN (CKND2BWP16P90LVT)                         0.005917   0.736962 f
+  U2765/ZN (OAI211D2BWP16P90LVT)                      0.007546   0.744508 r
+  U2688/Z (AN2D2BWP16P90LVT)                          0.020009   0.764518 r
+  U2396/ZN (MUX2ND2BWP16P90LVT)                       0.024531   0.789049 r
+  U2611/ZN (ND2D2BWP16P90LVT)                         0.006608   0.795657 f
+  U2567/ZN (ND2D2BWP16P90LVT)                         0.005883   0.801540 r
+  U2660/ZN (NR3D2BWP16P90LVT)                         0.005041   0.806581 f
+  U2669/ZN (INR2D2BWP16P90LVT)                        0.007558   0.814139 r
+  U2694/Z (AN2D2BWP16P90LVT)                          0.014874   0.829013 r
+  U2923/Z (AN3D2BWP16P90LVT)                          0.021436   0.850449 r
+  U2668/Z (MUX2D2BWP16P90LVT)                         0.024451   0.874901 r
+  sub_105_I3/A[1] (DP4_pipe_DW01_sub_33)              0.000000   0.874901 r
+  sub_105_I3/U118/ZN (CKNR2D2BWP16P90LVT)             0.011576   0.886477 f
+  sub_105_I3/U123/ZN (OAI21D1BWP16P90LVT)             0.011572   0.898049 r
+  sub_105_I3/U136/ZN (AOI21D2BWP16P90LVT)             0.013204   0.911253 f
+  sub_105_I3/U134/ZN (OAI21D2BWP16P90LVT)             0.017466   0.928719 r
+  sub_105_I3/U100/ZN (AOI21D4BWP16P90LVT)             0.010687   0.939406 f
+  sub_105_I3/U98/ZN (CKND2BWP16P90LVT)                0.006997   0.946403 r
+  sub_105_I3/U96/ZN (CKND2D4BWP16P90LVT)              0.005082   0.951485 f
+  sub_105_I3/U97/ZN (ND2D2BWP16P90LVT)                0.005684   0.957169 r
+  sub_105_I3/DIFF[9] (DP4_pipe_DW01_sub_33)           0.000000   0.957169 r
+  U2309/ZN (CKND2BWP16P90LVT)                         0.003873   0.961042 f
+  U2308/ZN (CKNR2D2BWP16P90LVT)                       0.005677   0.966719 r
+  s1_reg_reg_221_/D (DFQD2BWP16P90LVT)                0.000000   0.966719 r
+  data arrival time                                              0.966719
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s1_reg_reg_221_/CP (DFQD2BWP16P90LVT)               0.000000   0.977000 r
+  library setup time                                  -0.013719  0.963281
+  data required time                                             0.963281
+  --------------------------------------------------------------------------
+  data required time                                             0.963281
+  data arrival time                                              -0.966719
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.003438
+
+
+  Startpoint: y2[25] (input port clocked by clk)
+  Endpoint: s1_reg_reg_197_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (fall edge)                               0.488500   0.488500
+  clock network delay (ideal)                         0.000000   0.488500
+  input external delay                                0.000000   0.488500 r
+  y2[25] (in)                                         0.000000   0.488500 r
+  U2409/ZN (ND3D12BWP16P90LVT)                        0.008342   0.496842 f
+  U2403/ZN (INVD4BWP16P90LVT)                         0.004180   0.501022 r
+  U2419/ZN (IND2D2BWP16P90LVT)                        0.005408   0.506429 f
+  U2593/ZN (ND2D2BWP16P90LVT)                         0.006137   0.512566 r
+  U2349/ZN (CKND2BWP16P90LVT)                         0.005092   0.517658 f
+  U2348/ZN (ND2D2BWP16P90LVT)                         0.005269   0.522927 r
+  U2317/ZN (CKND2D2BWP16P90LVT)                       0.007199   0.530126 f
+  add_0_root_sub_0_root_sub_82_G2/B[3] (DP4_pipe_DW01_add_51)
+                                                      0.000000   0.530126 f
+  add_0_root_sub_0_root_sub_82_G2/U105/Z (OR2D1BWP16P90LVT)
+                                                      0.013707   0.543833 f
+  add_0_root_sub_0_root_sub_82_G2/U85/ZN (AOI21D2BWP16P90LVT)
+                                                      0.011114   0.554946 r
+  add_0_root_sub_0_root_sub_82_G2/U135/ZN (OAI21D4BWP16P90LVT)
+                                                      0.010259   0.565206 f
+  add_0_root_sub_0_root_sub_82_G2/U140/ZN (AOI21D4BWP16P90LVT)
+                                                      0.011178   0.576384 r
+  add_0_root_sub_0_root_sub_82_G2/U138/ZN (OAI21D2BWP16P90LVT)
+                                                      0.010551   0.586935 f
+  add_0_root_sub_0_root_sub_82_G2/U137/ZN (XNR2D4BWP16P90LVT)
+                                                      0.021649   0.608584 r
+  add_0_root_sub_0_root_sub_82_G2/SUM[7] (DP4_pipe_DW01_add_51)
+                                                      0.000000   0.608584 r
+  U2246/ZN (INVD1BWP16P90LVT)                         0.005912   0.614496 f
+  U2680/Z (AN2D2BWP16P90LVT)                          0.013582   0.628078 f
+  U2400/ZN (NR3D4BWP16P90LVT)                         0.009921   0.637999 r
+  U2399/ZN (OAI31D2BWP16P90LVT)                       0.009745   0.647743 f
+  U2522/ZN (OAI21D2BWP16P90LVT)                       0.008515   0.656258 r
+  U2755/Z (AN2D2BWP16P90LVT)                          0.019966   0.676224 r
+  U2707/ZN (ND2D1BWP16P90LVT)                         0.012097   0.688321 f
+  U2743/ZN (ND2D2BWP16P90LVT)                         0.008998   0.697319 r
+  U2331/Z (AN2D1BWP16P90LVT)                          0.013764   0.711083 r
+  U4413/ZN (ND3D2BWP16P90LVT)                         0.012908   0.723991 f
+  U2676/ZN (ND3D2BWP16P90LVT)                         0.007054   0.731045 r
+  U2675/ZN (CKND2BWP16P90LVT)                         0.005917   0.736962 f
+  U2765/ZN (OAI211D2BWP16P90LVT)                      0.007546   0.744508 r
+  U2688/Z (AN2D2BWP16P90LVT)                          0.020009   0.764518 r
+  U2396/ZN (MUX2ND2BWP16P90LVT)                       0.024531   0.789049 r
+  U2611/ZN (ND2D2BWP16P90LVT)                         0.006608   0.795657 f
+  U2567/ZN (ND2D2BWP16P90LVT)                         0.005883   0.801540 r
+  U2660/ZN (NR3D2BWP16P90LVT)                         0.005041   0.806581 f
+  U2669/ZN (INR2D2BWP16P90LVT)                        0.007558   0.814139 r
+  U2694/Z (AN2D2BWP16P90LVT)                          0.014874   0.829013 r
+  U2923/Z (AN3D2BWP16P90LVT)                          0.021436   0.850449 r
+  U2668/Z (MUX2D2BWP16P90LVT)                         0.026077   0.876526 f
+  sub_105/A[1] (DP4_pipe_DW01_sub_35)                 0.000000   0.876526 f
+  sub_105/U139/ZN (NR2D1BWP16P90LVT)                  0.014167   0.890694 r
+  sub_105/U123/ZN (OAI21D2BWP16P90LVT)                0.013286   0.903980 f
+  sub_105/U122/ZN (AOI21D4BWP16P90LVT)                0.011307   0.915286 r
+  sub_105/U101/ZN (INVD4BWP16P90LVT)                  0.006943   0.922230 f
+  sub_105/U158/ZN (AOI21D1BWP16P90LVT)                0.011707   0.933937 r
+  sub_105/U157/Z (XOR2D1BWP16P90LVT)                  0.016476   0.950413 r
+  sub_105/DIFF[5] (DP4_pipe_DW01_sub_35)              0.000000   0.950413 r
+  U5874/Z (AN2D1BWP16P90LVT)                          0.012180   0.962593 r
+  s1_reg_reg_197_/D (DFCNQND1BWP16P90LVT)             0.000000   0.962593 r
+  data arrival time                                              0.962593
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s1_reg_reg_197_/CP (DFCNQND1BWP16P90LVT)            0.000000   0.977000 r
+  library setup time                                  -0.017824  0.959176
+  data required time                                             0.959176
+  --------------------------------------------------------------------------
+  data required time                                             0.959176
+  data arrival time                                              -0.962593
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.003417
+
+
+  Startpoint: precision (input port clocked by clk)
+  Endpoint: s1_reg_reg_201_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (fall edge)                               0.488500   0.488500
+  clock network delay (ideal)                         0.000000   0.488500
+  input external delay                                0.000000   0.488500 f
+  precision (in)                                      0.000000   0.488500 f
+  U2702/ZN (CKND16BWP16P90LVT)                        0.003296   0.491796 r
+  U2338/ZN (ND4D8BWP16P90LVT)                         0.013483   0.505279 f
+  U2068/ZN (ND2D2BWP16P90LVT)                         0.008037   0.513316 r
+  U2405/Z (XOR2D4BWP16P90LVT)                         0.019808   0.533124 f
+  add_0_root_sub_0_root_sub_82/B[3] (DP4_pipe_DW01_add_44)
+                                                      0.000000   0.533124 f
+  add_0_root_sub_0_root_sub_82/U139/ZN (NR2D2BWP16P90LVT)
+                                                      0.009971   0.543095 r
+  add_0_root_sub_0_root_sub_82/U126/ZN (NR2D2BWP16P90LVT)
+                                                      0.008681   0.551777 f
+  add_0_root_sub_0_root_sub_82/U113/ZN (AOI21D2BWP16P90LVT)
+                                                      0.008715   0.560491 r
+  add_0_root_sub_0_root_sub_82/U147/ZN (OAI21D2BWP16P90LVT)
+                                                      0.007188   0.567679 f
+  add_0_root_sub_0_root_sub_82/U136/ZN (CKND2BWP16P90LVT)
+                                                      0.007775   0.575454 r
+  add_0_root_sub_0_root_sub_82/U133/ZN (CKND2BWP16P90LVT)
+                                                      0.005037   0.580492 f
+  add_0_root_sub_0_root_sub_82/U141/ZN (AOI21D2BWP16P90LVT)
+                                                      0.011396   0.591888 r
+  add_0_root_sub_0_root_sub_82/U86/Z (AN2D2BWP16P90LVT)
+                                                      0.018116   0.610004 r
+  add_0_root_sub_0_root_sub_82/SUM[9] (DP4_pipe_DW01_add_44)
+                                                      0.000000   0.610004 r
+  U2090/ZN (INVD4BWP16P90LVT)                         0.006803   0.616807 f
+  U2110/ZN (OAI221D4BWP16P90LVT)                      0.009793   0.626600 r
+  U2487/ZN (ND2D2BWP16P90LVT)                         0.011560   0.638160 f
+  U2437/ZN (IND2D2BWP16P90LVT)                        0.015955   0.654115 f
+  U2304/Z (AN2D4BWP16P90LVT)                          0.015109   0.669223 f
+  U2543/ZN (ND2D2BWP16P90LVT)                         0.006380   0.675603 r
+  U2358/ZN (ND2D2BWP16P90LVT)                         0.006862   0.682465 f
+  U2561/ZN (CKND2BWP16P90LVT)                         0.005088   0.687553 r
+  U2743/ZN (ND2D2BWP16P90LVT)                         0.009916   0.697469 f
+  U2236/ZN (ND2D1BWP16P90)                            0.013126   0.710594 r
+  U2341/ZN (OAI211D2BWP16P90LVT)                      0.013799   0.724394 f
+  U2340/ZN (IOA21D2BWP16P90LVT)                       0.008498   0.732891 r
+  U2765/ZN (OAI211D2BWP16P90LVT)                      0.014576   0.747467 f
+  U2685/ZN (ND2D2BWP16P90LVT)                         0.010412   0.757880 r
+  U2686/ZN (INVD4BWP16P90LVT)                         0.010151   0.768031 f
+  U2366/Z (MUX2D1BWP16P90LVT)                         0.017405   0.785436 r
+  U2365/ZN (ND2D1BWP16P90LVT)                         0.006873   0.792309 f
+  U4747/ZN (MAOI222D1BWP16P90LVT)                     0.010252   0.802561 r
+  U2568/ZN (ND4D2BWP16P90LVT)                         0.013823   0.816384 f
+  U2552/ZN (INVD1BWP16P90)                            0.010699   0.827083 r
+  U2553/ZN (INVD1BWP16P90LVT)                         0.005799   0.832882 f
+  U2387/Z (AN2D2BWP16P90LVT)                          0.011354   0.844235 f
+  U2215/Z (AN2D4BWP16P90LVT)                          0.014833   0.859069 f
+  U2705/Z (MUX2D4BWP16P90LVT)                         0.022138   0.881207 r
+  sub_105/A[0] (DP4_pipe_DW01_sub_35)                 0.000000   0.881207 r
+  sub_105/U116/ZN (NR2D2BWP16P90LVT)                  0.006361   0.887568 f
+  sub_105/U123/ZN (OAI21D2BWP16P90LVT)                0.013951   0.901519 r
+  sub_105/U122/ZN (AOI21D4BWP16P90LVT)                0.011804   0.913323 f
+  sub_105/U155/ZN (OAI21D2BWP16P90LVT)                0.015395   0.928718 r
+  sub_105/U93/ZN (AOI21D4BWP16P90LVT)                 0.010159   0.938877 f
+  sub_105/U103/ZN (CKND2BWP16P90LVT)                  0.006868   0.945745 r
+  sub_105/U98/ZN (CKND2D4BWP16P90LVT)                 0.005092   0.950837 f
+  sub_105/U99/ZN (ND2D2BWP16P90LVT)                   0.004386   0.955223 r
+  sub_105/DIFF[9] (DP4_pipe_DW01_sub_35)              0.000000   0.955223 r
+  U5870/Z (AN2D1BWP16P90LVT)                          0.011364   0.966587 r
+  s1_reg_reg_201_/D (DFQD2BWP16P90LVT)                0.000000   0.966587 r
+  data arrival time                                              0.966587
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s1_reg_reg_201_/CP (DFQD2BWP16P90LVT)               0.000000   0.977000 r
+  library setup time                                  -0.013696  0.963304
+  data required time                                             0.963304
+  --------------------------------------------------------------------------
+  data required time                                             0.963304
+  data arrival time                                              -0.966587
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.003283
+
+
+  Startpoint: y2[25] (input port clocked by clk)
+  Endpoint: s1_reg_reg_231_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (fall edge)                               0.488500   0.488500
+  clock network delay (ideal)                         0.000000   0.488500
+  input external delay                                0.000000   0.488500 r
+  y2[25] (in)                                         0.000000   0.488500 r
+  U2409/ZN (ND3D12BWP16P90LVT)                        0.008342   0.496842 f
+  U2403/ZN (INVD4BWP16P90LVT)                         0.004180   0.501022 r
+  U2419/ZN (IND2D2BWP16P90LVT)                        0.005408   0.506429 f
+  U2593/ZN (ND2D2BWP16P90LVT)                         0.006137   0.512566 r
+  U2349/ZN (CKND2BWP16P90LVT)                         0.005092   0.517658 f
+  U2348/ZN (ND2D2BWP16P90LVT)                         0.005269   0.522927 r
+  U2317/ZN (CKND2D2BWP16P90LVT)                       0.007199   0.530126 f
+  add_0_root_sub_0_root_sub_82_G2/B[3] (DP4_pipe_DW01_add_51)
+                                                      0.000000   0.530126 f
+  add_0_root_sub_0_root_sub_82_G2/U105/Z (OR2D1BWP16P90LVT)
+                                                      0.013707   0.543833 f
+  add_0_root_sub_0_root_sub_82_G2/U85/ZN (AOI21D2BWP16P90LVT)
+                                                      0.011114   0.554946 r
+  add_0_root_sub_0_root_sub_82_G2/U135/ZN (OAI21D4BWP16P90LVT)
+                                                      0.010259   0.565206 f
+  add_0_root_sub_0_root_sub_82_G2/U140/ZN (AOI21D4BWP16P90LVT)
+                                                      0.011178   0.576384 r
+  add_0_root_sub_0_root_sub_82_G2/U138/ZN (OAI21D2BWP16P90LVT)
+                                                      0.010551   0.586935 f
+  add_0_root_sub_0_root_sub_82_G2/U137/ZN (XNR2D4BWP16P90LVT)
+                                                      0.021649   0.608584 r
+  add_0_root_sub_0_root_sub_82_G2/SUM[7] (DP4_pipe_DW01_add_51)
+                                                      0.000000   0.608584 r
+  U2246/ZN (INVD1BWP16P90LVT)                         0.005912   0.614496 f
+  U2680/Z (AN2D2BWP16P90LVT)                          0.013582   0.628078 f
+  U2400/ZN (NR3D4BWP16P90LVT)                         0.009921   0.637999 r
+  U2399/ZN (OAI31D2BWP16P90LVT)                       0.009745   0.647743 f
+  U2522/ZN (OAI21D2BWP16P90LVT)                       0.008515   0.656258 r
+  U2755/Z (AN2D2BWP16P90LVT)                          0.019966   0.676224 r
+  U2707/ZN (ND2D1BWP16P90LVT)                         0.012097   0.688321 f
+  U2743/ZN (ND2D2BWP16P90LVT)                         0.008998   0.697319 r
+  U2331/Z (AN2D1BWP16P90LVT)                          0.013764   0.711083 r
+  U4413/ZN (ND3D2BWP16P90LVT)                         0.012908   0.723991 f
+  U2676/ZN (ND3D2BWP16P90LVT)                         0.007054   0.731045 r
+  U2675/ZN (CKND2BWP16P90LVT)                         0.005917   0.736962 f
+  U2765/ZN (OAI211D2BWP16P90LVT)                      0.007546   0.744508 r
+  U2688/Z (AN2D2BWP16P90LVT)                          0.020009   0.764518 r
+  U2396/ZN (MUX2ND2BWP16P90LVT)                       0.024531   0.789049 r
+  U2611/ZN (ND2D2BWP16P90LVT)                         0.006608   0.795657 f
+  U2567/ZN (ND2D2BWP16P90LVT)                         0.005883   0.801540 r
+  U2660/ZN (NR3D2BWP16P90LVT)                         0.005041   0.806581 f
+  U2669/ZN (INR2D2BWP16P90LVT)                        0.007558   0.814139 r
+  U2694/Z (AN2D2BWP16P90LVT)                          0.014874   0.829013 r
+  U2923/Z (AN3D2BWP16P90LVT)                          0.021436   0.850449 r
+  U2649/Z (MUX2D2BWP16P90LVT)                         0.024423   0.874872 r
+  sub_105_I4/A[4] (DP4_pipe_DW01_sub_34)              0.000000   0.874872 r
+  sub_105_I4/U103/ZN (ND2D1BWP16P90LVT)               0.015696   0.890568 f
+  sub_105_I4/U98/ZN (OAI21D2BWP16P90LVT)              0.015975   0.906543 r
+  sub_105_I4/U118/ZN (AOI21D2BWP16P90LVT)             0.011855   0.918398 f
+  sub_105_I4/U119/ZN (OAI21D1BWP16P90LVT)             0.007999   0.926397 r
+  sub_105_I4/U99/ZN (IAOI21D2BWP16P90LVT)             0.010217   0.936615 f
+  sub_105_I4/U97/Z (XOR2D2BWP16P90LVT)                0.017490   0.954105 r
+  sub_105_I4/DIFF[9] (DP4_pipe_DW01_sub_34)           0.000000   0.954105 r
+  U5374/Z (AN2D1BWP16P90LVT)                          0.011877   0.965982 r
+  s1_reg_reg_231_/D (DFCNQD2BWP16P90LVT)              0.000000   0.965982 r
+  data arrival time                                              0.965982
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s1_reg_reg_231_/CP (DFCNQD2BWP16P90LVT)             0.000000   0.977000 r
+  library setup time                                  -0.014258  0.962742
+  data required time                                             0.962742
+  --------------------------------------------------------------------------
+  data required time                                             0.962742
+  data arrival time                                              -0.965982
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.003239
+
+
+  Startpoint: s1_reg_reg_153_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: s2_reg_reg_129_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s1_reg_reg_153_/CP (DFQD2BWP16P90LVT)               0.000000   0.000000 r
+  s1_reg_reg_153_/Q (DFQD2BWP16P90LVT)                0.041915   0.041915 f
+  mult_139_G3/a[9] (DP4_pipe_DW_mult_uns_36)          0.000000   0.041915 f
+  mult_139_G3/U664/ZN (XNR2D1BWP16P90)                0.035746   0.077661 r
+  mult_139_G3/U509/Z (BUFFD1BWP16P90LVT)              0.031081   0.108742 r
+  mult_139_G3/U281/ZN (OAI22D1BWP16P90LVT)            0.022907   0.131648 f
+  mult_139_G3/U223/S (FA1D1BWP16P90LVT)               0.043767   0.175416 r
+  mult_139_G3/U221/S (FA1D1BWP16P90LVT)               0.037474   0.212890 f
+  mult_139_G3/U220/S (FA1D1BWP16P90LVT)               0.040388   0.253278 r
+  mult_139_G3/U99/ZN (ND2D1BWP16P90LVT)               0.010303   0.263581 f
+  mult_139_G3/U764/ZN (INVD1BWP16P90)                 0.009015   0.272596 r
+  mult_139_G3/U763/ZN (AOI21D1BWP16P90LVT)            0.005824   0.278420 f
+  mult_139_G3/U91/ZN (OAI21D1BWP16P90LVT)             0.008461   0.286881 r
+  mult_139_G3/U554/ZN (INVD1BWP16P90LVT)              0.010876   0.297756 f
+  mult_139_G3/U602/Z (XOR2D1BWP16P90LVT)              0.017837   0.315593 f
+  mult_139_G3/product[12] (DP4_pipe_DW_mult_uns_36)   0.000000   0.315593 f
+  add_1_root_add_0_root_add_142_2_G3/A[24] (DP4_pipe_DW01_add_56)
+                                                      0.000000   0.315593 f
+  add_1_root_add_0_root_add_142_2_G3/U212/Z (OR2D1BWP16P90LVT)
+                                                      0.016485   0.332078 f
+  add_1_root_add_0_root_add_142_2_G3/U197/ZN (AOI21D1BWP16P90LVT)
+                                                      0.009600   0.341678 r
+  add_1_root_add_0_root_add_142_2_G3/U183/ZN (OAI21D1BWP16P90LVT)
+                                                      0.011228   0.352906 f
+  add_1_root_add_0_root_add_142_2_G3/U173/ZN (AOI21D1BWP16P90LVT)
+                                                      0.016673   0.369579 r
+  add_1_root_add_0_root_add_142_2_G3/U180/ZN (OAI21D2BWP16P90LVT)
+                                                      0.011436   0.381014 f
+  add_1_root_add_0_root_add_142_2_G3/U182/ZN (AOI21D2BWP16P90LVT)
+                                                      0.011877   0.392891 r
+  add_1_root_add_0_root_add_142_2_G3/U172/ZN (OAI21D2BWP16P90LVT)
+                                                      0.013604   0.406495 f
+  add_1_root_add_0_root_add_142_2_G3/U179/ZN (AOI21D4BWP16P90LVT)
+                                                      0.010509   0.417004 r
+  add_1_root_add_0_root_add_142_2_G3/U175/ZN (OAI21D1BWP16P90LVT)
+                                                      0.009108   0.426112 f
+  add_1_root_add_0_root_add_142_2_G3/U174/ZN (AOI21D1BWP16P90LVT)
+                                                      0.014325   0.440437 r
+  add_1_root_add_0_root_add_142_2_G3/U5/ZN (OAI21D1BWP16P90LVT)
+                                                      0.014149   0.454586 f
+  add_1_root_add_0_root_add_142_2_G3/U243/CO (FA1D1BWP16P90LVT)
+                                                      0.028093   0.482680 f
+  add_1_root_add_0_root_add_142_2_G3/U177/S (FA1D1BWP16P90LVT)
+                                                      0.040515   0.523194 r
+  add_1_root_add_0_root_add_142_2_G3/SUM[35] (DP4_pipe_DW01_add_56)
+                                                      0.000000   0.523194 r
+  add_0_root_add_0_root_add_142_2_G3/B[35] (DP4_pipe_DW01_add_46)
+                                                      0.000000   0.523194 r
+  add_0_root_add_0_root_add_142_2_G3/U27/ZN (ND2D1BWP16P90LVT)
+                                                      0.016546   0.539740 f
+  add_0_root_add_0_root_add_142_2_G3/U226/ZN (OAI21D4BWP16P90LVT)
+                                                      0.008433   0.548173 r
+  add_0_root_add_0_root_add_142_2_G3/U225/ZN (IOA21D4BWP16P90LVT)
+                                                      0.016620   0.564792 r
+  add_0_root_add_0_root_add_142_2_G3/U219/CO (HA1D4BWP16P90LVT)
+                                                      0.016831   0.581623 r
+  add_0_root_add_0_root_add_142_2_G3/U218/CO (HA1D4BWP16P90LVT)
+                                                      0.016544   0.598167 r
+  add_0_root_add_0_root_add_142_2_G3/U224/CO (HA1D4BWP16P90LVT)
+                                                      0.016544   0.614711 r
+  add_0_root_add_0_root_add_142_2_G3/U223/CO (HA1D4BWP16P90LVT)
+                                                      0.015919   0.630629 r
+  add_0_root_add_0_root_add_142_2_G3/U287/CO (HA1D1BWP16P90LVT)
+                                                      0.017530   0.648159 r
+  add_0_root_add_0_root_add_142_2_G3/U7/CO (HA1D2BWP16P90LVT)
+                                                      0.019282   0.667442 r
+  add_0_root_add_0_root_add_142_2_G3/U6/CO (HA1D2BWP16P90LVT)
+                                                      0.019424   0.686866 r
+  add_0_root_add_0_root_add_142_2_G3/U222/CO (HA1D4BWP16P90LVT)
+                                                      0.017143   0.704008 r
+  add_0_root_add_0_root_add_142_2_G3/U221/CO (HA1D4BWP16P90LVT)
+                                                      0.015859   0.719867 r
+  add_0_root_add_0_root_add_142_2_G3/U3/CO (HA1D2BWP16P90LVT)
+                                                      0.017259   0.737127 r
+  add_0_root_add_0_root_add_142_2_G3/U228/Z (XOR2D4BWP16P90LVT)
+                                                      0.022832   0.759959 f
+  add_0_root_add_0_root_add_142_2_G3/SUM[47] (DP4_pipe_DW01_add_46)
+                                                      0.000000   0.759959 f
+  U6416/ZN (INVD1BWP16P90LVT)                         0.005920   0.765879 r
+  U6419/ZN (AOI31D1BWP16P90LVT)                       0.011489   0.777368 f
+  U4170/ZN (ND3D1BWP16P90LVT)                         0.014027   0.791395 r
+  U2896/ZN (INVD1BWP16P90LVT)                         0.011776   0.803171 f
+  U6743/ZN (ND2D1BWP16P90LVT)                         0.008919   0.812090 r
+  U6786/ZN (OAI21D1BWP16P90LVT)                       0.010957   0.823048 f
+  U6787/ZN (AOI31D1BWP16P90LVT)                       0.011190   0.834238 r
+  U6788/ZN (OAI21D1BWP16P90LVT)                       0.017515   0.851752 f
+  sub_149_G3/B[1] (DP4_pipe_DW01_sub_17)              0.000000   0.851752 f
+  sub_149_G3/U472/ZN (IND2D1BWP16P90LVT)              0.017437   0.869189 f
+  sub_149_G3/U313/ZN (CKNR2D2BWP16P90LVT)             0.011765   0.880954 r
+  sub_149_G3/U312/ZN (CKND2D2BWP16P90LVT)             0.011930   0.892884 f
+  sub_149_G3/U317/ZN (CKND2BWP16P90LVT)               0.008429   0.901313 r
+  sub_149_G3/U316/Z (BUFFD12BWP16P90LVT)              0.015285   0.916598 r
+  sub_149_G3/U209/ZN (ND2D1BWP16P90LVT)               0.010076   0.926674 f
+  sub_149_G3/U301/Z (XOR2D1BWP16P90)                  0.025285   0.951959 r
+  sub_149_G3/DIFF[19] (DP4_pipe_DW01_sub_17)          0.000000   0.951959 r
+  U6824/ZN (MOAI22D1BWP16P90LVT)                      0.013698   0.965657 r
+  s2_reg_reg_129_/D (DFQD2BWP16P90LVT)                0.000000   0.965657 r
+  data arrival time                                              0.965657
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s2_reg_reg_129_/CP (DFQD2BWP16P90LVT)               0.000000   0.977000 r
+  library setup time                                  -0.014272  0.962728
+  data required time                                             0.962728
+  --------------------------------------------------------------------------
+  data required time                                             0.962728
+  data arrival time                                              -0.965657
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.002929
+
+
+  Startpoint: precision (input port clocked by clk)
+  Endpoint: s1_reg_reg_211_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (fall edge)                               0.488500   0.488500
+  clock network delay (ideal)                         0.000000   0.488500
+  input external delay                                0.000000   0.488500 f
+  precision (in)                                      0.000000   0.488500 f
+  U2702/ZN (CKND16BWP16P90LVT)                        0.003296   0.491796 r
+  U2338/ZN (ND4D8BWP16P90LVT)                         0.013483   0.505279 f
+  U2068/ZN (ND2D2BWP16P90LVT)                         0.008037   0.513316 r
+  U2405/Z (XOR2D4BWP16P90LVT)                         0.019808   0.533124 f
+  add_0_root_sub_0_root_sub_82/B[3] (DP4_pipe_DW01_add_44)
+                                                      0.000000   0.533124 f
+  add_0_root_sub_0_root_sub_82/U139/ZN (NR2D2BWP16P90LVT)
+                                                      0.009971   0.543095 r
+  add_0_root_sub_0_root_sub_82/U126/ZN (NR2D2BWP16P90LVT)
+                                                      0.008681   0.551777 f
+  add_0_root_sub_0_root_sub_82/U113/ZN (AOI21D2BWP16P90LVT)
+                                                      0.008715   0.560491 r
+  add_0_root_sub_0_root_sub_82/U147/ZN (OAI21D2BWP16P90LVT)
+                                                      0.007188   0.567679 f
+  add_0_root_sub_0_root_sub_82/U136/ZN (CKND2BWP16P90LVT)
+                                                      0.007775   0.575454 r
+  add_0_root_sub_0_root_sub_82/U133/ZN (CKND2BWP16P90LVT)
+                                                      0.005037   0.580492 f
+  add_0_root_sub_0_root_sub_82/U141/ZN (AOI21D2BWP16P90LVT)
+                                                      0.011396   0.591888 r
+  add_0_root_sub_0_root_sub_82/U86/Z (AN2D2BWP16P90LVT)
+                                                      0.018116   0.610004 r
+  add_0_root_sub_0_root_sub_82/SUM[9] (DP4_pipe_DW01_add_44)
+                                                      0.000000   0.610004 r
+  U2090/ZN (INVD4BWP16P90LVT)                         0.006803   0.616807 f
+  U2110/ZN (OAI221D4BWP16P90LVT)                      0.009793   0.626600 r
+  U2487/ZN (ND2D2BWP16P90LVT)                         0.011560   0.638160 f
+  U2437/ZN (IND2D2BWP16P90LVT)                        0.015955   0.654115 f
+  U2304/Z (AN2D4BWP16P90LVT)                          0.015109   0.669223 f
+  U2543/ZN (ND2D2BWP16P90LVT)                         0.006380   0.675603 r
+  U2358/ZN (ND2D2BWP16P90LVT)                         0.006862   0.682465 f
+  U2561/ZN (CKND2BWP16P90LVT)                         0.005088   0.687553 r
+  U2743/ZN (ND2D2BWP16P90LVT)                         0.009916   0.697469 f
+  U2236/ZN (ND2D1BWP16P90)                            0.013126   0.710594 r
+  U2341/ZN (OAI211D2BWP16P90LVT)                      0.013799   0.724394 f
+  U2340/ZN (IOA21D2BWP16P90LVT)                       0.008498   0.732891 r
+  U2765/ZN (OAI211D2BWP16P90LVT)                      0.014576   0.747467 f
+  U2685/ZN (ND2D2BWP16P90LVT)                         0.010412   0.757880 r
+  U2686/ZN (INVD4BWP16P90LVT)                         0.010151   0.768031 f
+  U2366/Z (MUX2D1BWP16P90LVT)                         0.017405   0.785436 r
+  U2365/ZN (ND2D1BWP16P90LVT)                         0.006873   0.792309 f
+  U4747/ZN (MAOI222D1BWP16P90LVT)                     0.010252   0.802561 r
+  U2568/ZN (ND4D2BWP16P90LVT)                         0.013823   0.816384 f
+  U2552/ZN (INVD1BWP16P90)                            0.010699   0.827083 r
+  U2553/ZN (INVD1BWP16P90LVT)                         0.005799   0.832882 f
+  U2387/Z (AN2D2BWP16P90LVT)                          0.011354   0.844235 f
+  U2215/Z (AN2D4BWP16P90LVT)                          0.014833   0.859069 f
+  U2705/Z (MUX2D4BWP16P90LVT)                         0.022138   0.881207 r
+  sub_105_I2/A[0] (DP4_pipe_DW01_sub_36)              0.000000   0.881207 r
+  sub_105_I2/U111/ZN (NR2D2BWP16P90LVT)               0.006361   0.887568 f
+  sub_105_I2/U113/ZN (OAI21D2BWP16P90LVT)             0.011164   0.898731 r
+  sub_105_I2/U132/ZN (AOI21D2BWP16P90LVT)             0.013432   0.912163 f
+  sub_105_I2/U98/ZN (OAI21D2BWP16P90LVT)              0.012997   0.925160 r
+  sub_105_I2/U97/ZN (AOI21D2BWP16P90LVT)              0.011550   0.936710 f
+  sub_105_I2/U99/Z (XOR2D1BWP16P90LVT)                0.017446   0.954156 r
+  sub_105_I2/DIFF[9] (DP4_pipe_DW01_sub_36)           0.000000   0.954156 r
+  U4876/Z (AN2D1BWP16P90LVT)                          0.012035   0.966192 r
+  s1_reg_reg_211_/D (DFQD2BWP16P90LVT)                0.000000   0.966192 r
+  data arrival time                                              0.966192
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s1_reg_reg_211_/CP (DFQD2BWP16P90LVT)               0.000000   0.977000 r
+  library setup time                                  -0.013696  0.963304
+  data required time                                             0.963304
+  --------------------------------------------------------------------------
+  data required time                                             0.963304
+  data arrival time                                              -0.966192
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.002888
+
+
+  Startpoint: precision (input port clocked by clk)
+  Endpoint: s1_reg_reg_216_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (fall edge)                               0.488500   0.488500
+  clock network delay (ideal)                         0.000000   0.488500
+  input external delay                                0.000000   0.488500 f
+  precision (in)                                      0.000000   0.488500 f
+  U2702/ZN (CKND16BWP16P90LVT)                        0.003296   0.491796 r
+  U2338/ZN (ND4D8BWP16P90LVT)                         0.013483   0.505279 f
+  U2068/ZN (ND2D2BWP16P90LVT)                         0.008037   0.513316 r
+  U2405/Z (XOR2D4BWP16P90LVT)                         0.019808   0.533124 f
+  add_0_root_sub_0_root_sub_82/B[3] (DP4_pipe_DW01_add_44)
+                                                      0.000000   0.533124 f
+  add_0_root_sub_0_root_sub_82/U139/ZN (NR2D2BWP16P90LVT)
+                                                      0.009971   0.543095 r
+  add_0_root_sub_0_root_sub_82/U126/ZN (NR2D2BWP16P90LVT)
+                                                      0.008681   0.551777 f
+  add_0_root_sub_0_root_sub_82/U113/ZN (AOI21D2BWP16P90LVT)
+                                                      0.008715   0.560491 r
+  add_0_root_sub_0_root_sub_82/U147/ZN (OAI21D2BWP16P90LVT)
+                                                      0.007188   0.567679 f
+  add_0_root_sub_0_root_sub_82/U136/ZN (CKND2BWP16P90LVT)
+                                                      0.007775   0.575454 r
+  add_0_root_sub_0_root_sub_82/U133/ZN (CKND2BWP16P90LVT)
+                                                      0.005037   0.580492 f
+  add_0_root_sub_0_root_sub_82/U141/ZN (AOI21D2BWP16P90LVT)
+                                                      0.011396   0.591888 r
+  add_0_root_sub_0_root_sub_82/U86/Z (AN2D2BWP16P90LVT)
+                                                      0.018116   0.610004 r
+  add_0_root_sub_0_root_sub_82/SUM[9] (DP4_pipe_DW01_add_44)
+                                                      0.000000   0.610004 r
+  U2090/ZN (INVD4BWP16P90LVT)                         0.006803   0.616807 f
+  U2524/ZN (ND2D2BWP16P90LVT)                         0.006278   0.623085 r
+  U2768/ZN (INVD1BWP16P90LVT)                         0.006422   0.629507 f
+  U2470/ZN (NR2D2BWP16P90LVT)                         0.005790   0.635297 r
+  U2070/ZN (OAI31D1BWP16P90LVT)                       0.011021   0.646318 f
+  U2102/ZN (ND2D2BWP16P90LVT)                         0.010163   0.656481 r
+  U2673/ZN (CKND2BWP16P90LVT)                         0.007666   0.664146 f
+  U2605/ZN (NR2D2BWP16P90LVT)                         0.009020   0.673166 r
+  U2376/Z (MUX2D1BWP16P90LVT)                         0.018951   0.692118 f
+  U2624/ZN (AOI22D1BWP16P90LVT)                       0.013162   0.705280 r
+  U2351/ZN (OAI211D2BWP16P90LVT)                      0.012902   0.718183 f
+  U2337/ZN (AOAI211D2BWP16P90LVT)                     0.007882   0.726065 r
+  U2701/ZN (CKND2BWP16P90LVT)                         0.006597   0.732662 f
+  U2530/ZN (INVD1BWP16P90)                            0.009222   0.741883 r
+  U2603/ZN (IND2D2BWP16P90LVT)                        0.008108   0.749992 f
+  U2563/ZN (CKND2BWP16P90LVT)                         0.007370   0.757362 r
+  U2562/ZN (OAI31D4BWP16P90LVT)                       0.008784   0.766146 f
+  U2165/ZN (CKND2BWP16P90LVT)                         0.008696   0.774842 r
+  U2186/Z (MUX2D1BWP16P90LVT)                         0.016964   0.791806 f
+  U2166/ZN (CKND1BWP16P90LVT)                         0.007118   0.798925 r
+  U2692/ZN (AOI221D2BWP16P90LVT)                      0.009570   0.808495 f
+  U2695/ZN (OAI21D2BWP16P90LVT)                       0.016767   0.825262 r
+  U2523/Z (AN2D2BWP16P90LVT)                          0.016748   0.842010 r
+  U2215/Z (AN2D4BWP16P90LVT)                          0.018187   0.860198 r
+  U2528/Z (MUX2D8BWP16P90LVT)                         0.019638   0.879836 f
+  sub_105_I3/A[0] (DP4_pipe_DW01_sub_33)              0.000000   0.879836 f
+  sub_105_I3/U127/ZN (NR2D2BWP16P90LVT)               0.008617   0.888453 r
+  sub_105_I3/U123/ZN (OAI21D1BWP16P90LVT)             0.011843   0.900296 f
+  sub_105_I3/U136/ZN (AOI21D2BWP16P90LVT)             0.012194   0.912491 r
+  sub_105_I3/U144/ZN (CKND2BWP16P90LVT)               0.008492   0.920982 f
+  sub_105_I3/U106/ZN (XNR2D1BWP16P90)                 0.032451   0.953434 r
+  sub_105_I3/DIFF[4] (DP4_pipe_DW01_sub_33)           0.000000   0.953434 r
+  U6405/Z (AN2D1BWP16P90LVT)                          0.012711   0.966144 r
+  s1_reg_reg_216_/D (DFQD2BWP16P90LVT)                0.000000   0.966144 r
+  data arrival time                                              0.966144
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s1_reg_reg_216_/CP (DFQD2BWP16P90LVT)               0.000000   0.977000 r
+  library setup time                                  -0.013669  0.963331
+  data required time                                             0.963331
+  --------------------------------------------------------------------------
+  data required time                                             0.963331
+  data arrival time                                              -0.966144
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.002814
+
+
+  Startpoint: s3_reg_reg_8_
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: s4_reg_reg_0_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (rise edge)                               0.000000   0.000000
+  clock network delay (ideal)                         0.000000   0.000000
+  s3_reg_reg_8_/CP (DFQD2BWP16P90LVT)                 0.000000   0.000000 r
+  s3_reg_reg_8_/Q (DFQD2BWP16P90LVT)                  0.040418   0.040418 f
+  sub_197/B[8] (DP4_pipe_DW01_sub_20)                 0.000000   0.040418 f
+  sub_197/U259/ZN (INVD1BWP16P90LVT)                  0.007110   0.047528 r
+  sub_197/U149/ZN (ND2D1BWP16P90LVT)                  0.010977   0.058505 f
+  sub_197/U332/ZN (NR2D1BWP16P90LVT)                  0.013692   0.072198 r
+  sub_197/U111/ZN (ND2D1BWP16P90LVT)                  0.008648   0.080846 f
+  sub_197/U294/ZN (NR2D1BWP16P90LVT)                  0.010222   0.091068 r
+  sub_197/U39/ZN (ND2D1BWP16P90LVT)                   0.012845   0.103913 f
+  sub_197/U304/ZN (NR2D1BWP16P90LVT)                  0.013958   0.117871 r
+  sub_197/U34/ZN (ND2D1BWP16P90LVT)                   0.013671   0.131542 f
+  sub_197/U305/ZN (NR2D1BWP16P90LVT)                  0.014232   0.145775 r
+  sub_197/U306/ZN (ND2D1BWP16P90LVT)                  0.013710   0.159485 f
+  sub_197/U315/ZN (NR2D1BWP16P90LVT)                  0.014238   0.173724 r
+  sub_197/U24/ZN (ND2D1BWP16P90LVT)                   0.014332   0.188056 f
+  sub_197/U255/ZN (CKNR2D2BWP16P90LVT)                0.012260   0.200317 r
+  sub_197/U311/ZN (ND2D1BWP16P90LVT)                  0.013612   0.213929 f
+  sub_197/U257/ZN (CKNR2D2BWP16P90LVT)                0.012159   0.226088 r
+  sub_197/U15/CO (HA1D2BWP16P90LVT)                   0.019804   0.245892 r
+  sub_197/U14/CO (HA1D2BWP16P90LVT)                   0.018524   0.264416 r
+  sub_197/U13/CO (HA1D2BWP16P90LVT)                   0.018524   0.282940 r
+  sub_197/U12/CO (HA1D2BWP16P90LVT)                   0.018524   0.301463 r
+  sub_197/U11/CO (HA1D2BWP16P90LVT)                   0.018524   0.319987 r
+  sub_197/U10/CO (HA1D2BWP16P90LVT)                   0.018524   0.338511 r
+  sub_197/U9/CO (HA1D2BWP16P90LVT)                    0.018524   0.357034 r
+  sub_197/U8/CO (HA1D2BWP16P90LVT)                    0.018524   0.375558 r
+  sub_197/U7/CO (HA1D2BWP16P90LVT)                    0.018524   0.394082 r
+  sub_197/U6/CO (HA1D2BWP16P90LVT)                    0.018524   0.412605 r
+  sub_197/U5/CO (HA1D2BWP16P90LVT)                    0.018573   0.431179 r
+  sub_197/U258/CO (HA1D1BWP16P90LVT)                  0.018061   0.449240 r
+  sub_197/U330/CO (HA1D1BWP16P90LVT)                  0.018700   0.467940 r
+  sub_197/U2/CO (HA1D2BWP16P90LVT)                    0.018451   0.486390 r
+  sub_197/U296/ZN (XNR2D1BWP16P90LVT)                 0.016054   0.502444 f
+  sub_197/DIFF[54] (DP4_pipe_DW01_sub_20)             0.000000   0.502444 f
+  U6907/ZN (ND2D1BWP16P90LVT)                         0.010695   0.513140 r
+  U7029/ZN (OAI21D1BWP16P90LVT)                       0.022228   0.535368 f
+  U2749/ZN (INVD1BWP16P90LVT)                         0.030232   0.565600 r
+  add_211/B[0] (DP4_pipe_DW01_add_21)                 0.000000   0.565600 r
+  add_211/U70/ZN (ND2D1BWP16P90LVT)                   0.015131   0.580731 f
+  add_211/U81/ZN (INVD1BWP16P90LVT)                   0.009165   0.589896 r
+  add_211/U80/ZN (XNR2D2BWP16P90LVT)                  0.034186   0.624082 f
+  add_211/SUM[1] (DP4_pipe_DW01_add_21)               0.000000   0.624082 f
+  U3651/ZN (CKND1BWP16P90LVT)                         0.029863   0.653945 r
+  U7116/ZN (ND2D1BWP16P90LVT)                         0.015399   0.669344 f
+  U3634/Z (XOR2D2BWP16P90LVT)                         0.033082   0.702426 f
+  U3217/ZN (CKND1BWP16P90LVT)                         0.038450   0.740876 r
+  U2737/ZN (CKND2D1BWP16P90LVT)                       0.029811   0.770687 f
+  U3011/ZN (CKND1BWP16P90LVT)                         0.016342   0.787029 r
+  U2758/Z (CKBD1BWP16P90LVT)                          0.028777   0.815805 r
+  U3218/Z (AN2D1BWP16P90LVT)                          0.018702   0.834508 r
+  U7636/ZN (AOAI211D1BWP16P90LVT)                     0.015701   0.850209 f
+  U2934/ZN (CKND1BWP16P90LVT)                         0.007572   0.857781 r
+  U7641/ZN (OAI211D1BWP16P90LVT)                      0.010488   0.868269 f
+  U7644/ZN (AOI211D1BWP16P90LVT)                      0.013025   0.881294 r
+  U7645/ZN (OAI22D1BWP16P90LVT)                       0.013293   0.894587 f
+  U7646/ZN (AOI211D1BWP16P90LVT)                      0.014474   0.909061 r
+  U7665/ZN (ND4D1BWP16P90LVT)                         0.012707   0.921768 f
+  U7673/ZN (AOI211D1BWP16P90LVT)                      0.013633   0.935401 r
+  U7674/ZN (ND4D1BWP16P90LVT)                         0.015324   0.950725 f
+  U7689/ZN (NR4D1BWP16P90LVT)                         0.013305   0.964031 r
+  U7690/ZN (OAI22D1BWP16P90LVT)                       0.010698   0.974729 f
+  s4_reg_reg_0_/D (DFQD2BWP16P90LVT)                  0.000000   0.974729 f
+  data arrival time                                              0.974729
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s4_reg_reg_0_/CP (DFQD2BWP16P90LVT)                 0.000000   0.977000 r
+  library setup time                                  -0.005031  0.971969
+  data required time                                             0.971969
+  --------------------------------------------------------------------------
+  data required time                                             0.971969
+  data arrival time                                              -0.974729
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.002760
+
+
+  Startpoint: y2[25] (input port clocked by clk)
+  Endpoint: s1_reg_reg_220_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (fall edge)                               0.488500   0.488500
+  clock network delay (ideal)                         0.000000   0.488500
+  input external delay                                0.000000   0.488500 r
+  y2[25] (in)                                         0.000000   0.488500 r
+  U2409/ZN (ND3D12BWP16P90LVT)                        0.008342   0.496842 f
+  U2403/ZN (INVD4BWP16P90LVT)                         0.004180   0.501022 r
+  U2419/ZN (IND2D2BWP16P90LVT)                        0.005408   0.506429 f
+  U2593/ZN (ND2D2BWP16P90LVT)                         0.006137   0.512566 r
+  U2349/ZN (CKND2BWP16P90LVT)                         0.005092   0.517658 f
+  U2348/ZN (ND2D2BWP16P90LVT)                         0.005269   0.522927 r
+  U2317/ZN (CKND2D2BWP16P90LVT)                       0.007199   0.530126 f
+  add_0_root_sub_0_root_sub_82_G2/B[3] (DP4_pipe_DW01_add_51)
+                                                      0.000000   0.530126 f
+  add_0_root_sub_0_root_sub_82_G2/U105/Z (OR2D1BWP16P90LVT)
+                                                      0.013707   0.543833 f
+  add_0_root_sub_0_root_sub_82_G2/U85/ZN (AOI21D2BWP16P90LVT)
+                                                      0.011114   0.554946 r
+  add_0_root_sub_0_root_sub_82_G2/U135/ZN (OAI21D4BWP16P90LVT)
+                                                      0.010259   0.565206 f
+  add_0_root_sub_0_root_sub_82_G2/U140/ZN (AOI21D4BWP16P90LVT)
+                                                      0.011178   0.576384 r
+  add_0_root_sub_0_root_sub_82_G2/U138/ZN (OAI21D2BWP16P90LVT)
+                                                      0.010551   0.586935 f
+  add_0_root_sub_0_root_sub_82_G2/U137/ZN (XNR2D4BWP16P90LVT)
+                                                      0.021649   0.608584 r
+  add_0_root_sub_0_root_sub_82_G2/SUM[7] (DP4_pipe_DW01_add_51)
+                                                      0.000000   0.608584 r
+  U2246/ZN (INVD1BWP16P90LVT)                         0.005912   0.614496 f
+  U2680/Z (AN2D2BWP16P90LVT)                          0.013582   0.628078 f
+  U2400/ZN (NR3D4BWP16P90LVT)                         0.009921   0.637999 r
+  U2399/ZN (OAI31D2BWP16P90LVT)                       0.009745   0.647743 f
+  U2522/ZN (OAI21D2BWP16P90LVT)                       0.008515   0.656258 r
+  U2755/Z (AN2D2BWP16P90LVT)                          0.019966   0.676224 r
+  U2707/ZN (ND2D1BWP16P90LVT)                         0.012097   0.688321 f
+  U2743/ZN (ND2D2BWP16P90LVT)                         0.008998   0.697319 r
+  U2331/Z (AN2D1BWP16P90LVT)                          0.013764   0.711083 r
+  U4413/ZN (ND3D2BWP16P90LVT)                         0.012908   0.723991 f
+  U2676/ZN (ND3D2BWP16P90LVT)                         0.007054   0.731045 r
+  U2675/ZN (CKND2BWP16P90LVT)                         0.005917   0.736962 f
+  U2765/ZN (OAI211D2BWP16P90LVT)                      0.007546   0.744508 r
+  U2688/Z (AN2D2BWP16P90LVT)                          0.020009   0.764518 r
+  U2396/ZN (MUX2ND2BWP16P90LVT)                       0.024531   0.789049 r
+  U2611/ZN (ND2D2BWP16P90LVT)                         0.006608   0.795657 f
+  U2567/ZN (ND2D2BWP16P90LVT)                         0.005883   0.801540 r
+  U2660/ZN (NR3D2BWP16P90LVT)                         0.005041   0.806581 f
+  U2669/ZN (INR2D2BWP16P90LVT)                        0.007558   0.814139 r
+  U2694/Z (AN2D2BWP16P90LVT)                          0.014874   0.829013 r
+  U2693/Z (AN3D4BWP16P90LVT)                          0.022330   0.851343 r
+  U2451/Z (MUX2D2BWP16P90LVT)                         0.026997   0.878340 f
+  sub_105_I3/A[7] (DP4_pipe_DW01_sub_33)              0.000000   0.878340 f
+  sub_105_I3/U103/ZN (ND2D1BWP16P90)                  0.013424   0.891764 r
+  sub_105_I3/U125/ZN (OAI21D1BWP16P90)                0.013697   0.905461 f
+  sub_105_I3/U113/ZN (AOI21D1BWP16P90LVT)             0.012483   0.917944 r
+  sub_105_I3/U134/ZN (OAI21D2BWP16P90LVT)             0.013058   0.931002 f
+  sub_105_I3/U111/ZN (INVD1BWP16P90)                  0.010111   0.941113 r
+  sub_105_I3/U109/ZN (ND2D1BWP16P90LVT)               0.007029   0.948142 f
+  sub_105_I3/U110/ZN (ND2D1BWP16P90LVT)               0.006134   0.954277 r
+  sub_105_I3/DIFF[8] (DP4_pipe_DW01_sub_33)           0.000000   0.954277 r
+  U6401/Z (AN2D1BWP16P90LVT)                          0.011781   0.966057 r
+  s1_reg_reg_220_/D (DFQD2BWP16P90LVT)                0.000000   0.966057 r
+  data arrival time                                              0.966057
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s1_reg_reg_220_/CP (DFQD2BWP16P90LVT)               0.000000   0.977000 r
+  library setup time                                  -0.013669  0.963331
+  data required time                                             0.963331
+  --------------------------------------------------------------------------
+  data required time                                             0.963331
+  data arrival time                                              -0.966057
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.002727
+
+
+  Startpoint: precision (input port clocked by clk)
+  Endpoint: s1_reg_reg_217_
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  DP4_pipe           ZeroWireload          N16ADFP_StdCellss0p72vm40c_ccs
+
+  Point                                                   Incr       Path
+  --------------------------------------------------------------------------
+  clock clk (fall edge)                               0.488500   0.488500
+  clock network delay (ideal)                         0.000000   0.488500
+  input external delay                                0.000000   0.488500 f
+  precision (in)                                      0.000000   0.488500 f
+  U2702/ZN (CKND16BWP16P90LVT)                        0.003296   0.491796 r
+  U2338/ZN (ND4D8BWP16P90LVT)                         0.013483   0.505279 f
+  U2068/ZN (ND2D2BWP16P90LVT)                         0.008037   0.513316 r
+  U2405/Z (XOR2D4BWP16P90LVT)                         0.019808   0.533124 f
+  add_0_root_sub_0_root_sub_82/B[3] (DP4_pipe_DW01_add_44)
+                                                      0.000000   0.533124 f
+  add_0_root_sub_0_root_sub_82/U139/ZN (NR2D2BWP16P90LVT)
+                                                      0.009971   0.543095 r
+  add_0_root_sub_0_root_sub_82/U126/ZN (NR2D2BWP16P90LVT)
+                                                      0.008681   0.551777 f
+  add_0_root_sub_0_root_sub_82/U113/ZN (AOI21D2BWP16P90LVT)
+                                                      0.008715   0.560491 r
+  add_0_root_sub_0_root_sub_82/U147/ZN (OAI21D2BWP16P90LVT)
+                                                      0.007188   0.567679 f
+  add_0_root_sub_0_root_sub_82/U136/ZN (CKND2BWP16P90LVT)
+                                                      0.007775   0.575454 r
+  add_0_root_sub_0_root_sub_82/U133/ZN (CKND2BWP16P90LVT)
+                                                      0.005037   0.580492 f
+  add_0_root_sub_0_root_sub_82/U141/ZN (AOI21D2BWP16P90LVT)
+                                                      0.011396   0.591888 r
+  add_0_root_sub_0_root_sub_82/U86/Z (AN2D2BWP16P90LVT)
+                                                      0.018116   0.610004 r
+  add_0_root_sub_0_root_sub_82/SUM[9] (DP4_pipe_DW01_add_44)
+                                                      0.000000   0.610004 r
+  U2090/ZN (INVD4BWP16P90LVT)                         0.006803   0.616807 f
+  U2524/ZN (ND2D2BWP16P90LVT)                         0.006278   0.623085 r
+  U2768/ZN (INVD1BWP16P90LVT)                         0.006422   0.629507 f
+  U2470/ZN (NR2D2BWP16P90LVT)                         0.005790   0.635297 r
+  U2070/ZN (OAI31D1BWP16P90LVT)                       0.011021   0.646318 f
+  U2102/ZN (ND2D2BWP16P90LVT)                         0.010163   0.656481 r
+  U2673/ZN (CKND2BWP16P90LVT)                         0.007666   0.664146 f
+  U2605/ZN (NR2D2BWP16P90LVT)                         0.009020   0.673166 r
+  U2376/Z (MUX2D1BWP16P90LVT)                         0.018951   0.692118 f
+  U2624/ZN (AOI22D1BWP16P90LVT)                       0.013162   0.705280 r
+  U2351/ZN (OAI211D2BWP16P90LVT)                      0.012902   0.718183 f
+  U2337/ZN (AOAI211D2BWP16P90LVT)                     0.007882   0.726065 r
+  U2701/ZN (CKND2BWP16P90LVT)                         0.006597   0.732662 f
+  U2530/ZN (INVD1BWP16P90)                            0.009222   0.741883 r
+  U2603/ZN (IND2D2BWP16P90LVT)                        0.008108   0.749992 f
+  U2563/ZN (CKND2BWP16P90LVT)                         0.007370   0.757362 r
+  U2562/ZN (OAI31D4BWP16P90LVT)                       0.008784   0.766146 f
+  U2165/ZN (CKND2BWP16P90LVT)                         0.008696   0.774842 r
+  U2186/Z (MUX2D1BWP16P90LVT)                         0.016964   0.791806 f
+  U2166/ZN (CKND1BWP16P90LVT)                         0.007118   0.798925 r
+  U2692/ZN (AOI221D2BWP16P90LVT)                      0.009570   0.808495 f
+  U2695/ZN (OAI21D2BWP16P90LVT)                       0.016767   0.825262 r
+  U2523/Z (AN2D2BWP16P90LVT)                          0.016748   0.842010 r
+  U2215/Z (AN2D4BWP16P90LVT)                          0.018187   0.860198 r
+  U2528/Z (MUX2D8BWP16P90LVT)                         0.019638   0.879836 f
+  sub_105_I3/A[0] (DP4_pipe_DW01_sub_33)              0.000000   0.879836 f
+  sub_105_I3/U127/ZN (NR2D2BWP16P90LVT)               0.008617   0.888453 r
+  sub_105_I3/U123/ZN (OAI21D1BWP16P90LVT)             0.011843   0.900296 f
+  sub_105_I3/U136/ZN (AOI21D2BWP16P90LVT)             0.012194   0.912491 r
+  sub_105_I3/U144/ZN (CKND2BWP16P90LVT)               0.008492   0.920982 f
+  sub_105_I3/U156/ZN (AOI21D1BWP16P90LVT)             0.012151   0.933134 r
+  sub_105_I3/U155/Z (XOR2D1BWP16P90LVT)               0.016510   0.949643 r
+  sub_105_I3/DIFF[5] (DP4_pipe_DW01_sub_33)           0.000000   0.949643 r
+  U6404/Z (AN2D1BWP16P90LVT)                          0.012182   0.961825 r
+  s1_reg_reg_217_/D (DFCNQND1BWP16P90LVT)             0.000000   0.961825 r
+  data arrival time                                              0.961825
+
+  clock clk (rise edge)                               0.977000   0.977000
+  clock network delay (ideal)                         0.000000   0.977000
+  s1_reg_reg_217_/CP (DFCNQND1BWP16P90LVT)            0.000000   0.977000 r
+  library setup time                                  -0.017794  0.959206
+  data required time                                             0.959206
+  --------------------------------------------------------------------------
+  data required time                                             0.959206
+  data arrival time                                              -0.961825
+  --------------------------------------------------------------------------
+  slack (VIOLATED)                                               -0.002619
+
+
+1
