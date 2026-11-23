@@ -1,8 +1,8 @@
 # Design and Implementation of ALUs
 
 - homework for the course "Design and Implementation of Arithmetic Logic Unit" in NSYSU, Taiwan
-- **EDA toolchain**: VCS (simulation) → Design Compiler (synthesis) → PrimeTime (sign-off) → Innovus (APR)
-- **TSMC N16 ADFP** PDK provided through TSRI was used for synthesis.
+- **EDA toolchain**: VCS (simulation) → Design Compiler (synthesis) → PrimeTime (STA, power analysis) → Innovus (APR)
+- **TSMC N16 ADFP** standard cell library provided through TSRI was used for synthesis.
 
 ## Homework
 
